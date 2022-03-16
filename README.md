@@ -1,2 +1,2 @@
 # to-do-client
-to-do project 
+Planit 프로젝트 클라이언트입니다.
