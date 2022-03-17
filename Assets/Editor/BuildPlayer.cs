@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEditor.Build.Reporting;
 
@@ -12,7 +15,8 @@ public class BuildPlayer
     public static void MyBuild_AOS()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/Scenes/Scene1.unity", "Assets/Scenes/Scene2.unity" };
+        //buildPlayerOptions.scenes = new[] { "Assets/Scenes/Scene1.unity", "Assets/Scenes/Scene2.unity" };
+        buildPlayerOptions.scenes = FindEnabledEditorScenes();
         buildPlayerOptions.locationPathName = $"Builds/AOS_{PlayerSettings.bundleVersion}.apk";
         buildPlayerOptions.target = BuildTarget.Android;
         buildPlayerOptions.options = BuildOptions.None;
@@ -29,5 +33,18 @@ public class BuildPlayer
         {
             Debug.Log("Build failed");
         }
+    }
+
+    private static string[] FindEnabledEditorScenes()
+    {
+        List<string> EditorScenes = new List<string>();
+
+        foreach(EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        {
+            if (!scene.enabled) continue;
+            EditorScenes.Add(scene.path);
+        }
+
+        return EditorScenes.ToArray();
     }
 }
