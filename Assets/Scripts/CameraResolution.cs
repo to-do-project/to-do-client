@@ -8,7 +8,7 @@ public class CameraResolution : MonoBehaviour
     {
         Camera camera = GetComponent<Camera>();
         Rect rect = camera.rect;
-        float scaleheight = ((float)Screen.width / Screen.height) / ((float)9 / 18); // (가로 / 세로)
+        float scaleheight = ((float)Screen.width / Screen.height) / ((float)9f / (float)19f); // (가로 / 세로)
         float scalewidth = 1f / scaleheight;
         if (scaleheight < 1)
         {
@@ -24,5 +24,5 @@ public class CameraResolution : MonoBehaviour
     }
 
     //레터박스 위를 검정색으로 칠해줌
-    void OnPreCull() => GL.Clear(true, true, Color.black);
+    //void OnPreCull() => GL.Clear(true, true, Color.black);
 }
