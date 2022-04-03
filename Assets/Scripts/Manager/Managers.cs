@@ -9,17 +9,27 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     static Managers instance;
-    static Managers Instance { get { Init(); return instance; } }
+    public static Managers Instance()
+    {
+        Init();
+        return instance;
+    }
 
+    ResourceManager resource = new ResourceManager();
+    UIManager ui = new UIManager();
+    SceneManagerEx scene = new SceneManagerEx();
+    SoundManager sound = new SoundManager();
+    DataManager data = new DataManager();
+
+    public static ResourceManager Resource { get { return Instance().resource; } }
+    public static UIManager UI { get { return Instance().ui; } }
+    public static SceneManagerEx Scene { get { return Instance().scene; } }
+    public static SoundManager Sound { get { return Instance().sound; } }
+    public static DataManager Data { get { return Instance().data; } }
 
     void Start()
     {
         Init();
-    }
-
-    void Update()
-    {
-        
     }
 
     static void Init()
@@ -37,6 +47,15 @@ public class Managers : MonoBehaviour
             instance = go.GetComponent<Managers>();
 
             //다른 매니저들 Init도 여기서 해주기
+            instance.data.Init();
+            instance.sound.Init();
         }
+    }
+
+    public static void Clear()
+    {
+        Sound.Clear();
+        Scene.Clear();
+        UI.Clear();
     }
 }
