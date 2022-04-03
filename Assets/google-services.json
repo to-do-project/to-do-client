@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "691263186268",
+    "project_id": "planit-989bb",
+    "storage_bucket": "planit-989bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691263186268:android:14b179e2a41bb7ea7b4d99",
+        "android_client_info": {
+          "package_name": "com.Planz.PlanIt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691263186268-hus859pp84sd9pthcdhr73etj7thum4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4hDDPW4Bm10gpmf1GdJw9cM93LPpoxsE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691263186268-hus859pp84sd9pthcdhr73etj7thum4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
