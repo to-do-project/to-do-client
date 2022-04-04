@@ -20,6 +20,20 @@ public abstract class BaseScene : MonoBehaviour
         {
             Managers.Resource.Instantiate("EventSystem").name = "@EventSystem";
         }
+
+        Object mainCam = GameObject.FindGameObjectWithTag("MainCamera");
+        if (mainCam == null)
+        {
+            Managers.Resource.Instantiate("Camera/MainCamera").name = "MainCamera";
+        }
+
+
+        Object UICam = GameObject.FindGameObjectWithTag("UICamera");
+        if (UICam == null)
+        {
+            Managers.Resource.Instantiate("Camera/UICamera").name = "UICamera";
+        }
+
     }
 
     public abstract void Clear();
