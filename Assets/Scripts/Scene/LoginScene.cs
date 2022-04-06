@@ -16,6 +16,7 @@ public class LoginScene : BaseScene
     public override void Clear()
     {
         Debug.Log("Login Clear");
+        Managers.UI.Clear();
     }
 
     protected override void Init()
@@ -24,8 +25,5 @@ public class LoginScene : BaseScene
         SceneType = Define.Scene.Login;
     }
 
-    void Update()
-    {
-        
-    }
+
 }

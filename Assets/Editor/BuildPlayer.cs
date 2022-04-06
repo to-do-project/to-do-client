@@ -43,6 +43,7 @@ public class BuildPlayer
         {
             if (!scene.enabled) continue;
             EditorScenes.Add(scene.path);
+            Debug.Log(scene.path);
         }
 
         return EditorScenes.ToArray();
