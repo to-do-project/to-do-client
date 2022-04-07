@@ -23,6 +23,8 @@ public class LoginScene : BaseScene
     {
         base.Init();
         SceneType = Define.Scene.Login;
+
+        Managers.UI.ShowPopupUI<UI_Login>("LogInView");
     }
 
 

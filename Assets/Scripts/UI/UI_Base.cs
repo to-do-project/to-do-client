@@ -33,7 +33,7 @@ public abstract class UI_Base : MonoBehaviour
 
             if (objects[i] == null)
             {
-                Debug.Log($"{type.Name} failed to bind{names[i]}");
+                Debug.Log($"{type.Name} failed to bind {names[i]}");
             }
         }
     }

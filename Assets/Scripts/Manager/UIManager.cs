@@ -115,7 +115,7 @@ public class UIManager
 
 
     //SceneUI ¶ç¿ì±â
-    public T ShowSceneUI<T>(string name = null) where T : UI_Panel
+    public T ShowPanelUI<T>(string name = null) where T : UI_Panel
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -123,13 +123,13 @@ public class UIManager
         }
 
         //UI »ý¼º 
-        GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
-        T sceneUI = Util.GetOrAddComponent<T>(go);
-        panelUI = sceneUI;
+        GameObject go = Managers.Resource.Instantiate($"UI/Panel/{name}");
+        T PanelUI = Util.GetOrAddComponent<T>(go);
+        panelUI = PanelUI;
 
         go.transform.SetParent(Root.transform);
 
-        return sceneUI;
+        return PanelUI;
 
 
     }
