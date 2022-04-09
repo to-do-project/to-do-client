@@ -53,6 +53,7 @@ public abstract class UI_Base : MonoBehaviour
 
     //타입별로 Get 함수 만들어둠(쓰기 편하라고)
     protected Text GetText(int idx) { return Get<Text>(idx); }
+    protected InputField GetInputfiled(int idx) { return Get<InputField>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
     protected GameObject getObject(int idx) { return Get<GameObject>(idx); }
@@ -77,7 +78,5 @@ public abstract class UI_Base : MonoBehaviour
                 break;
         }
 
-
-        evt.OnDragHandler += ((PointerEventData data) => { go.transform.position = data.position; });
     }
 }

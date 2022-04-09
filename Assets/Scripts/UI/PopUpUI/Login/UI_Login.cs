@@ -44,6 +44,16 @@ public class UI_Login : UI_Popup
         GameObject signupBtn = GetButton((int)Buttons.SignUp_btn).gameObject;
         BindEvent(signupBtn, SignUpBtnClick, Define.UIEvent.Click);
 
+        GameObject findpwBtn = GetButton((int)Buttons.FindPW_btn).gameObject;
+        BindEvent(findpwBtn, FindPWBtnClick, Define.UIEvent.Click);
+
+        GameObject loginBtn = GetButton((int)Buttons.Login_btn).gameObject;
+        BindEvent(loginBtn, LoginBtnClick, Define.UIEvent.Click);
+        
+        GameObject gloginBtn = GetButton((int)Buttons.GLogin_btn).gameObject;
+        BindEvent(gloginBtn, GoogleLoginBtnClick, Define.UIEvent.Click);
+
+
     }
 
     private void Start()
@@ -55,18 +65,46 @@ public class UI_Login : UI_Popup
     public void LoginBtnClick(PointerEventData data)
     {
         //아이디 입력 확인
+        InputField idInput = Get<InputField>((int)InputFields.ID_inputfield);
+        if (string.IsNullOrWhiteSpace(idInput.text))
+        {
+            Debug.Log("ID가 공란입니다.");
+        }
+        else
+        {
+            Debug.Log($"ID : {idInput.text}");
+        }
 
         //비밀번호 입력 확인
-        
+        InputField pwInput = Get<InputField>((int)InputFields.PW_inputfield);
+        if(string.IsNullOrWhiteSpace(pwInput.text))
+        {
+            Debug.Log("PW가 공란입니다.");
+        }
+        else
+        {
+            Debug.Log($"PW : {pwInput.text}");
+        }
+
+
         //로그인 API 호출
-        
+
     }
 
  
     public void SignUpBtnClick(PointerEventData data)
     {
-        Managers.UI.ShowPopupUI<UI_SignUp>("SignUpView");
+        Managers.UI.ShowPopupUI<UI_Info>("InfoView", "SignUp");
         
     }
 
+    public void FindPWBtnClick(PointerEventData data)
+    {
+        Managers.UI.ShowPopupUI<UI_PWfind>("FindView", "PWfind");
+    }
+
+    public void GoogleLoginBtnClick(PointerEventData data)
+    {
+        //구글 로그인 API ghcnf
+    }
 }

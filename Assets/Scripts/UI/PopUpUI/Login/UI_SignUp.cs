@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UI_SignUp : UI_Popup
 {
-    private void Start()
+
+    public override void Init()
     {
         Canvas canvas = GetComponent<Canvas>();
         Camera UIcam = canvas.worldCamera;
@@ -18,5 +21,14 @@ public class UI_SignUp : UI_Popup
         {
             Debug.Log($"{UIcam.name}");
         }
+
     }
+
+    private void Start()
+    {
+        Init();
+    }
+
+
+
 }

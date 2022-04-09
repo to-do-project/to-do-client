@@ -31,15 +31,26 @@ public class UIManager
     //name : prefab 이름
     //T : script와 연관(UI의 스크립트
     //gameobject 만들 때 name이랑 T 맞춰서 만들거임 -> name이 없으면 T 이름으로
-    public T ShowPopupUI<T>(string name = null) where T : UI_Popup
+    public T ShowPopupUI<T>(string name = null,string folder = null) where T : UI_Popup
     {
+        string path;
+
         if (string.IsNullOrEmpty(name))
         {
             name = typeof(T).Name;
         }
 
         //UI 생성 
-        GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
+        if (string.IsNullOrEmpty(folder))
+        {
+            path = name;
+        }
+        else
+        {
+            path = folder + "/" + name;
+        }
+
+        GameObject go = Managers.Resource.Instantiate($"UI/Popup/{path}");
         T popup = Util.GetOrAddComponent<T>(go);
         popupStack.Push(popup);
 

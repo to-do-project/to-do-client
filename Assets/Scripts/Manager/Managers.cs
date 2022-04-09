@@ -20,20 +20,20 @@ public class Managers : MonoBehaviour
     SceneManagerEx scene = new SceneManagerEx();
     SoundManager sound = new SoundManager();
     DataManager data = new DataManager();
-    WebManager web = new WebManager();
+    static WebManager web;
 
     public static ResourceManager Resource { get { return Instance().resource; } }
     public static UIManager UI { get { return Instance().ui; } }
     public static SceneManagerEx Scene { get { return Instance().scene; } }
     public static SoundManager Sound { get { return Instance().sound; } }
     public static DataManager Data { get { return Instance().data; } }
-    public static WebManager Web { get { return Instance().web; } }
+    public static WebManager Web { get { return web; } }
+
 
     void Start()
     {
         Init();
     }
-
 
 
     static void Init()
@@ -50,11 +50,14 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             instance = go.GetComponent<Managers>();
 
+            web = go.AddComponent<WebManager>();
+
+
             //다른 매니저들 Init도 여기서 해주기
             instance.data.Init();
             instance.sound.Init();
 
-            if (instance.web.InternetCheck())
+            if (web.InternetCheck())
             {
                 Debug.Log("no internet");
             }
