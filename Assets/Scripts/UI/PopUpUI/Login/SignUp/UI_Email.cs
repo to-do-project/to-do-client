@@ -58,7 +58,7 @@ public class UI_Email : UI_SignUp
 
     bool isCheck;
 
-    public void CheckBtnClick(PointerEventData data)
+    private void CheckBtnClick(PointerEventData data)
     {
         //이메일 입력 확인
         Text Etxt = GetText((int)Texts.EmailCheck_txt);
@@ -80,7 +80,7 @@ public class UI_Email : UI_SignUp
 
     }
 
-    public void NextBtnClick(PointerEventData data)
+    private void NextBtnClick(PointerEventData data)
     {
         //이메일 입력 확인
         if (isCheck)
@@ -92,7 +92,7 @@ public class UI_Email : UI_SignUp
     }
 
 
-    public bool IsValidEmail(string email)
+    private bool IsValidEmail(string email)
     {
         //공란인지
         if (string.IsNullOrWhiteSpace(email))

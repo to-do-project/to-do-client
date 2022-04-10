@@ -15,6 +15,7 @@ public class Managers : MonoBehaviour
         return instance;
     }
 
+    InputManager input = new InputManager();
     ResourceManager resource = new ResourceManager();
     UIManager ui = new UIManager();
     SceneManagerEx scene = new SceneManagerEx();
@@ -22,19 +23,24 @@ public class Managers : MonoBehaviour
     DataManager data = new DataManager();
     static WebManager web;
 
+    public static InputManager Input { get { return Instance().input; } }
     public static ResourceManager Resource { get { return Instance().resource; } }
     public static UIManager UI { get { return Instance().ui; } }
     public static SceneManagerEx Scene { get { return Instance().scene; } }
     public static SoundManager Sound { get { return Instance().sound; } }
     public static DataManager Data { get { return Instance().data; } }
     public static WebManager Web { get { return web; } }
-
+    
 
     void Start()
     {
         Init();
     }
 
+    private void Update()
+    {
+        Input.OnUpdate();
+    }
 
     static void Init()
     {
@@ -69,5 +75,7 @@ public class Managers : MonoBehaviour
         Sound.Clear();
         Scene.Clear();
         UI.Clear();
+        Input.Clear();
     }
+
 }

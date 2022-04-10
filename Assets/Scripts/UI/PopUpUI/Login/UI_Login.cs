@@ -23,7 +23,8 @@ public class UI_Login : UI_Popup
 
     public override void Init()
     {
-        base.Init(); 
+        base.Init();
+        Managers.UI.CloseExceptThisPopupUI();
 
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
@@ -89,6 +90,10 @@ public class UI_Login : UI_Popup
 
         //로그인 API 호출
 
+        //유저 정보가 입력 안된 상태면 유저정보 입력 뷰로 넘어감
+        Managers.UI.ShowPopupUI<UI_NicknameSet>("NicknameView", "UserInfo");
+
+        //메인 씬으로 넘어가기
     }
 
  

@@ -25,7 +25,19 @@ public class LoginScene : BaseScene
         SceneType = Define.Scene.Login;
 
         Managers.UI.ShowPopupUI<UI_Login>("LoginView");
+
+        Managers.Input.TouchAction -= OnBackTouched;
+        Managers.Input.TouchAction += OnBackTouched;
     }
 
+    void OnBackTouched(Define.SystemEvent evt)
+    {
+        if (evt != Define.SystemEvent.Back)
+        {
+            return;
+        }
 
+        Managers.UI.CloseAppOrUI(Define.Scene.Login);
+
+    }
 }

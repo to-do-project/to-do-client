@@ -54,7 +54,7 @@ public class UI_Auth : UI_SignUp
 
     }
 
-    public void AuthCheckBtnClick(PointerEventData data)
+    private void AuthCheckBtnClick(PointerEventData data)
     {
         //인증번호 동일 확인
 
@@ -62,7 +62,7 @@ public class UI_Auth : UI_SignUp
     }
 
 
-    public void NextBtnClick(PointerEventData data)
+    private void NextBtnClick(PointerEventData data)
     {
         //인증완료됐는지 확인
 

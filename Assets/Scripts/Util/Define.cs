@@ -31,4 +31,17 @@ public class Define
         QuaterView,
     }
 
+    public enum Planet
+    {
+        Red,
+        Green,
+        Blue,
+    }
+
+    public enum SystemEvent 
+    {
+        Back,
+        Home,
+    }
+
 }

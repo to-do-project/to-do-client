@@ -5,6 +5,7 @@ using UnityEngine;
 //UI의 sort order 관리하며 popup 관리
 public class UIManager 
 {
+
     //현재 ui order 저장
     int _order = 10;
     //오더 증가는 ShowPopupUI를 호출하는 곳에서 SetCanvas로 증가
@@ -13,6 +14,7 @@ public class UIManager
     //stack으로 popup UI 들고있는다
     Stack<UI_Popup> popupStack = new Stack<UI_Popup>();
     UI_Panel panelUI = null;
+
 
     //UI 부모 오브젝트
     public GameObject Root
@@ -104,6 +106,16 @@ public class UIManager
         }
     }
 
+    //현재 UI 제외 모든 팝업 닫기
+    public void CloseExceptThisPopupUI()
+    {
+        while (popupStack.Count > 1)
+        {
+            ClosePopupUI();
+        }
+    }
+
+
     //subitem 생성
     public T MakeSubItem<T>(Transform parent = null, string name = null) where T : UI_Base
     {
@@ -164,6 +176,29 @@ public class UIManager
             canvas.sortingOrder = 0;
         }
     }
+
+
+    //Main 씬에서 호출 시 stack count가 0이면 앱종료
+    
+    public void CloseAppOrUI(Define.Scene scene)
+    {
+        if (scene==Define.Scene.Main)
+        {
+
+        }
+        else if(scene==Define.Scene.Login)
+        {
+            if (popupStack.Count ==1)
+            {
+                Application.Quit();
+            }
+            else
+            {
+                ClosePopupUI();
+            }
+        }
+    }
+
 
     public void Clear()
     {
