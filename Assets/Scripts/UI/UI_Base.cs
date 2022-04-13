@@ -61,18 +61,18 @@ public abstract class UI_Base : MonoBehaviour
     //이벤트 핸들러에 이벤트 구독
     //UI이벤트 타입에 따라
     //이벤트 핸들러를 UI에 붙이고, 실행할 함수를 구독시켜줌
-    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.TouchEvent type = Define.TouchEvent.Touch)
     {
         UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
         //type에 따라 연동
 
         switch (type)
         {
-            case Define.UIEvent.Click:
+            case Define.TouchEvent.Touch:
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
-            case Define.UIEvent.Drag:
+            case Define.TouchEvent.Drag:
                 evt.OnDragHandler -= action;
                 evt.OnDragHandler += action;
                 break;

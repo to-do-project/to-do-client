@@ -316,6 +316,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1403196923181294241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847550698140998895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e63d5d1efd2e4b84392c2c8c81885d4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2897450012665080622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,8 +1639,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlanetView
       objectReference: {fileID: 0}
+    - target: {fileID: 3431015095622237655, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}
+      propertyPath: m_SortingOrder
+      value: 14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}
+--- !u!1 &1847550698140998895 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3431015095622237652, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}
+  m_PrefabInstance: {fileID: 3908767818759856443}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1847550698140998891 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3431015095622237648, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}

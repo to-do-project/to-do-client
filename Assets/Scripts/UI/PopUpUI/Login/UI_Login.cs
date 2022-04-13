@@ -43,16 +43,16 @@ public class UI_Login : UI_Popup
         Bind<InputField>(typeof(InputFields));
 
         GameObject signupBtn = GetButton((int)Buttons.SignUp_btn).gameObject;
-        BindEvent(signupBtn, SignUpBtnClick, Define.UIEvent.Click);
+        BindEvent(signupBtn, SignUpBtnClick, Define.TouchEvent.Touch);
 
         GameObject findpwBtn = GetButton((int)Buttons.FindPW_btn).gameObject;
-        BindEvent(findpwBtn, FindPWBtnClick, Define.UIEvent.Click);
+        BindEvent(findpwBtn, FindPWBtnClick, Define.TouchEvent.Touch);
 
         GameObject loginBtn = GetButton((int)Buttons.Login_btn).gameObject;
-        BindEvent(loginBtn, LoginBtnClick, Define.UIEvent.Click);
+        BindEvent(loginBtn, LoginBtnClick, Define.TouchEvent.Touch);
         
         GameObject gloginBtn = GetButton((int)Buttons.GLogin_btn).gameObject;
-        BindEvent(gloginBtn, GoogleLoginBtnClick, Define.UIEvent.Click);
+        BindEvent(gloginBtn, GoogleLoginBtnClick, Define.TouchEvent.Touch);
 
 
     }

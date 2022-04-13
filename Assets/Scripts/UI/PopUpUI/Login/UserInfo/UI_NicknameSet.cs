@@ -28,10 +28,10 @@ public class UI_NicknameSet : UI_UserInfo
         Bind<Button>(typeof(Buttons));
 
         GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.UIEvent.Click);
+        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.UIEvent.Click);
+        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
 
 
     }
@@ -44,7 +44,7 @@ public class UI_NicknameSet : UI_UserInfo
     private void NextBtnClick(PointerEventData data)
     {
         //닉네임 유효한 입력 했는지
-
+        Debug.Log("Next btn click");
         //Managers.UI.CloseAllPopupUI();
         Managers.UI.ShowPopupUI<UI_PlanetSet>("PlanetView","UserInfo");
     }

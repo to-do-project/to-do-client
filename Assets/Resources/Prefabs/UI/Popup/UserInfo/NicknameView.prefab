@@ -436,7 +436,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC774\uBA54\uC77C \uBCF4\uB0B4\uAE30"
+  m_Text: "\uACC4\uC18D\uD558\uAE30"
 --- !u!1 &2615404620902139678
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +859,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC911\uBCF5\uD655\uC778"
+--- !u!114 &3041536895618596510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219122241512572921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c9a455be073af4a8ac0a74970200c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3213055042402548269
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -963,5 +975,10 @@ PrefabInstance:
 --- !u!224 &219122241512572925 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3431015095622237648, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}
+  m_PrefabInstance: {fileID: 3213055042402548269}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &219122241512572921 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3431015095622237652, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}
   m_PrefabInstance: {fileID: 3213055042402548269}
   m_PrefabAsset: {fileID: 0}

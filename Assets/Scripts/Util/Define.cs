@@ -20,10 +20,12 @@ public class Define
         MaxCount,
     }
 
-    public enum UIEvent
+    public enum TouchEvent
     {
-        Click,
+        Touch,
+        Press,
         Drag,
+        TwoTouch,
     }
 
     public enum CameraMode

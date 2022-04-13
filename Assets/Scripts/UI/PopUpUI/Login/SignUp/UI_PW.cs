@@ -36,10 +36,10 @@ public class UI_PW : UI_SignUp
         Bind<Button>(typeof(Buttons));
 
         GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.UIEvent.Click);
+        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         nextBtn = GetButton((int)Buttons.next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.UIEvent.Click);
+        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
 
 
     }

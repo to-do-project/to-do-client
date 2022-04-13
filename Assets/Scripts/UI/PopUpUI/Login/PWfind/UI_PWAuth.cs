@@ -19,10 +19,10 @@ public class UI_PWAuth : UI_PWfind
         Bind<Button>(typeof(Buttons));
 
         GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.UIEvent.Click);
+        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         GameObject loginBtn = GetButton((int)Buttons.login_btn).gameObject;
-        BindEvent(loginBtn, loginBtnClick,Define.UIEvent.Click);
+        BindEvent(loginBtn, loginBtnClick,Define.TouchEvent.Touch);
     }
 
     void Start()

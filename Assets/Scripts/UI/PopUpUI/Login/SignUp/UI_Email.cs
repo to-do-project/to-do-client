@@ -39,13 +39,13 @@ public class UI_Email : UI_SignUp
         Bind<Button>(typeof(Buttons));
 
         GameObject checkBtn = GetButton((int)Buttons.EmailCheck_btn).gameObject;
-        BindEvent(checkBtn, CheckBtnClick, Define.UIEvent.Click);
+        BindEvent(checkBtn, CheckBtnClick, Define.TouchEvent.Touch);
 
         GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.UIEvent.Click);
+        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         nextBtn = GetButton((int)Buttons.next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.UIEvent.Click);
+        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
         nextBtn.GetComponent<Button>().interactable = false;
     }
 

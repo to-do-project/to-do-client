@@ -27,10 +27,10 @@ public class UI_Find : UI_PWfind
         Bind<Button>(typeof(Buttons));
 
         GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.UIEvent.Click);
+        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         sendEmailBtn = GetButton((int)Buttons.sendEmail_btn).gameObject;
-        BindEvent(sendEmailBtn, SendEmailBtnClick, Define.UIEvent.Click);
+        BindEvent(sendEmailBtn, SendEmailBtnClick, Define.TouchEvent.Touch);
     }
 
     void Start()

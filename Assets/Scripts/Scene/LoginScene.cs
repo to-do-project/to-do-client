@@ -19,6 +19,11 @@ public class LoginScene : BaseScene
         Managers.UI.Clear();
     }
 
+    void Awake()
+    {
+        Init();
+    }
+
     protected override void Init()
     {
         base.Init();
@@ -26,8 +31,8 @@ public class LoginScene : BaseScene
 
         Managers.UI.ShowPopupUI<UI_Login>("LoginView");
 
-        Managers.Input.TouchAction -= OnBackTouched;
-        Managers.Input.TouchAction += OnBackTouched;
+        Managers.Input.SystemTouchAction -= OnBackTouched;
+        Managers.Input.SystemTouchAction += OnBackTouched;
     }
 
     void OnBackTouched(Define.SystemEvent evt)

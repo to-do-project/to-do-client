@@ -36,13 +36,13 @@ public class UI_Auth : UI_SignUp
         Bind<Button>(typeof(Buttons));
 
         GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.UIEvent.Click);
+        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         nextBtn = GetButton((int)Buttons.next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.UIEvent.Click);
+        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
 
         authCheckBtn = GetButton((int)Buttons.AuthCheck_btn).gameObject;
-        BindEvent(authCheckBtn, AuthCheckBtnClick, Define.UIEvent.Click);
+        BindEvent(authCheckBtn, AuthCheckBtnClick, Define.TouchEvent.Touch);
 
 
         

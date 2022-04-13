@@ -190,10 +190,12 @@ public class UIManager
         {
             if (popupStack.Count ==1)
             {
+                //Debug.Log("Quit");
                 Application.Quit();
             }
             else
             {
+                //Debug.Log($"Count : {popupStack.Count}");
                 ClosePopupUI();
             }
         }
