@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UI_SignUp : UI_Popup
 {
+    protected LoginScene loginScene;
 
     public override void Init()
     {
@@ -22,6 +23,7 @@ public class UI_SignUp : UI_Popup
             Debug.Log($"{UIcam.name}");
         }
 
+        loginScene = FindObjectOfType<LoginScene>();
     }
 
 /*    private void Start()

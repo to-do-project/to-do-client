@@ -22,6 +22,8 @@ public class PlanetController : MonoBehaviour
             return;
         }
 
+        //raycast로 행성인지 확인
+        
         //Managers.Resource.Instantiate("Camera/ZoomCam");
         //Debug.Log("Enter Array Mode");
     }

@@ -11,8 +11,37 @@ using UnityEngine;
 //유저 저장 상태에 따라
 //로그인, 회원가입, 행성설정, 비밀번호 UI 불러오기(다 Panel UI로 설정)
 
+
 public class LoginScene : BaseScene 
 {
+
+    string email;
+    public string Email
+    {
+        get;
+        set;
+    }
+    string pw;
+    public string Pw
+    {
+        get;
+        set;
+    }
+    string nickname;
+    public string Nickname
+    {
+        get;
+        set;
+    }
+    Define.Planet planet;
+    public Define.Planet Planet
+    {
+        get;
+        set;
+    }
+
+
+
     public override void Clear()
     {
         Debug.Log("Login Clear");
@@ -33,6 +62,7 @@ public class LoginScene : BaseScene
 
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
+
     }
 
     void OnBackTouched(Define.SystemEvent evt)
@@ -45,4 +75,5 @@ public class LoginScene : BaseScene
         Managers.UI.CloseAppOrUI(Define.Scene.Login);
 
     }
+
 }

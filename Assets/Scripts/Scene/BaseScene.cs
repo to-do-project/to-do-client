@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public abstract class BaseScene : MonoBehaviour
 {
+
     //외부 참조 가능, 같은 계열만 set할 수 있음
     public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
 

@@ -29,6 +29,8 @@ public class UI_Email : UI_SignUp
     }
 
     GameObject nextBtn;
+    Text Etxt;
+    InputField Einput;
 
     public override void Init()
     {
@@ -45,7 +47,7 @@ public class UI_Email : UI_SignUp
         BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         nextBtn = GetButton((int)Buttons.next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+        
         nextBtn.GetComponent<Button>().interactable = false;
     }
 
@@ -61,20 +63,22 @@ public class UI_Email : UI_SignUp
     private void CheckBtnClick(PointerEventData data)
     {
         //이메일 입력 확인
-        Text Etxt = GetText((int)Texts.EmailCheck_txt);
-        InputField Einput = GetInputfiled((int)InputFields.Email_inputfield);
+        Etxt = GetText((int)Texts.EmailCheck_txt);
+        Einput = GetInputfiled((int)InputFields.Email_inputfield);
 
         if (IsValidEmail(Einput.text))
         {
             Etxt.text = "사용 가능한 이메일입니다.";
             isCheck = true;
             nextBtn.GetComponent<Button>().interactable = true;
+            BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
         }
         else
         {
             Etxt.text = "유효한 이메일을 입력해주세요.";
             isCheck = false;
             nextBtn.GetComponent<Button>().interactable = false;
+            ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
         }
 
 
@@ -85,7 +89,7 @@ public class UI_Email : UI_SignUp
         //이메일 입력 확인
         if (isCheck)
         {
-            
+            loginScene.Email=Einput.text;
             Managers.UI.ShowPopupUI<UI_Auth>("AuthView", "SignUp");
         }
         
@@ -102,7 +106,7 @@ public class UI_Email : UI_SignUp
         try
         {
             return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+                    RegexOptions.None, TimeSpan.FromMilliseconds(250));
         }
         catch(RegexMatchTimeoutException)
         {

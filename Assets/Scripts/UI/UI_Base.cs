@@ -79,4 +79,18 @@ public abstract class UI_Base : MonoBehaviour
         }
 
     }
+
+    public static void ClearEvent(GameObject go, Action<PointerEventData> action, Define.TouchEvent type = Define.TouchEvent.Touch)
+    {
+        UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
+        switch (type)
+        {
+            case Define.TouchEvent.Touch:
+                evt.OnClickHandler -= action;
+                break;
+            case Define.TouchEvent.Drag:
+                evt.OnDragHandler -= action;
+                break;
+        }
+    }
 }

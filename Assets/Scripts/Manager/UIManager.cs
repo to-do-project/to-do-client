@@ -106,8 +106,8 @@ public class UIManager
         }
     }
 
-    //ÇöÀç UI Á¦¿Ü ¸ðµç ÆË¾÷ ´Ý±â
-    public void CloseExceptThisPopupUI()
+    //Ã¹¹øÂ° UI Á¦¿Ü ¸ðµç ÆË¾÷ ´Ý±â
+    public void CloseExceptFirstPopupUI()
     {
         while (popupStack.Count > 1)
         {

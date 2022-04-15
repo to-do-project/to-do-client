@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UI_UserInfo : UI_Popup
 {
+
+    protected LoginScene loginScene;
     public override void Init()
     {
         Canvas canvas = GetComponent<Canvas>();
@@ -18,5 +20,7 @@ public class UI_UserInfo : UI_Popup
         {
             Debug.Log($"{UIcam.name}");
         }
+
+        loginScene = FindObjectOfType<LoginScene>();
     }
 }

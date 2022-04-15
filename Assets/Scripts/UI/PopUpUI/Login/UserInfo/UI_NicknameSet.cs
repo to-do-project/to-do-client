@@ -44,7 +44,7 @@ public class UI_NicknameSet : UI_UserInfo
     private void NextBtnClick(PointerEventData data)
     {
         //닉네임 유효한 입력 했는지
-        Debug.Log("Next btn click");
+
         //Managers.UI.CloseAllPopupUI();
         Managers.UI.ShowPopupUI<UI_PlanetSet>("PlanetView","UserInfo");
     }

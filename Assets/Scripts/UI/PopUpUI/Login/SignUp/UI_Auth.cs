@@ -39,7 +39,7 @@ public class UI_Auth : UI_SignUp
         BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         nextBtn = GetButton((int)Buttons.next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+        nextBtn.GetComponent<Button>().interactable = false;
 
         authCheckBtn = GetButton((int)Buttons.AuthCheck_btn).gameObject;
         BindEvent(authCheckBtn, AuthCheckBtnClick, Define.TouchEvent.Touch);
@@ -57,7 +57,8 @@ public class UI_Auth : UI_SignUp
     private void AuthCheckBtnClick(PointerEventData data)
     {
         //인증번호 동일 확인
-
+        nextBtn.GetComponent<Button>().interactable = true;
+        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
 
     }
 
