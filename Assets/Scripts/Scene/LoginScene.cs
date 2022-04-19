@@ -58,7 +58,8 @@ public class LoginScene : BaseScene
         base.Init();
         SceneType = Define.Scene.Login;
 
-        Managers.UI.ShowPopupUI<UI_Login>("LoginView");
+        //Managers.UI.ShowPopupUI<UI_Login>("LoginView");
+        Managers.UI.ShowPanelUI<UI_Login>("LoginView");
 
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;

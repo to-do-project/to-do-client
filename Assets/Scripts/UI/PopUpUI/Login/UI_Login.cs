@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Login : UI_Popup
+public class UI_Login : UI_Panel
 {
     protected LoginScene loginScene;
 
@@ -13,7 +13,7 @@ public class UI_Login : UI_Popup
         Login_btn,
         FindPW_btn,
         SignUp_btn,
-        GLogin_btn,
+        //GLogin_btn,
     }
 
     enum InputFields
@@ -25,7 +25,7 @@ public class UI_Login : UI_Popup
     public override void Init()
     {
         base.Init();
-        Managers.UI.CloseExceptFirstPopupUI();
+        Managers.UI.CloseAllPopupUI();
 
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
@@ -52,8 +52,8 @@ public class UI_Login : UI_Popup
         GameObject loginBtn = GetButton((int)Buttons.Login_btn).gameObject;
         BindEvent(loginBtn, LoginBtnClick, Define.TouchEvent.Touch);
         
-        GameObject gloginBtn = GetButton((int)Buttons.GLogin_btn).gameObject;
-        BindEvent(gloginBtn, GoogleLoginBtnClick, Define.TouchEvent.Touch);
+        //GameObject gloginBtn = GetButton((int)Buttons.GLogin_btn).gameObject;
+        //BindEvent(gloginBtn, GoogleLoginBtnClick, Define.TouchEvent.Touch);
 
         loginScene = FindObjectOfType<LoginScene>();
 
@@ -111,8 +111,8 @@ public class UI_Login : UI_Popup
         Managers.UI.ShowPopupUI<UI_PWfind>("FindView", "PWfind");
     }
 
-    public void GoogleLoginBtnClick(PointerEventData data)
+    /*public void GoogleLoginBtnClick(PointerEventData data)
     {
         //구글 로그인 API ghcnf
-    }
+    }*/
 }

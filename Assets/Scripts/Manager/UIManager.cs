@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //UI의 sort order 관리하며 popup 관리
-public class UIManager 
+public class UIManager
 {
 
     //현재 ui order 저장
@@ -14,7 +14,7 @@ public class UIManager
     //stack으로 popup UI 들고있는다
     Stack<UI_Popup> popupStack = new Stack<UI_Popup>();
     UI_Panel panelUI = null;
-
+    UI_Popup tmpPopup = null;
 
     //UI 부모 오브젝트
     public GameObject Root
@@ -33,7 +33,7 @@ public class UIManager
     //name : prefab 이름
     //T : script와 연관(UI의 스크립트
     //gameobject 만들 때 name이랑 T 맞춰서 만들거임 -> name이 없으면 T 이름으로
-    public T ShowPopupUI<T>(string name = null,string folder = null) where T : UI_Popup
+    public T ShowPopupUI<T>(string name = null, string folder = null) where T : UI_Popup
     {
         string path;
 
@@ -63,6 +63,7 @@ public class UIManager
 
 
     }
+
 
     //UI 닫기
     //삭제까지 해줌
@@ -96,7 +97,7 @@ public class UIManager
 
         ClosePopupUI();
     }
-
+    
     //모든 팝업 닫기
     public void CloseAllPopupUI()
     {
@@ -113,6 +114,14 @@ public class UIManager
         {
             ClosePopupUI();
         }
+    }
+
+    public void CLoseExceptLastPopupUI()
+    {
+        tmpPopup = popupStack.Pop();
+        CloseAllPopupUI();
+        popupStack.Push(tmpPopup);
+        tmpPopup.gameObject.transform.SetParent(Root.transform);
     }
 
 
@@ -179,7 +188,6 @@ public class UIManager
 
 
     //Main 씬에서 호출 시 stack count가 0이면 앱종료
-    
     public void CloseAppOrUI(Define.Scene scene)
     {
         if (scene==Define.Scene.Main)
@@ -188,7 +196,7 @@ public class UIManager
         }
         else if(scene==Define.Scene.Login)
         {
-            if (popupStack.Count ==1)
+            if (popupStack.Count ==0)
             {
                 //Debug.Log("Quit");
                 Application.Quit();

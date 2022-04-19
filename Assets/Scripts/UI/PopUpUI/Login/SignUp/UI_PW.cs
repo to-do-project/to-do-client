@@ -32,6 +32,7 @@ public class UI_PW : UI_SignUp
     InputField PWfield, PWCheckfield;
     Text PWtxt, PWChecktxt;
     bool isCheck = false;
+    bool isValid = false;
     string password;
 
     public override void Init()
@@ -76,16 +77,19 @@ public class UI_PW : UI_SignUp
             if (Regex.IsMatch(pw, @"^(?=.*[a-z])(?=.*[0-9]).{6,15}$", RegexOptions.None, TimeSpan.FromMilliseconds(250)))
             {
                 PWtxt.text = " 사용가능한 비밀번호입니다.";
+                isValid = true;
             }
             else
             {
                 PWtxt.text = " 유효하지 않은 비밀번호 입니다. (영문 + 숫자 조합 6~15글자)";
+                isValid = false;
             }
 
         }
         catch (RegexMatchTimeoutException)
         {
             PWtxt.text = " 유효하지 않은 비밀번호 입니다. (영문 + 숫자 조합 6~15글자)";
+            isValid = false;
         }
     }
 
@@ -95,19 +99,27 @@ public class UI_PW : UI_SignUp
         string pw = PWfield.text;
         string check = PWCheckfield.text;
 
-        if (pw.Equals(check))
+        if (isValid)
         {
-            PWChecktxt.text = " 비밀번호와 일치합니다.";
-            isCheck = true;
-            password = pw;
-            nextBtn.GetComponent<Button>().interactable = true;
-            BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            if (pw.Equals(check))
+            {
+                PWChecktxt.text = " 비밀번호와 일치합니다.";
+                isCheck = true;
+                password = pw;
+                nextBtn.GetComponent<Button>().interactable = true;
+                BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
+            else
+            {
+                password = "";
+                PWChecktxt.text = " 비밀번호와 일치하지 않습니다.";
+                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
         }
+
         else
         {
-            password = "";
-            PWChecktxt.text = " 비밀번호와 일치하지 않습니다.";
-            ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            PWChecktxt.text = "유효한 비밀번호를 입력해주세요.";
         }
     }
     
@@ -117,12 +129,16 @@ public class UI_PW : UI_SignUp
         //비밀번호 유효한 입력 했는지 
         //회원가입 API 날리고
         //유저 설정 화면으로 넘어가기
-        if (isCheck)
+        if (isCheck&&isValid)
         {
             if (!string.IsNullOrWhiteSpace(password))
             {
                 loginScene.Pw = password;
+                
+                //회원가입 API 날리기
+
                 Managers.UI.ShowPopupUI<UI_NicknameSet>("NicknameView", "UserInfo");
+                Managers.UI.CLoseExceptLastPopupUI();
 
             }
         }

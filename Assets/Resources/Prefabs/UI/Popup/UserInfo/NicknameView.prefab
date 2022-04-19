@@ -1046,6 +1046,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NicknameView
       objectReference: {fileID: 0}
+    - target: {fileID: 3431015095622237655, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}
+      propertyPath: m_SortingOrder
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79dde15c13711bc4e9896f1f8341b733, type: 3}
 --- !u!1 &219122241512572921 stripped

@@ -32,7 +32,7 @@ public class UI_PWAuth : UI_PWfind
 
     private void loginBtnClick(PointerEventData data)
     {
-        Managers.UI.ShowPopupUI<UI_Login>("LoginView");
+        Managers.UI.ShowPanelUI<UI_Login>("LoginView");
     }
 
 
