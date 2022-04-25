@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - UICamera
+  - Item
+  - Ground
+  - PlanetCamera
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - Water
   - UI
   - Planet
-  - 
+  - Item
   - 
   - 
   - 
@@ -41,4 +44,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 2051481707
+    locked: 0
+  - name: Item
+    uniqueID: 4102479131
     locked: 0

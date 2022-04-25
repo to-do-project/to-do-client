@@ -37,7 +37,7 @@ public class CameraZoom : MonoBehaviour
         float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
         cam.fieldOfView += deltaMagnitudeDiff * perspectiveZoomSpeed;
-        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 0.1f, 179);
+        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 80f, 128f);
 
     }
 }

@@ -11,7 +11,7 @@ public class InputManager
     public Action<Define.TouchEvent> TouchAction = null;
 
     bool pressed = false;
-    float minPressTime = 0.5f;
+    float minPressTime = 0.25f;
     float PressTimer = 0;
 
     public void OnUpdate()

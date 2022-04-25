@@ -10,6 +10,7 @@ public class Define
         Unknown,
         Login,
         Main,
+        Edit,
         Menu,
     }
 
@@ -35,9 +36,10 @@ public class Define
 
     public enum Planet
     {
-        Red,
-        Green,
-        Blue,
+        EMPTY,
+        RED,
+        GREEN,
+        BLUE,
     }
 
     public enum SystemEvent 

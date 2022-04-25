@@ -32,6 +32,8 @@ public class UI_Email : UI_SignUp
     Text Etxt;
     InputField Einput;
 
+    bool isCheck;
+
     public override void Init()
     {
         base.Init();
@@ -49,6 +51,10 @@ public class UI_Email : UI_SignUp
         nextBtn = GetButton((int)Buttons.next_btn).gameObject;
         
         nextBtn.GetComponent<Button>().interactable = false;
+
+        Etxt = GetText((int)Texts.EmailCheck_txt);
+        Einput = GetInputfiled((int)InputFields.Email_inputfield);
+
     }
 
     void Start()
@@ -58,13 +64,11 @@ public class UI_Email : UI_SignUp
         
     }
 
-    bool isCheck;
+
 
     private void CheckBtnClick(PointerEventData data)
     {
         //이메일 입력 확인
-        Etxt = GetText((int)Texts.EmailCheck_txt);
-        Einput = GetInputfiled((int)InputFields.Email_inputfield);
 
         if (IsValidEmail(Einput.text))
         {
