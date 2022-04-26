@@ -48,4 +48,8 @@ public class Define
         Home,
     }
 
+    public enum EditorEvent
+    {
+        Wheel,
+    }
 }

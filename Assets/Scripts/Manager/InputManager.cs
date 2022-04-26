@@ -10,8 +10,11 @@ public class InputManager
     //일반 터치
     public Action<Define.TouchEvent> TouchAction = null;
 
+    //unity editor test용
+    public Action<Define.EditorEvent> WheelAction = null;
+
     bool pressed = false;
-    float minPressTime = 0.25f;
+    float minPressTime = 0.2f;
     float PressTimer = 0;
 
     public void OnUpdate()
@@ -38,6 +41,12 @@ public class InputManager
         }
 
 #if UNITY_EDITOR
+
+        if (Input.GetAxis("Mouse ScrollWheel") !=0)
+        {
+            WheelAction.Invoke(Define.EditorEvent.Wheel);
+        }
+
         if (TouchAction != null)
         {
             if (Input.GetMouseButtonDown(0))

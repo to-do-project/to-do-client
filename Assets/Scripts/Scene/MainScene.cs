@@ -20,7 +20,7 @@ public class MainScene : BaseScene
         Managers.Input.TouchAction += EnterArrayMode;
 
         //青己 积己
-        planet = Managers.Resource.Instantiate("Planet");
+        planet = Managers.Resource.Instantiate("Planet/BluePlanet");
         planet.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
     }
