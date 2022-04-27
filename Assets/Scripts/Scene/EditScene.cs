@@ -18,7 +18,6 @@ public class EditScene : BaseScene
         Planet = GameObject.Find("BluePlanet");
         GameObject go = Managers.Resource.Instantiate("Items/Square", Planet.transform.GetChild(1).transform);
 
-
     }
 
     private void Awake()

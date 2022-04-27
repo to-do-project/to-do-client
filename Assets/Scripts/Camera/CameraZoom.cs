@@ -67,7 +67,7 @@ public class CameraZoom : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Wheel");
+        //Debug.Log("Wheel");
 
         float distance = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
         if(distance != 0)

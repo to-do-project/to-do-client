@@ -41,10 +41,13 @@ public class InputManager
         }
 
 #if UNITY_EDITOR
-
+        //유니티 에디터에서 확대 체크 용
         if (Input.GetAxis("Mouse ScrollWheel") !=0)
         {
-            WheelAction.Invoke(Define.EditorEvent.Wheel);
+            if (WheelAction != null)
+            {
+                WheelAction.Invoke(Define.EditorEvent.Wheel);
+            }
         }
 
         if (TouchAction != null)

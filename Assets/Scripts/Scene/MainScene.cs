@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainScene : BaseScene
 {
     GameObject planet;
+    Camera PlanetCamera;
 
     public override void Clear()
     {
@@ -21,7 +22,8 @@ public class MainScene : BaseScene
 
         //青己 积己
         planet = Managers.Resource.Instantiate("Planet/BluePlanet");
-        planet.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+        PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
 
     }
 
@@ -46,12 +48,12 @@ public class MainScene : BaseScene
         mousePosition = Input.GetTouch(0).position;
 #endif
 
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        mousePosition = PlanetCamera.ScreenToWorldPoint(mousePosition);
         int layerMask = 1 << LayerMask.NameToLayer("Planet");
 
         Debug.Log(mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, transform.forward , 100f, layerMask);
-        Debug.DrawRay(mousePosition, Camera.main.transform.forward * 100, Color.red, 10f);
+        Debug.DrawRay(mousePosition, PlanetCamera.transform.forward * 100, Color.red, 10f);
         if (hit)
         {
             Debug.Log(hit.collider.gameObject.name);
