@@ -8,25 +8,38 @@ public class ItemController : MonoBehaviour
 {
     private Vector3 initMousePos;
 
-    GameObject FalseBtn, CheckBtn;
+    GameObject FalseBtn, CheckBtn, DisableImg;
+    GameObject Height;
+
+    //아이템 프리팹 최상위 오브젝트
+    GameObject root;
+
+    //이벤트핸들러 구독용
+    ItemCollision Colevt;
+    FalseBtn_EventHandler Falseevt;
+    FixBtn_EventHandler Fixevt;
+    Item item;
 
     private bool isFixed;
 
+    private float timer = 0f;
+    private float MaxDragTime = 0.3f;
 
-    private void Start()
+    private bool canFixed;
+
+    private void Awake()
     {
         Init();
     }
 
     void Init()
     {
-        isFixed = true;
-        BindBtn();
-        ChangeEditMode(false);
+        BindChildren();
+        ChangeFixState(false);
     }
-    void OnMouseDown()
+    //단일 터치
+    void OnMouseDownEvt()
     {
-        Debug.Log("mousedown "+isFixed);
         //편집 상태
         if (!isFixed)
         {
@@ -35,75 +48,180 @@ public class ItemController : MonoBehaviour
             initMousePos = Camera.main.ScreenToWorldPoint(initMousePos);
         }
     }
-
-    void OnMouseDrag()
+    //드래그
+    void OnMouseDragEvt()
     {
-        Debug.Log("drag "+isFixed);
+        Debug.Log("isFixed : " + isFixed);
         //이동 상태
         if (!isFixed)
         {
+            Debug.Log(root.name);
+            //Height.SetActive(true);
+            timer = 0f;
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, root.transform.position.z);
+            root.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(mousePosition).x, Camera.main.ScreenToWorldPoint(mousePosition).y, root.transform.position.z);
 
-            /*        Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-                    transform.position = new Vector3(Camera.main.ScreenToWorldPoint(mousePosition).x, Camera.main.ScreenToWorldPoint(mousePosition).y, 0f);
-            */
             Vector3 worldPoint = Input.mousePosition;
             worldPoint.z = 0f;
             worldPoint = Camera.main.ScreenToWorldPoint(worldPoint);
 
             Vector3 diffPos = worldPoint - initMousePos;
-            diffPos.z = 0;
+            diffPos.z = 0f;
 
             initMousePos = Input.mousePosition;
             initMousePos.z = 0f;
             initMousePos = Camera.main.ScreenToWorldPoint(initMousePos);
 
-            transform.position = new Vector3(transform.position.x + diffPos.x, transform.position.y + diffPos.y, transform.position.z);
+            root.transform.position = new Vector3(root.transform.position.x + diffPos.x, root.transform.position.y + diffPos.y, root.transform.position.z);
+            CheckOnGround();
 
         }
 
         else
         {
-            //isFixed = false;
-            ChangeEditMode(true);
-            FromInven();
+            if (timer >= MaxDragTime)
+            {
+                timer = 0f;
+                ChangeFixState(true);
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
         }
 
+
     }
 
-
-    public void FromInven()
+    //행성 위에 있는 지 확인
+    private void CheckOnGround()
     {
-        isFixed = false;
-        //Debug.Log("make false");
+        int layerMask = 1 << LayerMask.NameToLayer("Planet");
+
+        Vector3 pos = Height.transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(pos, transform.forward, 100f, layerMask);
+        if (hit)
+        {
+            DisableImg.SetActive(false);
+            canFixed = true;
+        }
+        else
+        {
+            DisableImg.SetActive(true);
+            canFixed = false;
+        }
     }
 
-    public void FromPlanet()
+    //아이템 편집 모드로 전환
+    private void ChangeFixState(bool change)
     {
-        isFixed = true;
-    }
-
-    public void ChangeEditMode(bool change)
-    {
+        isFixed = !change;
         FalseBtn.SetActive(change);
         CheckBtn.SetActive(change);
+        //Height.SetActive(!change);
+        DisableImg.SetActive(change);
+        if (change)
+        {
+            Colevt.OnCollisionEvent -= CollisionCheck;
+            Colevt.OnCollisionEvent += CollisionCheck;
+        }
+        else
+        {
+            Colevt.OnCollisionEvent -= CollisionCheck;
+        }
     }
 
-    private void BindBtn()
+    private void BindChildren()
     {
-        FalseBtn = Util.FindChild(gameObject, "False_btn", true);
-        CheckBtn = Util.FindChild(gameObject, "Check_btn", true);
+        root = transform.parent.parent.gameObject;
 
-        Util.GetOrAddComponent<Item_EventHandler>(CheckBtn);
+        CheckBtn = Util.FindChild(root, "Check_btn", true);
+        FalseBtn = Util.FindChild(root, "False_btn", true);
+        DisableImg = Util.FindChild(gameObject, "disable_img", true);
+        Height = Util.FindChild(gameObject, "height", true);
+
+        Fixevt = Util.GetOrAddComponent<FixBtn_EventHandler>(CheckBtn);
+        Falseevt = Util.GetOrAddComponent<FalseBtn_EventHandler>(FalseBtn);
+        Colevt = Util.GetOrAddComponent<ItemCollision>(Height);
+        item = Util.GetOrAddComponent<Item>(transform.parent.gameObject);
+
     }
- 
 
-    private void OnCheckBtnClick(PointerEventData data)
+    //메인씬-편집씬 전환 시
+    public void ChangeMode(Define.Scene type)
     {
-        Debug.Log("Check btn click");
+        if (type==Define.Scene.Edit)
+        {
+            Colevt.OnCollisionEvent -= CollisionCheck;
+            Colevt.OnCollisionEvent += CollisionCheck;
+
+            Fixevt.OnClickHandler -= FixItem;
+            Fixevt.OnClickHandler += FixItem;
+
+            Falseevt.OnClickHandler -= CancleItem;
+            Falseevt.OnClickHandler += CancleItem;
+
+            item.OnItemClickAction -= OnMouseDownEvt;
+            item.OnItemClickAction += OnMouseDownEvt;
+
+            item.OnItemDragAction -= OnMouseDragEvt;
+            item.OnItemDragAction += OnMouseDragEvt;
+        }
+
+        else
+        {
+            ChangeFixState(false);
+            Colevt.OnCollisionEvent -= CollisionCheck;
+            Fixevt.OnClickHandler -= FixItem;
+            Falseevt.OnClickHandler -= CancleItem;
+            item.OnItemClickAction -= OnMouseDownEvt;
+            item.OnItemDragAction -= OnMouseDragEvt;
+        }
     }
 
-    private void OnFalseBtnClick(PointerEventData data)
+    //아이템 확인 버튼 클릭 시
+    private void FixItem()
     {
-        Debug.Log("False btn click");
+
+        if (canFixed)
+        {
+            ChangeFixState(false);
+        }
+        else
+        {
+            Debug.Log("Cant Fix Item");
+        }
+
+
     }
+
+    //아이템 취소 버튼 클릭 시
+    private void CancleItem()
+    {
+        Debug.Log("Cancle Item");
+        Managers.Resource.Destroy(gameObject);
+    }
+
+    //아이템 충돌 체크
+    void CollisionCheck(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Item"))
+        {
+            if (collision.transform.parent.parent.parent.name.Equals(root.name))
+            {
+                return;
+            }
+
+            DisableImg.SetActive(true);
+            canFixed = false;
+        }
+
+        else
+        {
+            DisableImg.SetActive(false);
+            canFixed = true;
+        }
+    }
+
+
 }

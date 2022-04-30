@@ -76,7 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 435578345051686794}
   m_Layer: 7
-  m_Name: Square
+  m_Name: Square1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -373,7 +373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7399782865687789421}
   - component: {fileID: 1714625270037981732}
-  - component: {fileID: 1912017131830211517}
+  - component: {fileID: 3255304022024979673}
   m_Layer: 7
   m_Name: collider
   m_TagString: Untagged
@@ -421,7 +421,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9181682, y: 1.1693864}
   m_EdgeRadius: 0
---- !u!114 &1912017131830211517
+--- !u!114 &3255304022024979673
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -50,6 +50,7 @@ public class InputManager
             }
         }
 
+        //²Ú ´©¸£´Â°Å
         if (TouchAction != null)
         {
             if (Input.GetMouseButtonDown(0))

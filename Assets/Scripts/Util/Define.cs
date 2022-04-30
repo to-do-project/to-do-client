@@ -29,11 +29,6 @@ public class Define
         TwoTouch,
     }
 
-    public enum CameraMode
-    {
-        QuaterView,
-    }
-
     public enum Planet
     {
         EMPTY,
@@ -52,4 +47,5 @@ public class Define
     {
         Wheel,
     }
+
 }

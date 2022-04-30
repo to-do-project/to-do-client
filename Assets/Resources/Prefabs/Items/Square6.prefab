@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6611616650123243126}
   m_Layer: 7
   m_Name: Item
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 435578345051686794}
   m_Layer: 7
-  m_Name: Square
+  m_Name: Square6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,9 +316,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3894320187584967630}
   - component: {fileID: 4360657659455821431}
+  - component: {fileID: 6976112202867224958}
   m_Layer: 7
   m_Name: height
-  m_TagString: Item
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -363,6 +364,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1504041, y: 1.0654786}
   m_EdgeRadius: 0
+--- !u!114 &6976112202867224958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5993157894529940651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5321df13c4b81e841ba4d04d666c5e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7150016414118958620
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,10 +386,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7399782865687789421}
   - component: {fileID: 1714625270037981732}
-  - component: {fileID: 1912017131830211517}
   m_Layer: 7
   m_Name: collider
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -421,18 +433,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9181682, y: 1.1693864}
   m_EdgeRadius: 0
---- !u!114 &1912017131830211517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7150016414118958620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5321df13c4b81e841ba4d04d666c5e8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7338928885390107302
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +612,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -192488165
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -4597330995372864705, guid: eb0f5c202bdcd7446b4e419c591bcdeb, type: 3}
   m_Color: {r: 0.8018868, g: 0.49550554, b: 0.49550554, a: 1}
   m_FlipX: 0
