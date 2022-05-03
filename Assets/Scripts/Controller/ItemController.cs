@@ -128,6 +128,7 @@ public class ItemController : MonoBehaviour
         else
         {
             Colevt.OnCollisionEvent -= CollisionCheck;
+
         }
     }
 
@@ -166,6 +167,7 @@ public class ItemController : MonoBehaviour
 
             item.OnItemDragAction -= OnMouseDragEvt;
             item.OnItemDragAction += OnMouseDragEvt;
+
         }
 
         else
@@ -176,6 +178,7 @@ public class ItemController : MonoBehaviour
             Falseevt.OnClickHandler -= CancleItem;
             item.OnItemClickAction -= OnMouseDownEvt;
             item.OnItemDragAction -= OnMouseDragEvt;
+
         }
     }
 
@@ -214,14 +217,40 @@ public class ItemController : MonoBehaviour
 
             DisableImg.SetActive(true);
             canFixed = false;
+            //collision.transform.parent.GetComponent<ItemController>().ChangeColor(true);
         }
 
         else
         {
             DisableImg.SetActive(false);
             canFixed = true;
+            //collision.transform.parent.GetComponent<ItemController>().ChangeColor(false);
         }
     }
 
+/*    void CollisionExitCheck(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Item"))
+        {
+            if (collision.transform.parent.parent.parent.name.Equals(root.name))
+            {
+                return;
+            }
+            else
+            {
+                collision.transform.parent.GetComponent<ItemController>().ChangeColor(false);
+            }
+        }
+    }*/
+
+/*    public void ChangeColor(bool change)
+    {
+        DisableImg.SetActive(change);
+        canFixed = !change;
+    }*//*    public void ChangeColor(bool change)
+    {
+        DisableImg.SetActive(change);
+        canFixed = !change;
+    }*/
 
 }

@@ -10,6 +10,11 @@ public class CameraZoom : MonoBehaviour
 
     float zoomSpeed = 10f;
 
+
+    Vector2 nowPos, prePos;
+    Vector3 movePos;
+    float Speed = 0.25f;
+
     void Start()
     {
         Init();
@@ -27,38 +32,40 @@ public class CameraZoom : MonoBehaviour
         {
             cam.fieldOfView = 23;
         }
+        
 
     }
 
+
     void Zoom(Define.TouchEvent evt)
     {
-        if(evt != Define.TouchEvent.TwoTouch)
+        if(evt == Define.TouchEvent.TwoTouch)
         {
-            return;
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            //처음 터치한 위치(touchzero.position)에서 이전 프레임에서의 터치 위치와 이번 프레임에서 터치 위치의 차이를 뺌
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+            if (cam.orthographic)
+            {
+                cam.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+                //cam.orthographicSize = Mathf.Max(cam.orthographicSize, 0.1f);
+                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 7f, 16f);
+            }
+            else
+            {
+                cam.fieldOfView += deltaMagnitudeDiff * perspectiveZoomSpeed;
+                cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 8f, 16f);
+            }
+
         }
-
-        Touch touchZero = Input.GetTouch(0);
-        Touch touchOne = Input.GetTouch(1);
-
-        Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-        Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
-
-        float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-        float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
-
-        float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
-
-        if (cam.orthographic)
-        {
-            cam.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
-            cam.orthographicSize = Mathf.Max(cam.orthographicSize, 0.1f);
-        }
-        else
-        {
-            cam.fieldOfView += deltaMagnitudeDiff * perspectiveZoomSpeed;
-            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 8f, 23f);
-        }
-
     }
 
     void ZoomWheel(Define.EditorEvent evt)
@@ -75,14 +82,15 @@ public class CameraZoom : MonoBehaviour
             if (cam.orthographic)
             {
                 cam.orthographicSize += distance;
-                if (cam.orthographicSize < 1)
-                {
-                    cam.orthographicSize = 1f;
-                }
-                else if(cam.orthographicSize > 10)
-                {
-                    cam.orthographicSize = 10f;
-                }
+                /*                if (cam.orthographicSize < 1)
+                                {
+                                    cam.orthographicSize = 1f;
+                                }
+                                else if(cam.orthographicSize > 10)
+                                {
+                                    cam.orthographicSize = 10f;
+                                }*/
+                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 7f, 16f);
             }
             else
             {

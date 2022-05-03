@@ -14,6 +14,7 @@ public class Item : MonoBehaviour
         {
             OnItemClickAction.Invoke();
         }
+
     }
     void OnMouseDrag()
     {
