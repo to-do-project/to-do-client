@@ -1,43 +1,34 @@
 fileFormatVersion: 2
-guid: 1a47c3c57c8d00e4aac0be03871393cd
+guid: 94c8c573bfa233a43ac74ccdab23748e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4602159106218591687
-    second: Asset 8@2x_0
+      213: -2757128001550900393
+    second: "\uC544\uC774\uD15C_0"
   - first:
-      213: -6737109620932134901
-    second: Asset 8@2x_1
+      213: -2105475514727776350
+    second: "\uC544\uC774\uD15C_3"
   - first:
-      213: 2414085605270495568
-    second: Asset 8@2x_2
+      213: 7386897897365675869
+    second: "\uC544\uC774\uD15C_4"
   - first:
-      213: -1800035138781858935
-    second: Asset 8@2x_3
+      213: 7120704655645871205
+    second: "\uC544\uC774\uD15C_5"
   - first:
-      213: 4101341476701329933
-    second: Asset 8@2x_4
+      213: -6000308791060563383
+    second: "\uC544\uC774\uD15C_6"
   - first:
-      213: -8384207774476851643
-    second: Asset 8@2x_5
+      213: 8730148263268041951
+    second: "\uC544\uC774\uD15C_7"
   - first:
-      213: 8770065940462794758
-    second: Asset 8@2x_6
+      213: -6395060102564672799
+    second: "\uC544\uC774\uD15C_9"
   - first:
-      213: -7489481290935258158
-    second: Asset 8@2x_7
+      213: 7731181606129920517
+    second: "\uC544\uC774\uD15C_10"
   - first:
-      213: -626681149821414813
-    second: Asset 8@2x_8
-  - first:
-      213: 5675964594927257832
-    second: Asset 8@2x_9
-  - first:
-      213: -2135289501048295952
-    second: Asset 8@2x_10
-  - first:
-      213: -2164964782462461876
-    second: Asset 8@2x_11
+      213: 6998034830346661274
+    second: "\uC544\uC774\uD15C_11"
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -82,7 +73,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 175
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -151,12 +142,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Asset 8@2x_0
+      name: "\uC544\uC774\uD15C_0"
       rect:
         serializedVersion: 2
         x: 46
         y: 895
-        width: 60
+        width: 122
         height: 71
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -165,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7c50df5e2572edf30800000000000000
-      internalID: 4602159106218591687
+      spriteID: 753a643c0b6bcb9d0800000000000000
+      internalID: -2757128001550900393
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_1
+      name: "\uC544\uC774\uD15C_3"
       rect:
         serializedVersion: 2
-        x: 108
-        y: 907
-        width: 59
-        height: 48
+        x: 273
+        y: 887
+        width: 80
+        height: 56
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -186,56 +177,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b0839779e7af082a0800000000000000
-      internalID: -6737109620932134901
+      spriteID: 2af3e55bc29d7c2e0800000000000000
+      internalID: -2105475514727776350
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_2
-      rect:
-        serializedVersion: 2
-        x: 272
-        y: 886
-        width: 34
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 051288f411e808120800000000000000
-      internalID: 2414085605270495568
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Asset 8@2x_3
-      rect:
-        serializedVersion: 2
-        x: 308
-        y: 906
-        width: 45
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 983bfa9049df407e0800000000000000
-      internalID: -1800035138781858935
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Asset 8@2x_4
+      name: "\uC544\uC774\uD15C_4"
       rect:
         serializedVersion: 2
         x: 491
@@ -249,14 +198,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0adb5dd754eae830800000000000000
-      internalID: 4101341476701329933
+      spriteID: d5f9f8c0088838660800000000000000
+      internalID: 7386897897365675869
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_5
+      name: "\uC544\uC774\uD15C_5"
       rect:
         serializedVersion: 2
         x: 769
@@ -270,14 +219,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5462d37537f45ab80800000000000000
-      internalID: -8384207774476851643
+      spriteID: 56c0e3e3823d1d260800000000000000
+      internalID: 7120704655645871205
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_6
+      name: "\uC544\uC774\uD15C_6"
       rect:
         serializedVersion: 2
         x: 53
@@ -291,41 +240,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 608790ec18885b970800000000000000
-      internalID: 8770065940462794758
+      spriteID: 94a7e2e02fe9abca0800000000000000
+      internalID: -6000308791060563383
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_7
+      name: "\uC544\uC774\uD15C_7"
       rect:
         serializedVersion: 2
         x: 279
-        y: 677
-        width: 45
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2d3bed56274001890800000000000000
-      internalID: -7489481290935258158
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Asset 8@2x_8
-      rect:
-        serializedVersion: 2
-        x: 325
         y: 668
-        width: 35
-        height: 35
+        width: 81
+        height: 51
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -333,14 +261,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 362167580d49d47f0800000000000000
-      internalID: -626681149821414813
+      spriteID: fd4c5945797b72970800000000000000
+      internalID: 8730148263268041951
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_9
+      name: "\uC544\uC774\uD15C_9"
       rect:
         serializedVersion: 2
         x: 482
@@ -354,14 +282,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e8455ef9b315ce40800000000000000
-      internalID: 5675964594927257832
+      spriteID: 1ea0c5d18be2047a0800000000000000
+      internalID: -6395060102564672799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_10
+      name: "\uC544\uC774\uD15C_10"
       rect:
         serializedVersion: 2
         x: 785
@@ -375,14 +303,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0fd2565138ded52e0800000000000000
-      internalID: -2135289501048295952
+      spriteID: 50a686f85bcaa4b60800000000000000
+      internalID: 7731181606129920517
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Asset 8@2x_11
+      name: "\uC544\uC774\uD15C_11"
       rect:
         serializedVersion: 2
         x: 73
@@ -396,8 +324,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c481816300084f1e0800000000000000
-      internalID: -2164964782462461876
+      spriteID: a9daf9cd9930e1160800000000000000
+      internalID: 6998034830346661274
       vertices: []
       indices: 
       edges: []

@@ -1,0 +1,684 @@
+fileFormatVersion: 2
+guid: b170d1b1fca67cf42b061b387f31c845
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8774285497990425543
+    second: Button(Shadow)_Line_toggle_Like_2x_0
+  - first:
+      213: 5339093375472195577
+    second: Button(Shadow)_Line_toggle_Like_2x_1
+  - first:
+      213: -355915534817793096
+    second: Button(Shadow)_Line_toggle_Like_2x_2
+  - first:
+      213: -7090272370036097610
+    second: Button(Shadow)_Line_toggle_Like_2x_3
+  - first:
+      213: -7223076038962021541
+    second: Button(Shadow)_Line_toggle_Like_2x_4
+  - first:
+      213: -734147151161816410
+    second: Button(Shadow)_Line_toggle_Like_2x_5
+  - first:
+      213: -2260792066588205514
+    second: Button(Shadow)_Line_toggle_Like_2x_6
+  - first:
+      213: -8770173870525782399
+    second: Button(Shadow)_Line_toggle_Like_2x_7
+  - first:
+      213: 7329475502396589395
+    second: Button(Shadow)_Line_toggle_Like_2x_8
+  - first:
+      213: 3945057335509818049
+    second: Button(Shadow)_Line_toggle_Like_2x_9
+  - first:
+      213: 3410666776200153360
+    second: Button(Shadow)_Line_toggle_Like_2x_10
+  - first:
+      213: 9028514635735762595
+    second: Button(Shadow)_Line_toggle_Like_2x_11
+  - first:
+      213: -8296216005764486941
+    second: Button(Shadow)_Line_toggle_Like_2x_12
+  - first:
+      213: 7795864400847512190
+    second: Button(Shadow)_Line_toggle_Like_2x_13
+  - first:
+      213: -4770311381985208261
+    second: Button(Shadow)_Line_toggle_Like_2x_14
+  - first:
+      213: 412618633884905154
+    second: Button(Shadow)_Line_toggle_Like_2x_15
+  - first:
+      213: -3082492021831017209
+    second: Button(Shadow)_Line_toggle_Like_2x_16
+  - first:
+      213: -915061529831738358
+    second: Button(Shadow)_Line_toggle_Like_2x_17
+  - first:
+      213: 7153311562765285440
+    second: Button(Shadow)_Line_toggle_Like_2x_18
+  - first:
+      213: -4548119335840438573
+    second: Button(Shadow)_Line_toggle_Like_2x_19
+  - first:
+      213: 8437999873390297152
+    second: Button(Shadow)_Line_toggle_Like_2x_20
+  - first:
+      213: 6153808024080133266
+    second: Button(Shadow)_Line_toggle_Like_2x_21
+  - first:
+      213: 308516343526832408
+    second: Button(Shadow)_Line_toggle_Like_2x_22
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_0
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 1904
+        width: 729
+        height: 707
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cba4991c2684c970800000000000000
+      internalID: 8774285497990425543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_1
+      rect:
+        serializedVersion: 2
+        x: 1134
+        y: 1904
+        width: 708
+        height: 707
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f759a32325481a40800000000000000
+      internalID: 5339093375472195577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_2
+      rect:
+        serializedVersion: 2
+        x: 2185
+        y: 2096
+        width: 325
+        height: 325
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bb6421f4b88f0bf0800000000000000
+      internalID: -355915534817793096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_3
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 890
+        width: 845
+        height: 842
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bd3b3768da4a9d90800000000000000
+      internalID: -7090272370036097610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_4
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 890
+        width: 845
+        height: 842
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5b7800bc9a72cb90800000000000000
+      internalID: -7223076038962021541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_5
+      rect:
+        serializedVersion: 2
+        x: 2118
+        y: 1086
+        width: 455
+        height: 449
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6aa82224e09cfc5f0800000000000000
+      internalID: -734147151161816410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_6
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 450
+        width: 148
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63e1df7f79d00a0e0800000000000000
+      internalID: -2260792066588205514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_7
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 450
+        width: 149
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 186e5e4c4551a4680800000000000000
+      internalID: -8770173870525782399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_8
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 518
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 355c64ed22787b560800000000000000
+      internalID: 7329475502396589395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_9
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 506
+        width: 37
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ca9c9daeb8afb630800000000000000
+      internalID: 3945057335509818049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_10
+      rect:
+        serializedVersion: 2
+        x: 752
+        y: 499
+        width: 53
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01903aacc5f155f20800000000000000
+      internalID: 3410666776200153360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_11
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 499
+        width: 53
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a60270e93abb4d70800000000000000
+      internalID: 9028514635735762595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_12
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 467
+        width: 117
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e86f7c7f7beddc80800000000000000
+      internalID: -8296216005764486941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_13
+      rect:
+        serializedVersion: 2
+        x: 1346
+        y: 467
+        width: 117
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7221a94e59703c60800000000000000
+      internalID: 7795864400847512190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_14
+      rect:
+        serializedVersion: 2
+        x: 1704
+        y: 442
+        width: 325
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b38d4c082137ccdb0800000000000000
+      internalID: -4770311381985208261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_15
+      rect:
+        serializedVersion: 2
+        x: 2157
+        y: 442
+        width: 323
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ceaa6c167ae9b500800000000000000
+      internalID: 412618633884905154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_16
+      rect:
+        serializedVersion: 2
+        x: 2692
+        y: 474
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70d59cf76d9c835d0800000000000000
+      internalID: -3082492021831017209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_17
+      rect:
+        serializedVersion: 2
+        x: 2909
+        y: 474
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a04f0c6036c0d43f0800000000000000
+      internalID: -915061529831738358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 258
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 048b15a67faa54360800000000000000
+      internalID: 7153311562765285440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_19
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 2
+        width: 149
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d6252f9f85d1e0c0800000000000000
+      internalID: -4548119335840438573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_20
+      rect:
+        serializedVersion: 2
+        x: 1025
+        y: 3
+        width: 149
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 040483cad2cc91570800000000000000
+      internalID: 8437999873390297152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_21
+      rect:
+        serializedVersion: 2
+        x: 1305
+        y: 2
+        width: 149
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29cae3b2bc7b66550800000000000000
+      internalID: 6153808024080133266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button(Shadow)_Line_toggle_Like_2x_22
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 0
+        width: 258
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 819b157daf1184400800000000000000
+      internalID: 308516343526832408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
