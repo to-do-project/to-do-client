@@ -22,6 +22,14 @@ public class UI_Profile : UI_Popup
     {
         base.Init();
 
+        CameraSet();
+
+        SetBtns();
+
+    }
+
+    private void CameraSet()
+    {
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Camera UIcam = canvas.worldCamera;
@@ -34,12 +42,9 @@ public class UI_Profile : UI_Popup
         {
             Debug.Log($"{UIcam.name}");
         }
-
-        setBtns();
-
     }
 
-    private void setBtns()
+    private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
@@ -77,7 +82,7 @@ public class UI_Profile : UI_Popup
     }
     public void PswdChangeBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* PswdChange");
+        Managers.UI.ShowPopupUI<UI_PswdChange>("PswdChangeView", pathName);
     }
     public void LogoutBtnClick(PointerEventData data)
     {
@@ -85,7 +90,7 @@ public class UI_Profile : UI_Popup
     }
     public void DeleteBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Delete");
+        Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName);
     }
     #endregion
 
