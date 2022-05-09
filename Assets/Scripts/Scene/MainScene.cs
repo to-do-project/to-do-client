@@ -20,6 +20,8 @@ public class MainScene : BaseScene
         Managers.Input.TouchAction -= EnterArrayMode;
         Managers.Input.TouchAction += EnterArrayMode;
 
+        Managers.UI.ShowPanelUI<UI_Main>("MainView");
+
         //青己 积己
         planet = Managers.Resource.Instantiate("Planet/BluePlanet");
 
