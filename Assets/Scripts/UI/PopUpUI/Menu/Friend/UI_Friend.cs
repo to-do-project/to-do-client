@@ -24,6 +24,8 @@ public class UI_Friend : UI_Popup
         Friend_inputfield
     }
 
+    string pathName = "Menu/Friend";
+
     Text friendOnlyTxt;
     Text requestTxt;
     Text friendTxt;
@@ -34,6 +36,7 @@ public class UI_Friend : UI_Popup
     GameObject friendContent = null;
     int requestCount = 0;
     int friendCount = 0;
+    public string Name { get; private set; }
 
     public override void Init()
     {
@@ -110,10 +113,10 @@ public class UI_Friend : UI_Popup
 
     public void SearchBtnClick(PointerEventData data)
     {
-        string name = friendInputField.text;
-        if (string.IsNullOrWhiteSpace(name) == false)
+        Name = friendInputField.text;
+        if (string.IsNullOrWhiteSpace(Name) == false)
         {
-            AddFriend(name);
+            Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
         }
     }
 
