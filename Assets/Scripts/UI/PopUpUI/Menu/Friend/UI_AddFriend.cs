@@ -84,7 +84,22 @@ public class UI_AddFriend : UI_Popup
 
     public void AcceptBtnClick(PointerEventData data)
     {
-        friend.AddFriend(friendNameTxt.text);
+        if (CheckFriend())
+        {
+            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/FriendFadeView"));
+            friend.AddFriend(friendNameTxt.text);
+        }
+        else
+        {
+            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/CantFindFadeView"));
+        }
         Managers.UI.ClosePopupUI();
+    }
+
+    bool CheckFriend()
+    {
+        //해당 닉네임을 가지는 친구가 친구 목록에 없고, 검색이 되면 true 반환, 아니면 false 반환
+        //API에서 넘어오는 값으로 정하면 된다.
+        return true;
     }
 }
