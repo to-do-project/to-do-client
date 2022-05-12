@@ -108,11 +108,11 @@ public class UI_Menu : UI_Popup
     }
     public void PlanetInfoBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* PlanetInfo");
+        Managers.UI.ShowPopupUI<UI_PlanetInfo>("PlanetInfoView", $"{pathName}/Info");
     }
     public void StoreBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Store");
+        Managers.UI.ShowPopupUI<UI_ItemStore>("ItemStoreView", $"{pathName}/ItemStore");
     }
     public void SettingBtnClick(PointerEventData data)
     {
