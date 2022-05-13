@@ -187,9 +187,9 @@ TextureImporter:
       name: Button(Shadow)_Line_toggle_Like_2x_0
       rect:
         serializedVersion: 2
-        x: 58
+        x: 79
         y: 1904
-        width: 729
+        width: 708
         height: 707
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -654,7 +654,7 @@ TextureImporter:
         width: 258
         height: 146
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

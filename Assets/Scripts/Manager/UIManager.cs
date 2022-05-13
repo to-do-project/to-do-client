@@ -188,24 +188,18 @@ public class UIManager
 
 
     //Main 씬에서 호출 시 stack count가 0이면 앱종료
-    public void CloseAppOrUI(Define.Scene scene)
+    public void CloseAppOrUI()
     {
-        if (scene==Define.Scene.Main)
+        if (popupStack.Count == 0)
         {
-
+            //Debug.Log("Quit");
+            //Application.Quit();
+            ShowPopupUI<UI_Exit>("ExitView", "Main");
         }
-        else if(scene==Define.Scene.Login)
+        else
         {
-            if (popupStack.Count ==0)
-            {
-                //Debug.Log("Quit");
-                Application.Quit();
-            }
-            else
-            {
-                //Debug.Log($"Count : {popupStack.Count}");
-                ClosePopupUI();
-            }
+            //Debug.Log($"Count : {popupStack.Count}");
+            ClosePopupUI();
         }
     }
 
