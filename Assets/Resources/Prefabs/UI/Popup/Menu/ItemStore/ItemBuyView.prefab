@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 3766384606648215423}
   - component: {fileID: 3543707064380344208}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Handle_txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -493,7 +493,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 1
 --- !u!1 &1808196412186599131
 GameObject:
   m_ObjectHideFlags: 0
@@ -1877,7 +1877,7 @@ GameObject:
   - component: {fileID: 276639521041757563}
   - component: {fileID: 2178272950507872214}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Point_txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

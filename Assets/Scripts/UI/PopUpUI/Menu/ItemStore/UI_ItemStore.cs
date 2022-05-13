@@ -69,14 +69,18 @@ public class UI_ItemStore : UI_Popup
 
     private void AddCharItem()
     {
-        GameObject item = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/ItemStore/Item_btn"));
+        GameObject item = Instantiate(Resources.Load<GameObject>("Prefabs/UI/ScrollContents/Item_btn"));
         item.transform.SetParent(charItemContent.transform, false);
+        UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
+        //btn.SetValue(); 버튼 정보 넘기기
     }
 
     private void AddPlanetItem()
     {
-        GameObject item = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/ItemStore/Item_btn"));
+        GameObject item = Instantiate(Resources.Load<GameObject>("Prefabs/UI/ScrollContents/Item_btn"));
         item.transform.SetParent(planetItemContent.transform, false);
+        UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
+        //btn.SetValue(); 버튼 정보 넘기기
     }
 
     private void Start()
