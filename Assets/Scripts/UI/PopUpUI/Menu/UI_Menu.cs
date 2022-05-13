@@ -116,7 +116,7 @@ public class UI_Menu : UI_Popup
     }
     public void SettingBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Setting");
+        Managers.UI.ShowPopupUI<UI_Setting>("SettingView", $"{pathName}/Setting");
     }
     #endregion
 
