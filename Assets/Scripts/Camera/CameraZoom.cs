@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraZoom : MonoBehaviour
 {
     Camera cam;
     float perspectiveZoomSpeed = 0.5f;
-    float orthoZoomSpeed = 0.5f;
+    float orthoZoomSpeed = 0.3f;
 
     float zoomSpeed = 10f;
 
 
-    Vector2 nowPos, prePos;
-    Vector3 movePos;
-    float Speed = 0.25f;
+    private float Speed = 0.7f;
+    private Vector2 nowPos, prePos;
+    private Vector3 movePos;
 
     void Start()
     {
@@ -62,10 +63,35 @@ public class CameraZoom : MonoBehaviour
             else
             {
                 cam.fieldOfView += deltaMagnitudeDiff * perspectiveZoomSpeed;
-                cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 8f, 16f);
+                cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 6f, 16f);
             }
 
         }
+#if UNITY_EDITOR
+#else
+        //¿Ãµø
+        else if (evt == Define.TouchEvent.Touch)
+        {
+
+            Touch touch = Input.GetTouch(0);
+
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                prePos = touch.position - touch.deltaPosition;
+            }
+        }
+        else if(evt== Define.TouchEvent.TouchMove || evt==Define.TouchEvent.Press)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            nowPos = touch.position - touch.deltaPosition;
+            movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
+            cam.transform.Translate(movePos);
+
+            prePos = touch.position - touch.deltaPosition;
+        }
+#endif
     }
 
     void ZoomWheel(Define.EditorEvent evt)

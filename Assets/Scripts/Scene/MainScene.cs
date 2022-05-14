@@ -20,6 +20,9 @@ public class MainScene : BaseScene
         Managers.Input.TouchAction -= EnterArrayMode;
         Managers.Input.TouchAction += EnterArrayMode;
 
+        Managers.Input.SystemTouchAction -= OnBackTouched;
+        Managers.Input.SystemTouchAction += OnBackTouched;
+
         Managers.UI.ShowPanelUI<UI_Main>("MainView");
 
         //행성 생성
@@ -34,6 +37,7 @@ public class MainScene : BaseScene
         
     }
 
+    //배치모드로 진입
     void EnterArrayMode(Define.TouchEvent evt)
     {
         if (evt != Define.TouchEvent.Press)
@@ -65,4 +69,16 @@ public class MainScene : BaseScene
 
 
     }
+
+    void OnBackTouched(Define.SystemEvent evt)
+    {
+        if (evt != Define.SystemEvent.Back)
+        {
+            return;
+        }
+
+        Managers.UI.CloseAppOrUI();
+
+    }
+
 }
