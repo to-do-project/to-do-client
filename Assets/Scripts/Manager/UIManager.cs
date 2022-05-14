@@ -238,4 +238,10 @@ public class UIManager
         CloseAllPopupUI();
         panelUI = null;
     }
+
+    //popup ui 떠있는지
+    public bool checkPopupOn()
+    {
+        return popupStack.Count > 0;
+    }
 }
