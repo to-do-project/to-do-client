@@ -37,6 +37,22 @@ public class UI_NickChange : UI_Popup
     {
         base.Init();
 
+        CameraSet();
+
+        SetBtns();
+
+        Bind<InputField>(typeof(InputFields));
+        Bind<Text>(typeof(Texts));
+
+
+        nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
+        nextBtn.GetComponent<Button>().interactable = false;
+
+        Ntxt = GetText((int)Texts.Enable_txt);
+        Ninput = GetInputfiled((int)InputFields.Nickname_inputfield);
+    }
+    private void CameraSet()
+    {
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Camera UIcam = canvas.worldCamera;
@@ -49,20 +65,9 @@ public class UI_NickChange : UI_Popup
         {
             Debug.Log($"{UIcam.name}");
         }
-
-        setBtns();
-        Bind<InputField>(typeof(InputFields));
-        Bind<Text>(typeof(Texts));
-
-
-        nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
-        nextBtn.GetComponent<Button>().interactable = false;
-
-        Ntxt = GetText((int)Texts.Enable_txt);
-        Ninput = GetInputfiled((int)InputFields.Nickname_inputfield);
     }
 
-    private void setBtns()
+    private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 

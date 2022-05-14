@@ -41,6 +41,15 @@ public class UI_Color : UI_Popup
     {
         base.Init();
 
+        CameraSet();
+
+        SetBtns();
+
+        menuScene = FindObjectOfType<MenuScene>();
+
+    }
+    private void CameraSet()
+    {
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Camera UIcam = canvas.worldCamera;
@@ -53,14 +62,9 @@ public class UI_Color : UI_Popup
         {
             Debug.Log($"{UIcam.name}");
         }
-
-        setBtns();
-
-        menuScene = FindObjectOfType<MenuScene>();
-
     }
 
-    private void setBtns()
+    private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 

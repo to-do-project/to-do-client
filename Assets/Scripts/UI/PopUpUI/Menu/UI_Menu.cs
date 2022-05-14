@@ -26,6 +26,14 @@ public class UI_Menu : UI_Popup
     {
         base.Init();
 
+        CameraSet();
+
+        SetBtns();
+
+        //열기 애니메이션 실행
+    }
+    private void CameraSet()
+    {
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Camera UIcam = canvas.worldCamera;
@@ -38,13 +46,9 @@ public class UI_Menu : UI_Popup
         {
             Debug.Log($"{UIcam.name}");
         }
-
-        setBtns();
-
-        //열기 애니메이션 실행
     }
 
-    private void setBtns()
+    private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
@@ -88,31 +92,31 @@ public class UI_Menu : UI_Popup
     }
     public void FtargetBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Ftarget");
+        Managers.UI.ShowPopupUI<UI_FTarget>("FTargetView", $"{pathName}/Target");
     }
     public void PtargetBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Ptarget");
+        Managers.UI.ShowPopupUI<UI_PTarget>("PTargetView", $"{pathName}/Target");
     }
     public void CollectorBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Collector");
+        Managers.UI.ShowPopupUI<UI_Collector>("CollectorView", $"{pathName}/Target");
     }
     public void FriendBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Friend");
+        Managers.UI.ShowPopupUI<UI_Friend>("FriendView", $"{pathName}/Friend");
     }
     public void PlanetInfoBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* PlanetInfo");
+        Managers.UI.ShowPopupUI<UI_PlanetInfo>("PlanetInfoView", $"{pathName}/Info");
     }
     public void StoreBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Store");
+        Managers.UI.ShowPopupUI<UI_ItemStore>("ItemStoreView", $"{pathName}/ItemStore");
     }
     public void SettingBtnClick(PointerEventData data)
     {
-        Debug.Log("*Clicked Button* Setting");
+        Managers.UI.ShowPopupUI<UI_Setting>("SettingView", $"{pathName}/Setting");
     }
     #endregion
 
