@@ -10,12 +10,20 @@ public class UI_Main : UI_Panel
     {
         menu_btn,
         notice_btn,
+        //goalAdd_btn,
     }
 
     enum Texts
     {
         date_txt,
     }
+
+    enum GameObjects
+    {
+        GoalList,
+    }
+
+    //GameObject goalList;
 
     public override void Init()
     {
@@ -52,4 +60,6 @@ public class UI_Main : UI_Panel
     {
         Managers.UI.ShowPopupUI<UI_Menu>("MenuView", "Menu");
     }
+
+
 }

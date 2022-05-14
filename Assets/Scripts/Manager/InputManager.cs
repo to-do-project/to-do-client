@@ -95,6 +95,11 @@ public class InputManager
                     {
                         pressed = true;
                         //PressTimer += Time.deltaTime;
+                        TouchAction.Invoke(Define.TouchEvent.Touch);
+                    }
+                    else if(Input.GetTouch(0).phase == TouchPhase.Moved)
+                    {
+                        TouchAction.Invoke(Define.TouchEvent.TouchMove);
                     }
 
                     else if(Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -106,7 +111,8 @@ public class InputManager
                         }
                         else
                         {
-                            TouchAction.Invoke(Define.TouchEvent.Touch);
+                            //TouchAction.Invoke(Define.TouchEvent.Touch);
+                            //TouchAction.Invoke(Define.TouchEvent.TouchEnd);
                         }
                         PressTimer = 0;
                     }

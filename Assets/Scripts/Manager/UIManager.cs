@@ -145,6 +145,35 @@ public class UIManager
 
     }
 
+    public T MakeSubItem<T>(Transform parent = null, string name = null, string folder = null) where T : UI_Base
+    {
+        string path="";
+
+        if (string.IsNullOrEmpty(name))
+        {
+            name = typeof(T).Name;
+        }
+        if (string.IsNullOrEmpty(folder))
+        {
+            path = name;
+        }
+        else
+        {
+            path = folder + "/" + name;
+        }
+
+        GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{path}");
+
+        if (parent != null)
+        {
+            go.transform.SetParent(parent);
+        }
+
+        return Util.GetOrAddComponent<T>(go);
+
+    }
+
+
 
     //SceneUI ¶ç¿ì±â
     public T ShowPanelUI<T>(string name = null) where T : UI_Panel

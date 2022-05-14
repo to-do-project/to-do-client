@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_TodoModify : MonoBehaviour
+public class UI_TodoModify : UI_Popup
 {
-    void Start()
+    public override void Init()
     {
-        
+        base.Init();
+
     }
 
-    void Update()
+    void Start()
     {
-        
+        Init();
     }
+
 }
