@@ -41,7 +41,8 @@ public class UI_PlanetSet : UI_UserInfo
         BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
         nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+        nextBtn.GetComponent<Button>().interactable = false;
+
 
         //toggleGroup = Get<ToggleGroup>((int)ToggleGroups.PlanetRadioGroup).gameObject;
 
@@ -51,15 +52,48 @@ public class UI_PlanetSet : UI_UserInfo
 
         red.onValueChanged.AddListener((bool bOn) =>
         {
-            planet = Define.Planet.RED;
+            if (red.isOn)
+            {
+                planet = Define.Planet.RED;
+                nextBtn.GetComponent<Button>().interactable = true;
+                BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
+            else
+            {
+                planet = Define.Planet.EMPTY;
+                nextBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
         });
         green.onValueChanged.AddListener((bool bOn) =>
         {
-            planet = Define.Planet.GREEN;
+            if (green.isOn)
+            {
+                planet = Define.Planet.GREEN;
+                nextBtn.GetComponent<Button>().interactable = true;
+                BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
+            else
+            {
+                planet = Define.Planet.EMPTY;
+                nextBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
         });
         blue.onValueChanged.AddListener((bool bOn) =>
         {
-            planet = Define.Planet.BLUE;
+            if (blue.isOn)
+            {
+                planet = Define.Planet.BLUE;
+                nextBtn.GetComponent<Button>().interactable = true;
+                BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }           
+            else
+            {
+                planet = Define.Planet.EMPTY;
+                nextBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
         });
     }
 

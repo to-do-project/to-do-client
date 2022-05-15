@@ -145,7 +145,7 @@ public class UIManager
 
     }
 
-    public T MakeSubItem<T>(Transform parent = null, string name = null, string folder = null) where T : UI_Base
+    public T MakeSubItem<T>(string folder, Transform parent = null, string name = null) where T : UI_Base
     {
         string path="";
 
@@ -166,7 +166,7 @@ public class UIManager
 
         if (parent != null)
         {
-            go.transform.SetParent(parent);
+            go.transform.SetParent(parent,false);
         }
 
         return Util.GetOrAddComponent<T>(go);
