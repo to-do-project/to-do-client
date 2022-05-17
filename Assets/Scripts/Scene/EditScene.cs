@@ -5,12 +5,13 @@ using UnityEngine;
 public class EditScene : BaseScene
 {
     GameObject Planet;
-    GameObject EditItem, EditItem2;
+    GameObject EditItem,EditItem1, EditItem2;
 
 
     public override void Clear()
     {
-        throw new System.NotImplementedException();
+        //Managers.UI.Clear();
+        //throw new System.NotImplementedException();
     }
 
     protected override void Init()
@@ -18,12 +19,21 @@ public class EditScene : BaseScene
         base.Init();
         SceneType = Define.Scene.Edit;
 
-        Planet = GameObject.Find("BluePlanet");
-        EditItem2 = Managers.Resource.Instantiate("Items/Square", Planet.transform.GetChild(1).transform);
-        EditItem = Managers.Resource.Instantiate("Items/Square1",Planet.transform.GetChild(1).transform);
+        Managers.Input.SystemTouchAction -= OnBackTouched;
+        Managers.Input.SystemTouchAction += OnBackTouched;
 
-        ChangeItemMode(EditItem);
+
+        Planet = GameObject.Find("BluePlanet");
+        //EditItem2 = Managers.Resource.Instantiate("Items/Square", Planet.transform.GetChild(1).transform);
+        //EditItem = Managers.Resource.Instantiate("Items/ItemParent 1", Planet.transform.GetChild(2).transform);
+        EditItem1 = Managers.Resource.Instantiate("Items/portal_00", Planet.transform.GetChild(2).transform);
+        EditItem2 = Managers.Resource.Instantiate("Items/plant_01", Planet.transform.GetChild(2).transform);
+
+        //ChangeItemMode(EditItem);
+        ChangeItemMode(EditItem1);
         ChangeItemMode(EditItem2);
+
+
     }
 
     private void Awake()
@@ -38,7 +48,12 @@ public class EditScene : BaseScene
 
     private void ChangeItemMode(GameObject go)
     {
-        ItemController child = Util.FindChild<ItemController>(go, "ItemInner", true);
+        ItemController child = Util.FindChild<ItemController>(go, "ItemInner", true);      
         child.ChangeMode(SceneType);
+    }
+
+    void OnBackTouched(Define.SystemEvent evt)
+    {
+        Managers.UI.ShowPopupUI<UI_ExitEdit>("ExitEditView","Edit");
     }
 }

@@ -51,15 +51,14 @@ public class ItemController : MonoBehaviour
     //드래그
     void OnMouseDragEvt()
     {
-        Debug.Log("isFixed : " + isFixed);
+        //Debug.Log("isFixed : " + isFixed);
         //이동 상태
         if (!isFixed)
         {
-            Debug.Log(root.name);
+            //Debug.Log(root.name);
             //Height.SetActive(true);
             timer = 0f;
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, root.transform.position.z);
-            root.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(mousePosition).x, Camera.main.ScreenToWorldPoint(mousePosition).y, root.transform.position.z);
+            //Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, root.transform.position.z);
 
             Vector3 worldPoint = Input.mousePosition;
             worldPoint.z = 0f;
@@ -72,7 +71,9 @@ public class ItemController : MonoBehaviour
             initMousePos.z = 0f;
             initMousePos = Camera.main.ScreenToWorldPoint(initMousePos);
 
-            root.transform.position = new Vector3(root.transform.position.x + diffPos.x, root.transform.position.y + diffPos.y, root.transform.position.z);
+            root.transform.position = new Vector3(root.transform.position.x + diffPos.x, root.transform.position.y +
+                diffPos.y, root.transform.position.z);
+            
             CheckOnGround();
 
         }
@@ -96,7 +97,7 @@ public class ItemController : MonoBehaviour
     //행성 위에 있는 지 확인
     private void CheckOnGround()
     {
-        int layerMask = 1 << LayerMask.NameToLayer("Planet");
+        int layerMask = 1 << LayerMask.NameToLayer("PlanetGround");
 
         Vector3 pos = Height.transform.position;
         RaycastHit2D hit = Physics2D.Raycast(pos, transform.forward, 100f, layerMask);
@@ -111,6 +112,8 @@ public class ItemController : MonoBehaviour
             canFixed = false;
         }
     }
+
+
 
     //아이템 편집 모드로 전환
     private void ChangeFixState(bool change)
@@ -202,6 +205,7 @@ public class ItemController : MonoBehaviour
     private void CancleItem()
     {
         Debug.Log("Cancle Item");
+        //Managers.Resource.Destroy(root);
         Managers.Resource.Destroy(gameObject);
     }
 
@@ -227,6 +231,7 @@ public class ItemController : MonoBehaviour
             //collision.transform.parent.GetComponent<ItemController>().ChangeColor(false);
         }
     }
+
 
 /*    void CollisionExitCheck(Collider2D collision)
     {

@@ -9,6 +9,7 @@ public class MainScene : BaseScene
 
     public override void Clear()
     {
+        //Managers.UI.Clear();
         //throw new System.NotImplementedException();
     }
 
