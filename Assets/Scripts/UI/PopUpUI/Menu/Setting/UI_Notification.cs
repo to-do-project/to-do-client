@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_Notification : UI_Popup
+public class UI_Notification : UI_PopupMenu
 {
     enum Buttons
     {
@@ -33,28 +33,11 @@ public class UI_Notification : UI_Popup
         SetToggles();
     }
 
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-    }
-
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, BackBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         pushBtn = GetButton((int)Buttons.Push_btn);
         BindEvent(pushBtn.gameObject, PushBtnClick, Define.TouchEvent.Touch);
@@ -82,10 +65,6 @@ public class UI_Notification : UI_Popup
     }
 
     #region ButtonEvents
-    public void BackBtnClick(PointerEventData data)
-    {
-        Managers.UI.ClosePopupUI();
-    }
     public void PushBtnClick(PointerEventData data)
     {
         friend = group = skill = announce = !push;

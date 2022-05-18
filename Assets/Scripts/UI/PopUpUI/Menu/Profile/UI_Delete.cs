@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_Delete : UI_Popup
+public class UI_Delete : UI_PopupMenu
 {
     enum Buttons
     {
@@ -44,57 +44,31 @@ public class UI_Delete : UI_Popup
         PswdChecktxt = GetText((int)Texts.PswdCheck_txt);
     }
 
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-    }
-
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        GameObject nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
-        BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
-    }
-
-    private void Start()
-    {
-        Init();
-    }
-
-    private void NextBtnClick(PointerEventData data)
-    {
-        //비밀번호가 맞는지 확인한 후
-        //회원 탈퇴 체크 후
-        //다음 팝업 생성
-        string password = Pswdfield.text;
-        if (string.IsNullOrWhiteSpace(password) == false)
-        {
-            if (ComparePassword())
+        SetBtn((int)Buttons.Next_btn, (data) => {
+            //비밀번호가 맞는지 확인한 후
+            //회원 탈퇴 체크 후
+            //다음 팝업 생성
+            string password = Pswdfield.text;
+            if (string.IsNullOrWhiteSpace(password) == false)
             {
-                //회원 탈퇴
-                Debug.Log("회원 탈퇴");
-                Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
+                if (ComparePassword())
+                {
+                    //회원 탈퇴
+                    Debug.Log("회원 탈퇴");
+                    Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
+                }
+                else
+                {
+                    PswdChecktxt.text = "*비밀번호를 잘못 입력했습니다.";
+                }
             }
-            else
-            {
-                PswdChecktxt.text = "*비밀번호를 잘못 입력했습니다.";
-            }
-        }
+        });
     }
 
     private bool ComparePassword()
@@ -104,5 +78,10 @@ public class UI_Delete : UI_Popup
         bool result = (Pswdfield.text == playerPassword);
         result = true;
         return result;
+    }
+
+    private void Start()
+    {
+        Init();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_AddFriend : UI_Popup
+public class UI_AddFriend : UI_PopupMenu
 {
     enum Buttons
     {
@@ -47,53 +47,26 @@ public class UI_AddFriend : UI_Popup
         friendLevelTxt = GetText((int)Texts.FriendLevel_txt);
     }
 
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-    }
-
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject blindBtn = GetButton((int)Buttons.Blind_btn).gameObject;
-        BindEvent(blindBtn, ClosePopupUI, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Blind_btn, ClosePopupUI);
 
-        GameObject acceptBtn = GetButton((int)Buttons.Accept_btn).gameObject;
-        BindEvent(acceptBtn, AcceptBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Accept_btn, (data) => {
+            if (CheckFriend())
+            {
+                Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/FriendFadeView"));
+                friend.AddFriend(friendNameTxt.text);
+            }
+            else
+            {
+                Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/CantFindFadeView"));
+            }
+            Managers.UI.ClosePopupUI();
+        });
 
-        GameObject cancelBtn = GetButton((int)Buttons.Cancel_btn).gameObject;
-        BindEvent(cancelBtn, ClosePopupUI, Define.TouchEvent.Touch);
-    }
-
-    private void Start()
-    {
-        Init();
-    }
-
-    public void AcceptBtnClick(PointerEventData data)
-    {
-        if (CheckFriend())
-        {
-            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/FriendFadeView"));
-            friend.AddFriend(friendNameTxt.text);
-        }
-        else
-        {
-            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/CantFindFadeView"));
-        }
-        Managers.UI.ClosePopupUI();
+        SetBtn((int)Buttons.Cancel_btn, ClosePopupUI);
     }
 
     bool CheckFriend()
@@ -101,5 +74,10 @@ public class UI_AddFriend : UI_Popup
         //해당 닉네임을 가지는 친구가 친구 목록에 없고, 검색이 되면 true 반환, 아니면 false 반환
         //API에서 넘어오는 값으로 정하면 된다.
         return true;
+    }
+
+    private void Start()
+    {
+        Init();
     }
 }

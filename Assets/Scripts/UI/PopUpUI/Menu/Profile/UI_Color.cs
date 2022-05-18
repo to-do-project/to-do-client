@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_Color : UI_Popup
+public class UI_Color : UI_PopupMenu
 {
     protected MenuScene menuScene;
 
@@ -48,106 +48,33 @@ public class UI_Color : UI_Popup
         menuScene = FindObjectOfType<MenuScene>();
 
     }
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-    }
 
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, BackBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        GameObject lightRedBtn = GetButton((int)Buttons.LightRed_btn).gameObject;
-        BindEvent(lightRedBtn, LightRedBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.LightRed_btn, (data) => { ColorBtnClick(Colors.LightRed); });
 
-        GameObject yellowBtn = GetButton((int)Buttons.Yellow_btn).gameObject;
-        BindEvent(yellowBtn, YellowBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Yellow_btn, (data) => { ColorBtnClick(Colors.Yellow); });
 
-        GameObject greenBtn = GetButton((int)Buttons.Green_btn).gameObject;
-        BindEvent(greenBtn, GreenBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Green_btn, (data) => { ColorBtnClick(Colors.Green); });
 
-        GameObject skyBlueBtn = GetButton((int)Buttons.SkyBlue_btn).gameObject;
-        BindEvent(skyBlueBtn, SkyBlueBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.SkyBlue_btn, (data) => { ColorBtnClick(Colors.SkyBlue); });
 
-        GameObject blueBtn = GetButton((int)Buttons.Blue_btn).gameObject;
-        BindEvent(blueBtn, BlueBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Blue_btn, (data) => { ColorBtnClick(Colors.Blue); });
 
-        GameObject lightPurpleBtn = GetButton((int)Buttons.LightPurple_btn).gameObject;
-        BindEvent(lightPurpleBtn, LightPurpleBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.LightPurple_btn, (data) => { ColorBtnClick(Colors.LightPurple); });
 
-        GameObject purpleBtn = GetButton((int)Buttons.Purple_btn).gameObject;
-        BindEvent(purpleBtn, PurpleBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Purple_btn, (data) => { ColorBtnClick(Colors.Purple); });
 
-        GameObject pinkBtn = GetButton((int)Buttons.Pink_btn).gameObject;
-        BindEvent(pinkBtn, PinkBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Pink_btn, (data) => { ColorBtnClick(Colors.Pink); });
 
-        GameObject grayBtn = GetButton((int)Buttons.Gray_btn).gameObject;
-        BindEvent(grayBtn, GrayBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Gray_btn, (data) => { ColorBtnClick(Colors.Gray); });
 
-        GameObject blackBtn = GetButton((int)Buttons.Black_btn).gameObject;
-        BindEvent(blackBtn, BlackBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Black_btn, (data) => { ColorBtnClick(Colors.Black); });
     }
-
-    #region ButtonEvents
-    public void BackBtnClick(PointerEventData data)
-    {
-        Managers.UI.ClosePopupUI();
-    }
-    public void LightRedBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.LightRed);
-    }
-    public void YellowBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Yellow);
-    }
-    public void GreenBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Green);
-    }
-    public void SkyBlueBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.SkyBlue);
-    }
-    public void BlueBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Blue);
-    }
-    public void LightPurpleBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.LightPurple);
-    }
-    public void PurpleBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Purple);
-    }
-    public void PinkBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Pink);
-    }
-    public void GrayBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Gray);
-    }
-    public void BlackBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Black);
-    }
-    #endregion
 
     private void ColorBtnClick(Colors color)
     {
