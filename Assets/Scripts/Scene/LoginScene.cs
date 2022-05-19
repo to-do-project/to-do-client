@@ -73,7 +73,7 @@ public class LoginScene : BaseScene
             return;
         }
 
-        Managers.UI.CloseAppOrUI(Define.Scene.Login);
+        Managers.UI.CloseAppOrUI();
 
     }
 

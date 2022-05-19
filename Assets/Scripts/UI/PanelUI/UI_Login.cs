@@ -65,7 +65,7 @@ public class UI_Login : UI_Panel
     }
 
     
-    public void LoginBtnClick(PointerEventData data)
+    private void LoginBtnClick(PointerEventData data)
     {
         //아이디 입력 확인
         InputField idInput = Get<InputField>((int)InputFields.ID_inputfield);
@@ -99,14 +99,14 @@ public class UI_Login : UI_Panel
         //메인 씬으로 넘어가기
     }
 
- 
-    public void SignUpBtnClick(PointerEventData data)
+
+    private void SignUpBtnClick(PointerEventData data)
     {
         Managers.UI.ShowPopupUI<UI_Info>("InfoView", "SignUp");
         
     }
 
-    public void FindPWBtnClick(PointerEventData data)
+    private void FindPWBtnClick(PointerEventData data)
     {
         Managers.UI.ShowPopupUI<UI_PWfind>("FindView", "PWfind");
     }

@@ -145,6 +145,35 @@ public class UIManager
 
     }
 
+    public T MakeSubItem<T>(Transform parent = null, string name = null, string folder = null) where T : UI_Base
+    {
+        string path="";
+
+        if (string.IsNullOrEmpty(name))
+        {
+            name = typeof(T).Name;
+        }
+        if (string.IsNullOrEmpty(folder))
+        {
+            path = name;
+        }
+        else
+        {
+            path = folder + "/" + name;
+        }
+
+        GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{path}");
+
+        if (parent != null)
+        {
+            go.transform.SetParent(parent);
+        }
+
+        return Util.GetOrAddComponent<T>(go);
+
+    }
+
+
 
     //SceneUI 띄우기
     public T ShowPanelUI<T>(string name = null) where T : UI_Panel
@@ -188,24 +217,18 @@ public class UIManager
 
 
     //Main 씬에서 호출 시 stack count가 0이면 앱종료
-    public void CloseAppOrUI(Define.Scene scene)
+    public void CloseAppOrUI()
     {
-        if (scene==Define.Scene.Main)
+        if (popupStack.Count == 0)
         {
-
+            //Debug.Log("Quit");
+            //Application.Quit();
+            ShowPopupUI<UI_Exit>("ExitView", "Main");
         }
-        else if(scene==Define.Scene.Login)
+        else
         {
-            if (popupStack.Count ==0)
-            {
-                //Debug.Log("Quit");
-                Application.Quit();
-            }
-            else
-            {
-                //Debug.Log($"Count : {popupStack.Count}");
-                ClosePopupUI();
-            }
+            //Debug.Log($"Count : {popupStack.Count}");
+            ClosePopupUI();
         }
     }
 
@@ -214,5 +237,11 @@ public class UIManager
     {
         CloseAllPopupUI();
         panelUI = null;
+    }
+
+    //popup ui 떠있는지
+    public bool checkPopupOn()
+    {
+        return popupStack.Count > 0;
     }
 }

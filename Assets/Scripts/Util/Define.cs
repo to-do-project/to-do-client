@@ -27,6 +27,7 @@ public class Define
         Press,
         Drag,
         TwoTouch,
+        TouchMove,
     }
 
     public enum Planet
