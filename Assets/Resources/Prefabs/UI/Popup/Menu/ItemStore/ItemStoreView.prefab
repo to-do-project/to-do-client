@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 176420454516298603}
   - component: {fileID: 3330299638373687024}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: CharScroll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 3693747486440052657}
   - component: {fileID: 6551841178157278406}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: PlanetScroll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

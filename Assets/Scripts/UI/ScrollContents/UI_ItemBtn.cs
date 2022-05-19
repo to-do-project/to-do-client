@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_ItemBtn : UI_Base
+public class UI_ItemBtn : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     bool isCharItem;
     string itemName;
@@ -12,6 +12,7 @@ public class UI_ItemBtn : UI_Base
     int curHave;
     int maxHave;
     GameObject parent;
+    ScrollRect scroll;
 
     public void SetValue(bool isCharItem, string itemName, int price, int curHave, int maxHave, GameObject parent)
     {
@@ -21,6 +22,7 @@ public class UI_ItemBtn : UI_Base
         this.curHave = curHave;
         this.maxHave = maxHave;
         this.parent = parent;
+        scroll = parent.GetComponent<ScrollRect>();
     }
 
     public override void Init()
@@ -37,5 +39,29 @@ public class UI_ItemBtn : UI_Base
     private void Start()
     {
         Init();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if(scroll)
+        {
+            scroll.OnBeginDrag(eventData);
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (scroll)
+        {
+            scroll.OnDrag(eventData);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (scroll)
+        {
+            scroll.OnEndDrag(eventData);
+        }
     }
 }
