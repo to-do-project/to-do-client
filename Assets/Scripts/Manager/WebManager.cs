@@ -51,10 +51,14 @@ public class WebManager : MonoBehaviour
             }
             else
             {
+                if (callback != null)
+                {
+                    //그담에 수행할 이벤트 호출
+                    callback.Invoke(uwr);
+
+                }
                 //Debug.Log("Recv " + uwr.downloadHandler.text);
                 //res = JsonUtility.FromJson<Response<T>>(uwr.downloadHandler.text);
-                //그담에 수행할 이벤트 호출
-                callback.Invoke(uwr);
 
             }
         }
@@ -75,8 +79,12 @@ public class WebManager : MonoBehaviour
             }
             else
             {
-                Debug.Log(request.downloadHandler.text);
-                callback.Invoke(request);
+                if (callback != null)
+                {
+                    //그담에 수행할 이벤트 호출
+                    callback.Invoke(request);
+
+                }
             }
         }
 

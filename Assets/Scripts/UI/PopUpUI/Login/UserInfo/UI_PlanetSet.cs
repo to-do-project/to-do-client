@@ -1,11 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+
+public class SignupData
+{
+    public string email;
+    public string password;
+    public string nickname;
+    public string planetColor;
+    public string deviceToken;
+}
+
+public class SignupResult
+{
+    public long userId;
+    public long planetId;
+    public string email;
+    public string nickname;
+    public string characterColor;
+    public string profileColor;
+    public int point;
+    public int missionStatus;
+    public string deviceToken;
+}
 
 public class UI_PlanetSet : UI_UserInfo
 {
+
+    Action<UnityWebRequest> callback;
+    Response<string> res; //인증번호 발송 용
+
+
     enum Buttons
     {
         Back_btn,
@@ -95,6 +124,10 @@ public class UI_PlanetSet : UI_UserInfo
                 ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
             }
         });
+
+        callback -= ResponseAction;
+        callback += ResponseAction;
+
     }
 
     void Start()
@@ -107,15 +140,42 @@ public class UI_PlanetSet : UI_UserInfo
     {
         if (planet == Define.Planet.EMPTY)
         {
-            Debug.Log("행성을 선택해주세요");
+            //Debug.Log("행성을 선택해주세요");
             return;
         }
 
         //유저 정보 서버에 넘기기
         loginScene.Planet = planet;
 
+        string sPlanet="";
+        switch (loginScene.Planet) {
+            case Define.Planet.BLUE:
+                sPlanet = "BLUE";
+                break;
+            case Define.Planet.GREEN:
+                sPlanet = "GREEN";
+                break;
+            case Define.Planet.RED:
+                sPlanet = "RED";
+                break;
+        }
+
+
+        res = new Response<string>();
+
+        SignupData val = new SignupData
+        {
+            email = loginScene.Email,
+            password = loginScene.Pw,
+            nickname = loginScene.Nickname,
+            planetColor = sPlanet,
+            deviceToken = "12345"
+
+        };
+        Managers.Web.SendPostRequest<SignupResult>("join",val,callback);
+
+
         //Managers.UI.CloseAllPopupUI();
-        Managers.Scene.LoadScene(Define.Scene.Main);
 
 /*        IEnumerable<Toggle> tg = toggleGroup.GetComponent<ToggleGroup>().ActiveToggles();
         foreach(Toggle t in tg)
@@ -123,9 +183,36 @@ public class UI_PlanetSet : UI_UserInfo
             Debug.Log("active "+t.name);
         }*/
 
-        Debug.Log(planet);
+        //Debug.Log(planet);
     }
 
+    private void ResponseAction(UnityWebRequest request)
+    {
+        if (res != null)
+        {
+            res = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
+
+            if (res.isSuccess)
+            {
+                switch (res.code) 
+                {
+                    case 1000:
+                        Managers.Scene.LoadScene(Define.Scene.Main);
+                        break;
+                    default:
+                        Debug.Log(res.message);
+                        break;
+                }
+
+            }
+            else
+            {
+                Debug.Log(res.message);
+            }
+
+            res = null;
+        }
+    }
 
     
 }

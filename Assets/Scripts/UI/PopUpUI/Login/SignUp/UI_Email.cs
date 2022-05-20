@@ -134,6 +134,13 @@ public class UI_Email : UI_SignUp
                     case 1000:
                         Managers.UI.ShowPopupUI<UI_Auth>("AuthView", "SignUp");
                         break;
+                   
+                }
+            }
+            else
+            {
+                switch (Authres.code)
+                {
                     case 4002:
                         Etxt.text = "서버 연결에 실패했습니다.";
                         break;
@@ -171,6 +178,13 @@ public class UI_Email : UI_SignUp
                         nextBtn.GetComponent<Button>().interactable = true;
                         BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
                         break;
+                    
+                }
+            }
+            else
+            {
+                switch (Checkres.code) 
+                {
                     case 4000:
                         break;
                     case 6010:
@@ -186,6 +200,7 @@ public class UI_Email : UI_SignUp
                         ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
                         break;
                 }
+
             }
 
             Checkres = null;

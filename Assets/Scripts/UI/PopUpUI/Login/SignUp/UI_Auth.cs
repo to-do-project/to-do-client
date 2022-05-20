@@ -151,12 +151,14 @@ public class UI_Auth : UI_SignUp
                         nextBtn.GetComponent<Button>().interactable = true;
                         BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
                         break;
-                    case 6020:
-                        authChecktxt.text = "잘못된 인증번호입니다. 다시 입력해주세요.";
-                        nextBtn.GetComponent<Button>().interactable = false;
-                        ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
-                        break;
                 }
+            }
+            else
+            {
+                authChecktxt.text = "잘못된 인증번호입니다. 다시 입력해주세요.";
+                nextBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+       
             }
             Authres = null;
         }
@@ -172,6 +174,13 @@ public class UI_Auth : UI_SignUp
                         ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
                         break;
                 }
+
+            }
+            else
+            {
+                authChecktxt.text = "인증번호를 전송하는데 실패했습니다.";
+                nextBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
 
             }
             Sendres = null;
