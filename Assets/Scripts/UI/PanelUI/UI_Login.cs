@@ -7,14 +7,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class LoginData
+public class RequestLogin
 {
     public string email;
     public string password;
     public string deviceToken;
 }
 
-public class LoginResult
+public class ResponseLogin
 {
     public long userId;
     public long planetId;
@@ -30,7 +30,7 @@ public class LoginResult
 public class UI_Login : UI_Panel
 {
     Action<UnityWebRequest> callback;
-    Response<LoginResult> res;
+    Response<ResponseLogin> res;
 
     protected LoginScene loginScene;
 
@@ -105,7 +105,7 @@ public class UI_Login : UI_Panel
 
     private void LoginBtnClick(PointerEventData data)
     {
-        LoginData val = new LoginData();
+        RequestLogin val = new RequestLogin();
         //아이디 입력 확인
         InputField idInput = Get<InputField>((int)InputFields.ID_inputfield);
         if (isValidEmail(idInput.text))
@@ -133,8 +133,8 @@ public class UI_Login : UI_Panel
         val.deviceToken = "12345";
 
         //로그인 API 호출
-        res = new Response<LoginResult>();
-        Managers.Web.SendPostRequest<SignupResult>("login", val, callback);
+        res = new Response<ResponseLogin>();
+        Managers.Web.SendPostRequest<ResponseSignUp>("login", val, callback);
 
         //Managers.UI.ShowPopupUI<UI_NicknameSet>("NicknameView", "UserInfo");
 
@@ -158,7 +158,7 @@ public class UI_Login : UI_Panel
     {
         if (res != null)
         {
-            res = JsonUtility.FromJson<Response<LoginResult>>(request.downloadHandler.text);
+            res = JsonUtility.FromJson<Response<ResponseLogin>>(request.downloadHandler.text);
 
            /* Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
             Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));

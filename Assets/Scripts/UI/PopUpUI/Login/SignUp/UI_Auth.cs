@@ -7,7 +7,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
-public class AuthData
+public class RequestAuth
 {
     public string email;
     public string authNum;
@@ -125,7 +125,7 @@ public class UI_Auth : UI_SignUp
         else
         {
             //인증번호 검증 API
-            AuthData val = new AuthData { email = loginScene.Email, authNum = Ainputfield.text };
+            RequestAuth val = new RequestAuth { email = loginScene.Email, authNum = Ainputfield.text };
             Authres = new Response<string>();
 
             Managers.Web.SendPostRequest<string>("join/auth/check-num", val, callback);
@@ -207,7 +207,7 @@ public class UI_Auth : UI_SignUp
     {
         //인증번호 API 다시 호출
         Ainputfield.text = "";
-        EmailData val = new EmailData { email = loginScene.Email };
+        RequestEmail val = new RequestEmail { email = loginScene.Email };
         Sendres = new Response<string>();
 
         Managers.Web.SendPostRequest<string>("join/auth/new-num", val, callback);
