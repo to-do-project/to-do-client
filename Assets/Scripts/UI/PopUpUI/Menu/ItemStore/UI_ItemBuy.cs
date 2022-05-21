@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_ItemBuy : UI_Popup
+public class UI_ItemBuy : UI_PopupMenu
 {
     enum Buttons
     {
@@ -57,53 +57,39 @@ public class UI_ItemBuy : UI_Popup
     bool isCharItem;
     string itemName;
     int price;
-    int curHave;
-    int maxHave;
+    int maxBuy;
     GameObject parent;
 
-    public void SetValue(bool isCharItem, string itemName, int price, int curHave, int maxHave, GameObject parent)
+    public void SetValue(bool isCharItem, string itemName, int price, int maxBuy, GameObject parent)
     {
         this.isCharItem = isCharItem;
         this.itemName = itemName;
         this.price = price;
-        this.curHave = curHave;
-        this.maxHave = maxHave;
+        this.maxBuy = maxBuy;
         this.parent = parent;
-    }
 
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
+        if(maxBuy == 1)
         {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
+            buyAmountSlider.gameObject.SetActive(false);
         }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
+
+        nameTxt.text = itemName;
+        priceTxt.text = price.ToString();
+        maxTxt.text = maxBuy.ToString();
     }
 
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject buyBtn = GetButton((int)Buttons.Buy_btn).gameObject;
-        BindEvent(buyBtn, BuyBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Buy_btn, (data) => {
+            //UI_ItemStore itemStore = parent.GetComponent<UI_ItemStore>();
+            //정보 넘긴 후 삭제
+            Debug.Log($"{buyAmountSlider.value}개 구매");
+            ClosePopupUI();
+        });
 
-        GameObject cancelBtn = GetButton((int)Buttons.Cancel_btn).gameObject;
-        BindEvent(cancelBtn, ClosePopupUI, Define.TouchEvent.Touch);
-    }
-
-    public void BuyBtnClick(PointerEventData data)
-    {
-        //UI_ItemStore itemStore = parent.GetComponent<UI_ItemStore>();
-        //정보 넘긴 후 삭제
-        Debug.Log($"{buyAmountSlider.value}개 구매");
-        ClosePopupUI();
+        SetBtn((int)Buttons.Cancel_btn, ClosePopupUI);
     }
 
     public void BuyAmountChanged()

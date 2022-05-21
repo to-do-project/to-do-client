@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_Friend : UI_Popup
+public class UI_Friend : UI_PopupMenu
 {
     enum Buttons
     {
@@ -68,56 +68,36 @@ public class UI_Friend : UI_Popup
             friendContent = GameObject.Find("FriendContents");
         }
 
+        SetContents();
+
         RelocationAll();
     }
 
-    private void CameraSet()
+    private void SetContents()
     {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
+
     }
 
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        GameObject testBtn = GetButton((int)Buttons.Test_btn).gameObject;
-        BindEvent(testBtn, TestBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Test_btn, (data) => { AddRequest($"테스트 {requestCount}"); });
 
-        GameObject searchBtn = GetButton((int)Buttons.Search_btn).gameObject;
-        BindEvent(searchBtn, SearchBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Search_btn, (data) => {
+            Name = friendInputField.text;
+            if (string.IsNullOrWhiteSpace(Name) == false)
+            {
+                Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
+            }
+        });
     }
 
     private void Start()
     {
         Init();
-    }
-
-    public void TestBtnClick(PointerEventData data)
-    {
-        AddRequest($"테스트 {requestCount}");
-    }
-
-    public void SearchBtnClick(PointerEventData data)
-    {
-        Name = friendInputField.text;
-        if (string.IsNullOrWhiteSpace(Name) == false)
-        {
-            Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
-        }
     }
 
     public bool AddFriend(string name)
@@ -188,11 +168,16 @@ public class UI_Friend : UI_Popup
     void activeChange(bool toggle)
     {
         friendOnlyTxt.gameObject.SetActive(!toggle);
-
         requestTxt.gameObject.SetActive(toggle);
         friendTxt.gameObject.SetActive(toggle);
 
         ContentSizeFitter fitter = content.GetComponent<ContentSizeFitter>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)fitter.transform);
+
+        fitter = requestContent.GetComponent<ContentSizeFitter>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)fitter.transform);
+
+        fitter = friendContent.GetComponent<ContentSizeFitter>();
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)fitter.transform);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_Profile : UI_Popup
+public class UI_Profile : UI_PopupMenu
 {
     enum Buttons
     {
@@ -16,7 +16,15 @@ public class UI_Profile : UI_Popup
         Delete_btn,
     }
 
+    enum Images
+    {
+        Profile_image,
+    }
+
     string pathName = "Menu/Profile";
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
+
+    Image image;
 
     public override void Init()
     {
@@ -26,73 +34,34 @@ public class UI_Profile : UI_Popup
 
         SetBtns();
 
-    }
+        Bind<Image>(typeof(Images));
 
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
+        image = GetImage((int)Images.Profile_image);
     }
 
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, BackBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        GameObject profileBtn = GetButton((int)Buttons.Profile_btn).gameObject;
-        BindEvent(profileBtn, ProfileBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Color>("ColorView", pathName); });
 
-        GameObject nickChangeBtn = GetButton((int)Buttons.NickChange_btn).gameObject;
-        BindEvent(nickChangeBtn, NickChangeBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.NickChange_btn, (data) => { Managers.UI.ShowPopupUI<UI_NickChange>("NickChangeView", pathName); });
 
-        GameObject pswdChangeBtn = GetButton((int)Buttons.PswdChange_btn).gameObject;
-        BindEvent(pswdChangeBtn, PswdChangeBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.PswdChange_btn, (data) => { Managers.UI.ShowPopupUI<UI_PswdChange>("PswdChangeView", pathName); });
 
-        GameObject logoutBtn = GetButton((int)Buttons.Logout_btn).gameObject;
-        BindEvent(logoutBtn, LogoutBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Logout_btn, (data) => { Debug.Log("*Clicked Button* Logout"); });
 
-        GameObject deleteBtn = GetButton((int)Buttons.Delete_btn).gameObject;
-        BindEvent(deleteBtn, DeleteBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName); });
     }
 
-    #region ButtonEvents
-    public void BackBtnClick(PointerEventData data)
+    public void ChangeColor(string color)
     {
-        Managers.UI.ClosePopupUI();
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        image.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
-    public void ProfileBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_Color>("ColorView", pathName);
-    }
-    public void NickChangeBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_NickChange>("NickChangeView", pathName);
-    }
-    public void PswdChangeBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_PswdChange>("PswdChangeView", pathName);
-    }
-    public void LogoutBtnClick(PointerEventData data)
-    {
-        Debug.Log("*Clicked Button* Logout");
-    }
-    public void DeleteBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName);
-    }
-    #endregion
 
     void Start()
     {
