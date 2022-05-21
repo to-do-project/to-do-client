@@ -1,26 +1,30 @@
-using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public class UI_Menu : UI_Popup
+public class UI_Menu : UI_PopupMenu
 {
-
     enum Buttons
     {
         Back_btn,
         Profile_btn,
-        FTarget_btn,
-        PTarget_btn,
         Collector_btn,
         Friend_btn,
         PlanetInfo_btn,
         Store_btn,
         Setting_btn,
+        Deco_btn,
     }
 
-    string pathName = "Menu";
+    enum Images
+    {
+        Profile_image,
+    }
+
+    const string pathName = "Menu";
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
+
+    Image profileImage;
 
     public override void Init()
     {
@@ -30,98 +34,72 @@ public class UI_Menu : UI_Popup
 
         SetBtns();
 
+        Bind<Image>(typeof(Images));
+
+        profileImage = GetImage((int)Images.Profile_image);
+
         //열기 애니메이션 실행
-    }
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
     }
 
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, BackBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        GameObject profileBtn = GetButton((int)Buttons.Profile_btn).gameObject;
-        BindEvent(profileBtn, ProfileBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Profile>("ProfileView", $"{pathName}/Profile"); });
 
-        GameObject ftargetBtn = GetButton((int)Buttons.FTarget_btn).gameObject;
-        BindEvent(ftargetBtn, FtargetBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Collector_btn, (data) => { Managers.UI.ShowPopupUI<UI_Collector>("CollectorView", $"{pathName}/Target"); });
 
-        GameObject ptargetBtn = GetButton((int)Buttons.PTarget_btn).gameObject;
-        BindEvent(ptargetBtn, PtargetBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Friend_btn, (data) => { Managers.UI.ShowPopupUI<UI_Friend>("FriendView", $"{pathName}/Friend"); });
 
-        GameObject collectorBtn = GetButton((int)Buttons.Collector_btn).gameObject;
-        BindEvent(collectorBtn, CollectorBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.PlanetInfo_btn, (data) => { Managers.UI.ShowPopupUI<UI_PlanetInfo>("PlanetInfoView", $"{pathName}/Info"); });
 
-        GameObject friendBtn = GetButton((int)Buttons.Friend_btn).gameObject;
-        BindEvent(friendBtn, FriendBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Store_btn, (data) => { Managers.UI.ShowPopupUI<UI_ItemStore>("ItemStoreView", $"{pathName}/ItemStore"); });
 
-        GameObject planetInfoBtn = GetButton((int)Buttons.PlanetInfo_btn).gameObject;
-        BindEvent(planetInfoBtn, PlanetInfoBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Setting_btn, (data) => { Managers.UI.ShowPopupUI<UI_Setting>("SettingView", $"{pathName}/Setting"); });
 
-        GameObject storeBtn = GetButton((int)Buttons.Store_btn).gameObject;
-        BindEvent(storeBtn, StoreBtnClick, Define.TouchEvent.Touch);
-
-        GameObject settingBtn = GetButton((int)Buttons.Setting_btn).gameObject;
-        BindEvent(settingBtn, SettingBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Deco_btn, (data) => { Managers.UI.ShowPopupUI<UI_Deco>("DecoView", $"{pathName}/Deco"); });
     }
-
-    #region ButtonEvents
-    public void BackBtnClick(PointerEventData data)
-    {
-        //닫기 애니메이션 실행 후 삭제
-        Managers.UI.ClosePopupUI();
-    }
-    public void ProfileBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_Profile>("ProfileView", $"{pathName}/Profile");
-    }
-    public void FtargetBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_FTarget>("FTargetView", $"{pathName}/Target");
-    }
-    public void PtargetBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_PTarget>("PTargetView", $"{pathName}/Target");
-    }
-    public void CollectorBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_Collector>("CollectorView", $"{pathName}/Target");
-    }
-    public void FriendBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_Friend>("FriendView", $"{pathName}/Friend");
-    }
-    public void PlanetInfoBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_PlanetInfo>("PlanetInfoView", $"{pathName}/Info");
-    }
-    public void StoreBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_ItemStore>("ItemStoreView", $"{pathName}/ItemStore");
-    }
-    public void SettingBtnClick(PointerEventData data)
-    {
-        Managers.UI.ShowPopupUI<UI_Setting>("SettingView", $"{pathName}/Setting");
-    }
-    #endregion
 
     private void Start()
     {
         Init();
+    }
+
+    public void ChangeProfile(string color)
+    {
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+    }
+
+    public void TokenRefresh()
+    {
+        List<string> hN = new List<string>();
+        List<string> hV = new List<string>();
+
+        hN.Add("Jwt-Refresh-Token");
+        hN.Add("User-Id");
+        hV.Add("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY1MDYxOTAyNCwiZXhwIjoxNjUwNjIwODI0fQ.odEo-InfJFThh60QDXiSWjfP9rVzk6foxFDBDzG2hoc");
+        // hV.Add("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTA3MDM4MTYsImV4cCI6MTY1MTU2NzgxNn0.dshtPR1lsKm_zmg80rHwEqLjuAjvJaCQpKyd1nPnpIY");
+        hV.Add("1");
+
+        Test test = new Test();
+        test.deviceToken = "testing";
+
+        Testing.instance.Webbing("access-token", "POST", test, (data) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(data.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                Debug.Log(response.result);
+                Debug.Log(data.GetResponseHeader("Jwt-Access-Token"));
+                Debug.Log(data.GetResponseHeader("Jwt-Refresh-Token"));
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 }

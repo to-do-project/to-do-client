@@ -3,39 +3,62 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
-public class UI_ItemBtn : UI_Base
+public class UI_ItemBtn : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
-    bool isCharItem;
-    string itemName;
-    int price;
-    int curHave;
-    int maxHave;
-    GameObject parent;
+    long itemId;
+    UI_ItemStore parScript;
+    ScrollRect scroll;
+    Action<PointerEventData> OnClickHandler;
 
-    public void SetValue(bool isCharItem, string itemName, int price, int curHave, int maxHave, GameObject parent)
+    public void SetValue(long itemId, ScrollRect scroll, UI_ItemStore parScript)
     {
-        this.isCharItem = isCharItem;
-        this.itemName = itemName;
-        this.price = price;
-        this.curHave = curHave;
-        this.maxHave = maxHave;
-        this.parent = parent;
-    }
-
-    public override void Init()
-    {
-        BindEvent(gameObject, ItemBtnClick, Define.TouchEvent.Touch);
+        this.itemId = itemId;
+        this.scroll = scroll;
+        this.parScript = parScript;
+        OnClickHandler = ItemBtnClick;
     }
 
     public void ItemBtnClick(PointerEventData data)
     {
-        UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
-        //item.SetValue(isCharItem, itemName, price, curHave, maxHave, parent); 정보 넘기기
+        if(parScript)
+        {
+            parScript.OnBuyView(itemId);
+        }
     }
 
-    private void Start()
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        Init();
+        if(scroll)
+        {
+            scroll.OnBeginDrag(eventData);
+            OnClickHandler = null;
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (scroll)
+        {
+            scroll.OnDrag(eventData);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (scroll)
+        {
+            scroll.OnEndDrag(eventData);
+            OnClickHandler = ItemBtnClick;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (OnClickHandler != null)
+        {
+            OnClickHandler.Invoke(eventData);
+        }
     }
 }

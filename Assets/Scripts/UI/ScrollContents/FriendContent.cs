@@ -11,6 +11,8 @@ public class FriendContent : MonoBehaviour
     [SerializeField]
     private Text nameTxt;
 
+    private long id;
+
     GameObject parent;
 
     public void SetParent(GameObject parent)
@@ -21,6 +23,11 @@ public class FriendContent : MonoBehaviour
     public void SetImage(UI_Color.Colors color)
     {
         Debug.Log(color.ToString());
+    }
+
+    public void SetID(long id)
+    {
+        this.id = id;
     }
 
     public void SetName(string name)

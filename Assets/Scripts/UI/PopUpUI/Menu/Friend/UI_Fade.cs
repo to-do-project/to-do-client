@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_Fade : MonoBehaviour
 {
-    Canvas canvas;
+    Canvas canvas;              // Fade In, Out 하고 싶은 UI에 붙여서 사용
     CanvasGroup canvasGroup;
 
     float time = 0.5f;
