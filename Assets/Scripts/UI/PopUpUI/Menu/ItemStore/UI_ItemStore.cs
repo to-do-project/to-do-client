@@ -24,6 +24,11 @@ public class UI_ItemStore : UI_PopupMenu
     float lerp = 10f;
     bool toggle = true;
 
+    long selectBtn;
+    long beforeBtn;
+
+    bool onBtn = false;
+
     public override void Init()
     {
         base.Init();
@@ -66,6 +71,8 @@ public class UI_ItemStore : UI_PopupMenu
             planetBtnId.Add(i + 10);
         }
 #endif
+        
+        // 아이템 정보 불러온 후 무명 메소드에 넣을 것
 
         foreach (var i in charBtnId)
         {
@@ -76,6 +83,8 @@ public class UI_ItemStore : UI_PopupMenu
         {
             AddPlanetItem(i);
         }
+
+        // ----------------------------------------
     }
 
     private void SetBtns()
@@ -90,9 +99,9 @@ public class UI_ItemStore : UI_PopupMenu
         GameObject item = Instantiate(Resources.Load<GameObject>("Prefabs/UI/ScrollContents/Item_btn"));
         charBtnDict.Add(id, item.transform);
         charBtnDict[id].SetParent(charItemContent.transform, false);
+
         UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
-        btn.SetValue(true, "아이템이름", 1000, 1, 7, charScroll);
-        //btn.SetValue(); 버튼 정보 넘기기
+        btn.SetValue(id, charScroll.GetComponent<ScrollRect>(), gameObject.GetComponent<UI_ItemStore>());
     }
 
     private void AddPlanetItem(long id)
@@ -100,9 +109,25 @@ public class UI_ItemStore : UI_PopupMenu
         GameObject item = Instantiate(Resources.Load<GameObject>("Prefabs/UI/ScrollContents/Item_btn"));
         planetBtnDict.Add(id, item.transform);
         planetBtnDict[id].SetParent(planetItemContent.transform, false);
+
         UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
-        btn.SetValue(false, "아이템이름", 1000, 1, 7, planetScroll);
-        //btn.SetValue(); 버튼 정보 넘기기
+        btn.SetValue(id, planetScroll.GetComponent<ScrollRect>(), gameObject.GetComponent<UI_ItemStore>());
+    }
+
+    public void OnBuyView(long id)
+    {
+        if(onBtn)
+        {
+            return;
+        }
+        else
+        {
+            onBtn = true;
+            // 아이템 정보 가져오기 (코루틴 끝나면 onBtn false로)
+            UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
+            onBtn = false;
+            //item.SetValue();
+        }
     }
 
     private void UpdateScales()
@@ -116,7 +141,6 @@ public class UI_ItemStore : UI_PopupMenu
             {
                 gap = maxGap;
                 toggle = !toggle;
-                Debug.Log("반복중");
             }
         } else
         {
@@ -141,4 +165,16 @@ public class UI_ItemStore : UI_PopupMenu
     {
         UpdateScales();
     }
+}
+
+[System.Serializable]
+public class Item_ItemStore
+{
+    public long itemId;
+    public string name;
+    public string description;
+    public int price;
+    public string type;
+    public int minCnt;
+    public int maxCnt;
 }

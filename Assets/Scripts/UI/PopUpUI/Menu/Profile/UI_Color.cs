@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public class UI_Color : UI_PopupMenu
 {
-    protected MenuScene menuScene;
 
     enum Buttons
     {
@@ -21,11 +20,12 @@ public class UI_Color : UI_PopupMenu
         Pink_btn,
         Gray_btn,
         Black_btn,
+        Next_btn,
     }
 
     public enum Colors
     {
-        LightRed,
+        LightRed = 0,
         Yellow,
         Green,
         SkyBlue,
@@ -37,6 +37,20 @@ public class UI_Color : UI_PopupMenu
         Black,
     }
 
+    enum Images
+    {
+        Check_image,
+    }
+
+    UI_Profile profile;
+    UI_Menu menu;
+    string selectColor;
+    GameObject checkImage;
+    Transform checkTransform;
+
+    GameObject curBtn;
+    GameObject nexBtn;
+
     public override void Init()
     {
         base.Init();
@@ -45,8 +59,18 @@ public class UI_Color : UI_PopupMenu
 
         SetBtns();
 
-        menuScene = FindObjectOfType<MenuScene>();
+        selectColor = null;
+        curBtn = nexBtn = null;
 
+
+        Bind<GameObject>(typeof(Images));
+
+        checkImage = Get<GameObject>((int)Images.Check_image);
+        checkImage.SetActive(false);
+        checkTransform = checkImage.transform;
+
+        profile = FindObjectOfType<UI_Profile>();
+        menu = FindObjectOfType<UI_Menu>();
     }
 
     private void SetBtns()
@@ -55,32 +79,72 @@ public class UI_Color : UI_PopupMenu
 
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        SetBtn((int)Buttons.LightRed_btn, (data) => { ColorBtnClick(Colors.LightRed); });
+        SetBtn((int)Buttons.Next_btn, (data) => {
+            //서버에 정보 전달
+            profile.ChangeColor(selectColor);
+            menu.ChangeProfile(selectColor);
+            Managers.UI.ClosePopupUI();
+        });
 
-        SetBtn((int)Buttons.Yellow_btn, (data) => { ColorBtnClick(Colors.Yellow); });
+        GameObject btnLR = GetButton((int)Buttons.LightRed_btn).gameObject;
+        BindEvent(btnLR, (data) => { ColorBtnClick(Colors.LightRed, btnLR); });
 
-        SetBtn((int)Buttons.Green_btn, (data) => { ColorBtnClick(Colors.Green); });
+        GameObject btnY = GetButton((int)Buttons.Yellow_btn).gameObject;
+        BindEvent(btnY, (data) => { ColorBtnClick(Colors.Yellow, btnY); });
 
-        SetBtn((int)Buttons.SkyBlue_btn, (data) => { ColorBtnClick(Colors.SkyBlue); });
+        GameObject btnG = GetButton((int)Buttons.Green_btn).gameObject;
+        BindEvent(btnG, (data) => { ColorBtnClick(Colors.Green, btnG); });
 
-        SetBtn((int)Buttons.Blue_btn, (data) => { ColorBtnClick(Colors.Blue); });
+        GameObject btnSB = GetButton((int)Buttons.SkyBlue_btn).gameObject;
+        BindEvent(btnSB, (data) => { ColorBtnClick(Colors.SkyBlue, btnSB); });
 
-        SetBtn((int)Buttons.LightPurple_btn, (data) => { ColorBtnClick(Colors.LightPurple); });
+        GameObject btnB = GetButton((int)Buttons.Blue_btn).gameObject;
+        BindEvent(btnB, (data) => { ColorBtnClick(Colors.Blue, btnB); });
 
-        SetBtn((int)Buttons.Purple_btn, (data) => { ColorBtnClick(Colors.Purple); });
+        GameObject btnLP = GetButton((int)Buttons.LightPurple_btn).gameObject;
+        BindEvent(btnLP, (data) => { ColorBtnClick(Colors.LightPurple, btnLP); });
 
-        SetBtn((int)Buttons.Pink_btn, (data) => { ColorBtnClick(Colors.Pink); });
+        GameObject btnP = GetButton((int)Buttons.Purple_btn).gameObject;
+        BindEvent(btnP, (data) => { ColorBtnClick(Colors.Purple, btnP); });
 
-        SetBtn((int)Buttons.Gray_btn, (data) => { ColorBtnClick(Colors.Gray); });
+        GameObject btnPink = GetButton((int)Buttons.Pink_btn).gameObject;
+        BindEvent(btnPink, (data) => { ColorBtnClick(Colors.Pink, btnPink); });
 
-        SetBtn((int)Buttons.Black_btn, (data) => { ColorBtnClick(Colors.Black); });
+        GameObject btnGray = GetButton((int)Buttons.Gray_btn).gameObject;
+        BindEvent(btnGray, (data) => { ColorBtnClick(Colors.Gray, btnGray); });
+
+        GameObject btnBlack = GetButton((int)Buttons.Black_btn).gameObject;
+        BindEvent(btnBlack, (data) => { ColorBtnClick(Colors.Black, btnBlack); });
     }
 
-    private void ColorBtnClick(Colors color)
+    public void ColorBtnEnter(GameObject gameObject)
     {
-        // 바뀐 color정보 전달 후 종료
-        Debug.Log(color.ToString());
-        Managers.UI.ClosePopupUI();
+        if (checkImage.activeSelf) return;
+        gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
+    }
+
+    public void ColorBtnExit(GameObject gameObject)
+    {
+        if (checkImage.activeSelf) return;
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    private void ColorBtnClick(Colors color, GameObject target)
+    {
+        // 버튼의 color정보 전달 및 버튼 크기 변경
+        selectColor = color.ToString();
+        if(checkImage.activeSelf == false)
+        {
+            checkImage.SetActive(true);
+        }
+        nexBtn = target;
+        if(curBtn != null)
+        {
+            curBtn.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        curBtn = nexBtn;
+        curBtn.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
+        checkTransform.position = curBtn.transform.position;
     }
 
     void Start()

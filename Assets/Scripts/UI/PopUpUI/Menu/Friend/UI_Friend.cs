@@ -68,7 +68,14 @@ public class UI_Friend : UI_PopupMenu
             friendContent = GameObject.Find("FriendContents");
         }
 
+        SetContents();
+
         RelocationAll();
+    }
+
+    private void SetContents()
+    {
+
     }
 
     private void SetBtns()

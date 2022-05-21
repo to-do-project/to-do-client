@@ -57,27 +57,34 @@ public class UI_Delete : UI_PopupMenu
             string password = Pswdfield.text;
             if (string.IsNullOrWhiteSpace(password) == false)
             {
-                if (ComparePassword())
-                {
-                    //회원 탈퇴
-                    Debug.Log("회원 탈퇴");
-                    Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
-                }
-                else
-                {
-                    PswdChecktxt.text = "*비밀번호를 잘못 입력했습니다.";
-                }
+                ComparePassword();
             }
         });
     }
 
-    private bool ComparePassword()
+    private void ComparePassword()
     {
-        //패스워드 체크
-        string playerPassword = "";
-        bool result = (Pswdfield.text == playerPassword);
-        result = true;
-        return result;
+        List<string> hN = new List<string>();
+        List<string> hV = new List<string>();
+        hN.Add("Jwt-Access-Token");
+        hN.Add("User-Id");
+        hV.Add("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTA3MDM4MTYsImV4cCI6MTY1MTU2NzgxNn0.dshtPR1lsKm_zmg80rHwEqLjuAjvJaCQpKyd1nPnpIY");
+        hV.Add("1");
+
+        Testing.instance.Webbing("api/user", "DELETE", Pswdfield.text, (data) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(data.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                Debug.Log(response.result);
+                Debug.Log("회원 탈퇴");
+                Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
+            }
+            else
+            {
+                Debug.Log(response.message);
+                PswdChecktxt.text = "*비밀번호를 잘못 입력했습니다.";
+            }
+        }, hN, hV);
     }
 
     private void Start()

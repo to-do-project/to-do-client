@@ -57,18 +57,25 @@ public class UI_ItemBuy : UI_PopupMenu
     bool isCharItem;
     string itemName;
     int price;
-    int curHave;
-    int maxHave;
+    int maxBuy;
     GameObject parent;
 
-    public void SetValue(bool isCharItem, string itemName, int price, int curHave, int maxHave, GameObject parent)
+    public void SetValue(bool isCharItem, string itemName, int price, int maxBuy, GameObject parent)
     {
         this.isCharItem = isCharItem;
         this.itemName = itemName;
         this.price = price;
-        this.curHave = curHave;
-        this.maxHave = maxHave;
+        this.maxBuy = maxBuy;
         this.parent = parent;
+
+        if(maxBuy == 1)
+        {
+            buyAmountSlider.gameObject.SetActive(false);
+        }
+
+        nameTxt.text = itemName;
+        priceTxt.text = price.ToString();
+        maxTxt.text = maxBuy.ToString();
     }
 
     private void SetBtns()

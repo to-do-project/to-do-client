@@ -16,7 +16,15 @@ public class UI_Profile : UI_PopupMenu
         Delete_btn,
     }
 
+    enum Images
+    {
+        Profile_image,
+    }
+
     string pathName = "Menu/Profile";
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
+
+    Image image;
 
     public override void Init()
     {
@@ -26,6 +34,9 @@ public class UI_Profile : UI_PopupMenu
 
         SetBtns();
 
+        Bind<Image>(typeof(Images));
+
+        image = GetImage((int)Images.Profile_image);
     }
 
     private void SetBtns()
@@ -43,6 +54,13 @@ public class UI_Profile : UI_PopupMenu
         SetBtn((int)Buttons.Logout_btn, (data) => { Debug.Log("*Clicked Button* Logout"); });
 
         SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName); });
+    }
+
+    public void ChangeColor(string color)
+    {
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        image.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
 
     void Start()
