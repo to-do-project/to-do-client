@@ -16,6 +16,12 @@ public class TodoData : ILoader<int, Todo>
 
     public Dictionary<int, Todo> MakeDict()
     {
-        throw new System.NotImplementedException();
+        Dictionary<int, Todo> dict = new Dictionary<int, Todo>();
+
+        foreach(Todo todo in todos)
+        {
+            dict.Add(todo.index, todo);
+        }
+        return dict;
     }
 }

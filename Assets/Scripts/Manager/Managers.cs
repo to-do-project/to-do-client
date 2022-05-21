@@ -21,6 +21,7 @@ public class Managers : MonoBehaviour
     SceneManagerEx scene = new SceneManagerEx();
     SoundManager sound = new SoundManager();
     DataManager data = new DataManager();
+    PlayerManager player = new PlayerManager();
     static WebManager web;
 
     public static InputManager Input { get { return Instance().input; } }
@@ -30,6 +31,7 @@ public class Managers : MonoBehaviour
     public static SoundManager Sound { get { return Instance().sound; } }
     public static DataManager Data { get { return Instance().data; } }
     public static WebManager Web { get { return web; } }
+    public static PlayerManager Player { get { return Player; } }
     
 
     void Start()

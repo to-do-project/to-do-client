@@ -1,11 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+
+public class LoginData
+{
+    public string email;
+    public string password;
+    public string deviceToken;
+}
+
+public class LoginResult
+{
+    public long userId;
+    public long planetId;
+    public string email;
+    public string nickname;
+    public string characterColor;
+    public string profileColor;
+    public int point;
+    public int missionStatus;
+    public string deviceToken;
+}
 
 public class UI_Login : UI_Panel
 {
+    Action<UnityWebRequest> callback;
+    Response<LoginResult> res;
+
     protected LoginScene loginScene;
 
     enum Buttons
@@ -21,6 +47,13 @@ public class UI_Login : UI_Panel
         ID_inputfield,
         PW_inputfield,
     }
+
+    enum Texts
+    {
+        failMessage_txt,
+    }
+
+    Text failMessage;
 
     public override void Init()
     {
@@ -42,6 +75,7 @@ public class UI_Login : UI_Panel
 
         Bind<Button>(typeof(Buttons));
         Bind<InputField>(typeof(InputFields));
+        Bind<Text>(typeof(Texts));
 
         GameObject signupBtn = GetButton((int)Buttons.SignUp_btn).gameObject;
         BindEvent(signupBtn, SignUpBtnClick, Define.TouchEvent.Touch);
@@ -51,12 +85,16 @@ public class UI_Login : UI_Panel
 
         GameObject loginBtn = GetButton((int)Buttons.Login_btn).gameObject;
         BindEvent(loginBtn, LoginBtnClick, Define.TouchEvent.Touch);
-        
+
         //GameObject gloginBtn = GetButton((int)Buttons.GLogin_btn).gameObject;
         //BindEvent(gloginBtn, GoogleLoginBtnClick, Define.TouchEvent.Touch);
 
+        failMessage = GetText((int)Texts.failMessage_txt);
+
         loginScene = FindObjectOfType<LoginScene>();
 
+        callback -= ResponseAction;
+        callback += ResponseAction;
     }
 
     private void Start()
@@ -64,37 +102,42 @@ public class UI_Login : UI_Panel
         Init();
     }
 
-    
+
     private void LoginBtnClick(PointerEventData data)
     {
+        LoginData val = new LoginData();
         //아이디 입력 확인
         InputField idInput = Get<InputField>((int)InputFields.ID_inputfield);
-        if (string.IsNullOrWhiteSpace(idInput.text))
+        if (isValidEmail(idInput.text))
         {
-            Debug.Log("ID가 공란입니다.");
+            val.email = idInput.text;
         }
         else
         {
-            Debug.Log($"ID : {idInput.text}");
+            failMessage.text = "*이메일 혹은 비밀번호를 잘못 입력했습니다.";
+            return;
         }
 
         //비밀번호 입력 확인
         InputField pwInput = Get<InputField>((int)InputFields.PW_inputfield);
-        if(string.IsNullOrWhiteSpace(pwInput.text))
+        if (isValidPassword(pwInput.text))
         {
-            Debug.Log("PW가 공란입니다.");
+            val.password = pwInput.text;
         }
         else
         {
-            Debug.Log($"PW : {pwInput.text}");
+            failMessage.text = "*이메일 혹은 비밀번호를 잘못 입력했습니다.";
+            return;
         }
 
+        val.deviceToken = "12345";
 
         //로그인 API 호출
+        res = new Response<LoginResult>();
+        Managers.Web.SendPostRequest<SignupResult>("login", val, callback);
 
-        //유저 정보가 입력 안된 상태면 유저정보 입력 뷰로 넘어감
-        Managers.UI.ShowPopupUI<UI_NicknameSet>("NicknameView", "UserInfo");
-        
+        //Managers.UI.ShowPopupUI<UI_NicknameSet>("NicknameView", "UserInfo");
+
 
         //메인 씬으로 넘어가기
     }
@@ -103,7 +146,7 @@ public class UI_Login : UI_Panel
     private void SignUpBtnClick(PointerEventData data)
     {
         Managers.UI.ShowPopupUI<UI_Info>("InfoView", "SignUp");
-        
+
     }
 
     private void FindPWBtnClick(PointerEventData data)
@@ -111,8 +154,81 @@ public class UI_Login : UI_Panel
         Managers.UI.ShowPopupUI<UI_PWfind>("FindView", "PWfind");
     }
 
-    /*public void GoogleLoginBtnClick(PointerEventData data)
+    private void ResponseAction(UnityWebRequest request)
     {
-        //구글 로그인 API ghcnf
-    }*/
+        if (res != null)
+        {
+            res = JsonUtility.FromJson<Response<LoginResult>>(request.downloadHandler.text);
+
+           /* Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+            Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+*/
+            if (res.isSuccess)
+            {
+                if (res.code == 1000)
+                {
+                    Managers.Scene.LoadScene(Define.Scene.Main);
+                }
+            }
+            else
+            {
+                switch (res.code)
+                {
+                    case 6002:
+                        failMessage.text = "*이메일 혹은 비밀번호를 잘못 입력했습니다.";
+                        break;
+                    case 6003:
+                        Debug.Log(res.message);
+                        break;
+                    case 6009:
+                        Debug.Log(res.message);
+                        break;
+                    case 6010:
+                        failMessage.text = "*이메일 혹은 비밀번호를 잘못 입력했습니다.";
+                        break;
+                    case 6011:
+                        failMessage.text = "*이메일 혹은 비밀번호를 잘못 입력했습니다.";
+                        break;
+
+                }
+            }
+            res = null;
+        }
+    }
+
+    private bool isValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return false;
+        }
+        try
+        {
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                    RegexOptions.None, TimeSpan.FromMilliseconds(250));
+        }
+        catch (RegexMatchTimeoutException)
+        {
+            return false;
+        }
+    }
+
+    private bool isValidPassword(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            return false;
+        }
+        try
+        {
+            return Regex.IsMatch(pw, @"^(?=.*[a-z])(?=.*[0-9]).{6,15}$", 
+                RegexOptions.None, TimeSpan.FromMilliseconds(250));
+        }
+        catch (RegexMatchTimeoutException)
+        {
+            return false;
+        }
+    }
 }
+
+
