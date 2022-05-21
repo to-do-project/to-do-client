@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class SignupData
+public class RequestSignUp
 {
     public string email;
     public string password;
@@ -15,7 +15,7 @@ public class SignupData
     public string deviceToken;
 }
 
-public class SignupResult
+public class ResponseSignUp
 {
     public long userId;
     public long planetId;
@@ -163,7 +163,7 @@ public class UI_PlanetSet : UI_UserInfo
 
         res = new Response<string>();
 
-        SignupData val = new SignupData
+        RequestSignUp val = new RequestSignUp
         {
             email = loginScene.Email,
             password = loginScene.Pw,
@@ -172,7 +172,7 @@ public class UI_PlanetSet : UI_UserInfo
             deviceToken = "12345"
 
         };
-        Managers.Web.SendPostRequest<SignupResult>("join",val,callback);
+        Managers.Web.SendPostRequest<ResponseSignUp>("join",val,callback);
 
 
         //Managers.UI.CloseAllPopupUI();

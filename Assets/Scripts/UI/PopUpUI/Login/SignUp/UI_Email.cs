@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
 [Serializable]
-class EmailData
+class RequestEmail
 {
     public string email;
 }
@@ -110,7 +110,7 @@ public class UI_Email : UI_SignUp
             //이메일 인증번호 발송 API
             loginScene.Email=Einput.text;
 
-            EmailData val = new EmailData { email = loginScene.Email };
+            RequestEmail val = new RequestEmail { email = loginScene.Email };
             Authres = new Response<string>();
 
             Managers.Web.SendPostRequest<string>("join/auth/new-num",val, callback);
