@@ -8,11 +8,14 @@ public class PlayerManager
 
     void Start()
     {
-
+        Init();
     }
 
     void Init()
     {
+        //토큰 확인
+
+
         PlanetInstantiate();
         ItemInstantiate();
     }
@@ -26,5 +29,11 @@ public class PlayerManager
     private void ItemInstantiate()
     {
 
+    }
+
+    public void SetString(string key, string value)
+    {
+        PlayerPrefs.SetString(key, value);
+        PlayerPrefs.Save();
     }
 }

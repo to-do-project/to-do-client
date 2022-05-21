@@ -122,7 +122,7 @@ public class UI_Login : UI_Panel
         InputField pwInput = Get<InputField>((int)InputFields.PW_inputfield);
         if (isValidPassword(pwInput.text))
         {
-            val.password = idInput.text;
+            val.password = pwInput.text;
         }
         else
         {
@@ -159,13 +159,10 @@ public class UI_Login : UI_Panel
         if (res != null)
         {
             res = JsonUtility.FromJson<Response<LoginResult>>(request.downloadHandler.text);
-            /*Debug.Log(request.GetResponseHeader("Jwt-Access-Token"));
-            Debug.Log(request.GetResponseHeader("Jwt-Refresh-Token"));*/
 
-            Debug.Log(res.code);
-            Debug.Log(res.isSuccess);
-            Debug.Log(res.message);
-
+           /* Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+            Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+*/
             if (res.isSuccess)
             {
                 if (res.code == 1000)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MainScene : BaseScene
 {
@@ -48,7 +49,7 @@ public class MainScene : BaseScene
 
         bool check = Managers.UI.checkPopupOn();
 
-        if (!check)
+        if (!check && !EventSystem.current.IsPointerOverGameObject())
         {
             //Debug.Log("touch event");
 
