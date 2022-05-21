@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_DeleteCheck : UI_Popup
+public class UI_DeleteCheck : UI_PopupMenu
 {
     enum Buttons
     {
@@ -23,37 +23,15 @@ public class UI_DeleteCheck : UI_Popup
         Managers.Input.SystemTouchAction -= Managers.Input.SystemTouchAction;
     }
 
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-    }
-
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject endBtn = GetButton((int)Buttons.End_btn).gameObject;
-        BindEvent(endBtn, EndBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.End_btn, (data) => { Application.Quit(); });
     }
 
     private void Start()
     {
         Init();
-    }
-
-    public void EndBtnClick(PointerEventData data)
-    {
-        Application.Quit();
     }
 }

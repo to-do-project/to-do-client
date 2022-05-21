@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Announce : UI_Popup
+public class UI_Announce : UI_PopupMenu
 {
     enum Buttons
     {
@@ -37,28 +37,11 @@ public class UI_Announce : UI_Popup
         AddAnnounce("공지사항 5", "업데이트 내용");
     }
 
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-    }
-
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
     }
 
     private void AddAnnounce(string head, string sub)

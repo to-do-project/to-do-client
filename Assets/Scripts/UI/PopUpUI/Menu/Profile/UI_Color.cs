@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UI_Color : UI_Popup
+public class UI_Color : UI_PopupMenu
 {
-    protected MenuScene menuScene;
 
     enum Buttons
     {
@@ -21,11 +20,12 @@ public class UI_Color : UI_Popup
         Pink_btn,
         Gray_btn,
         Black_btn,
+        Next_btn,
     }
 
     public enum Colors
     {
-        LightRed,
+        LightRed = 0,
         Yellow,
         Green,
         SkyBlue,
@@ -37,6 +37,20 @@ public class UI_Color : UI_Popup
         Black,
     }
 
+    enum Images
+    {
+        Check_image,
+    }
+
+    UI_Profile profile;
+    UI_Menu menu;
+    string selectColor;
+    GameObject checkImage;
+    Transform checkTransform;
+
+    GameObject curBtn;
+    GameObject nexBtn;
+
     public override void Init()
     {
         base.Init();
@@ -45,115 +59,92 @@ public class UI_Color : UI_Popup
 
         SetBtns();
 
-        menuScene = FindObjectOfType<MenuScene>();
+        selectColor = null;
+        curBtn = nexBtn = null;
 
-    }
-    private void CameraSet()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
+
+        Bind<GameObject>(typeof(Images));
+
+        checkImage = Get<GameObject>((int)Images.Check_image);
+        checkImage.SetActive(false);
+        checkTransform = checkImage.transform;
+
+        profile = FindObjectOfType<UI_Profile>();
+        menu = FindObjectOfType<UI_Menu>();
     }
 
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
-        BindEvent(backBtn, BackBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        GameObject lightRedBtn = GetButton((int)Buttons.LightRed_btn).gameObject;
-        BindEvent(lightRedBtn, LightRedBtnClick, Define.TouchEvent.Touch);
+        SetBtn((int)Buttons.Next_btn, (data) => {
+            //서버에 정보 전달
+            profile.ChangeColor(selectColor);
+            menu.ChangeProfile(selectColor);
+            Managers.UI.ClosePopupUI();
+        });
 
-        GameObject yellowBtn = GetButton((int)Buttons.Yellow_btn).gameObject;
-        BindEvent(yellowBtn, YellowBtnClick, Define.TouchEvent.Touch);
+        GameObject btnLR = GetButton((int)Buttons.LightRed_btn).gameObject;
+        BindEvent(btnLR, (data) => { ColorBtnClick(Colors.LightRed, btnLR); });
 
-        GameObject greenBtn = GetButton((int)Buttons.Green_btn).gameObject;
-        BindEvent(greenBtn, GreenBtnClick, Define.TouchEvent.Touch);
+        GameObject btnY = GetButton((int)Buttons.Yellow_btn).gameObject;
+        BindEvent(btnY, (data) => { ColorBtnClick(Colors.Yellow, btnY); });
 
-        GameObject skyBlueBtn = GetButton((int)Buttons.SkyBlue_btn).gameObject;
-        BindEvent(skyBlueBtn, SkyBlueBtnClick, Define.TouchEvent.Touch);
+        GameObject btnG = GetButton((int)Buttons.Green_btn).gameObject;
+        BindEvent(btnG, (data) => { ColorBtnClick(Colors.Green, btnG); });
 
-        GameObject blueBtn = GetButton((int)Buttons.Blue_btn).gameObject;
-        BindEvent(blueBtn, BlueBtnClick, Define.TouchEvent.Touch);
+        GameObject btnSB = GetButton((int)Buttons.SkyBlue_btn).gameObject;
+        BindEvent(btnSB, (data) => { ColorBtnClick(Colors.SkyBlue, btnSB); });
 
-        GameObject lightPurpleBtn = GetButton((int)Buttons.LightPurple_btn).gameObject;
-        BindEvent(lightPurpleBtn, LightPurpleBtnClick, Define.TouchEvent.Touch);
+        GameObject btnB = GetButton((int)Buttons.Blue_btn).gameObject;
+        BindEvent(btnB, (data) => { ColorBtnClick(Colors.Blue, btnB); });
 
-        GameObject purpleBtn = GetButton((int)Buttons.Purple_btn).gameObject;
-        BindEvent(purpleBtn, PurpleBtnClick, Define.TouchEvent.Touch);
+        GameObject btnLP = GetButton((int)Buttons.LightPurple_btn).gameObject;
+        BindEvent(btnLP, (data) => { ColorBtnClick(Colors.LightPurple, btnLP); });
 
-        GameObject pinkBtn = GetButton((int)Buttons.Pink_btn).gameObject;
-        BindEvent(pinkBtn, PinkBtnClick, Define.TouchEvent.Touch);
+        GameObject btnP = GetButton((int)Buttons.Purple_btn).gameObject;
+        BindEvent(btnP, (data) => { ColorBtnClick(Colors.Purple, btnP); });
 
-        GameObject grayBtn = GetButton((int)Buttons.Gray_btn).gameObject;
-        BindEvent(grayBtn, GrayBtnClick, Define.TouchEvent.Touch);
+        GameObject btnPink = GetButton((int)Buttons.Pink_btn).gameObject;
+        BindEvent(btnPink, (data) => { ColorBtnClick(Colors.Pink, btnPink); });
 
-        GameObject blackBtn = GetButton((int)Buttons.Black_btn).gameObject;
-        BindEvent(blackBtn, BlackBtnClick, Define.TouchEvent.Touch);
+        GameObject btnGray = GetButton((int)Buttons.Gray_btn).gameObject;
+        BindEvent(btnGray, (data) => { ColorBtnClick(Colors.Gray, btnGray); });
+
+        GameObject btnBlack = GetButton((int)Buttons.Black_btn).gameObject;
+        BindEvent(btnBlack, (data) => { ColorBtnClick(Colors.Black, btnBlack); });
     }
 
-    #region ButtonEvents
-    public void BackBtnClick(PointerEventData data)
+    public void ColorBtnEnter(GameObject gameObject)
     {
-        Managers.UI.ClosePopupUI();
+        if (checkImage.activeSelf) return;
+        gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
     }
-    public void LightRedBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.LightRed);
-    }
-    public void YellowBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Yellow);
-    }
-    public void GreenBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Green);
-    }
-    public void SkyBlueBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.SkyBlue);
-    }
-    public void BlueBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Blue);
-    }
-    public void LightPurpleBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.LightPurple);
-    }
-    public void PurpleBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Purple);
-    }
-    public void PinkBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Pink);
-    }
-    public void GrayBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Gray);
-    }
-    public void BlackBtnClick(PointerEventData data)
-    {
-        ColorBtnClick(Colors.Black);
-    }
-    #endregion
 
-    private void ColorBtnClick(Colors color)
+    public void ColorBtnExit(GameObject gameObject)
     {
-        // 바뀐 color정보 전달 후 종료
-        Debug.Log(color.ToString());
-        Managers.UI.ClosePopupUI();
+        if (checkImage.activeSelf) return;
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    private void ColorBtnClick(Colors color, GameObject target)
+    {
+        // 버튼의 color정보 전달 및 버튼 크기 변경
+        selectColor = color.ToString();
+        if(checkImage.activeSelf == false)
+        {
+            checkImage.SetActive(true);
+        }
+        nexBtn = target;
+        if(curBtn != null)
+        {
+            curBtn.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        curBtn = nexBtn;
+        curBtn.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
+        checkTransform.position = curBtn.transform.position;
     }
 
     void Start()
