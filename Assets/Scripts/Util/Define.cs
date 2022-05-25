@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Define
 {
-    /*//PlayerPref에 쓸 Key 값
-    public const string JWT_ACCESS_TOKEN = "Jwt_Access_Token";
+    //PlayerPref에 쓸 Key 값
+    public const string JWT_ACCESS_TOKEN = "Jwt-Access-Token";
     public const string JWT_REFRESH_TOKEN = "Jwt-Refresh-Token";
     public const string EMAIL = "email";
-    public const string PASSWORD = "password";
     public const string DEVICETOKEN = "deviceToken";
     public const string NICKNAME = "nickname";
     public const string CHARACTER_COLOR = "characterColor";
-    public const string PLANET_ID = "planetId";*/
+    public const string PLANET_ID = "planetId";
+    public const string PLANET_LEVEL = "planetLevel";
+    public const string PLANET_COLOR = "planetColor";
+    public const string USER_ID = "userId";
 
     public enum Scene
     {

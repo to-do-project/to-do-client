@@ -14,13 +14,16 @@ public class RequestLogin
     public string deviceToken;
 }
 
+[System.Serializable]
 public class ResponseLogin
 {
     public long userId;
     public long planetId;
+    public int planetLevel;
+    public string planetColor;
     public string email;
     public string nickname;
-    public string characterColor;
+    public long characterItem;
     public string profileColor;
     public int point;
     public int missionStatus;
@@ -160,13 +163,36 @@ public class UI_Login : UI_Panel
         {
             res = JsonUtility.FromJson<Response<ResponseLogin>>(request.downloadHandler.text);
 
-           /* Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
-            Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
-*/
+            Debug.Log(res.code);
+            Debug.Log(res.message);
+            
             if (res.isSuccess)
             {
+                Debug.Log("Success Login");
                 if (res.code == 1000)
                 {
+                    //토큰 저장
+                    Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                    Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+                    /*Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
+                    Debug.Log(Managers.Player.GetString(Define.JWT_REFRESH_TOKEN));
+*/
+
+                    ResponseLogin result = res.result;
+
+                    //유저정보
+                    Managers.Player.SetString(Define.EMAIL, result.email);
+                    Managers.Player.SetString(Define.NICKNAME, result.nickname);
+                    Managers.Player.SetString(Define.USER_ID, result.userId.ToString());
+                    Managers.Player.SetString(Define.PLANET_ID, result.userId.ToString());
+                    Managers.Player.SetInt(Define.PLANET_LEVEL, result.planetLevel);
+                    Managers.Player.SetString(Define.PLANET_COLOR, result.planetColor);
+                    Managers.Player.SetString(Define.EMAIL, result.email);
+                    Managers.Player.SetString(Define.NICKNAME, result.nickname);
+                    Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
+
+
+                    //Managers.Player.Init();
                     Managers.Scene.LoadScene(Define.Scene.Main);
                 }
             }

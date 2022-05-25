@@ -15,13 +15,16 @@ public class RequestSignUp
     public string deviceToken;
 }
 
+[System.Serializable]
 public class ResponseSignUp
 {
     public long userId;
     public long planetId;
+    public int planetLevel;
+    public string planetColor;
     public string email;
     public string nickname;
-    public string characterColor;
+    public long characterItem;
     public string profileColor;
     public int point;
     public int missionStatus;
@@ -32,7 +35,7 @@ public class UI_PlanetSet : UI_UserInfo
 {
 
     Action<UnityWebRequest> callback;
-    Response<string> res; //인증번호 발송 용
+    Response<ResponseSignUp> res; 
 
 
     enum Buttons
@@ -161,7 +164,7 @@ public class UI_PlanetSet : UI_UserInfo
         }
 
 
-        res = new Response<string>();
+        res = new Response<ResponseSignUp>();
 
         RequestSignUp val = new RequestSignUp
         {
@@ -175,29 +178,57 @@ public class UI_PlanetSet : UI_UserInfo
         Managers.Web.SendPostRequest<ResponseSignUp>("join",val,callback);
 
 
-        //Managers.UI.CloseAllPopupUI();
-
-/*        IEnumerable<Toggle> tg = toggleGroup.GetComponent<ToggleGroup>().ActiveToggles();
-        foreach(Toggle t in tg)
-        {
-            Debug.Log("active "+t.name);
-        }*/
-
-        //Debug.Log(planet);
     }
 
     private void ResponseAction(UnityWebRequest request)
     {
         if (res != null)
         {
-            res = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
+            res = JsonUtility.FromJson<Response<ResponseSignUp>>(request.downloadHandler.text);
+
 
             if (res.isSuccess)
             {
                 switch (res.code) 
                 {
                     case 1000:
-                        Managers.Scene.LoadScene(Define.Scene.Main);
+
+
+
+                        //토큰 저장
+                        Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                        Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+                        Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
+                        Debug.Log(Managers.Player.GetString(Define.JWT_REFRESH_TOKEN));
+
+                        //Debug.Log(res.result);
+
+                        ResponseSignUp result = res.result;
+
+                        //Debug.Log(result.email);
+
+                        if (result != null)
+                        {
+                            Managers.Player.SetString(Define.EMAIL, result.email);
+                            Managers.Player.SetString(Define.NICKNAME, result.nickname);
+                            Managers.Player.SetString(Define.USER_ID, result.userId.ToString());
+                            Managers.Player.SetString(Define.PLANET_ID, result.userId.ToString());
+                            Managers.Player.SetInt(Define.PLANET_LEVEL, result.planetLevel);
+                            Managers.Player.SetString(Define.PLANET_COLOR, result.planetColor);
+                            Managers.Player.SetString(Define.EMAIL, result.email);
+                            Managers.Player.SetString(Define.NICKNAME, result.nickname);
+                            Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
+
+                            Managers.Player.Init();
+                            Managers.Scene.LoadScene(Define.Scene.Main);
+                        }
+
+                        else
+                        {
+                            Debug.Log("result is null");
+                        }
+
+
                         break;
                     default:
                         Debug.Log(res.message);

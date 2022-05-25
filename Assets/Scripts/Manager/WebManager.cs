@@ -11,23 +11,18 @@ public class WebManager : MonoBehaviour
     string baseUrl = "https://dev.teamplanz.shop";
 
 
-    public void SendPostRequest<T>(string url, object obj, Action<UnityWebRequest> callback)
+    public void SendPostRequest<T>(string url, object obj, Action<UnityWebRequest> callback, string[] header = null, string[] headerValue = null)
     {
-        StartCoroutine(PostRequest<T>(url, obj,callback));
+        StartCoroutine(PostRequest<T>(url, obj,callback, header, headerValue));
     }
 
-    public void SendGetRequest(string url, string param, Action<UnityWebRequest> callback)
+    public void SendGetRequest(string url, string param, Action<UnityWebRequest> callback, string[] header = null, string[] headerValue = null)
     {
-        StartCoroutine(GetRequest(url,param,callback));
-    }
-
-    public void SendGetAllRequest(string url, Action<UnityWebRequest> callback)
-    {
-        //StartCoroutine(CoSendWebRequest(url, "GET", null, callback));
+        StartCoroutine(GetRequest(url,param,callback, header, headerValue));
     }
 
 
-    IEnumerator PostRequest<T>(string url, object obj, Action<UnityWebRequest> callback = null)
+    IEnumerator PostRequest<T>(string url, object obj, Action<UnityWebRequest> callback = null, string[] header = null, string[] headerValue = null)
     {
         string sendUrl = $"{baseUrl}/{url}";
         byte[] jsonByte = null;
@@ -42,7 +37,16 @@ public class WebManager : MonoBehaviour
             uwr.uploadHandler = new UploadHandlerRaw(jsonByte); //바이트배열 업로드
             uwr.downloadHandler = new DownloadHandlerBuffer(); //응답이 왔을 때
             uwr.SetRequestHeader("Content-type", "application/json");
-            
+
+            if (header != null && headerValue!=null)
+            {
+                for(int i = 0; i < header.Length; i++)
+                {
+                    uwr.SetRequestHeader(header[i], headerValue[i]);
+
+                }
+            }
+
             yield return uwr.SendWebRequest();
 
             if (uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError)
@@ -54,6 +58,7 @@ public class WebManager : MonoBehaviour
                 if (callback != null)
                 {
                     //그담에 수행할 이벤트 호출
+                    Debug.Log("Recv " + uwr.downloadHandler.text);
                     callback.Invoke(uwr);
 
                 }
@@ -65,24 +70,34 @@ public class WebManager : MonoBehaviour
         
     }
 
-    IEnumerator GetRequest(string url, string param, Action<UnityWebRequest> callback = null)
+    IEnumerator GetRequest(string url, string param, Action<UnityWebRequest> callback = null, string[] header = null, string[] headerValue = null)
     {
         string sendUrl = $"{baseUrl}/{url}{param}";
 
-        using (UnityWebRequest request = UnityWebRequest.Get(sendUrl))
+        using (UnityWebRequest uwr = UnityWebRequest.Get(sendUrl))
         {
-            yield return request.SendWebRequest();
-
-            if(request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            if (header != null && headerValue != null)
             {
-                Debug.Log(request.error);
+                for (int i = 0; i < header.Length; i++)
+                {
+                    uwr.SetRequestHeader(header[i], headerValue[i]);
+
+                }
+            }
+
+            yield return uwr.SendWebRequest();
+
+            if(uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log(uwr.error);
             }
             else
             {
                 if (callback != null)
                 {
+                    Debug.Log("Recv " + uwr.downloadHandler.text);
                     //그담에 수행할 이벤트 호출
-                    callback.Invoke(request);
+                    callback.Invoke(uwr);
 
                 }
             }
@@ -129,7 +144,7 @@ public class WebManager : MonoBehaviour
     }*/
 
     //API 호출 전에 부르기?
-    public bool InternetCheck()
+/*    public bool InternetCheck()
     {
         //인터넷에 연결되어 있는지 확인
         if (Application.internetReachability == NetworkReachability.NotReachable)
@@ -140,6 +155,6 @@ public class WebManager : MonoBehaviour
         {
             return true;
         }
-    }
+    }*/
 
 }

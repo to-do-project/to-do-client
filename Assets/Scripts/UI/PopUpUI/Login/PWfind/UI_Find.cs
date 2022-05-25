@@ -1,11 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+
 
 public class UI_Find : UI_PWfind
 {
+
+    Action<UnityWebRequest> callback;
+    Response<string> res;
+
     enum Buttons
     {
         Back_btn,
@@ -17,6 +25,7 @@ public class UI_Find : UI_PWfind
         ID_inputfield,
     }
 
+    InputField idInputfield;
     GameObject sendEmailBtn;
 
     public override void Init()
@@ -31,6 +40,13 @@ public class UI_Find : UI_PWfind
 
         sendEmailBtn = GetButton((int)Buttons.sendEmail_btn).gameObject;
         BindEvent(sendEmailBtn, SendEmailBtnClick, Define.TouchEvent.Touch);
+
+        idInputfield = GetInputfiled((int)InputFields.ID_inputfield);
+
+
+        callback -= ResponseAction;
+        callback += ResponseAction;
+
     }
 
     void Start()
@@ -40,8 +56,53 @@ public class UI_Find : UI_PWfind
 
     private void SendEmailBtnClick(PointerEventData data)
     {
-        //send email API 호출
+        if (IsValidEmail(idInputfield.text))
+        {
+            //send email API 호출
+            res = new Response<string>();
+            RequestEmail val = new RequestEmail { email = idInputfield.text };
+            Managers.Web.SendPostRequest<string>("user/temporary/pwd", val, callback);
 
-        Managers.UI.ShowPopupUI<UI_PWAuth>("AuthView", "PWfind");
+            Managers.UI.ShowPopupUI<UI_PWAuth>("AuthView", "PWfind");
+        }
+        
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        //공란인지
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return false;
+        }
+        try
+        {
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                    RegexOptions.None, TimeSpan.FromMilliseconds(250));
+        }
+        catch (RegexMatchTimeoutException)
+        {
+            return false;
+        }
+    }
+
+    private void ResponseAction(UnityWebRequest request)
+    {
+        if (res != null)
+        {
+            res = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
+
+            if (res.isSuccess)
+            {
+                Debug.Log(res.message);
+                //Managers.UI.ShowPopupUI<UI_PWAuth>("AuthView", "PWfind");
+            }
+            else
+            {
+                Debug.Log(res.message);
+            }
+
+            res = null;
+        }
     }
 }
