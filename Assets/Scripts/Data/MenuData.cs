@@ -84,3 +84,9 @@ public class ResponseBuyItem
     public int maxCnt;
     public int point;
 }
+
+[Serializable]
+public class ResponseCloset
+{
+    public List<long> characterItemIdList;
+}
