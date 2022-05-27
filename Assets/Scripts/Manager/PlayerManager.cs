@@ -47,6 +47,8 @@ public class PlayerManager : MonoBehaviour
     Response<ResponseMainPlanet> Mainres;
     Response<string> Tokenres;
 
+    Dictionary<int, MainItemList> itemList;
+
     string[] header = new string[2];
     string[] headerValue = new string[2];
 
@@ -94,6 +96,13 @@ public class PlayerManager : MonoBehaviour
         {
             Mainres = JsonUtility.FromJson<Response<ResponseMainPlanet>>(request.downloadHandler.text);
 
+            if (Mainres.isSuccess)
+            {
+                if(Mainres.code == 1000)
+                {
+                    ItemInstantiate();
+                }
+            }
             Mainres = null;
         }
 
