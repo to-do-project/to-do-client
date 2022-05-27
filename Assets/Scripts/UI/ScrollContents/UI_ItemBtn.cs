@@ -8,23 +8,37 @@ using System;
 public class UI_ItemBtn : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     long itemId;
-    UI_ItemStore parScript;
+    UI_ItemStore itemScript;
+    UI_Deco decoScript;
     ScrollRect scroll;
     Action<PointerEventData> OnClickHandler;
 
-    public void SetValue(long itemId, ScrollRect scroll, UI_ItemStore parScript)
+    public void SetValue(long itemId, ScrollRect scroll)
     {
         this.itemId = itemId;
         this.scroll = scroll;
-        this.parScript = parScript;
         OnClickHandler = ItemBtnClick;
+    }
+
+    public void SetItemScript(UI_ItemStore itemScript)
+    {
+        this.itemScript = itemScript;
+    }
+
+    public void SetDecoScript(UI_Deco decoScript)
+    {
+        this.decoScript = decoScript;
     }
 
     public void ItemBtnClick(PointerEventData data)
     {
-        if(parScript)
+        if(itemScript != null)
         {
-            parScript.OnBuyView(itemId);
+            itemScript.OnBuyView(itemId);
+        }
+        if(decoScript != null)
+        {
+            decoScript.ChangeCloth(itemId);
         }
     }
 
