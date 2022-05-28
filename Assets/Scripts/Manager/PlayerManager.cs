@@ -205,8 +205,8 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < itemList.Count; i++)
         {
             string path = "Items/" + itemList[i].itemId;
-            GameObject tmp = Managers.Resource.Instantiate(path, planet.transform.GetChild(2).transform);
-            ChangeItemMode(tmp, Define.Scene.Main);
+            //GameObject tmp = Managers.Resource.Instantiate(path, planet.transform.GetChild(2).transform);
+            //ChangeItemMode(tmp, Define.Scene.Main);
 
         }
     }
