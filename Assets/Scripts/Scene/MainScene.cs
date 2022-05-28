@@ -28,7 +28,7 @@ public class MainScene : BaseScene
         Managers.UI.ShowPanelUI<UI_Main>("MainView");
 
         //青己 积己
-        planet = Managers.Resource.Instantiate("Planet/BluePlanet");
+        //planet = Managers.Resource.Instantiate("Planet/BluePlanet");
 
         PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
 
