@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class EditScene : BaseScene
 {
-    GameObject Planet;
-    GameObject EditItem,EditItem1, EditItem2;
+    //GameObject Planet;
+    //GameObject EditItem,EditItem1, EditItem2;
 
+    public string category;
 
     public override void Clear()
     {
@@ -23,17 +24,15 @@ public class EditScene : BaseScene
         Managers.Input.SystemTouchAction += OnBackTouched;
 
 
-        Planet = GameObject.Find("BluePlanet");
-        //EditItem2 = Managers.Resource.Instantiate("Items/Square", Planet.transform.GetChild(1).transform);
-        //EditItem = Managers.Resource.Instantiate("Items/ItemParent 1", Planet.transform.GetChild(2).transform);
-        EditItem1 = Managers.Resource.Instantiate("Items/portal_00", Planet.transform.GetChild(2).transform);
-        EditItem2 = Managers.Resource.Instantiate("Items/plant_01", Planet.transform.GetChild(2).transform);
-        EditItem = Managers.Resource.Instantiate(new Vector3(3.2f, 0.9f,0f), "Items/portal_00", Planet.transform.GetChild(2).transform);
+        //Planet = GameObject.Find("BluePlanet");
+        //EditItem1 = Managers.Resource.Instantiate("Items/portal_00", Planet.transform.GetChild(2).transform);
+        //EditItem2 = Managers.Resource.Instantiate("Items/plant_01", Planet.transform.GetChild(2).transform);
+        //EditItem = Managers.Resource.Instantiate(new Vector3(3.2f, 0.9f,0f), "Items/portal_00", Planet.transform.GetChild(2).transform);
 
 
         //ChangeItemMode(EditItem);
-        ChangeItemMode(EditItem1);
-        ChangeItemMode(EditItem2);
+        //ChangeItemMode(EditItem1);
+        //ChangeItemMode(EditItem2);
 
 
     }

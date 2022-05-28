@@ -131,6 +131,7 @@ public class UI_PlanetSet : UI_UserInfo
         callback -= ResponseAction;
         callback += ResponseAction;
 
+   
     }
 
     void Start()
@@ -244,6 +245,5 @@ public class UI_PlanetSet : UI_UserInfo
             res = null;
         }
     }
-
     
 }

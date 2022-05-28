@@ -41,13 +41,16 @@ public class PlayerManager : MonoBehaviour
     //행성 instantiate, 아이템 instantiate
 
 
+
+    Action<UnityWebRequest> tokenCallback;
+
     GameObject planet;
 
     Action<UnityWebRequest> callback;
     Response<ResponseMainPlanet> Mainres;
     Response<string> Tokenres;
 
-    Dictionary<int, MainItemList> itemList;
+    List<MainItemList> itemList;
 
     string[] header = new string[2];
     string[] headerValue = new string[2];
@@ -59,6 +62,7 @@ public class PlayerManager : MonoBehaviour
 
     public void Init()
     {
+        //PlayerPrefs.DeleteAll();
         Debug.Log("플레이어 매니저 실행");
 
         callback -= ResponseAction;
@@ -100,6 +104,7 @@ public class PlayerManager : MonoBehaviour
             {
                 if(Mainres.code == 1000)
                 {
+                    itemList = Mainres.result.planetItemList;
                     ItemInstantiate();
                 }
             }
@@ -134,14 +139,41 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 Debug.Log(Tokenres.message);
+                if (Tokenres.code == 6023)
+                {
+                    Managers.UI.Clear();
+                    Managers.Scene.LoadScene(Define.Scene.Login);
+                }
             }
 
             Tokenres = null;
         }
     }
 
-    //행성 생성
-    private void PlanetInstantiate()
+    private void TokenResponseAction(UnityWebRequest request)
+    {
+        if (Tokenres != null)
+        {
+            Tokenres = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
+
+            if (Tokenres.isSuccess)
+            {
+
+            }
+            else
+            {
+                
+                if (Tokenres.code ==6023)
+                {
+                    Managers.UI.Clear();
+                    Managers.Scene.LoadScene(Define.Scene.Login);
+                }
+            }
+        }
+    }
+
+        //행성 생성
+        private void PlanetInstantiate()
     {
         //blue,green,red 중 무엇인지 확인 후 해당 행성 생성
         //레벨도 확인
@@ -170,7 +202,20 @@ public class PlayerManager : MonoBehaviour
 
     private void ItemInstantiate()
     {
-        
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            string path = "Items/" + itemList[i].itemId;
+            GameObject tmp = Managers.Resource.Instantiate(path, planet.transform.GetChild(2).transform);
+            ChangeItemMode(tmp, Define.Scene.Main);
+
+        }
+    }
+
+
+    private void ChangeItemMode(GameObject go, Define.Scene type)
+    {
+        ItemController child = Util.FindChild<ItemController>(go, "ItemInner", true);
+        child.ChangeMode(type);
     }
 
     #region PlayerPrefs
@@ -207,5 +252,38 @@ public class PlayerManager : MonoBehaviour
         return PlayerPrefs.GetFloat(key);
     }
 
+    public string[] GetHeader(bool access = true)
+    {
+        if (access)
+        {
+            header[0] = Define.JWT_ACCESS_TOKEN;
+            header[1] = "User-Id";
+            return header;
+        }
+        else
+        {
+            header[0] = Define.JWT_REFRESH_TOKEN;
+            header[1] = "User-Id";
+            return header;
+        }
+    }
+
+    public string[] GetHeaderValue(bool access = true)
+    {
+        if (access)
+        {
+            headerValue[0] = PlayerPrefs.GetString(Define.JWT_ACCESS_TOKEN);
+            headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
+
+            return header;
+        }
+        else
+        {
+            headerValue[0] = PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN);
+            headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
+
+            return header;
+        }
+    }
     #endregion
 }

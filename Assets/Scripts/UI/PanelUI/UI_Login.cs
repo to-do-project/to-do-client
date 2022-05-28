@@ -192,7 +192,7 @@ public class UI_Login : UI_Panel
                     Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
 
 
-                    //Managers.Player.Init();
+                    Managers.Player.Init();
                     Managers.Scene.LoadScene(Define.Scene.Main);
                 }
             }
