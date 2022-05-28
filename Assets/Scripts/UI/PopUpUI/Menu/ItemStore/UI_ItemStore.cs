@@ -63,6 +63,9 @@ public class UI_ItemStore : UI_PopupMenu
         charBtnDict = new Dictionary<long, Transform>();
         planetBtnDict = new Dictionary<long, Transform>();
 
+        ItemRequest();
+
+        /*      테스트용 코드
 #if UNITY_EDITOR
         for(int i = 0; i < 10; i++)
         {
@@ -85,6 +88,7 @@ public class UI_ItemStore : UI_PopupMenu
         }
 
         // ----------------------------------------
+        */
     }
 
     private void SetBtns()
@@ -92,6 +96,40 @@ public class UI_ItemStore : UI_PopupMenu
         Bind<Button>(typeof(Buttons));
 
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+    }
+    void ItemRequest()
+    {
+        List<string> hN = new List<string>();
+        List<string> hV = new List<string>();
+
+        hN.Add("Jwt-Access-Token");
+        hV.Add(Testing.instance.AccessToken);
+        hN.Add("User-Id");
+        hV.Add(Testing.instance.UserId);
+
+        Testing.instance.Webbing("api/store", "GET", null, (uwr) => {
+            Response<ResponseStoreItemsId> response = JsonUtility.FromJson<Response<ResponseStoreItemsId>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(response.result);
+                charBtnId = response.result.characterItemIdList;
+                planetBtnId = response.result.planetItemIdList;
+
+                foreach (var i in charBtnId)
+                {
+                    AddCharItem(i);
+                }
+
+                foreach (var i in planetBtnId)
+                {
+                    AddPlanetItem(i);
+                }
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
     private void AddCharItem(long id)
@@ -101,7 +139,8 @@ public class UI_ItemStore : UI_PopupMenu
         charBtnDict[id].SetParent(charItemContent.transform, false);
 
         UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
-        btn.SetValue(id, charScroll.GetComponent<ScrollRect>(), gameObject.GetComponent<UI_ItemStore>());
+        btn.SetValue(id, charScroll.GetComponent<ScrollRect>());
+        btn.SetItemScript(gameObject.GetComponent<UI_ItemStore>());
     }
 
     private void AddPlanetItem(long id)
@@ -111,7 +150,8 @@ public class UI_ItemStore : UI_PopupMenu
         planetBtnDict[id].SetParent(planetItemContent.transform, false);
 
         UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
-        btn.SetValue(id, planetScroll.GetComponent<ScrollRect>(), gameObject.GetComponent<UI_ItemStore>());
+        btn.SetValue(id, planetScroll.GetComponent<ScrollRect>());
+        btn.SetItemScript(gameObject.GetComponent<UI_ItemStore>());
     }
 
     public void OnBuyView(long id)
@@ -124,9 +164,28 @@ public class UI_ItemStore : UI_PopupMenu
         {
             onBtn = true;
             // 아이템 정보 가져오기 (코루틴 끝나면 onBtn false로)
-            UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
-            onBtn = false;
-            //item.SetValue();
+            List<string> hN = new List<string>();
+            List<string> hV = new List<string>();
+
+            hN.Add("Jwt-Access-Token");
+            hV.Add(Testing.instance.AccessToken);
+            hN.Add("User-Id");
+            hV.Add(Testing.instance.UserId);
+
+            Testing.instance.Webbing("api/store/items/" + id, "GET", null, (uwr) => {
+                Response<ResponseItemDetail> response = JsonUtility.FromJson<Response<ResponseItemDetail>>(uwr.downloadHandler.text);
+                if (response.code == 1000)
+                {
+                    Debug.Log(response.result);
+                    UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
+                    item.SetValue(response.result.type == "행성 아이템", response.result.name, response.result.description, response.result.price, response.result.maxCnt, gameObject);
+                }
+                else
+                {
+                    Debug.Log(response.message);
+                }
+                onBtn = false;
+            }, hN, hV);
         }
     }
 

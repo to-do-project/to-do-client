@@ -11,6 +11,11 @@ public class Testing : MonoBehaviour
 
     const string baseUrl = "https://dev.teamplanz.shop";
 
+    public string AccessToken;
+    public string RefreshToken;
+    public string UserId;
+    public string DeviceToken;
+
     public void Webbing(string url, string method, object obj, Action<UnityWebRequest> callback, List<string> headerName, List<string> headerValue)
     {
         StartCoroutine(CoSendWebRequest(url, method, obj, callback, headerName, headerValue));
@@ -61,6 +66,10 @@ public class Testing : MonoBehaviour
         if(instance == null)
         {
             instance = gameObject.GetComponent<Testing>();
+            instance.AccessToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY1MzU1NTI5NSwiZXhwIjoxNjUzNTU3MDk1fQ.fqozWY9Cd4MdRWgVRBMGsILZlPzcbQ1YTlJMsyDd438";
+            instance.RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTM1NTUyOTUsImV4cCI6MTY1NDQxOTI5NX0.NwS1FbX-2l8ln0TelPRZS2osqSrLYfKBk1PGHlkeE1o";
+            instance.DeviceToken = "testingtesting";
+            instance.UserId = "4";
         }
     }
 }

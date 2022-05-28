@@ -68,10 +68,13 @@ public class UI_Delete : UI_PopupMenu
         List<string> hV = new List<string>();
         hN.Add("Jwt-Access-Token");
         hN.Add("User-Id");
-        hV.Add("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTA3MDM4MTYsImV4cCI6MTY1MTU2NzgxNn0.dshtPR1lsKm_zmg80rHwEqLjuAjvJaCQpKyd1nPnpIY");
-        hV.Add("1");
+        hV.Add(Testing.instance.AccessToken);
+        hV.Add(Testing.instance.UserId);
 
-        Testing.instance.Webbing("api/user", "DELETE", Pswdfield.text, (data) => {
+        RequestDelete req = new RequestDelete();
+        req.password = Pswdfield.text;
+
+        Testing.instance.Webbing("api/user", "DELETE", req, (data) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(data.downloadHandler.text);
             if (response.isSuccess)
             {

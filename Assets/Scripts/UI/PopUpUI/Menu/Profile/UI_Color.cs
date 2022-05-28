@@ -80,7 +80,7 @@ public class UI_Color : UI_PopupMenu
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.Next_btn, (data) => {
-            //서버에 정보 전달
+            ColorChange();
             profile.ChangeColor(selectColor);
             menu.ChangeProfile(selectColor);
             Managers.UI.ClosePopupUI();
@@ -115,6 +115,32 @@ public class UI_Color : UI_PopupMenu
 
         GameObject btnBlack = GetButton((int)Buttons.Black_btn).gameObject;
         BindEvent(btnBlack, (data) => { ColorBtnClick(Colors.Black, btnBlack); });
+    }
+
+    void ColorChange()
+    {
+        List<string> hN = new List<string>();
+        List<string> hV = new List<string>();
+
+        hN.Add("Jwt-Access-Token");
+        hV.Add(Testing.instance.AccessToken);
+        hN.Add("User-Id");
+        hV.Add(Testing.instance.UserId);
+
+        RequestProfileColor request = new RequestProfileColor();
+        request.profileColor = selectColor;
+
+        Testing.instance.Webbing("api/user/profile", "PATCH", request, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(response.result);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
     public void ColorBtnEnter(GameObject gameObject)

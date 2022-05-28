@@ -4,9 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-/// <summary>
-/// UI_NicknameSet의 코드와 대부분 같은 코드
-/// </summary>
 public class UI_NickChange : UI_PopupMenu
 {
 
@@ -31,7 +28,7 @@ public class UI_NickChange : UI_PopupMenu
     Text Ntxt;
     InputField Ninput;
 
-    bool isCheck;
+    string nickname;
 
     public override void Init()
     {
@@ -59,37 +56,54 @@ public class UI_NickChange : UI_PopupMenu
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.NickCheck_btn, (data) => {
-            if (IsVaildNickname(Ninput.text))
-            {
-                Ntxt.text = " 사용 가능한 닉네임입니다.";
-                isCheck = true;
-                nextBtn.GetComponent<Button>().interactable = true;
-                BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
-            }
-            else
-            {
-                Ntxt.text = " 이미 있는 닉네임입니다.";
-                isCheck = false;
-                nextBtn.GetComponent<Button>().interactable = false;
-                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
-            }
+            IsVaildNickname();
         });
     }
 
     public void NextBtnClick(PointerEventData data)
     {
-        //닉네임 유효한 입력 했는지
-        if (isCheck)
-        {
-            //닉네임 저장
-            Managers.UI.ClosePopupUI();
-        }
+        List<string> hN = new List<string>();
+        List<string> hV = new List<string>();
+
+        hN.Add("Jwt-Access-Token");
+        hV.Add(Testing.instance.AccessToken);
+        hN.Add("User-Id");
+        hV.Add(Testing.instance.UserId);
+
+        RequestNickChange request = new RequestNickChange();
+        request.nickname = nickname;
+
+        Testing.instance.Webbing("api/user/nickname", "PATCH", request, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(response.result);
+                ClosePopupUI();
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
-    private bool IsVaildNickname(string nickname)
+    private void IsVaildNickname()
     {
-        //서버에서 체크
-        return true;
+        nickname = Ninput.text;
+        Managers.Web.SendGetRequest("join/dupli/nickname?nickname=", nickname, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if(response.isSuccess)
+            {
+                Ntxt.text = " 사용 가능한 닉네임입니다.";
+                nextBtn.GetComponent<Button>().interactable = true;
+                BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            } else
+            {
+                Ntxt.text = response.message;
+                nextBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+            }
+        });
     }
 
     void Start()
