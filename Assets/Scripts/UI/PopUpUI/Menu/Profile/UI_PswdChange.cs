@@ -154,24 +154,19 @@ public class UI_PswdChange : UI_PopupMenu
     private void ComparePassword()
     {
         //패스워드 체크
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
-
-        hN.Add("Jwt-Access-Token");
-        hV.Add(Testing.instance.AccessToken);
-        hN.Add("User-Id");
-        hV.Add(Testing.instance.UserId);
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
         RequestPswdChange request = new RequestPswdChange();
         request.oldPassword = Pswdfield.text;
         request.newPassword = password;
 
-        Testing.instance.Webbing("api/user/pwd", "PATCH", request, (uwr) => {
+        Managers.Web.SendUniRequest("api/user/pwd", "PATCH", request, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.code == 1000)
             {
-                Debug.Log(response.result);
-                //바뀐 Password 전달
                 Debug.Log(password);
                 Managers.UI.ClosePopupUI();
             }

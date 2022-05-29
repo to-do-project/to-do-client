@@ -21,6 +21,20 @@ public class WebManager : MonoBehaviour
         StartCoroutine(GetRequest(url,param,callback, header, headerValue));
     }
 
+    /// <summary>
+    /// 모든 웹 통신에 범용성 있게 사용할 수 있게 만든 함수
+    /// </summary>
+    /// <param name="url">          API 주소와 GET 통신시 Parameter값을 보내는 변수 </param>
+    /// <param name="method">       GET, POST, PATCH, DELETE와 같은 API에서 사용 할 메소드를 보내는 변수 </param>
+    /// <param name="obj">          데이터 클래스를 받아 Request Body로 넣어 줄 변수 </param>
+    /// <param name="callback">     웹 통신 성공 시 실행 할 함수 </param>
+    /// <param name="header">       헤더 이름들의 string 배열 </param>
+    /// <param name="headerValue">  헤더 값들의 string 배열 </param>
+    public void SendUniRequest(string url, string method, object obj, Action<UnityWebRequest> callback, string[] header = null, string[] headerValue = null)
+    {
+        StartCoroutine(UniRequest(url, method, obj, callback, header, headerValue));
+    }
+
 
     IEnumerator PostRequest<T>(string url, object obj, Action<UnityWebRequest> callback = null, string[] header = null, string[] headerValue = null)
     {
@@ -105,6 +119,40 @@ public class WebManager : MonoBehaviour
 
     }
 
+    // 프로젝트 전체 API 통신에 사용 가능한 코드
+    IEnumerator UniRequest(string url, string method, object obj, Action<UnityWebRequest> callback, string[] header, string[] headerValue)
+    {
+        string sendUrl = $"{baseUrl}/{url}"; // baseUrl = 서버 주소, url = API 주소와 Get 파라미터
+
+        byte[] jsonByte = null; // POST 통신용 RequestBody에 들어갈 JsonByte 변수
+        if (obj != null)
+        {
+            string jsonStr = JsonUtility.ToJson(obj);   // 직렬화 된 오브젝트를 Json화
+            jsonByte = Encoding.UTF8.GetBytes(jsonStr); // Json을 Byte화
+        }
+
+        var uwr = new UnityWebRequest(sendUrl, method);     // url 및 메소드 설정
+        uwr.uploadHandler = new UploadHandlerRaw(jsonByte); // Json바이트를 RequestBody에 등록
+        uwr.downloadHandler = new DownloadHandlerBuffer();  // 결과를 받기 위한 DownloadHandler
+
+        if (header != null && headerValue != null)          // 헤더가 있다면
+            for (int i = 0; i < header.Length; i++)
+                uwr.SetRequestHeader(header[i], headerValue[i]);    // 헤더 설정
+
+        uwr.SetRequestHeader("Content-type", "application/json");
+
+        yield return uwr.SendWebRequest();  // 웹 통신 후 응답 대기
+
+        if (uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError) // 에러 발생시
+        {
+            Debug.Log(uwr.error);   // 에러 로그 출력
+        }
+        else 
+        {
+            callback.Invoke(uwr);   // 성공 시 메소드 실행
+        }
+    }
+
 
     /*//method는 enum으로 해도 됨(get,post)
     //전송하는 obj
@@ -144,17 +192,17 @@ public class WebManager : MonoBehaviour
     }*/
 
     //API 호출 전에 부르기?
-/*    public bool InternetCheck()
-    {
-        //인터넷에 연결되어 있는지 확인
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+    /*    public bool InternetCheck()
         {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }*/
+            //인터넷에 연결되어 있는지 확인
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }*/
 
 }

@@ -83,14 +83,12 @@ public class UI_Deco : UI_PopupMenu
 
     void InvenWeb()
     {
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
-        hN.Add("Jwt-Access-Token");
-        hN.Add("User-Id");
-        hV.Add(Testing.instance.AccessToken);
-        hV.Add(Testing.instance.UserId);
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
-        Testing.instance.Webbing("api/closet/character-items", "GET", null, (uwr) => {
+        Managers.Web.SendUniRequest("api/closet/character-items", "GET", null, (uwr) => {
             Response<ResponseCloset> response = JsonUtility.FromJson<Response<ResponseCloset>>(uwr.downloadHandler.text);
             if(response.isSuccess)
             {

@@ -99,15 +99,15 @@ public class UI_ItemStore : UI_PopupMenu
     }
     void ItemRequest()
     {
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
-        hN.Add("Jwt-Access-Token");
-        hV.Add(Testing.instance.AccessToken);
-        hN.Add("User-Id");
-        hV.Add(Testing.instance.UserId);
+        Debug.Log(hN[1]);
+        Debug.Log(hV[1]);
 
-        Testing.instance.Webbing("api/store", "GET", null, (uwr) => {
+        Managers.Web.SendUniRequest("api/store", "GET", null, (uwr) => {
             Response<ResponseStoreItemsId> response = JsonUtility.FromJson<Response<ResponseStoreItemsId>>(uwr.downloadHandler.text);
             if (response.code == 1000)
             {
@@ -164,15 +164,12 @@ public class UI_ItemStore : UI_PopupMenu
         {
             onBtn = true;
             // 아이템 정보 가져오기 (코루틴 끝나면 onBtn false로)
-            List<string> hN = new List<string>();
-            List<string> hV = new List<string>();
+            string[] hN = { Define.JWT_ACCESS_TOKEN,
+                            "User-Id" };
+            string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                            Managers.Player.GetString(Define.USER_ID) };
 
-            hN.Add("Jwt-Access-Token");
-            hV.Add(Testing.instance.AccessToken);
-            hN.Add("User-Id");
-            hV.Add(Testing.instance.UserId);
-
-            Testing.instance.Webbing("api/store/items/" + id, "GET", null, (uwr) => {
+            Managers.Web.SendUniRequest("api/store/items/" + id, "GET", null, (uwr) => {
                 Response<ResponseItemDetail> response = JsonUtility.FromJson<Response<ResponseItemDetail>>(uwr.downloadHandler.text);
                 if (response.code == 1000)
                 {

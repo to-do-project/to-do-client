@@ -62,18 +62,15 @@ public class UI_NickChange : UI_PopupMenu
 
     public void NextBtnClick(PointerEventData data)
     {
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
-
-        hN.Add("Jwt-Access-Token");
-        hV.Add(Testing.instance.AccessToken);
-        hN.Add("User-Id");
-        hV.Add(Testing.instance.UserId);
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
         RequestNickChange request = new RequestNickChange();
         request.nickname = nickname;
 
-        Testing.instance.Webbing("api/user/nickname", "PATCH", request, (uwr) => {
+        Managers.Web.SendUniRequest("api/user/nickname", "PATCH", request, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.code == 1000)
             {

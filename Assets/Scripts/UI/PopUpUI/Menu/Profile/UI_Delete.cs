@@ -64,17 +64,15 @@ public class UI_Delete : UI_PopupMenu
 
     private void ComparePassword()
     {
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
-        hN.Add("Jwt-Access-Token");
-        hN.Add("User-Id");
-        hV.Add(Testing.instance.AccessToken);
-        hV.Add(Testing.instance.UserId);
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
         RequestDelete req = new RequestDelete();
         req.password = Pswdfield.text;
 
-        Testing.instance.Webbing("api/user", "DELETE", req, (data) => {
+        Managers.Web.SendUniRequest("api/user", "DELETE", req, (data) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(data.downloadHandler.text);
             if (response.isSuccess)
             {

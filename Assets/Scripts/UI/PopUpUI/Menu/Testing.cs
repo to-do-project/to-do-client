@@ -16,7 +16,7 @@ public class Testing : MonoBehaviour
     public string UserId;
     public string DeviceToken;
 
-    public void Webbing(string url, string method, object obj, Action<UnityWebRequest> callback, List<string> headerName, List<string> headerValue)
+    public void Webbing(string url, string method, object obj, Action<UnityWebRequest> callback, List<string> headerName = null, List<string> headerValue = null)
     {
         StartCoroutine(CoSendWebRequest(url, method, obj, callback, headerName, headerValue));
     }
@@ -55,10 +55,7 @@ public class Testing : MonoBehaviour
         {
             Debug.Log("Recv " + uwr.downloadHandler.text);
             callback.Invoke(uwr);
-
         }
-
-
     }
 
     private void Start()
