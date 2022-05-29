@@ -63,7 +63,7 @@ public class UI_Menu : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) =>
+        SetBtn((int)Buttons.Back_btn, /*(data) =>
         {
             Response<string> res;
 
@@ -71,11 +71,11 @@ public class UI_Menu : UI_PopupMenu
 
             RequestSignUp val = new RequestSignUp
             {
-                email = "tester1@gmail.com",
-                password = "test12345",
-                nickname = "tester1",
+                email = "tester@gmail.com",
+                password = "test1234",
+                nickname = "test",
                 planetColor = "RED",
-                deviceToken = "testingtesting"
+                deviceToken = "testtest"
             };
             Managers.Web.SendPostRequest<ResponseSignUp>("join", val, (uwr) =>
             {
@@ -109,7 +109,7 @@ public class UI_Menu : UI_PopupMenu
                     res = null;
                 }
             });
-        });// ClosePopupUI); // 테스트용 계정을 만들기위한 메소드. ClosePopupUI가 기존 메소드
+        });*/ ClosePopupUI); // 테스트용 계정을 만들기위한 메소드. ClosePopupUI가 기존 메소드
 
         SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Profile>("ProfileView", $"{pathName}/Profile"); });
 
@@ -126,26 +126,26 @@ public class UI_Menu : UI_PopupMenu
         SetBtn((int)Buttons.Deco_btn, (data) => { Managers.UI.ShowPopupUI<UI_Deco>("DecoView", $"{pathName}/Deco"); });
 
         SetBtn((int)Buttons.Refresh_btn, (data) => {
-            List<string> hN = new List<string>();
-            List<string> hV = new List<string>();
-
-            hN.Add("Jwt-Refresh-Token");
-            hV.Add(Testing.instance.RefreshToken);
-            hN.Add("User-Id");
-            hV.Add(Testing.instance.UserId);
+            string[] hN = { Define.JWT_REFRESH_TOKEN,
+                            "User-Id" };
+            string[] hV = { Managers.Player.GetString(Define.JWT_REFRESH_TOKEN),
+                            Managers.Player.GetString(Define.USER_ID) };
 
             RequestLogout request = new RequestLogout();
-            request.deviceToken = "testingtesting";
+            request.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
 
-            Testing.instance.Webbing("access-token", "POST", request, (uwr) => {
+            Managers.Web.SendUniRequest("access-token", "POST", request, (uwr) => {
                 Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
                 if (response.code == 1000)
                 {
                     Debug.Log(response.result);
-                    Testing.instance.AccessToken = uwr.GetResponseHeader("Jwt-Access-Token");
-                    Testing.instance.RefreshToken = uwr.GetResponseHeader("Jwt-Refresh-Token");
+                    Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
+
+                    Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                    Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+
                     Debug.Log(uwr.GetResponseHeader("Jwt-Access-Token"));
-                    Debug.Log(uwr.GetResponseHeader("Jwt-Refresh-Token"));
+                    Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
                 }
                 else
                 {
@@ -158,25 +158,35 @@ public class UI_Menu : UI_PopupMenu
 
             RequestLogin request = new RequestLogin
             {
-                email = "tester1@gmail.com",
-                deviceToken = "testingtesting",
-                password = "test12345"
+                email = "tester@gmail.com",
+                deviceToken = "testtest",
+                password = "test1234"
             };
 
-            Testing.instance.Webbing("login", "POST", request, (uwr) => {
+            Managers.Web.SendUniRequest("login", "POST", request, (uwr) => {
                 Response<RequestTest> response = JsonUtility.FromJson<Response<RequestTest>>(uwr.downloadHandler.text);
                 if (response.code == 1000)
                 {
-                    Debug.Log(response.result);
-                    Testing.instance.AccessToken = uwr.GetResponseHeader("Jwt-Access-Token");
-                    Testing.instance.RefreshToken = uwr.GetResponseHeader("Jwt-Refresh-Token");
-                    Testing.instance.UserId = response.result.userId.ToString();
+                    Debug.Log(response.result.email);
+                    Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                    Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+
+                    Managers.Player.SetString(Define.EMAIL, response.result.email);
+                    Managers.Player.SetString(Define.NICKNAME, response.result.nickname);
+                    Managers.Player.SetString("User-Id", response.result.userId.ToString());
+                    Managers.Player.SetString(Define.PLANET_ID, response.result.userId.ToString());
+                    Managers.Player.SetInt(Define.PLANET_LEVEL, response.result.planetLevel);
+                    Managers.Player.SetString(Define.PLANET_COLOR, response.result.planetColor);
+                    Managers.Player.SetString(Define.EMAIL, response.result.email);
+                    Managers.Player.SetString(Define.NICKNAME, response.result.nickname);
+                    Managers.Player.SetString(Define.CHARACTER_COLOR, response.result.characterItem.ToString());
+                    Debug.Log(Managers.Player.GetString(Define.USER_ID));
                 }
                 else
                 {
                     Debug.Log(response.message);
                 }
-            }, null, null);
+            });
         });
     }
 
@@ -195,25 +205,21 @@ public class UI_Menu : UI_PopupMenu
 
     public void TokenRefresh()
     {
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
-
-        hN.Add("Jwt-Refresh-Token");
-        hN.Add("User-Id");
-        hV.Add("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY1MDYxOTAyNCwiZXhwIjoxNjUwNjIwODI0fQ.odEo-InfJFThh60QDXiSWjfP9rVzk6foxFDBDzG2hoc");
-        // hV.Add("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTA3MDM4MTYsImV4cCI6MTY1MTU2NzgxNn0.dshtPR1lsKm_zmg80rHwEqLjuAjvJaCQpKyd1nPnpIY");
-        hV.Add("1");
+        string[] hN = { Define.JWT_REFRESH_TOKEN,
+                        Define.USER_ID };
+        string[] hV = { Managers.Player.GetString(Define.JWT_REFRESH_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
         Test test = new Test();
-        test.deviceToken = "testing";
+        test.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
 
-        Testing.instance.Webbing("access-token", "POST", test, (data) => {
-            Response<string> response = JsonUtility.FromJson<Response<string>>(data.downloadHandler.text);
+        Managers.Web.SendUniRequest("access-token", "POST", test, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
                 Debug.Log(response.result);
-                Debug.Log(data.GetResponseHeader("Jwt-Access-Token"));
-                Debug.Log(data.GetResponseHeader("Jwt-Refresh-Token"));
+                Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
             }
             else
             {

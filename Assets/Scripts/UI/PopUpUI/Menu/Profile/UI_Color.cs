@@ -81,9 +81,6 @@ public class UI_Color : UI_PopupMenu
 
         SetBtn((int)Buttons.Next_btn, (data) => {
             ColorChange();
-            profile.ChangeColor(selectColor);
-            menu.ChangeProfile(selectColor);
-            Managers.UI.ClosePopupUI();
         });
 
         GameObject btnLR = GetButton((int)Buttons.LightRed_btn).gameObject;
@@ -119,22 +116,22 @@ public class UI_Color : UI_PopupMenu
 
     void ColorChange()
     {
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
-
-        hN.Add("Jwt-Access-Token");
-        hV.Add(Testing.instance.AccessToken);
-        hN.Add("User-Id");
-        hV.Add(Testing.instance.UserId);
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
         RequestProfileColor request = new RequestProfileColor();
         request.profileColor = selectColor;
 
-        Testing.instance.Webbing("api/user/profile", "PATCH", request, (uwr) => {
+        Managers.Web.SendUniRequest("api/user/profile", "PATCH", request, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.code == 1000)
             {
                 Debug.Log(response.result);
+                profile.ChangeColor(selectColor);
+                menu.ChangeProfile(selectColor);
+                Managers.UI.ClosePopupUI();
             }
             else
             {

@@ -56,36 +56,15 @@ public class UI_Profile : UI_PopupMenu
         SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName); });
     }
 
-    /*              Manager를 이용한 코드(Test를 위해 주석화)
     void Logout()
     {
-        RequestLogout request = new RequestLogout();
-        request.deviceToken = "testingtesting";
-        Managers.Web.SendPostRequest<Response<string>>("log-out", request, (uwr) => {
-            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-            if(response.code == 1000)
-            {
-                Debug.Log(response.result);
-            } else
-            {
-                Debug.Log(response.message);
-            }
-        });
-    }
-    */
-
-    void Logout()
-    {
-        List<string> hN = new List<string>();
-        List<string> hV = new List<string>();
-
-        hN.Add("User-Id");
-        hV.Add(Testing.instance.UserId);
+        string[] hN = { "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.USER_ID) };
 
         RequestLogout request = new RequestLogout();
-        request.deviceToken = Testing.instance.DeviceToken;
+        request.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
 
-        Testing.instance.Webbing("log-out", "POST", request, (uwr) => {
+        Managers.Web.SendUniRequest("log-out", "POST", request, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.code == 1000)
             {
