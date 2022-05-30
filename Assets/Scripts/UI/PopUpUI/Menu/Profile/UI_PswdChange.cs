@@ -146,26 +146,35 @@ public class UI_PswdChange : UI_PopupMenu
         {
             if (string.IsNullOrWhiteSpace(password) == false)
             {
-                if (ComparePassword())
-                {
-                    //바뀐 Password 전달
-                    Debug.Log(password);
-                    Managers.UI.ClosePopupUI();
-                } 
-                else
-                {
-                    PswdChecktxt.text = "*비밀번호를 잘못 입력했습니다.";
-                }
+                ComparePassword();
             }
         }
     }
 
-    private bool ComparePassword()
+    private void ComparePassword()
     {
         //패스워드 체크
-        string playerPassword = "";
-        bool result = (Pswdfield.text == playerPassword);
-        result = true;
-        return result;
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        RequestPswdChange request = new RequestPswdChange();
+        request.oldPassword = Pswdfield.text;
+        request.newPassword = password;
+
+        Managers.Web.SendUniRequest("api/user/pwd", "PATCH", request, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(password);
+                Managers.UI.ClosePopupUI();
+            }
+            else
+            {
+                Debug.Log(response.message);
+                PswdChecktxt.text = response.message;
+            }
+        }, hN, hV);
     }
 }

@@ -80,10 +80,7 @@ public class UI_Color : UI_PopupMenu
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.Next_btn, (data) => {
-            //서버에 정보 전달
-            profile.ChangeColor(selectColor);
-            menu.ChangeProfile(selectColor);
-            Managers.UI.ClosePopupUI();
+            ColorChange();
         });
 
         GameObject btnLR = GetButton((int)Buttons.LightRed_btn).gameObject;
@@ -115,6 +112,32 @@ public class UI_Color : UI_PopupMenu
 
         GameObject btnBlack = GetButton((int)Buttons.Black_btn).gameObject;
         BindEvent(btnBlack, (data) => { ColorBtnClick(Colors.Black, btnBlack); });
+    }
+
+    void ColorChange()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        RequestProfileColor request = new RequestProfileColor();
+        request.profileColor = selectColor;
+
+        Managers.Web.SendUniRequest("api/user/profile", "PATCH", request, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(response.result);
+                profile.ChangeColor(selectColor);
+                menu.ChangeProfile(selectColor);
+                Managers.UI.ClosePopupUI();
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
     public void ColorBtnEnter(GameObject gameObject)

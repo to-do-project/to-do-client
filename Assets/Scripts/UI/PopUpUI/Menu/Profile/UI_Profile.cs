@@ -51,9 +51,30 @@ public class UI_Profile : UI_PopupMenu
 
         SetBtn((int)Buttons.PswdChange_btn, (data) => { Managers.UI.ShowPopupUI<UI_PswdChange>("PswdChangeView", pathName); });
 
-        SetBtn((int)Buttons.Logout_btn, (data) => { Debug.Log("*Clicked Button* Logout"); });
+        SetBtn((int)Buttons.Logout_btn, (data) => { Logout(); });
 
         SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName); });
+    }
+
+    void Logout()
+    {
+        string[] hN = { "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.USER_ID) };
+
+        RequestLogout request = new RequestLogout();
+        request.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
+
+        Managers.Web.SendUniRequest("log-out", "POST", request, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(response.result);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
     public void ChangeColor(string color)
