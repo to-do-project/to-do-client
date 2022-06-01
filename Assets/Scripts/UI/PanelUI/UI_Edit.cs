@@ -26,6 +26,21 @@ public class UI_Edit : UI_Panel
     public override void Init()
     {
         base.Init();
+
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Camera UIcam = canvas.worldCamera;
+        Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+
+        if (UIcam != cam)
+        {
+            canvas.worldCamera = cam;
+        }
+        else
+        {
+            Debug.Log($"{UIcam.name}");
+        }
+
         edit = FindObjectOfType<EditScene>();
 
         Bind<Button>(typeof(Buttons));
@@ -83,12 +98,13 @@ public class UI_Edit : UI_Panel
 
     void EditDoneBtnClick(PointerEventData data)
     {
-        Managers.UI.ShowPopupUI<UI_ExitEdit>("ExitEditView", "Edit");
+        Managers.UI.ShowPopupUI<UI_DoneEdit>("DoneEditView", "Edit");
+
     }
 
     void EditCancleBtnClick(PointerEventData data)
     {
-        Managers.UI.ShowPopupUI<UI_DoneEdit>("DoneEditView", "Edit");
+        Managers.UI.ShowPopupUI<UI_ExitEdit>("ExitEditView", "Edit");
 
     }
 

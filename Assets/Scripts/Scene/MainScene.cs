@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 
 public class MainScene : BaseScene
 {
-    GameObject planet;
     Camera PlanetCamera;
 
     public override void Clear()
@@ -27,16 +26,14 @@ public class MainScene : BaseScene
 
         Managers.UI.ShowPanelUI<UI_Main>("MainView");
 
-        //행성 생성
-        //planet = Managers.Resource.Instantiate("Planet/BluePlanet");
 
         PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
 
     }
 
-    void Update()
+    void Awake()
     {
-        
+        Init();
     }
 
     //배치모드로 진입
@@ -70,6 +67,7 @@ public class MainScene : BaseScene
             {
                 //Debug.Log(hit.collider.gameObject.name);
                 Managers.Scene.LoadScene(Define.Scene.Edit);
+
 
             }
         }

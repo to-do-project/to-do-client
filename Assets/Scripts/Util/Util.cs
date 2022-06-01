@@ -67,5 +67,16 @@ public class Util
         return component;
     }
 
+    public static string RemoveCloneString(string Oname)
+    {
+        string name = Oname;
+        int index = Oname.IndexOf("(Clone)");
+        if (index > 0)
+        {
+            name = Oname.Substring(0, index);
+        }
+
+        return name;
+    }
 
 }

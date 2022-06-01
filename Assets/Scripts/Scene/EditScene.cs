@@ -42,16 +42,6 @@ public class EditScene : BaseScene
         Init();
     }
 
-    void Update()
-    {
-
-    }
-
-    private void ChangeItemMode(GameObject go)
-    {
-        ItemController child = Util.FindChild<ItemController>(go, "ItemInner", true);      
-        child.ChangeMode(SceneType);
-    }
 
     void OnBackTouched(Define.SystemEvent evt)
     {

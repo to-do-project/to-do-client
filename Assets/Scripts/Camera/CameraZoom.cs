@@ -28,7 +28,10 @@ public class CameraZoom : MonoBehaviour
 
         Managers.Input.TouchAction -= Zoom;
         Managers.Input.TouchAction += Zoom;
+        
         cam = this.GetComponent<Camera>();
+
+        
         if (!cam.orthographic)
         {
             cam.fieldOfView = 23;
@@ -102,28 +105,32 @@ public class CameraZoom : MonoBehaviour
         }
         //Debug.Log("Wheel");
 
-        float distance = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
-        if(distance != 0)
+        if (cam != null)
         {
-            if (cam.orthographic)
+            float distance = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
+            if (distance != 0)
             {
-                cam.orthographicSize += distance;
-                /*                if (cam.orthographicSize < 1)
-                                {
-                                    cam.orthographicSize = 1f;
-                                }
-                                else if(cam.orthographicSize > 10)
-                                {
-                                    cam.orthographicSize = 10f;
-                                }*/
-                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 7f, 16f);
-            }
-            else
-            {
-                cam.fieldOfView += distance;
-            }
+                if (cam.orthographic)
+                {
+                    cam.orthographicSize += distance;
+                    /*                if (cam.orthographicSize < 1)
+                                    {
+                                        cam.orthographicSize = 1f;
+                                    }
+                                    else if(cam.orthographicSize > 10)
+                                    {
+                                        cam.orthographicSize = 10f;
+                                    }*/
+                    cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 7f, 16f);
+                }
+                else
+                {
+                    cam.fieldOfView += distance;
+                }
 
+            }
         }
+
 
     }
 }

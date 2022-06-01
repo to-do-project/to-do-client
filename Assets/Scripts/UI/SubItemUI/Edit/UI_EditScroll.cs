@@ -44,7 +44,7 @@ public class UI_EditScroll : UI_Base
         res = new Response<List<ResponseInven>>();
         Managers.Web.SendGetRequest("/api/inventory/planet-items/", "plant",callback,Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
-        Managers.UI.MakeSubItem<UI_EditItem>("Edit",contentRoot.transform,"portal_00");
+        Managers.UI.MakeSubItem<UI_EditItem>("Edit",contentRoot.transform,"plant_03");
     }
 
 

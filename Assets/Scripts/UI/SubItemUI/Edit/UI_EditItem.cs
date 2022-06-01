@@ -11,11 +11,11 @@ public class UI_EditItem : UI_Base
     }
 
     string path;
-    GameObject planet;
+
 
     public override void Init()
     {
-        planet = GameObject.Find("BluePlanet");
+        
         Bind<GameObject>(typeof(GameObjects));
         GameObject item = Get<GameObject>((int)GameObjects.item_img);
 
@@ -29,17 +29,19 @@ public class UI_EditItem : UI_Base
 
     void ItemClick(PointerEventData data)
     {
-        string name=this.gameObject.name;
-        int index = this.gameObject.name.IndexOf("(Clone)");
-        if (index > 0)
-        {
-            name = this.gameObject.name.Substring(0, index);
-        }
+        /* string name=this.gameObject.name;
+         int index = this.gameObject.name.IndexOf("(Clone)");
+         if (index > 0)
+         {
+             name = this.gameObject.name.Substring(0, index);
+         }*/
+        string name = Util.RemoveCloneString(this.gameObject.name);
         path = "Items/"+name;
         Debug.Log(path);
         
-        GameObject go = Managers.Resource.Instantiate(path,planet.transform.GetChild(2).transform);
+        GameObject go = Managers.Resource.Instantiate(path,Managers.Player.GetPlanet().transform.GetChild(2).transform);
         Util.FindChild<ItemController>(go, "ItemInner", true).ChangeMode(Define.Scene.Edit);
+        Managers.Player.AddItemList(go); 
     }
 
 

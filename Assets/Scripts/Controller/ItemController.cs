@@ -206,7 +206,8 @@ public class ItemController : MonoBehaviour
     {
         Debug.Log("Cancle Item");
         //Managers.Resource.Destroy(root);
-        Managers.Resource.Destroy(gameObject);
+        Managers.Player.RemoveItemList(root);
+        Managers.Resource.Destroy(root);
     }
 
     //아이템 충돌 체크
