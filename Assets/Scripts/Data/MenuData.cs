@@ -53,6 +53,12 @@ public class RequestBuyItem
     public int totalPrice;
 }
 
+[Serializable]
+public class RequestTokenRefresh
+{
+    public string deviceToken;
+}
+
 // -------- À§ Request -------- ¾Æ·¡ Response ---------
 
 [Serializable]

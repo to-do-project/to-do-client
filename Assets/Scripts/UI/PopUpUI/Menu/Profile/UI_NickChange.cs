@@ -24,6 +24,8 @@ public class UI_NickChange : UI_PopupMenu
         Enable_txt,
     }
 
+    UI_Profile profile;
+    UI_Menu menu;
     GameObject nextBtn;
     Text Ntxt;
     InputField Ninput;
@@ -45,6 +47,9 @@ public class UI_NickChange : UI_PopupMenu
 
         Ntxt = GetText((int)Texts.Enable_txt);
         Ninput = GetInputfiled((int)InputFields.Nickname_inputfield);
+
+        profile = FindObjectOfType<UI_Profile>();
+        menu = FindObjectOfType<UI_Menu>();
     }
 
     private void SetBtns()
@@ -75,6 +80,9 @@ public class UI_NickChange : UI_PopupMenu
             if (response.code == 1000)
             {
                 Debug.Log(response.result);
+                Managers.Player.SetString(Define.NICKNAME, nickname);
+                menu.ChangeNickname(nickname);
+                profile.ChangeNickname(nickname);
                 ClosePopupUI();
             }
             else

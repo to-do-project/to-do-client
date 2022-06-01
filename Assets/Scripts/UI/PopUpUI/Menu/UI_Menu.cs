@@ -39,10 +39,17 @@ public class UI_Menu : UI_PopupMenu
         Profile_image,
     }
 
+    enum Texts
+    {
+        Profile_text,
+        Ccount_text,
+    }
+
     const string pathName = "Menu";
     const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     Image profileImage;
+    Text profileText, ccountText;
 
     public override void Init()
     {
@@ -53,8 +60,26 @@ public class UI_Menu : UI_PopupMenu
         SetBtns();
 
         Bind<Image>(typeof(Images));
-
         profileImage = GetImage((int)Images.Profile_image);
+
+        if (PlayerPrefs.HasKey("profileColor"))
+        {
+            ChangeColor(Managers.Player.GetString("profileColor"));
+        }
+
+        Bind<Text>(typeof(Texts));
+        profileText = GetText((int)Texts.Profile_text);
+        ccountText = GetText((int)Texts.Ccount_text);
+
+        if (PlayerPrefs.HasKey(Define.NICKNAME))
+        {
+            ChangeNickname(Managers.Player.GetString(Define.NICKNAME));
+        }
+
+        if (PlayerPrefs.HasKey("targetCount"))
+        {
+            ChangeCcount("0");
+        }
 
         //열기 애니메이션 실행
     }
@@ -176,10 +201,11 @@ public class UI_Menu : UI_PopupMenu
                     Managers.Player.SetString("User-Id", response.result.userId.ToString());
                     Managers.Player.SetString(Define.PLANET_ID, response.result.userId.ToString());
                     Managers.Player.SetInt(Define.PLANET_LEVEL, response.result.planetLevel);
+                    Managers.Player.SetInt("characterItem", (int)response.result.characterItem);
                     Managers.Player.SetString(Define.PLANET_COLOR, response.result.planetColor);
-                    Managers.Player.SetString(Define.EMAIL, response.result.email);
-                    Managers.Player.SetString(Define.NICKNAME, response.result.nickname);
+                    Managers.Player.SetString("profileColor", response.result.profileColor);
                     Managers.Player.SetString(Define.CHARACTER_COLOR, response.result.characterItem.ToString());
+                    Managers.Player.SetInt("point", response.result.point);
                     Debug.Log(Managers.Player.GetString(Define.USER_ID));
                 }
                 else
@@ -196,11 +222,21 @@ public class UI_Menu : UI_PopupMenu
         Init();
     }
 
-    public void ChangeProfile(string color)
+    public void ChangeColor(string color)
     {
         int index = 0;
         index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
         profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+    }
+
+    public void ChangeNickname(string nickname)
+    {
+        profileText.text = nickname;
+    }
+
+    public void ChangeCcount(string count)
+    {
+        ccountText.text = count;
     }
 
     public void TokenRefresh()
@@ -210,10 +246,10 @@ public class UI_Menu : UI_PopupMenu
         string[] hV = { Managers.Player.GetString(Define.JWT_REFRESH_TOKEN),
                         Managers.Player.GetString(Define.USER_ID) };
 
-        Test test = new Test();
-        test.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
+        RequestTokenRefresh request = new RequestTokenRefresh();
+        request.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
 
-        Managers.Web.SendUniRequest("access-token", "POST", test, (uwr) => {
+        Managers.Web.SendUniRequest("access-token", "POST", request, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {

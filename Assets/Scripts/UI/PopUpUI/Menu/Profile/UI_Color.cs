@@ -62,7 +62,6 @@ public class UI_Color : UI_PopupMenu
         selectColor = null;
         curBtn = nexBtn = null;
 
-
         Bind<GameObject>(typeof(Images));
 
         checkImage = Get<GameObject>((int)Images.Check_image);
@@ -129,8 +128,9 @@ public class UI_Color : UI_PopupMenu
             if (response.code == 1000)
             {
                 Debug.Log(response.result);
+                Managers.Player.SetString("profileColor", selectColor);
+                menu.ChangeColor(selectColor);
                 profile.ChangeColor(selectColor);
-                menu.ChangeProfile(selectColor);
                 Managers.UI.ClosePopupUI();
             }
             else

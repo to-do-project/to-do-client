@@ -12,11 +12,17 @@ public class UI_ItemBtn : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     UI_Deco decoScript;
     ScrollRect scroll;
     Action<PointerEventData> OnClickHandler;
+    Sprite sprite;
 
-    public void SetValue(long itemId, ScrollRect scroll)
+    public void SetValue(long itemId, ScrollRect scroll, Sprite sprite)
     {
         this.itemId = itemId;
         this.scroll = scroll;
+        this.sprite = sprite;
+        Image image = transform.Find("Item_img").GetComponent<Image>();
+        image.sprite = sprite;
+        image.SetNativeSize();
+        image.transform.localScale *= 0.5f;
         OnClickHandler = ItemBtnClick;
     }
 
@@ -34,7 +40,7 @@ public class UI_ItemBtn : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     {
         if(itemScript != null)
         {
-            itemScript.OnBuyView(itemId);
+            itemScript.OnBuyView(itemId, sprite);
         }
         if(decoScript != null)
         {

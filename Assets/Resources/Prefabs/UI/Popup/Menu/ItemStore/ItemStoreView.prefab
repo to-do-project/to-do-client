@@ -730,7 +730,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 82616a8e926164543ae51f929c378890, type: 3}
+    m_Font: {fileID: 12800000, guid: a9fc35348ab829a4d91eaf8a397587b4, type: 3}
     m_FontSize: 86
     m_FontStyle: 0
     m_BestFit: 0
@@ -1075,6 +1075,7 @@ GameObject:
   - component: {fileID: 3797911110715863168}
   - component: {fileID: 3797911110715863171}
   - component: {fileID: 3797911110715863170}
+  - component: {fileID: 164746076924640198}
   m_Layer: 5
   m_Name: ItemStoreView
   m_TagString: Untagged
@@ -1171,6 +1172,39 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &164746076924640198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3797911110715863173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e081ec0935dcb04f80b97cac3aeb075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharGap: 1
+  CharItemSprites:
+  - {fileID: 21300000, guid: f241885aae4fce244ac1d872bccd8a8c, type: 3}
+  - {fileID: -6728056968993076906, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: -110996765652227301, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: 4229380858609704987, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: -2074010367967742009, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: -2770439450218022250, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: 8485417060486176066, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  PlanetGap: 13
+  PlanetItemSprites:
+  - {fileID: 7615102902422383587, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: -4284500338564480201, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: 2392854917984478076, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: 277764366442818324, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: 5821398900478906412, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: 5535649289313762654, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: -5185773395260603806, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: 491602521678499485, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
+  - {fileID: -8621342148848106738, guid: 03d3a693175e4034fb121fe893267196, type: 3}
+  - {fileID: -1599941697720317745, guid: 37425f12c82779e4faded1a2e3095482, type: 3}
 --- !u!1 &4126134106539693243
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,7 +1710,7 @@ GameObject:
   - component: {fileID: 8599541897841236978}
   - component: {fileID: 4457494848316066431}
   m_Layer: 5
-  m_Name: Point_txt
+  m_Name: Point_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

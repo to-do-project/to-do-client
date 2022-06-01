@@ -244,4 +244,9 @@ public class UIManager
     {
         return popupStack.Count > 0;
     }
+
+    public void DeactiveAllUI()
+    {
+
+    }
 }
