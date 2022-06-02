@@ -23,16 +23,7 @@ public class EditScene : BaseScene
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
 
-
-        //Planet = GameObject.Find("BluePlanet");
-        //EditItem1 = Managers.Resource.Instantiate("Items/portal_00", Planet.transform.GetChild(2).transform);
-        //EditItem2 = Managers.Resource.Instantiate("Items/plant_01", Planet.transform.GetChild(2).transform);
-        //EditItem = Managers.Resource.Instantiate(new Vector3(3.2f, 0.9f,0f), "Items/portal_00", Planet.transform.GetChild(2).transform);
-
-
-        //ChangeItemMode(EditItem);
-        //ChangeItemMode(EditItem1);
-        //ChangeItemMode(EditItem2);
+        Managers.Player.ChangeItemModeList(SceneType);
 
 
     }

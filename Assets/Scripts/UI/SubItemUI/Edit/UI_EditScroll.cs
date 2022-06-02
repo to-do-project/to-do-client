@@ -4,24 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[System.Serializable]
-public class ResponseInven
-{
-    public long itemId;
-    public int totalCount;
-    public int placedCount;
-    public int remainingCount;
-}
+
 
 /// <summary>
 /// 인벤토리 가로 스크롤뷰
 /// </summary>
 public class UI_EditScroll : UI_Base
 {
-    Action<UnityWebRequest> callback;
-    Response<List<ResponseInven>> res;
-
-    List<ResponseInven> invenList;
 
 
     enum GameObjects
@@ -40,11 +29,13 @@ public class UI_EditScroll : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         contentRoot = Get<GameObject>((int)GameObjects.Content);
 
+        /*Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "plant_03");
+        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "plant_04");
+        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "plant_05");
+        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "stone_02");
+        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "stone_01");
+*/
 
-        res = new Response<List<ResponseInven>>();
-        Managers.Web.SendGetRequest("/api/inventory/planet-items/", "plant",callback,Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
-
-        Managers.UI.MakeSubItem<UI_EditItem>("Edit",contentRoot.transform,"plant_03");
     }
 
 
@@ -53,34 +44,6 @@ public class UI_EditScroll : UI_Base
         Init();
     }
 
-    private void ResponseAction(UnityWebRequest request)
-    {
-        if (res != null)
-        {
-            res = JsonUtility.FromJson<Response<List<ResponseInven>>>(request.downloadHandler.text);
 
-            if (res.isSuccess)
-            {
-                if (res.code == 1000)
-                {
-                    invenList = res.result;
-                    
-                    for(int i = 0; i < invenList.Count; i++)
-                    {
-                        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, res.result[i].itemId.ToString());
 
-                    }
-                }
-            }
-
-            else
-            {
-                //token 재발급
-                if(res.code==6000 || res.code == 6004 || res.code == 6006)
-                {
-
-                }
-            }
-        }
-    }
 }

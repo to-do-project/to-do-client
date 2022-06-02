@@ -49,7 +49,7 @@ public class UI_DoneEdit : UI_Popup
         //Managers.Player.ConvertToRequestList();
         Managers.Player.SendTokenRequest(innerCallback);
 
-        //Managers.Scene.LoadScene(Define.Scene.Main);
+        Managers.Scene.LoadScene(Define.Scene.Main);
     }
 
     void SendArrangeRequest()

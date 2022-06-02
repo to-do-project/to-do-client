@@ -17,6 +17,8 @@ public class RequestToken
 [System.Serializable]
 public class ResponseMainPlanet
 {
+    public long userId;
+    public string planetColor;
     public int level;
     public long characterItem;
     public List<MainItemList> planetItemList;
@@ -61,8 +63,8 @@ public class PlayerManager : MonoBehaviour
     Response<string> Tokenres;
     Response<string> Arrangeres;
 
-    List<MainItemList> placedItemList;
-    List<GameObject> realPlacedItemList;
+    public List<MainItemList> placedItemList;
+    public List<GameObject> realPlacedItemList;
 
     string[] header = new string[2];
     string[] headerValue = new string[2];
@@ -97,18 +99,7 @@ public class PlayerManager : MonoBehaviour
         if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
         {
             Debug.Log("Token 있음");
-            //토큰 확인
-            /*Tokenres = new Response<string>();
-            RequestToken val = new RequestToken { deviceToken = "12345" }; //디바이스 토큰 수정 필요
-            header[0] = Define.JWT_REFRESH_TOKEN;
-            header[1] = "User-Id";
 
-            headerValue[0] = PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN);
-            headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
-
-            Managers.Web.SendPostRequest<string>("access-token", val, callback,  header, headerValue);
-            
-*/
             Managers.Scene.LoadScene(Define.Scene.Main);
             SendTokenRequest(firstCallback);
         }
@@ -118,10 +109,10 @@ public class PlayerManager : MonoBehaviour
             //토큰 없으면
         }
 
-        //Managers.Web.SendPostRequest<ResponseMainPlanet>("");
 
     }
 
+    
     private void PlanetResponseAction(UnityWebRequest request)
     {
         if (Mainres != null)
@@ -133,7 +124,8 @@ public class PlayerManager : MonoBehaviour
                 if (Mainres.code == 1000)
                 {
                     Debug.Log("행성 생성");
-                    PlanetInstantiate(Mainres.result.level);
+
+                    PlanetInstantiate(Mainres.result.planetColor, Mainres.result.level);
                     placedItemList = Mainres.result.planetItemList;
                     ItemInstantiate();
                 }
@@ -146,63 +138,19 @@ public class PlayerManager : MonoBehaviour
             Mainres = null;
         }
 
-/*        else if (Tokenres != null)
-        {
-            Tokenres = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
-
-            if (Tokenres.isSuccess)
-            {
-                if (Tokenres.code == 1000)
-                {
-                    PlayerPrefs.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
-                    PlayerPrefs.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
-
-                    PlanetInstantiate();
-
-                    //Item 불러오기
-                    Mainres = new Response<ResponseMainPlanet>();
-
-                    header[0] = Define.JWT_ACCESS_TOKEN;
-                    header[1] = "User-Id";
-
-                    headerValue[0] = PlayerPrefs.GetString(Define.JWT_ACCESS_TOKEN);
-                    headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
-
-                    Managers.Web.SendGetRequest("api/planet/main/", PlayerPrefs.GetString(Define.USER_ID), callback, header, headerValue);
-                }
-            }
-            else
-            {
-                Debug.Log(Tokenres.message);
-                if (Tokenres.code == 6023)
-                {
-                    Managers.UI.Clear();
-                    Managers.Scene.LoadScene(Define.Scene.Login);
-                }
-            }
-
-            Tokenres = null;
-        }*/
     }
 
     private void TokenResponseAction(UnityWebRequest request, Action callback)
     {
+        
         if (Tokenres != null)
         {
             Tokenres = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
 
+            Debug.Log(Tokenres.message);
             if (Tokenres.isSuccess)
             {
-                /*Tokenres = new Response<string>();
-                RequestToken val = new RequestToken { deviceToken = "12345" }; //디바이스 토큰 수정 필요
-                header[0] = Define.JWT_REFRESH_TOKEN;
-                header[1] = "User-Id";
 
-                headerValue[0] = PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN);
-                headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
-
-                Managers.Web.SendPostRequest<string>("access-token", val, callback, header, headerValue);
-*/
                 Debug.Log("토큰 확인");
                 PlayerPrefs.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
                 PlayerPrefs.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
@@ -230,6 +178,11 @@ public class PlayerManager : MonoBehaviour
             }
 
             Tokenres = null;
+        }
+
+        else
+        {
+            Debug.Log("Tokenres null");
         }
     }
 
@@ -269,7 +222,7 @@ public class PlayerManager : MonoBehaviour
         //headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
         headerValue[1] = userId;
 
-        Managers.Web.SendGetRequest("api/planet/main/", PlayerPrefs.GetString(Define.USER_ID), mainCallback, header, headerValue);
+        Managers.Web.SendGetRequest("api/planet/main/", userId, mainCallback, header, headerValue);
 
     }
 
@@ -306,32 +259,26 @@ public class PlayerManager : MonoBehaviour
         Managers.Web.SendUniRequest("api/inventory/planet-items/placement", "PATCH", val, arrangeCallback, header, headerValue);
     }
 
-    private void FirstInstantiate()
+    public void FirstInstantiate()
     {
         Debug.Log("첫번째 생성");
         SendSettingPlanetRequest(PlayerPrefs.GetString(Define.USER_ID));
     }
 
     //행성 생성 & 캐릭터생성
-    private void PlanetInstantiate(int level)
+    private void PlanetInstantiate(string color, int level)
     {
         //blue,green,red 중 무엇인지 확인 후 해당 행성 생성
         //레벨도 확인
 
         if (planet == null)
         {
-            //PlayerPrefs에 정보가 있으면
-            if (PlayerPrefs.HasKey(Define.USER_ID) && PlayerPrefs.HasKey(Define.PLANET_ID))
-            {
-                string path = "Planet/" + PlayerPrefs.GetString(Define.PLANET_COLOR) + "_" +
+            string path = "Planet/" + color + "_" +
                     level.ToString();
 
 
-                planet = Managers.Resource.Instantiate(path);
-                DontDestroyOnLoad(planet);
-
-                
-            }
+            planet = Managers.Resource.Instantiate(path);
+            DontDestroyOnLoad(planet);
         }
 
     }
@@ -344,6 +291,20 @@ public class PlayerManager : MonoBehaviour
 
     private void ItemInstantiate()
     {
+        realPlacedItemList.Clear();
+
+        Transform[] childList = planet.transform.GetChild(2).GetComponentsInChildren<Transform>();
+        if (childList != null)
+        {
+            for (int i = 1; i < childList.Length; i++)
+            {
+                if (childList[i] != planet.transform.GetChild(2))
+                {
+                    Managers.Resource.Destroy(childList[i].gameObject);
+                }
+            }
+        }
+
         for (int i = 0; i < placedItemList.Count; i++)
         {
             string path = "Items/" + placedItemList[i].itemCode;
@@ -371,10 +332,10 @@ public class PlayerManager : MonoBehaviour
     //씬에 생성된 실제 아이템들을 서버에 보낼 List 형태로 변환
     private void ConvertToRequestList()
     {
-        for(int i = 0; i < realPlacedItemList.Count; i++)
+        placedItemList.Clear();
+
+        for (int i = 0; i < realPlacedItemList.Count; i++)
         {
-            placedItemList.Clear();
-            placedItemList = new List<MainItemList>();
 
             string code = Util.RemoveCloneString(realPlacedItemList[i].name);
             float posX = realPlacedItemList[i].transform.position.x;
@@ -420,6 +381,24 @@ public class PlayerManager : MonoBehaviour
     public void RemoveItemList(GameObject go)
     {
         realPlacedItemList.Remove(go);
+    }
+
+    public int CountItem(string name)
+    {
+        //string fullname = name + "(Clone)";
+        return realPlacedItemList.FindAll(x => x.name == name).Count;
+    }
+
+    public void ChangeItemModeList(Define.Scene type)
+    {
+        if (realPlacedItemList!=null)
+        {
+            for (int i = 0; i < realPlacedItemList.Count; i++)
+            {
+                ChangeItemMode(realPlacedItemList[i], type);
+            }
+        }
+
     }
 
     #region PlayerPrefs
@@ -479,14 +458,14 @@ public class PlayerManager : MonoBehaviour
             headerValue[0] = PlayerPrefs.GetString(Define.JWT_ACCESS_TOKEN);
             headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
 
-            return header;
+            return headerValue;
         }
         else
         {
             headerValue[0] = PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN);
             headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
 
-            return header;
+            return headerValue;
         }
     }
     #endregion
