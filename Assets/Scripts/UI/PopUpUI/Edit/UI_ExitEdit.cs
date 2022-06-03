@@ -39,6 +39,7 @@ public class UI_ExitEdit : UI_Popup
 
     void ExitBtnClick(PointerEventData data)
     {
+        
         Managers.Scene.LoadScene(Define.Scene.Main);
     }
 }

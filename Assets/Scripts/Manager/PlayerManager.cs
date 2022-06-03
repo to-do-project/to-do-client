@@ -57,14 +57,16 @@ public class PlayerManager : MonoBehaviour
     Action firstCallback;
 
     GameObject planet;
+    GameObject character;
 
 
     Response<ResponseMainPlanet> Mainres;
     Response<string> Tokenres;
     Response<string> Arrangeres;
 
-    public List<MainItemList> placedItemList;
-    public List<GameObject> realPlacedItemList;
+
+    List<MainItemList> placedItemList;
+    List<GameObject> realPlacedItemList;
 
     string[] header = new string[2];
     string[] headerValue = new string[2];
@@ -127,6 +129,7 @@ public class PlayerManager : MonoBehaviour
 
                     PlanetInstantiate(Mainres.result.planetColor, Mainres.result.level);
                     placedItemList = Mainres.result.planetItemList;
+                    CharacterInstantiate(Mainres.result.characterItem);
                     ItemInstantiate();
                 }
             }
@@ -232,7 +235,7 @@ public class PlayerManager : MonoBehaviour
     public void SendTokenRequest(Action innnerCallback)
     {
         Tokenres = new Response<string>();
-        RequestToken val = new RequestToken { deviceToken = "12345" }; //디바이스 토큰 수정 필요
+        RequestToken val = new RequestToken { deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier }; //디바이스 토큰 수정 필요
         header[0] = Define.JWT_REFRESH_TOKEN;
         header[1] = "User-Id";
 
@@ -265,7 +268,7 @@ public class PlayerManager : MonoBehaviour
         SendSettingPlanetRequest(PlayerPrefs.GetString(Define.USER_ID));
     }
 
-    //행성 생성 & 캐릭터생성
+    //행성 생성 
     private void PlanetInstantiate(string color, int level)
     {
         //blue,green,red 중 무엇인지 확인 후 해당 행성 생성
@@ -279,8 +282,26 @@ public class PlayerManager : MonoBehaviour
 
             planet = Managers.Resource.Instantiate(path);
             DontDestroyOnLoad(planet);
+
+
         }
 
+    }
+
+    private void CharacterInstantiate(long characterColor)
+    {
+        //Debug.Log("character ");
+        if (planet != null)
+        {
+            if (character == null)
+            {
+                string path = "Character/" + "Character_" + characterColor.ToString();
+                Vector3 pos = new Vector3(0, 5.81f, planet.transform.position.z);
+
+                character = Managers.Resource.Instantiate(pos, path, planet.transform);
+                DontDestroyOnLoad(character);
+            }
+        }
     }
 
     // 행성 레벨업 시
@@ -399,6 +420,25 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
+    }
+
+    public bool CheckItemFixState()
+    {
+        if (realPlacedItemList != null)
+        {
+            //하나라도 고정된 상태가 아닌 아이템 존재 시 false 반환
+            for(int i = 0; i < realPlacedItemList.Count; i++)
+            {
+                ItemController child = Util.FindChild<ItemController>(realPlacedItemList[i], "ItemInner", true);
+
+                if (!child.GetFixState())
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     #region PlayerPrefs

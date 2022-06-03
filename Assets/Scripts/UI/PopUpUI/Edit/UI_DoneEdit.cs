@@ -46,10 +46,17 @@ public class UI_DoneEdit : UI_Popup
 
     void DoneBtnClick(PointerEventData data)
     {
-        //Managers.Player.ConvertToRequestList();
-        Managers.Player.SendTokenRequest(innerCallback);
+        if (Managers.Player.CheckItemFixState())
+        {
+            //Managers.Player.ConvertToRequestList();
+            Managers.Player.SendTokenRequest(innerCallback);
 
-        Managers.Scene.LoadScene(Define.Scene.Main);
+            Managers.Scene.LoadScene(Define.Scene.Main);
+        }
+        else
+        {
+
+        }
     }
 
     void SendArrangeRequest()

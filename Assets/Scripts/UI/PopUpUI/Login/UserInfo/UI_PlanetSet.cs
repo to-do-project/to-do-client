@@ -173,7 +173,7 @@ public class UI_PlanetSet : UI_UserInfo
             password = loginScene.Pw,
             nickname = loginScene.Nickname,
             planetColor = sPlanet,
-            deviceToken = "12345"
+            deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier
 
         };
         Managers.Web.SendPostRequest<ResponseSignUp>("join",val,callback);
