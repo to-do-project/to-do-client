@@ -96,3 +96,14 @@ public class ResponseCloset
 {
     public List<long> characterItemIdList;
 }
+
+[Serializable]
+public class ResponsePlanetInfo
+{
+    public long age;
+    public int level;
+    public int point;
+    public int avgGoalCompleteRate;
+    public int getFavoriteCount;
+    public int putFavoriteCount;
+}

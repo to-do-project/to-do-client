@@ -20,7 +20,7 @@ public class MenuScene : BaseScene
         base.Init();
         SceneType = Define.Scene.Menu;
 
-        Managers.UI.ShowPopupUI<UI_Menu>("MenuView", "Menu");
+        Managers.UI.ShowPopupUI<UI_Signal>("SignalView", "Signal");
 
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;

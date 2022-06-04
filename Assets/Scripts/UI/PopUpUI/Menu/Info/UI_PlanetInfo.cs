@@ -31,8 +31,6 @@ public class UI_PlanetInfo : UI_PopupMenu
          avgPlanCompleteTxt, getGoodTxt, giveGoodTxt;
     Image planet;
 
-    private GameObject content = null;
-
     public override void Init()
     {
         base.Init();
@@ -55,9 +53,70 @@ public class UI_PlanetInfo : UI_PopupMenu
 
         planet = GetImage((int)Images.Planet_img);
 
-        if (content == null)
+        SetTexts();
+
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/planet/my-info", "GET", null, (uwr) => {
+            Response<ResponsePlanetInfo> response = JsonUtility.FromJson<Response<ResponsePlanetInfo>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(response.result);
+                Managers.Player.SetInt(Define.LEVEL, response.result.level);
+                Managers.Player.SetInt(Define.AGE, (int)response.result.age);
+                Managers.Player.SetInt(Define.POINT, response.result.point);
+                Managers.Player.SetInt(Define.AVG_COMPLETE, response.result.avgGoalCompleteRate);
+                Managers.Player.SetInt(Define.GET_GOOD, response.result.getFavoriteCount);
+                Managers.Player.SetInt(Define.GIVE_GOOD, response.result.putFavoriteCount);
+
+                SetTexts();
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
+    }
+
+    private void SetTexts()
+    {
+        if(PlayerPrefs.HasKey(Define.NICKNAME))
         {
-            content = GameObject.Find("Content");
+            planetNameTxt.text = Managers.Player.GetString(Define.NICKNAME) + "님의 행성";
+        }
+
+        if (PlayerPrefs.HasKey(Define.LEVEL))
+        {
+            levelTitleTxt.text = "Lv. " + Managers.Player.GetInt(Define.LEVEL).ToString();
+            levelTxt.text = levelTitleTxt.text;
+        }
+
+        if (PlayerPrefs.HasKey(Define.AGE))
+        {
+            ageTxt.text = Managers.Player.GetInt(Define.AGE).ToString() + " 일";
+        }
+
+        if (PlayerPrefs.HasKey(Define.POINT))
+        {
+            pointTxt.text = Managers.Player.GetInt(Define.POINT).ToString() + " Point";
+        }
+
+        if (PlayerPrefs.HasKey(Define.AVG_COMPLETE))
+        {
+            avgPlanCompleteTxt.text = Managers.Player.GetInt(Define.AVG_COMPLETE).ToString() + " %";
+        }
+
+        if (PlayerPrefs.HasKey(Define.GET_GOOD))
+        {
+            getGoodTxt.text = Managers.Player.GetInt(Define.GET_GOOD).ToString() + " 회";
+        }
+
+        if (PlayerPrefs.HasKey(Define.GIVE_GOOD))
+        {
+            giveGoodTxt.text = Managers.Player.GetInt(Define.GIVE_GOOD).ToString() + " 회";
         }
     }
 

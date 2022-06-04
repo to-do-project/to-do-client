@@ -12,7 +12,7 @@ public class UI_Announce : UI_PopupMenu
 
     enum Contents
     {
-        Content,
+        AnnounceContent,
     }
 
     GameObject content;
@@ -28,7 +28,7 @@ public class UI_Announce : UI_PopupMenu
         contentList = new List<GameObject>();
 
         Bind<GameObject>(typeof(Contents));
-        content = Get<GameObject>((int)Contents.Content);
+        content = Get<GameObject>((int)Contents.AnnounceContent);
 
         AddAnnounce("공지사항 1", "업데이트 내용\n가\n나\n다");
         AddAnnounce("공지사항 2", "업데이트 내용\n라\n마\n바\n사");

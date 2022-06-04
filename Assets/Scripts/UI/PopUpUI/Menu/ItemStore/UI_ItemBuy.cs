@@ -82,8 +82,7 @@ public class UI_ItemBuy : UI_PopupMenu
         this.itemId = itemId;
         this.price = price;
         this.parent = parent;
-        point = Managers.Player.GetInt("point");
-        point = 2000;
+        point = Managers.Player.GetInt(Define.POINT);
 
         if(point == 0 || point / price < 1)
         {
@@ -164,6 +163,7 @@ public class UI_ItemBuy : UI_PopupMenu
             {
                 Debug.Log(uwr.downloadHandler.text);
                 parent.GetComponent<UI_ItemStore>().SetPoint(response.result.point);
+                parent.GetComponent<UI_ItemStore>().DeleteItem(response.result.itemId);
             }
             else
             {

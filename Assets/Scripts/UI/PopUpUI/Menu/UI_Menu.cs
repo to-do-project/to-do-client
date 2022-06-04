@@ -62,9 +62,9 @@ public class UI_Menu : UI_PopupMenu
         Bind<Image>(typeof(Images));
         profileImage = GetImage((int)Images.Profile_image);
 
-        if (PlayerPrefs.HasKey("profileColor"))
+        if (PlayerPrefs.HasKey(Define.PROFILE_COLOR))
         {
-            ChangeColor(Managers.Player.GetString("profileColor"));
+            ChangeColor(Managers.Player.GetString(Define.PROFILE_COLOR));
         }
 
         Bind<Text>(typeof(Texts));
@@ -96,11 +96,11 @@ public class UI_Menu : UI_PopupMenu
 
             RequestSignUp val = new RequestSignUp
             {
-                email = "tester@gmail.com",
+                email = "tester1@gmail.com",
                 password = "test1234",
-                nickname = "test",
+                nickname = "test1",
                 planetColor = "RED",
-                deviceToken = "testtest"
+                deviceToken = "testtest1"
             };
             Managers.Web.SendPostRequest<ResponseSignUp>("join", val, (uwr) =>
             {
@@ -114,11 +114,9 @@ public class UI_Menu : UI_PopupMenu
                         {
                             case 1000:
                                 Debug.Log(uwr.downloadHandler.text);
-                                Testing.instance.DeviceToken = val.deviceToken;
-                                Testing.instance.AccessToken = uwr.GetResponseHeader("Jwt-Access-Token");
-                                Testing.instance.RefreshToken = uwr.GetResponseHeader("Jwt-Refresh-Token");
-                                Debug.Log(uwr.GetResponseHeader("Jwt-Access-Token"));
-                                Debug.Log(uwr.GetResponseHeader("Jwt-Refresh-Token"));
+                                Managers.Player.SetString(Define.DEVICETOKEN, val.deviceToken);
+                                Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                                Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
                                 break;
                             default:
                                 Debug.Log(res.message);
@@ -201,11 +199,11 @@ public class UI_Menu : UI_PopupMenu
                     Managers.Player.SetString("User-Id", response.result.userId.ToString());
                     Managers.Player.SetString(Define.PLANET_ID, response.result.userId.ToString());
                     Managers.Player.SetInt(Define.PLANET_LEVEL, response.result.planetLevel);
-                    Managers.Player.SetInt("characterItem", (int)response.result.characterItem);
+                    Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)response.result.characterItem);
                     Managers.Player.SetString(Define.PLANET_COLOR, response.result.planetColor);
-                    Managers.Player.SetString("profileColor", response.result.profileColor);
+                    Managers.Player.SetString(Define.PROFILE_COLOR, response.result.profileColor);
                     Managers.Player.SetString(Define.CHARACTER_COLOR, response.result.characterItem.ToString());
-                    Managers.Player.SetInt("point", response.result.point);
+                    Managers.Player.SetInt(Define.POINT, response.result.point);
                     Debug.Log(Managers.Player.GetString(Define.USER_ID));
                 }
                 else

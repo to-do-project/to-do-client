@@ -24,7 +24,8 @@ public class UI_Friend : UI_PopupMenu
         Friend_inputfield
     }
 
-    string pathName = "Menu/Friend";
+    const string pathName = "Menu/Friend";
+    const string contentPath = "UI/ScrollContents/";
 
     Text friendOnlyTxt;
     Text requestTxt;
@@ -57,7 +58,7 @@ public class UI_Friend : UI_PopupMenu
 
         if (content == null)
         {
-            content = GameObject.Find("Content");
+            content = GameObject.Find("FriendContent");
         }
         if (requestContent == null)
         {
@@ -75,7 +76,35 @@ public class UI_Friend : UI_PopupMenu
 
     private void SetContents()
     {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
+        string platform;
+
+        if (Application.platform == RuntimePlatform.Android) platform = "aos";
+        else if (Application.platform == RuntimePlatform.IPhonePlayer) platform = "ios";
+        else platform = "aos";
+
+        Managers.Web.SendUniRequest("api/friends" + "/platform=" + platform, "GET", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Debug.Log(response.result);
+                Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
+
+                Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+
+                Debug.Log(uwr.GetResponseHeader("Jwt-Access-Token"));
+                Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
     private void SetBtns()
@@ -104,7 +133,7 @@ public class UI_Friend : UI_PopupMenu
     {
         if(friendCount < 100)
         {
-            GameObject target = Managers.Resource.Instantiate("UI/ScrollContents/FriendContent");
+            GameObject target = Managers.Resource.Instantiate(contentPath + "FriendContent");
             target.transform.SetParent(friendContent.transform);
             target.transform.localScale = new Vector3(1, 1, 1);
 
@@ -129,7 +158,7 @@ public class UI_Friend : UI_PopupMenu
 
     void AddRequest(string name)
     {
-        GameObject target = Managers.Resource.Instantiate("UI/ScrollContents/RequestContent");
+        GameObject target = Managers.Resource.Instantiate(contentPath + "RequestContent");
         target.transform.SetParent(requestContent.transform);
         target.transform.localScale = new Vector3(1, 1, 1);
 

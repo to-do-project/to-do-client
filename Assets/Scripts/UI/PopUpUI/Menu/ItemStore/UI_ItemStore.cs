@@ -57,12 +57,12 @@ public class UI_ItemStore : UI_PopupMenu
         {
             profileText.text = Managers.Player.GetString(Define.NICKNAME);
         }
-        if(PlayerPrefs.HasKey("point")) {
-            pointText.text = Managers.Player.GetInt("point").ToString();
+        if(PlayerPrefs.HasKey(Define.POINT)) {
+            pointText.text = Managers.Player.GetInt(Define.POINT).ToString();
         }
-        if(PlayerPrefs.HasKey("profileColor"))
+        if(PlayerPrefs.HasKey(Define.PROFILE_COLOR))
         {
-            ChangeColor(Managers.Player.GetString("profileColor"));
+            ChangeColor(Managers.Player.GetString(Define.PROFILE_COLOR));
         }
 
         if (charItemContent == null)
@@ -211,8 +211,14 @@ public class UI_ItemStore : UI_PopupMenu
 
     public void SetPoint(int amount)
     {
-        Managers.Player.SetInt("point", amount);
+        Managers.Player.SetInt(Define.POINT, amount);
         pointText.text = amount.ToString();
+    }
+
+    public void DeleteItem(long id)
+    {
+        if (charBtnDict.ContainsKey(id)) Destroy(charBtnDict[id].gameObject);
+        if (planetBtnDict.ContainsKey(id)) Destroy(planetBtnDict[id].gameObject);
     }
 
     public void ChangeColor(string color)

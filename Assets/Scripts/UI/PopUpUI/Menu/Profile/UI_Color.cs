@@ -128,7 +128,7 @@ public class UI_Color : UI_PopupMenu
             if (response.code == 1000)
             {
                 Debug.Log(response.result);
-                Managers.Player.SetString("profileColor", selectColor);
+                Managers.Player.SetString(Define.PROFILE_COLOR, selectColor);
                 menu.ChangeColor(selectColor);
                 profile.ChangeColor(selectColor);
                 Managers.UI.ClosePopupUI();
