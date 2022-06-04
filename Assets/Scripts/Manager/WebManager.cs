@@ -16,6 +16,11 @@ public class WebManager : MonoBehaviour
         StartCoroutine(PostRequest<T>(url, obj,callback, header, headerValue));
     }
 
+    public void SendPostRequest<T>(string url, object obj, Action<UnityWebRequest, Action> callback, Action innerAction = null, string[] header = null, string[] headerValue = null)
+    {
+        StartCoroutine(PostRequest<T>(url, obj, callback,innerAction, header, headerValue));
+    }
+
     public void SendGetRequest(string url, string param, Action<UnityWebRequest> callback, string[] header = null, string[] headerValue = null)
     {
         StartCoroutine(GetRequest(url,param,callback, header, headerValue));
@@ -84,6 +89,54 @@ public class WebManager : MonoBehaviour
         
     }
 
+    IEnumerator PostRequest<T>(string url, object obj, Action<UnityWebRequest,Action> callback = null, Action innerAction = null, string[] header = null, string[] headerValue = null)
+    {
+        string sendUrl = $"{baseUrl}/{url}";
+        byte[] jsonByte = null;
+        if (obj != null)
+        {
+            string jsonStr = JsonUtility.ToJson(obj);
+            jsonByte = Encoding.UTF8.GetBytes(jsonStr);
+        }
+
+        using (var uwr = new UnityWebRequest(sendUrl, "POST"))
+        {
+            uwr.uploadHandler = new UploadHandlerRaw(jsonByte); //바이트배열 업로드
+            uwr.downloadHandler = new DownloadHandlerBuffer(); //응답이 왔을 때
+            uwr.SetRequestHeader("Content-type", "application/json");
+
+            if (header != null && headerValue != null)
+            {
+                for (int i = 0; i < header.Length; i++)
+                {
+                    uwr.SetRequestHeader(header[i], headerValue[i]);
+
+                }
+            }
+
+            yield return uwr.SendWebRequest();
+
+            if (uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    //그담에 수행할 이벤트 호출
+                    Debug.Log("Recv " + uwr.downloadHandler.text);
+                    callback.Invoke(uwr, innerAction);
+
+                }
+                //Debug.Log("Recv " + uwr.downloadHandler.text);
+                //res = JsonUtility.FromJson<Response<T>>(uwr.downloadHandler.text);
+
+            }
+        }
+
+    }
+
     IEnumerator GetRequest(string url, string param, Action<UnityWebRequest> callback = null, string[] header = null, string[] headerValue = null)
     {
         string sendUrl = $"{baseUrl}/{url}{param}";
@@ -149,6 +202,7 @@ public class WebManager : MonoBehaviour
         }
         else 
         {
+            Debug.Log("Recv " + uwr.downloadHandler.text);
             callback.Invoke(uwr);   // 성공 시 메소드 실행
         }
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UI_EditItem : UI_Base
 {
@@ -10,16 +11,31 @@ public class UI_EditItem : UI_Base
         item_img,
     }
 
+    enum Texts
+    {
+        count_txt,
+    }
+
+
     string path;
-    GameObject planet;
+    Text countTxt;
+
+    int have, total, remain;
+
 
     public override void Init()
     {
-        planet = GameObject.Find("BluePlanet");
+
+
         Bind<GameObject>(typeof(GameObjects));
+        Bind<Text>(typeof(Texts));
+
         GameObject item = Get<GameObject>((int)GameObjects.item_img);
+        countTxt = GetText((int)Texts.count_txt);
 
         BindEvent(item, ItemClick, Define.TouchEvent.Touch);
+
+        countTxt.text = have.ToString() + "/" + total.ToString();
     }
 
     void Start()
@@ -29,18 +45,31 @@ public class UI_EditItem : UI_Base
 
     void ItemClick(PointerEventData data)
     {
-        string name=this.gameObject.name;
-        int index = this.gameObject.name.IndexOf("(Clone)");
-        if (index > 0)
+
+
+        if (remain != 0)
         {
-            name = this.gameObject.name.Substring(0, index);
+            if (Managers.Player.CountItem(this.gameObject.name)>= have)
+            {
+                return;
+            }
+            string name = Util.RemoveCloneString(this.gameObject.name);
+            path = "Items/" + name;
+            Debug.Log(path);
+
+            GameObject go = Managers.Resource.Instantiate(path, Managers.Player.GetPlanet().transform.GetChild(2).transform);
+            Util.FindChild<ItemController>(go, "ItemInner", true).ChangeMode(Define.Scene.Edit);
+            Managers.Player.AddItemList(go);
         }
-        path = "Items/"+name;
-        Debug.Log(path);
-        
-        GameObject go = Managers.Resource.Instantiate(path,planet.transform.GetChild(2).transform);
-        Util.FindChild<ItemController>(go, "ItemInner", true).ChangeMode(Define.Scene.Edit);
     }
+
+    public void SetText(int totalCount, int remainingCount, int placedCount)
+    {
+        have = remainingCount+placedCount;
+        total = totalCount;
+        remain = remainingCount;
+    }
+
 
 
 }

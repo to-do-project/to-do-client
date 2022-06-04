@@ -1,12 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 
 public class MainScene : BaseScene
 {
-    GameObject planet;
     Camera PlanetCamera;
+    Action<UnityWebRequest> callback;
+    Response<List<ResponseInven>> res;
+
+    Action innerCallback;
 
     public override void Clear()
     {
@@ -19,6 +24,9 @@ public class MainScene : BaseScene
         base.Init();
         SceneType = Define.Scene.Main;
 
+        innerCallback -= PlanetSetting;
+        innerCallback += PlanetSetting;
+
         Managers.Input.TouchAction -= EnterArrayMode;
         Managers.Input.TouchAction += EnterArrayMode;
 
@@ -27,16 +35,16 @@ public class MainScene : BaseScene
 
         Managers.UI.ShowPanelUI<UI_Main>("MainView");
 
-        //행성 생성
-        //planet = Managers.Resource.Instantiate("Planet/BluePlanet");
+        Managers.Player.ChangeItemModeList(SceneType);
 
         PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
 
+        Managers.Player.SendTokenRequest(innerCallback);
     }
 
-    void Update()
+    void Awake()
     {
-        
+        Init();
     }
 
     //배치모드로 진입
@@ -71,6 +79,7 @@ public class MainScene : BaseScene
                 //Debug.Log(hit.collider.gameObject.name);
                 Managers.Scene.LoadScene(Define.Scene.Edit);
 
+
             }
         }
 
@@ -89,5 +98,11 @@ public class MainScene : BaseScene
         Managers.UI.CloseAppOrUI();
 
     }
+
+    void PlanetSetting()
+    {
+        Managers.Player.FirstInstantiate();
+    }
+    
 
 }

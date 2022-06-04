@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class UI_DoneEdit : UI_Popup
@@ -12,6 +14,7 @@ public class UI_DoneEdit : UI_Popup
         cancle_btn,
     }
 
+    Action innerCallback;
 
 
     void Start()
@@ -22,6 +25,10 @@ public class UI_DoneEdit : UI_Popup
     public override void Init()
     {
         base.Init();
+        innerCallback -= SendArrangeRequest;
+        innerCallback += SendArrangeRequest;
+/*        arrangeCallback -= ArrangeResponseAction;
+        arrangeCallback += ArrangeResponseAction;*/
 
         Bind<Button>(typeof(Buttons));
         GameObject doneBtn = GetButton((int)Buttons.done_btn).gameObject;
@@ -39,6 +46,23 @@ public class UI_DoneEdit : UI_Popup
 
     void DoneBtnClick(PointerEventData data)
     {
-        Managers.Scene.LoadScene(Define.Scene.Main);
+        if (Managers.Player.CheckItemFixState())
+        {
+            //Managers.Player.ConvertToRequestList();
+            Managers.Player.SendTokenRequest(innerCallback);
+
+            Managers.Scene.LoadScene(Define.Scene.Main);
+        }
+        else
+        {
+
+        }
+    }
+
+    void SendArrangeRequest()
+    {
+        //배치 API 호출
+        Managers.Player.SendArrangementRequest();
+
     }
 }

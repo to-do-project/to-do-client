@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlanetController : MonoBehaviour
+public class CharacterController : MonoBehaviour
 {
     void Start()
     {
-        Init();
+        
     }
 
     void Init()
     {
-
-
+      
     }
-
 }

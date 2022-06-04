@@ -20,7 +20,7 @@ public class ItemController : MonoBehaviour
     FixBtn_EventHandler Fixevt;
     Item item;
 
-    private bool isFixed;
+    private bool isFixed; //false면 편집가능상태 아니면 편집 불가 상태
 
     private float timer = 0f;
     private float MaxDragTime = 0.3f;
@@ -206,7 +206,8 @@ public class ItemController : MonoBehaviour
     {
         Debug.Log("Cancle Item");
         //Managers.Resource.Destroy(root);
-        Managers.Resource.Destroy(gameObject);
+        Managers.Player.RemoveItemList(root);
+        Managers.Resource.Destroy(root);
     }
 
     //아이템 충돌 체크
@@ -233,29 +234,29 @@ public class ItemController : MonoBehaviour
     }
 
 
-/*    void CollisionExitCheck(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Item"))
+    /*    void CollisionExitCheck(Collider2D collision)
         {
-            if (collision.transform.parent.parent.parent.name.Equals(root.name))
+            if (collision.gameObject.CompareTag("Item"))
             {
-                return;
+                if (collision.transform.parent.parent.parent.name.Equals(root.name))
+                {
+                    return;
+                }
+                else
+                {
+                    collision.transform.parent.GetComponent<ItemController>().ChangeColor(false);
+                }
             }
-            else
-            {
-                collision.transform.parent.GetComponent<ItemController>().ChangeColor(false);
-            }
-        }
-    }*/
+        }*/
 
-/*    public void ChangeColor(bool change)
+    public void ChangeColor(bool change)
     {
         DisableImg.SetActive(change);
         canFixed = !change;
-    }*//*    public void ChangeColor(bool change)
-    {
-        DisableImg.SetActive(change);
-        canFixed = !change;
-    }*/
+    }
 
+    public bool GetFixState()
+    {
+        return isFixed;
+    }
 }
