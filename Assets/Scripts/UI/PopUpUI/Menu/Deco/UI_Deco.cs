@@ -26,6 +26,7 @@ public class UI_Deco : UI_PopupMenu
     Dictionary<long, GameObject> contentList;
 
     string itemPath = "Prefabs/UI/ScrollContents/Item_btn";
+    string fadePath = "UI/Popup/Menu/Deco/";
     Image clothImage;
     Button leftBtn, rightBtn;
     int index = 0;
@@ -70,6 +71,7 @@ public class UI_Deco : UI_PopupMenu
         SetBtn((int)Buttons.Cancel_btn, (data) => {
             index = startIndex;
             ChangeCloth(invenIdList[index]);
+            Managers.Resource.Instantiate(fadePath + "CancelFadeView");
         });
 
         leftBtn = GetButton((int)Buttons.Left_btn);
@@ -94,6 +96,9 @@ public class UI_Deco : UI_PopupMenu
 
     void InvenWeb()
     {
+        SetIndex(Managers.Player.GetInt(Define.CHARACTER_ITEM));
+        ChangeCloth(invenIdList[index]);
+
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -105,20 +110,13 @@ public class UI_Deco : UI_PopupMenu
             {
                 Debug.Log(uwr.downloadHandler.text);
                 invenIdList = response.result.characterItemIdList;
-                invenIdList.Add(2);
-                invenIdList.Add(3);
-                invenIdList.Add(4);
 
                 InitContents();
                 RefreshBtnLR();
-                
-                if (PlayerPrefs.HasKey("characterItem"))
-                {
-                    SetIndex(Managers.Player.GetInt("characterItem"));
-                    startIndex = index;
-                    Debug.Log(startIndex);
-                }
-                else Debug.Log("characterItem 키에 해당하는 Int값이 없음");
+
+                SetIndex(Managers.Player.GetInt(Define.CHARACTER_ITEM));
+                startIndex = index;
+                Debug.Log(startIndex);
 
                 ChangeCloth(invenIdList[index]);
             } else
@@ -142,6 +140,8 @@ public class UI_Deco : UI_PopupMenu
             if (response.isSuccess)
             {
                 Debug.Log(response.result);
+                Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)invenIdList[index]);
+                Managers.Resource.Instantiate(fadePath + "DoneFadeView");
             }
             else
             {
