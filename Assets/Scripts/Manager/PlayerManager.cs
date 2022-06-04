@@ -115,6 +115,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     
+    //행성 메인화면 조회 API 호출 후 action
     private void PlanetResponseAction(UnityWebRequest request)
     {
         if (Mainres != null)
@@ -126,7 +127,7 @@ public class PlayerManager : MonoBehaviour
                 if (Mainres.code == 1000)
                 {
                     Debug.Log("행성 생성");
-
+                    //행성, 아이템, 캐릭터 생성
                     PlanetInstantiate(Mainres.result.planetColor, Mainres.result.level);
                     placedItemList = Mainres.result.planetItemList;
                     CharacterInstantiate(Mainres.result.characterItem);
@@ -143,6 +144,7 @@ public class PlayerManager : MonoBehaviour
 
     }
 
+    //토큰 재발급 APi 호출 후 action
     private void TokenResponseAction(UnityWebRequest request, Action callback)
     {
         
@@ -189,6 +191,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    //편집 완료 후 아이템 배치 API 호출 action
     private void ArrangementResponseAction(UnityWebRequest request)
     {
         if (Arrangeres != null)
@@ -213,7 +216,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    //
+    //행성 메인 화면 조희 API 호출
     public void SendSettingPlanetRequest(string userId)
     {
         Mainres = new Response<ResponseMainPlanet>();
@@ -245,6 +248,7 @@ public class PlayerManager : MonoBehaviour
         Managers.Web.SendPostRequest<string>("access-token", val, tokenCallback, innnerCallback, header, headerValue);
     }
 
+    //배치된 아이템 정보 서버에 전송 API 호출
     public void SendArrangementRequest()
     {
         
@@ -262,6 +266,7 @@ public class PlayerManager : MonoBehaviour
         Managers.Web.SendUniRequest("api/inventory/planet-items/placement", "PATCH", val, arrangeCallback, header, headerValue);
     }
 
+    //token 재발급 API 리턴 후 불러올 액션
     public void FirstInstantiate()
     {
         Debug.Log("첫번째 생성");
@@ -288,6 +293,7 @@ public class PlayerManager : MonoBehaviour
 
     }
 
+    //캐릭터 생성
     private void CharacterInstantiate(long characterColor)
     {
         //Debug.Log("character ");
@@ -310,6 +316,7 @@ public class PlayerManager : MonoBehaviour
 
     }
 
+    //아이템 생성
     private void ItemInstantiate()
     {
         realPlacedItemList.Clear();
@@ -344,6 +351,7 @@ public class PlayerManager : MonoBehaviour
     }
 
 
+    //아이템 편집가능하도록 모드 변환
     private void ChangeItemMode(GameObject go, Define.Scene type)
     {
         ItemController child = Util.FindChild<ItemController>(go, "ItemInner", true);
