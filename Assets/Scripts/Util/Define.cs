@@ -15,6 +15,14 @@ public class Define
     public const string PLANET_LEVEL = "planetLevel";
     public const string PLANET_COLOR = "planetColor";
     public const string USER_ID = "userId";
+    public const string PROFILE_COLOR = "profileColor";
+    public const string CHARACTER_ITEM = "characterItem";
+    public const string POINT = "point";
+    public const string LEVEL = "level";
+    public const string AGE = "age";
+    public const string AVG_COMPLETE = "avgGoalCompleteRate";
+    public const string GET_GOOD = "getFavoriteCount";
+    public const string GIVE_GOOD = "putFavoriteCount";
 
     public enum Scene
     {
@@ -23,6 +31,7 @@ public class Define
         Main,
         Edit,
         Menu,
+        Loading,
     }
 
     public enum Sound
