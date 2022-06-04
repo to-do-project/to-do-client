@@ -178,7 +178,6 @@ public class UI_Menu : UI_PopupMenu
         });
 
         SetBtn((int)Buttons.Login_btn, (data) => {
-
             RequestLogin request = new RequestLogin
             {
                 email = "tester@gmail.com",
