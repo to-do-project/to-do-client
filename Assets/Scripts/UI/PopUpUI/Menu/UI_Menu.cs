@@ -39,10 +39,17 @@ public class UI_Menu : UI_PopupMenu
         Profile_image,
     }
 
+    enum Texts
+    {
+        Profile_text,
+        Ccount_text,
+    }
+
     const string pathName = "Menu";
     const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     Image profileImage;
+    Text profileText, ccountText;
 
     public override void Init()
     {
@@ -53,8 +60,26 @@ public class UI_Menu : UI_PopupMenu
         SetBtns();
 
         Bind<Image>(typeof(Images));
-
         profileImage = GetImage((int)Images.Profile_image);
+
+        if (PlayerPrefs.HasKey(Define.PROFILE_COLOR))
+        {
+            ChangeColor(Managers.Player.GetString(Define.PROFILE_COLOR));
+        }
+
+        Bind<Text>(typeof(Texts));
+        profileText = GetText((int)Texts.Profile_text);
+        ccountText = GetText((int)Texts.Ccount_text);
+
+        if (PlayerPrefs.HasKey(Define.NICKNAME))
+        {
+            ChangeNickname(Managers.Player.GetString(Define.NICKNAME));
+        }
+
+        if (PlayerPrefs.HasKey("targetCount"))
+        {
+            ChangeCcount("0");
+        }
 
         //열기 애니메이션 실행
     }
@@ -71,11 +96,11 @@ public class UI_Menu : UI_PopupMenu
 
             RequestSignUp val = new RequestSignUp
             {
-                email = "tester@gmail.com",
+                email = "tester1@gmail.com",
                 password = "test1234",
-                nickname = "test",
+                nickname = "test1",
                 planetColor = "RED",
-                deviceToken = "testtest"
+                deviceToken = "testtest1"
             };
             Managers.Web.SendPostRequest<ResponseSignUp>("join", val, (uwr) =>
             {
@@ -89,11 +114,9 @@ public class UI_Menu : UI_PopupMenu
                         {
                             case 1000:
                                 Debug.Log(uwr.downloadHandler.text);
-                                Testing.instance.DeviceToken = val.deviceToken;
-                                Testing.instance.AccessToken = uwr.GetResponseHeader("Jwt-Access-Token");
-                                Testing.instance.RefreshToken = uwr.GetResponseHeader("Jwt-Refresh-Token");
-                                Debug.Log(uwr.GetResponseHeader("Jwt-Access-Token"));
-                                Debug.Log(uwr.GetResponseHeader("Jwt-Refresh-Token"));
+                                Managers.Player.SetString(Define.DEVICETOKEN, val.deviceToken);
+                                Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                                Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
                                 break;
                             default:
                                 Debug.Log(res.message);
@@ -155,7 +178,6 @@ public class UI_Menu : UI_PopupMenu
         });
 
         SetBtn((int)Buttons.Login_btn, (data) => {
-
             RequestLogin request = new RequestLogin
             {
                 email = "tester@gmail.com",
@@ -176,10 +198,11 @@ public class UI_Menu : UI_PopupMenu
                     Managers.Player.SetString("User-Id", response.result.userId.ToString());
                     Managers.Player.SetString(Define.PLANET_ID, response.result.userId.ToString());
                     Managers.Player.SetInt(Define.PLANET_LEVEL, response.result.planetLevel);
+                    Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)response.result.characterItem);
                     Managers.Player.SetString(Define.PLANET_COLOR, response.result.planetColor);
-                    Managers.Player.SetString(Define.EMAIL, response.result.email);
-                    Managers.Player.SetString(Define.NICKNAME, response.result.nickname);
+                    Managers.Player.SetString(Define.PROFILE_COLOR, response.result.profileColor);
                     Managers.Player.SetString(Define.CHARACTER_COLOR, response.result.characterItem.ToString());
+                    Managers.Player.SetInt(Define.POINT, response.result.point);
                     Debug.Log(Managers.Player.GetString(Define.USER_ID));
                 }
                 else
@@ -196,11 +219,21 @@ public class UI_Menu : UI_PopupMenu
         Init();
     }
 
-    public void ChangeProfile(string color)
+    public void ChangeColor(string color)
     {
         int index = 0;
         index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
         profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+    }
+
+    public void ChangeNickname(string nickname)
+    {
+        profileText.text = nickname;
+    }
+
+    public void ChangeCcount(string count)
+    {
+        ccountText.text = count;
     }
 
     public void TokenRefresh()
@@ -210,10 +243,10 @@ public class UI_Menu : UI_PopupMenu
         string[] hV = { Managers.Player.GetString(Define.JWT_REFRESH_TOKEN),
                         Managers.Player.GetString(Define.USER_ID) };
 
-        Test test = new Test();
-        test.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
+        RequestTokenRefresh request = new RequestTokenRefresh();
+        request.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
 
-        Managers.Web.SendUniRequest("access-token", "POST", test, (uwr) => {
+        Managers.Web.SendUniRequest("access-token", "POST", request, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {

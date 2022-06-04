@@ -53,6 +53,12 @@ public class RequestBuyItem
     public int totalPrice;
 }
 
+[Serializable]
+public class RequestTokenRefresh
+{
+    public string deviceToken;
+}
+
 // -------- À§ Request -------- ¾Æ·¡ Response ---------
 
 [Serializable]
@@ -89,4 +95,15 @@ public class ResponseBuyItem
 public class ResponseCloset
 {
     public List<long> characterItemIdList;
+}
+
+[Serializable]
+public class ResponsePlanetInfo
+{
+    public long age;
+    public int level;
+    public int point;
+    public int avgGoalCompleteRate;
+    public int getFavoriteCount;
+    public int putFavoriteCount;
 }

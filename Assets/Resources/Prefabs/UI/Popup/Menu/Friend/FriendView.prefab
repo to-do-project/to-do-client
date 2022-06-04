@@ -908,7 +908,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uBAA9\uD45C \uBCF4\uAD00\uD568"
+  m_Text: "\uCE5C\uAD6C"
 --- !u!1 &2460694283432717081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,7 +1938,7 @@ GameObject:
   - component: {fileID: 3270232767109136010}
   - component: {fileID: 6910667765886147456}
   m_Layer: 5
-  m_Name: Content
+  m_Name: FriendContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

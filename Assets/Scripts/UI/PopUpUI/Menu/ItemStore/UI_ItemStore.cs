@@ -11,7 +11,21 @@ public class UI_ItemStore : UI_PopupMenu
         Back_btn,
     }
 
+    enum Texts
+    {
+        Profile_text,
+        Point_text
+    }
+
+    enum Images
+    {
+        Profile_image,
+    }
+
     GameObject charItemContent, planetItemContent, charScroll, planetScroll;
+    Text profileText, pointText;
+    Image profileImage;
+    ItemImageContainer itemImages;
 
     List<long> charBtnId;
     List<long> planetBtnId;
@@ -19,15 +33,9 @@ public class UI_ItemStore : UI_PopupMenu
     Dictionary<long, Transform> charBtnDict;
     Dictionary<long, Transform> planetBtnDict;
 
-    float gap = 0;
-    float maxGap = 0.1f;
-    float lerp = 10f;
-    bool toggle = true;
-
-    long selectBtn;
-    long beforeBtn;
-
     bool onBtn = false;
+
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     public override void Init()
     {
@@ -36,6 +44,26 @@ public class UI_ItemStore : UI_PopupMenu
         CameraSet();
 
         SetBtns();
+
+        Bind<Text>(typeof(Texts));
+        Bind<Image>(typeof(Images));
+
+        profileText = GetText((int)Texts.Profile_text);
+        pointText = GetText((int)Texts.Point_text);
+
+        profileImage = GetImage((int)Images.Profile_image);
+
+        if(PlayerPrefs.HasKey(Define.NICKNAME))
+        {
+            profileText.text = Managers.Player.GetString(Define.NICKNAME);
+        }
+        if(PlayerPrefs.HasKey(Define.POINT)) {
+            pointText.text = Managers.Player.GetInt(Define.POINT).ToString();
+        }
+        if(PlayerPrefs.HasKey(Define.PROFILE_COLOR))
+        {
+            ChangeColor(Managers.Player.GetString(Define.PROFILE_COLOR));
+        }
 
         if (charItemContent == null)
         {
@@ -56,6 +84,8 @@ public class UI_ItemStore : UI_PopupMenu
         {
             planetScroll = GameObject.Find("PlanetScroll");
         }
+
+        itemImages = GetComponent<ItemImageContainer>();
 
         charBtnId = new List<long>();
         planetBtnId = new List<long>();
@@ -104,14 +134,11 @@ public class UI_ItemStore : UI_PopupMenu
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                         Managers.Player.GetString(Define.USER_ID) };
 
-        Debug.Log(hN[1]);
-        Debug.Log(hV[1]);
-
         Managers.Web.SendUniRequest("api/store", "GET", null, (uwr) => {
             Response<ResponseStoreItemsId> response = JsonUtility.FromJson<Response<ResponseStoreItemsId>>(uwr.downloadHandler.text);
             if (response.code == 1000)
             {
-                Debug.Log(response.result);
+                Debug.Log(uwr.downloadHandler.text);
                 charBtnId = response.result.characterItemIdList;
                 planetBtnId = response.result.planetItemIdList;
 
@@ -139,7 +166,7 @@ public class UI_ItemStore : UI_PopupMenu
         charBtnDict[id].SetParent(charItemContent.transform, false);
 
         UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
-        btn.SetValue(id, charScroll.GetComponent<ScrollRect>());
+        btn.SetValue(id, charScroll.GetComponent<ScrollRect>(), itemImages.CharItemSprites[id - itemImages.CharGap]);
         btn.SetItemScript(gameObject.GetComponent<UI_ItemStore>());
     }
 
@@ -150,87 +177,59 @@ public class UI_ItemStore : UI_PopupMenu
         planetBtnDict[id].SetParent(planetItemContent.transform, false);
 
         UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
-        btn.SetValue(id, planetScroll.GetComponent<ScrollRect>());
+        btn.SetValue(id, planetScroll.GetComponent<ScrollRect>(), itemImages.PlanetItemSprites[id - itemImages.PlanetGap]);
         btn.SetItemScript(gameObject.GetComponent<UI_ItemStore>());
     }
 
-    public void OnBuyView(long id)
+    public void OnBuyView(long id, Sprite sprite)
     {
-        if(onBtn)
-        {
-            return;
-        }
-        else
-        {
-            onBtn = true;
-            // 아이템 정보 가져오기 (코루틴 끝나면 onBtn false로)
-            string[] hN = { Define.JWT_ACCESS_TOKEN,
-                            "User-Id" };
-            string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
-                            Managers.Player.GetString(Define.USER_ID) };
+        if(onBtn) return;
+        onBtn = true;
 
-            Managers.Web.SendUniRequest("api/store/items/" + id, "GET", null, (uwr) => {
-                Response<ResponseItemDetail> response = JsonUtility.FromJson<Response<ResponseItemDetail>>(uwr.downloadHandler.text);
-                if (response.code == 1000)
-                {
-                    Debug.Log(response.result);
-                    UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
-                    item.SetValue(response.result.type == "행성 아이템", response.result.name, response.result.description, response.result.price, response.result.maxCnt, gameObject);
-                }
-                else
-                {
-                    Debug.Log(response.message);
-                }
-                onBtn = false;
-            }, hN, hV);
-        }
-    }
+        // 아이템 정보 가져오기 (코루틴 끝나면 onBtn false로)
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
 
-    private void UpdateScales()
-    {
-        if(toggle)
-        {
-            if(gap < maxGap - 0.00125f)
+        Managers.Web.SendUniRequest("api/store/items/" + id, "GET", null, (uwr) => {
+            Response<ResponseItemDetail> response = JsonUtility.FromJson<Response<ResponseItemDetail>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
             {
-                gap = Mathf.Lerp(gap, maxGap, lerp * Time.deltaTime);
-            } else
-            {
-                gap = maxGap;
-                toggle = !toggle;
-            }
-        } else
-        {
-            if (gap > -maxGap + 0.00125f)
-            {
-                gap = Mathf.Lerp(gap, -maxGap, lerp * Time.deltaTime);
+                Debug.Log(response.result);
+                UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
+                item.SetValue(id, response.result.type, response.result.name, response.result.description, 
+                                response.result.price, response.result.maxCnt, gameObject, sprite);
             }
             else
             {
-                gap = -maxGap;
-                toggle = !toggle;
+                Debug.Log(response.message);
             }
-        }
+            onBtn = false;
+        }, hN, hV);
+    }
+
+    public void SetPoint(int amount)
+    {
+        Managers.Player.SetInt(Define.POINT, amount);
+        pointText.text = amount.ToString();
+    }
+
+    public void DeleteItem(long id)
+    {
+        if (charBtnDict.ContainsKey(id)) Destroy(charBtnDict[id].gameObject);
+        if (planetBtnDict.ContainsKey(id)) Destroy(planetBtnDict[id].gameObject);
+    }
+
+    public void ChangeColor(string color)
+    {
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
 
     private void Start()
     {
         Init();
     }
-
-    private void Update()
-    {
-        UpdateScales();
-    }
-}
-
-[System.Serializable]
-public class Item_ItemStore
-{
-    public long itemId;
-    public string name;
-    public string description;
-    public int price;
-    public string type;
-    public int minCnt;
-    public int maxCnt;
 }

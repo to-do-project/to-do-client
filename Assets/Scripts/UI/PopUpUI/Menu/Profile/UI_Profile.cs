@@ -21,10 +21,16 @@ public class UI_Profile : UI_PopupMenu
         Profile_image,
     }
 
+    enum Texts
+    {
+        Profile_text,
+    }
+
     string pathName = "Menu/Profile";
     const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
-    Image image;
+    Image profileImage;
+    Text profileText;
 
     public override void Init()
     {
@@ -35,8 +41,20 @@ public class UI_Profile : UI_PopupMenu
         SetBtns();
 
         Bind<Image>(typeof(Images));
+        profileImage = GetImage((int)Images.Profile_image);
 
-        image = GetImage((int)Images.Profile_image);
+        if (PlayerPrefs.HasKey("profileColor"))
+        {
+            ChangeColor(Managers.Player.GetString("profileColor"));
+        }
+
+        Bind<Text>(typeof(Texts));
+        profileText = GetText((int)Texts.Profile_text);
+
+        if (PlayerPrefs.HasKey(Define.NICKNAME))
+        {
+            ChangeNickname(Managers.Player.GetString(Define.NICKNAME));
+        }
     }
 
     private void SetBtns()
@@ -81,7 +99,12 @@ public class UI_Profile : UI_PopupMenu
     {
         int index = 0;
         index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
-        image.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+        profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+    }
+
+    public void ChangeNickname(string nickname)
+    {
+        profileText.text = nickname;
     }
 
     void Start()

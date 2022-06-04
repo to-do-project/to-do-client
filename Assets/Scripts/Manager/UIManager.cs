@@ -244,4 +244,48 @@ public class UIManager
     {
         return popupStack.Count > 0;
     }
+
+    public void DeactiveAllUI()
+    {
+        if(panelUI != null)
+        {
+            panelUI.gameObject.SetActive(false);
+        }
+        if(popupStack.Count != 0)
+        {
+            Stack<UI_Popup> tmp = new Stack<UI_Popup>();
+            while (checkPopupOn())
+            {
+                UI_Popup popup = popupStack.Pop();
+                tmp.Push(popup);
+                popup.gameObject.SetActive(false);
+            }
+            while (tmp.Count != 0)
+            {
+                popupStack.Push(tmp.Pop());
+            }
+        }
+    }
+
+    public void ActiveAllUI()
+    {
+        if (panelUI != null)
+        {
+            panelUI.gameObject.SetActive(true);
+        }
+        if (popupStack.Count != 0)
+        {
+            Stack<UI_Popup> tmp = new Stack<UI_Popup>();
+            while (checkPopupOn())
+            {
+                UI_Popup popup = popupStack.Pop();
+                tmp.Push(popup);
+                popup.gameObject.SetActive(true);
+            }
+            while (tmp.Count != 0)
+            {
+                popupStack.Push(tmp.Pop());
+            }
+        }
+    }
 }
