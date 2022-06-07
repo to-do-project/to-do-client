@@ -55,6 +55,8 @@ public class PlayerManager : MonoBehaviour
 
 
     Action firstCallback;
+    Action innerArrageCallback;
+    
 
     GameObject planet;
     GameObject character;
@@ -98,6 +100,8 @@ public class PlayerManager : MonoBehaviour
         arrangeCallback -= ArrangementResponseAction;
         arrangeCallback += ArrangementResponseAction;
 
+        innerArrageCallback -= SendArrangementRequest;
+        innerArrageCallback += SendArrangementRequest;
 
         //토큰 확인 & 재발급 (자동로그인 상태)
         if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
@@ -105,7 +109,8 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Token 있음");
 
             Managers.Scene.LoadScene(Define.Scene.Main);
-            SendTokenRequest(firstCallback);
+            //SendTokenRequest(firstCallback);
+            FirstInstantiate();
         }
         else
         {
@@ -128,6 +133,7 @@ public class PlayerManager : MonoBehaviour
             {
                 if (Mainres.code == 1000)
                 {
+                    
                     Debug.Log("행성 생성");
                     //행성, 아이템, 캐릭터 생성
                     PlanetInstantiate(Mainres.result.planetColor, Mainres.result.level);
@@ -139,7 +145,11 @@ public class PlayerManager : MonoBehaviour
 
             else
             {
-
+                //토큰 만료
+                if (Mainres.code == 6000)
+                {
+                    SendTokenRequest(firstCallback);
+                }
             }
             Mainres = null;
         }
@@ -198,20 +208,28 @@ public class PlayerManager : MonoBehaviour
     {
         if (Arrangeres != null)
         {
+
+            Arrangeres = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
+
             Debug.Log(Arrangeres.message);
             if (Arrangeres.isSuccess)
             {
 
                 if (Arrangeres.code == 1000)
                 {
-                    SendSettingPlanetRequest(PlayerPrefs.GetString(Define.USER_ID));
                     Managers.Scene.LoadScene(Define.Scene.Main);
+                    //SendSettingPlanetRequest(PlayerPrefs.GetString(Define.USER_ID));
+
+
                 }
             }
 
             else
             {
-                Debug.Log(Arrangeres.message);
+                if(Arrangeres.code ==6000 || Arrangeres.code == 6004 || Arrangeres.code == 6006)
+                {
+                    SendTokenRequest(innerArrageCallback);
+                }
             }
 
             Arrangeres = null;
@@ -260,6 +278,7 @@ public class PlayerManager : MonoBehaviour
         RequestArrangement val = new RequestArrangement 
         { itemPositionList = placedItemList};
 
+        Arrangeres = new Response<string>();
 
         header[0] = Define.JWT_ACCESS_TOKEN;
         header[1] = "User-Id";
@@ -273,7 +292,7 @@ public class PlayerManager : MonoBehaviour
     //token 재발급 API 리턴 후 불러올 액션
     public void FirstInstantiate()
     {
-        Debug.Log("첫번째 생성");
+        //Debug.Log("첫번째 생성");
         SendSettingPlanetRequest(PlayerPrefs.GetString(Define.USER_ID));
     }
 

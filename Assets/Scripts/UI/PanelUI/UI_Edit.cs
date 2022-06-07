@@ -101,9 +101,9 @@ public class UI_Edit : UI_Panel
         Toggle etc = Get<Toggle>((int)Toggles.etc_toggle);
 
         edit.category = "plant";
-/*        Debug.Log(Managers.Player.GetHeaderValue()[1]);
-        Debug.Log(PlayerPrefs.GetString(Define.USER_ID));*/
-        Managers.Player.SendTokenRequest(innerCallback);
+        /*        Debug.Log(Managers.Player.GetHeaderValue()[1]);
+                Debug.Log(PlayerPrefs.GetString(Define.USER_ID));*/
+        SendInvenListRequest();
 
         plant.onValueChanged.AddListener((bool bOn) =>
         {
@@ -208,7 +208,7 @@ public class UI_Edit : UI_Panel
                 //token Àç¹ß±Þ
                 if (res.code == 6000 || res.code == 6004 || res.code == 6006)
                 {
-
+                    Managers.Player.SendTokenRequest(innerCallback);
                 }
             }
 

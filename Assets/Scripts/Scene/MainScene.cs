@@ -41,8 +41,8 @@ public class MainScene : BaseScene
         Managers.Input.SystemTouchAction += OnBackTouched;
 
 
-
-        Managers.Player.SendTokenRequest(innerCallback);
+        PlanetSetting();
+        //Managers.Player.SendTokenRequest(innerCallback);
 
 
     }
@@ -51,6 +51,8 @@ public class MainScene : BaseScene
     {
         Init();
     }
+    
+    
 
     //배치모드로 진입
     void EnterArrayMode(Define.TouchEvent evt)

@@ -14,7 +14,7 @@ public class UI_DoneEdit : UI_Popup
         cancle_btn,
     }
 
-    Action innerCallback;
+    //Action innerCallback;
 
 
     void Start()
@@ -38,8 +38,8 @@ public class UI_DoneEdit : UI_Popup
             Debug.Log($"{UIcam.name}");
         }
 
-        innerCallback -= SendArrangeRequest;
-        innerCallback += SendArrangeRequest;
+        //innerCallback -= SendArrangeRequest;
+        //innerCallback += SendArrangeRequest;
 /*        arrangeCallback -= ArrangeResponseAction;
         arrangeCallback += ArrangeResponseAction;*/
 
@@ -62,9 +62,10 @@ public class UI_DoneEdit : UI_Popup
         if (Managers.Player.CheckItemFixState())
         {
             //Managers.Player.ConvertToRequestList();
-            Managers.Player.SendTokenRequest(innerCallback);
+            //Managers.Player.SendTokenRequest(innerCallback);
+            Managers.Player.SendArrangementRequest();
 
-            Managers.Scene.LoadScene(Define.Scene.Main);
+            //Managers.Scene.LoadScene(Define.Scene.Main);
         }
         else
         {
@@ -72,10 +73,10 @@ public class UI_DoneEdit : UI_Popup
         }
     }
 
-    void SendArrangeRequest()
+    /*void SendArrangeRequest()
     {
         //배치 API 호출
         Managers.Player.SendArrangementRequest();
 
-    }
+    }*/
 }
