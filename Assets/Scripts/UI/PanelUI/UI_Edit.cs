@@ -35,11 +35,17 @@ public class UI_Edit : UI_Panel
     enum GameObjects 
     {
         Content,
+        ContentArea,
+    }
+
+    enum Texts
+    {
+        invenCount_txt,
     }
 
     EditScene edit;
     GameObject contentRoot;
-
+    GameObject contentArea;
 
     Action<UnityWebRequest> callback;
     Response<List<ResponseInven>> res;
@@ -47,11 +53,12 @@ public class UI_Edit : UI_Panel
     Action innerCallback;
 
     List<ResponseInven> invenList;
-
+    Text invenCountTxt;
 
     public override void Init()
     {
         base.Init();
+
 
         callback -= ResponseAction;
         callback += ResponseAction;
@@ -78,8 +85,12 @@ public class UI_Edit : UI_Panel
         Bind<Button>(typeof(Buttons));
         Bind<Toggle>(typeof(Toggles));
         Bind<GameObject>(typeof(GameObjects));
+        Bind<Text>(typeof(Texts));
 
         contentRoot = Get<GameObject>((int)GameObjects.Content);
+        contentArea = Get<GameObject>((int)GameObjects.ContentArea);
+
+        invenCountTxt = GetText((int)Texts.invenCount_txt);
 
         GameObject editDoneBtn = GetButton((int)Buttons.editDone_btn).gameObject;
         GameObject editCancleBtn = GetButton((int)Buttons.editCancle_btn).gameObject;
@@ -90,8 +101,8 @@ public class UI_Edit : UI_Panel
         Toggle etc = Get<Toggle>((int)Toggles.etc_toggle);
 
         edit.category = "plant";
-        Debug.Log(Managers.Player.GetHeaderValue()[1]);
-        Debug.Log(PlayerPrefs.GetString(Define.USER_ID));
+/*        Debug.Log(Managers.Player.GetHeaderValue()[1]);
+        Debug.Log(PlayerPrefs.GetString(Define.USER_ID));*/
         Managers.Player.SendTokenRequest(innerCallback);
 
         plant.onValueChanged.AddListener((bool bOn) =>
@@ -133,6 +144,9 @@ public class UI_Edit : UI_Panel
 
         BindEvent(editCancleBtn, EditCancleBtnClick, Define.TouchEvent.Touch);
         BindEvent(editDoneBtn, EditDoneBtnClick, Define.TouchEvent.Touch);
+
+        Managers.Player.UIaction -= ScrollViewDownAction;
+        Managers.Player.UIaction += ScrollViewDownAction;
     }
 
     void Start()
@@ -174,13 +188,17 @@ public class UI_Edit : UI_Panel
                     invenList = res.result;
                     ClearScrollView();
 
+                    int totalInvenItem = 0;
                     for (int i = 0; i < invenList.Count; i++)
                     {
 
                         Debug.Log(invenList[i].itemCode);
                         UI_EditItem go = Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform,invenList[i].itemCode);
                         go.SetText(invenList[i].totalCount, invenList[i].remainingCount, invenList[i].placedCount);
+                        totalInvenItem += invenList[i].remainingCount;
                     }
+
+                    invenCountTxt.text = totalInvenItem.ToString() + "/" + "100";
                 }
             }
 
@@ -217,4 +235,29 @@ public class UI_Edit : UI_Panel
 
         
     }
+
+
+    private void ScrollViewDownAction(bool down)
+    {
+
+        if (contentArea != null)
+        {
+            if (down)
+            {
+                Vector3 pos = new Vector3(contentArea.transform.localPosition.x, -2256f, contentArea.transform.localPosition.z); ;
+
+                contentArea.transform.localPosition = pos;
+                
+            }
+            else
+            {
+                Vector3 pos = new Vector3(contentArea.transform.localPosition.x, -1520f, contentArea.transform.localPosition.z); ;
+
+                contentArea.transform.localPosition = pos;
+            }
+        }
+
+    }
+
+    
 }

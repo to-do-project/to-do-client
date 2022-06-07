@@ -24,6 +24,13 @@ public class MainScene : BaseScene
         base.Init();
         SceneType = Define.Scene.Main;
 
+        Managers.UI.ShowPanelUI<UI_Main>("MainView");
+
+
+
+        PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
+        Debug.Log(PlanetCamera.name);
+
         innerCallback -= PlanetSetting;
         innerCallback += PlanetSetting;
 
@@ -33,13 +40,11 @@ public class MainScene : BaseScene
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
 
-        Managers.UI.ShowPanelUI<UI_Main>("MainView");
 
-        Managers.Player.ChangeItemModeList(SceneType);
-
-        PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
 
         Managers.Player.SendTokenRequest(innerCallback);
+
+
     }
 
     void Awake()
@@ -67,20 +72,24 @@ public class MainScene : BaseScene
 #else
         mousePosition = Input.GetTouch(0).position;
 #endif
-
-            mousePosition = PlanetCamera.ScreenToWorldPoint(mousePosition);
-            int layerMask = 1 << LayerMask.NameToLayer("Planet");
-
-            //Debug.Log(mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, transform.forward, 100f, layerMask);
-            //Debug.DrawRay(mousePosition, PlanetCamera.transform.forward * 100, Color.red, 10f);
-            if (hit)
+            if (PlanetCamera != null)
             {
-                //Debug.Log(hit.collider.gameObject.name);
-                Managers.Scene.LoadScene(Define.Scene.Edit);
+                mousePosition = PlanetCamera.ScreenToWorldPoint(mousePosition);
+                int layerMask = 1 << LayerMask.NameToLayer("Planet");
+
+                //Debug.Log(mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(mousePosition, transform.forward, 100f, layerMask);
+                //Debug.DrawRay(mousePosition, PlanetCamera.transform.forward * 100, Color.red, 10f);
+                if (hit)
+                {
+                    //Debug.Log(hit.collider.gameObject.name);
+                    Managers.Scene.LoadScene(Define.Scene.Edit);
 
 
+                }
             }
+
+            
         }
 
         
@@ -102,6 +111,7 @@ public class MainScene : BaseScene
     void PlanetSetting()
     {
         Managers.Player.FirstInstantiate();
+
     }
     
 

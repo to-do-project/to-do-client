@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 7696027316271153952}
   - component: {fileID: 7696027316271153959}
   m_Layer: 5
-  m_Name: todoName_inputfiled
+  m_Name: todoName_inputfield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

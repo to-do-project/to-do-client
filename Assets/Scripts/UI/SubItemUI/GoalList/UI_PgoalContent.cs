@@ -13,6 +13,7 @@ public class UI_PgoalContent : UI_Base
         Todo,
     }
 
+
     GameObject todo, goal;
 
     void Start()
@@ -26,20 +27,27 @@ public class UI_PgoalContent : UI_Base
         todo = Get<GameObject>((int)GameObjects.Todo);
         goal = Get<GameObject>((int)GameObjects.Goal);
 
+        Canvas.ForceUpdateCanvases();
+
+        BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+
         todo.SetActive(false);
 
-        //BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+
     }
 
-    public void GoalClick()
+    public void GoalClick(PointerEventData data)
     {
+        Canvas.ForceUpdateCanvases();
         if (todo.activeSelf)
         {
             todo.SetActive(false);
+
         }
         else
         {
             todo.SetActive(true);
+
         }
 
     }

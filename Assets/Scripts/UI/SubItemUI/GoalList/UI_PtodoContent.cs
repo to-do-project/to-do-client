@@ -2,15 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_PtodoContent : MonoBehaviour
+public class UI_PtodoContent : UI_Base
 {
-    void Start()
+    enum Buttons
     {
-        
+        like_btn,
     }
 
-    void Update()
+    enum Texts 
     {
-        
+        like_txt,
     }
+    enum Toggles
+    {
+        todoCheck_toggle
+    }
+
+    enum GameObjects
+    {
+
+    }
+
+    public override void Init()
+    {
+
+    }
+
+    void Start()
+    {
+        Init();
+    }
+
 }

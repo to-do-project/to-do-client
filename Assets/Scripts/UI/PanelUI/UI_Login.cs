@@ -133,7 +133,7 @@ public class UI_Login : UI_Panel
             return;
         }
 
-        val.deviceToken = "12345";
+        val.deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier;
 
         //로그인 API 호출
         res = new Response<ResponseLogin>();
@@ -184,7 +184,7 @@ public class UI_Login : UI_Panel
                     Managers.Player.SetString(Define.EMAIL, result.email);
                     Managers.Player.SetString(Define.NICKNAME, result.nickname);
                     Managers.Player.SetString(Define.USER_ID, result.userId.ToString());
-                    Managers.Player.SetString(Define.PLANET_ID, result.userId.ToString());
+                    Managers.Player.SetString(Define.PLANET_ID, result.planetId.ToString());
                     Managers.Player.SetInt(Define.PLANET_LEVEL, result.planetLevel);
                     Managers.Player.SetString(Define.PLANET_COLOR, result.planetColor);
                     Managers.Player.SetString(Define.EMAIL, result.email);
@@ -194,6 +194,8 @@ public class UI_Login : UI_Panel
 
                     Managers.Player.Init();
                     Managers.Scene.LoadScene(Define.Scene.Main);
+
+                    Debug.Log("user id ? "+result.userId.ToString()+" "+PlayerPrefs.GetString(Define.USER_ID));
                 }
             }
             else

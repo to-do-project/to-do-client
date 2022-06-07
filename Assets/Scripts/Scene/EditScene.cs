@@ -20,6 +20,9 @@ public class EditScene : BaseScene
         base.Init();
         SceneType = Define.Scene.Edit;
 
+        Managers.UI.ShowPanelUI<UI_Edit>("EditView");
+        
+
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
 

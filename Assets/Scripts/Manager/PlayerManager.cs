@@ -66,12 +66,14 @@ public class PlayerManager : MonoBehaviour
 
 
     List<MainItemList> placedItemList;
-    List<GameObject> realPlacedItemList;
+    public List<GameObject> realPlacedItemList;
 
     string[] header = new string[2];
     string[] headerValue = new string[2];
 
     bool isFirst;
+
+    public Action<bool> UIaction; //편집화면에서 UI 움직임에 사용
 
     private void Start()
     {
@@ -226,6 +228,7 @@ public class PlayerManager : MonoBehaviour
 
         headerValue[0] = PlayerPrefs.GetString(Define.JWT_ACCESS_TOKEN);
         //headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
+        //Debug.Log(userId);
         headerValue[1] = userId;
 
         Managers.Web.SendGetRequest("api/planet/main/", userId, mainCallback, header, headerValue);
@@ -242,6 +245,7 @@ public class PlayerManager : MonoBehaviour
         header[0] = Define.JWT_REFRESH_TOKEN;
         header[1] = "User-Id";
 
+        //Debug.Log("user id is : " + PlayerPrefs.GetString(Define.USER_ID));
         headerValue[0] = PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN);
         headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
 
@@ -305,7 +309,7 @@ public class PlayerManager : MonoBehaviour
                 Vector3 pos = new Vector3(0, 5.81f, planet.transform.position.z);
 
                 character = Managers.Resource.Instantiate(pos, path, planet.transform);
-                DontDestroyOnLoad(character);
+                //DontDestroyOnLoad(character);
             }
         }
     }

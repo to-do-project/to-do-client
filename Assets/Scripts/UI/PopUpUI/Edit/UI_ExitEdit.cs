@@ -23,6 +23,19 @@ public class UI_ExitEdit : UI_Popup
     {
         base.Init();
 
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Camera UIcam = canvas.worldCamera;
+        if (UIcam == null)
+        {
+            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+            canvas.worldCamera = cam;
+        }
+        else
+        {
+            Debug.Log($"{UIcam.name}");
+        }
+
         Bind<Button>(typeof(Buttons));
         GameObject exitBtn = GetButton((int)Buttons.exit_btn).gameObject;
         GameObject cancleBtn = GetButton((int)Buttons.cancle_btn).gameObject;

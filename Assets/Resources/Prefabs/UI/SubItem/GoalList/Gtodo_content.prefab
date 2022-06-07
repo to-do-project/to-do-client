@@ -283,6 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8828651166451090663}
+  - component: {fileID: 3113549715915873161}
   m_Layer: 5
   m_Name: Gtodo_content
   m_TagString: Untagged
@@ -314,6 +315,18 @@ RectTransform:
   m_AnchoredPosition: {x: 656, y: -80}
   m_SizeDelta: {x: 1312, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3113549715915873161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416539593381673528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481e77b8c96c3bf4bb7ae9017a32f7c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3989480353372380153
 GameObject:
   m_ObjectHideFlags: 0

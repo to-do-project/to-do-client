@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_GtodoContent : MonoBehaviour
+public class UI_GtodoContent : UI_Base
 {
-    void Start()
+    public override void Init()
     {
-        
+
     }
 
-    void Update()
+    void Start()
     {
-        
+        Init();
     }
+
 }
