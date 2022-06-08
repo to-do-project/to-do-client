@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class UI_GroupGoalParticipants : UI_Popup
 {
+    enum Texts
+    {
+        date_txt,
+        GoalTitle_txt,
+        GoalRate_txt,
+    }
+
     void Start()
     {
         Init();
@@ -13,6 +20,8 @@ public class UI_GroupGoalParticipants : UI_Popup
     public override void Init()
     {
         base.Init();
+
+
     }
 
 }

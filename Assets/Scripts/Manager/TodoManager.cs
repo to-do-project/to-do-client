@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class TodoManager
 {
+    List<string> goalList; //목표 리스트
+    
     public void Init()
     {
 

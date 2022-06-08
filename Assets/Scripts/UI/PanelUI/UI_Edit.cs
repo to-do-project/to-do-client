@@ -10,11 +10,18 @@ using UnityEngine.UI;
 [System.Serializable]
 public class ResponseInven
 {
+    public int totalInventoryItemCount;
+    public List<InventroyList> inventoryList;
+}
+[System.Serializable]
+public class InventroyList
+{
     public string itemCode;
     public int totalCount;
     public int placedCount;
     public int remainingCount;
 }
+
 public class UI_Edit : UI_Panel
 {
 
@@ -48,11 +55,11 @@ public class UI_Edit : UI_Panel
     GameObject contentArea;
 
     Action<UnityWebRequest> callback;
-    Response<List<ResponseInven>> res;
+    Response<ResponseInven> res;
 
     Action innerCallback;
 
-    List<ResponseInven> invenList;
+    List<InventroyList> invenList;
     Text invenCountTxt;
 
     public override void Init()
@@ -166,11 +173,11 @@ public class UI_Edit : UI_Panel
 
     }
 
-
+    //인벤 조회 API 날리기
     private void SendInvenListRequest()
     {
         Debug.Log("InvenList request");
-        res = new Response<List<ResponseInven>>();
+        res = new Response<ResponseInven>();
         Managers.Web.SendGetRequest("api/inventory/planet-items/", edit.category, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
     }
@@ -179,26 +186,26 @@ public class UI_Edit : UI_Panel
     {
         if (res != null)
         {
-            res = JsonUtility.FromJson<Response<List<ResponseInven>>>(request.downloadHandler.text);
+            res = JsonUtility.FromJson<Response<ResponseInven>>(request.downloadHandler.text);
 
             if (res.isSuccess)
             {
                 if (res.code == 1000)
                 {
-                    invenList = res.result;
+
+                    invenCountTxt.text = res.result.totalInventoryItemCount.ToString() + "/" + "100";
+                    invenList = res.result.inventoryList;
                     ClearScrollView();
 
-                    int totalInvenItem = 0;
                     for (int i = 0; i < invenList.Count; i++)
                     {
 
                         Debug.Log(invenList[i].itemCode);
-                        UI_EditItem go = Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform,invenList[i].itemCode);
+                        UI_EditItem go = Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, invenList[i].itemCode);
                         go.SetText(invenList[i].totalCount, invenList[i].remainingCount, invenList[i].placedCount);
-                        totalInvenItem += invenList[i].remainingCount;
                     }
 
-                    invenCountTxt.text = totalInvenItem.ToString() + "/" + "100";
+
                 }
             }
 

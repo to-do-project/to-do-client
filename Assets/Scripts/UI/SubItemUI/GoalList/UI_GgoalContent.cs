@@ -65,6 +65,8 @@ public class UI_GgoalContent : UI_Base
         Canvas.ForceUpdateCanvases();
         if (todo.activeSelf)
         {
+
+            
             todo.SetActive(false);
            
         }

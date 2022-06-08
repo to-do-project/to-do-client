@@ -106,10 +106,12 @@ public class PlayerManager : MonoBehaviour
         //토큰 확인 & 재발급 (자동로그인 상태)
         if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
         {
-            Debug.Log("Token 있음");
-
+            //Debug.Log("Token 있음");
+            Debug.Log(PlayerPrefs.GetString(Define.JWT_ACCESS_TOKEN));
+            Debug.Log(PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN));
             Managers.Scene.LoadScene(Define.Scene.Main);
-            //SendTokenRequest(firstCallback);
+            //SendTokenRequest(null);
+
             FirstInstantiate();
         }
         else
@@ -168,7 +170,7 @@ public class PlayerManager : MonoBehaviour
             if (Tokenres.isSuccess)
             {
 
-                Debug.Log("토큰 확인");
+                Debug.Log("토큰 재발급");
                 PlayerPrefs.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
                 PlayerPrefs.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
 
@@ -184,6 +186,8 @@ public class PlayerManager : MonoBehaviour
                 if (Tokenres.code ==6023)
                 {
                     Managers.UI.Clear();
+                    PlayerPrefs.DeleteKey(Define.JWT_ACCESS_TOKEN);
+                    PlayerPrefs.DeleteKey(Define.JWT_REFRESH_TOKEN);
                     Managers.Scene.LoadScene(Define.Scene.Login);
                 }
                 else if (Tokenres.code == 6028)
