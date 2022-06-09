@@ -170,6 +170,11 @@ public class UI_PswdChange : UI_PopupMenu
                 Debug.Log(password);
                 Managers.UI.ClosePopupUI();
             }
+            else if (response.code == 6000)
+            {
+                Debug.Log(response.message);
+                Managers.Player.SendTokenRequest(ComparePassword);
+            }
             else
             {
                 Debug.Log(response.message);

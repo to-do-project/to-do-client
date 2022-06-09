@@ -91,6 +91,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
         AsyncOperation op = SceneManager.LoadSceneAsync("Loading");
         op.allowSceneActivation = false;
         yield return StartCoroutine(Fade(true));
+        Managers.UI.Clear();
         op.allowSceneActivation = true;
         yield break;
     }
@@ -103,6 +104,13 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
 
     private IEnumerator Fade(bool isFadeIn)
     {
+        float time = 0.5f;
+        while (time >= 0 && !isFadeIn)
+        {
+            time -= Time.unscaledDeltaTime;
+            yield return null;
+        }
+
         float timer = 0f;
         while(timer <= 1f)
         {

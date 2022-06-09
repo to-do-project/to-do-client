@@ -24,7 +24,6 @@ public class MenuScene : BaseScene
 
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
-
     }
 
     void OnBackTouched(Define.SystemEvent evt)

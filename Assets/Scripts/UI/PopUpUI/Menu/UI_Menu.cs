@@ -30,7 +30,6 @@ public class UI_Menu : UI_PopupMenu
         Store_btn,
         Setting_btn,
         Deco_btn,
-        Refresh_btn,
         Login_btn,
     }
 
@@ -81,6 +80,7 @@ public class UI_Menu : UI_PopupMenu
             ChangeCcount("0");
         }
 
+        Debug.Log(System.DateTime.Now.ToString());
         //열기 애니메이션 실행
     }
 
@@ -96,11 +96,11 @@ public class UI_Menu : UI_PopupMenu
 
             RequestSignUp val = new RequestSignUp
             {
-                email = "tester1@gmail.com",
+                email = "testest@gmail.com",
                 password = "test1234",
-                nickname = "test1",
+                nickname = "testest",
                 planetColor = "RED",
-                deviceToken = "testtest1"
+                deviceToken = SystemInfo.deviceUniqueIdentifier
             };
             Managers.Web.SendPostRequest<ResponseSignUp>("join", val, (uwr) =>
             {
@@ -148,40 +148,11 @@ public class UI_Menu : UI_PopupMenu
 
         SetBtn((int)Buttons.Deco_btn, (data) => { Managers.UI.ShowPopupUI<UI_Deco>("DecoView", $"{pathName}/Deco"); });
 
-        SetBtn((int)Buttons.Refresh_btn, (data) => {
-            string[] hN = { Define.JWT_REFRESH_TOKEN,
-                            "User-Id" };
-            string[] hV = { Managers.Player.GetString(Define.JWT_REFRESH_TOKEN),
-                            Managers.Player.GetString(Define.USER_ID) };
-
-            RequestLogout request = new RequestLogout();
-            request.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
-
-            Managers.Web.SendUniRequest("access-token", "POST", request, (uwr) => {
-                Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-                if (response.code == 1000)
-                {
-                    Debug.Log(response.result);
-                    Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
-
-                    Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
-                    Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
-
-                    Debug.Log(uwr.GetResponseHeader("Jwt-Access-Token"));
-                    Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
-                }
-                else
-                {
-                    Debug.Log(response.message);
-                }
-            }, hN, hV);
-        });
-
         SetBtn((int)Buttons.Login_btn, (data) => {
             RequestLogin request = new RequestLogin
             {
-                email = "tester@gmail.com",
-                deviceToken = "testtest",
+                email = "testest@gmail.com",
+                deviceToken = SystemInfo.deviceUniqueIdentifier,
                 password = "test1234"
             };
 
@@ -196,6 +167,7 @@ public class UI_Menu : UI_PopupMenu
                     Managers.Player.SetString(Define.EMAIL, response.result.email);
                     Managers.Player.SetString(Define.NICKNAME, response.result.nickname);
                     Managers.Player.SetString("User-Id", response.result.userId.ToString());
+                    Managers.Player.SetString(Define.USER_ID, response.result.userId.ToString());
                     Managers.Player.SetString(Define.PLANET_ID, response.result.userId.ToString());
                     Managers.Player.SetInt(Define.PLANET_LEVEL, response.result.planetLevel);
                     Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)response.result.characterItem);
@@ -203,6 +175,7 @@ public class UI_Menu : UI_PopupMenu
                     Managers.Player.SetString(Define.PROFILE_COLOR, response.result.profileColor);
                     Managers.Player.SetString(Define.CHARACTER_COLOR, response.result.characterItem.ToString());
                     Managers.Player.SetInt(Define.POINT, response.result.point);
+                    Managers.Player.SetString(Define.DEVICETOKEN, request.deviceToken);
                     Debug.Log(Managers.Player.GetString(Define.USER_ID));
                 }
                 else

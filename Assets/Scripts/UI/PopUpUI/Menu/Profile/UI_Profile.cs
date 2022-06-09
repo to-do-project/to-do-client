@@ -87,6 +87,8 @@ public class UI_Profile : UI_PopupMenu
             if (response.code == 1000)
             {
                 Debug.Log(response.result);
+                PlayerPrefs.DeleteAll();
+                UI_Load.Instance.ToLoad(Define.Scene.Login.ToString());
             }
             else
             {

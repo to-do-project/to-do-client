@@ -67,6 +67,11 @@ public class UI_NickChange : UI_PopupMenu
 
     public void NextBtnClick(PointerEventData data)
     {
+        ExNickChange();
+    }
+
+    void ExNickChange()
+    {
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -84,6 +89,11 @@ public class UI_NickChange : UI_PopupMenu
                 menu.ChangeNickname(nickname);
                 profile.ChangeNickname(nickname);
                 ClosePopupUI();
+            }
+            else if(response.code == 6000)
+            {
+                Debug.Log(response.message);
+                Managers.Player.SendTokenRequest(ExNickChange);
             }
             else
             {

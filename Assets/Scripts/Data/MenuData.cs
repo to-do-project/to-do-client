@@ -107,3 +107,19 @@ public class ResponsePlanetInfo
     public int getFavoriteCount;
     public int putFavoriteCount;
 }
+
+[Serializable]
+public class ResponseAnnounce
+{
+    public int totalNoticeCnt;
+    public List<ResponseAnnounceList> noticeList;
+}
+
+[Serializable]
+public class ResponseAnnounceList
+{
+    public long noticeId;
+    public string title;
+    public string content;
+    public string createAt;
+}

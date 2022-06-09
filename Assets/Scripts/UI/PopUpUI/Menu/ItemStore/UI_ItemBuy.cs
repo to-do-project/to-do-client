@@ -145,6 +145,11 @@ public class UI_ItemBuy : UI_PopupMenu
 
     public void BuyBtnClick(PointerEventData data)
     {
+        ExBuy();
+    }
+
+    void ExBuy()
+    {
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -163,14 +168,21 @@ public class UI_ItemBuy : UI_PopupMenu
             {
                 Debug.Log(uwr.downloadHandler.text);
                 parent.GetComponent<UI_ItemStore>().SetPoint(response.result.point);
-                parent.GetComponent<UI_ItemStore>().DeleteItem(response.result.itemId);
+
+                if(response.result.maxCnt <= 0)
+                    parent.GetComponent<UI_ItemStore>().DeleteItem(response.result.itemId);
+
+                Debug.Log($"{buyAmountSlider.value}개 구매");
+                ClosePopupUI();
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(ExBuy);
             }
             else
             {
                 Debug.Log(response.message);
             }
-            Debug.Log($"{buyAmountSlider.value}개 구매");
-            ClosePopupUI();
         }, hN, hV);
     }
 

@@ -55,6 +55,11 @@ public class UI_PlanetInfo : UI_PopupMenu
 
         SetTexts();
 
+        InitData();
+    }
+
+    void InitData()
+    {
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -73,6 +78,11 @@ public class UI_PlanetInfo : UI_PopupMenu
                 Managers.Player.SetInt(Define.GIVE_GOOD, response.result.putFavoriteCount);
 
                 SetTexts();
+            }
+            else if(response.code == 6000)
+            {
+                Debug.Log(response.message);
+                Managers.Player.SendTokenRequest(InitData);
             }
             else
             {
