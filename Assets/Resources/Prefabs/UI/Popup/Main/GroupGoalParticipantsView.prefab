@@ -564,7 +564,7 @@ GameObject:
   - component: {fileID: 3941048039786436738}
   - component: {fileID: 3941048039786436741}
   m_Layer: 5
-  m_Name: GroupDelete_btn
+  m_Name: GroupOut_btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1148,7 +1148,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uADF8\uB8F9 \uBAA9\uD45C \uC0AD\uC81C\uD558\uAE30"
+  m_Text: "\uADF8\uB8F9 \uBAA9\uD45C \uD0C8\uD1F4\uD558\uAE30"
 --- !u!1 &4882318256514295111
 GameObject:
   m_ObjectHideFlags: 0
