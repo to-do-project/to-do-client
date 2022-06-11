@@ -16,7 +16,8 @@ public class FriendContent : UI_PopupMenu
     [SerializeField]
     private Text nameTxt;
 
-    private long id;
+    long id;
+    bool check = false;
     GameObject parent;
 
     public void SetParent(GameObject parent)
@@ -48,7 +49,54 @@ public class FriendContent : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
         SetBtn((int)Buttons.FriendPlanet_btn, (data) => {
-            Debug.Log("친구 행성 놀러가기 >> " + name);
+            if (check) return;
+            check = true;
+            Debug.Log("친구 행성 놀러가기 >> " + name + " id >> " + id);
+
+            string[] hN = { Define.JWT_ACCESS_TOKEN,
+                            "User-Id" };
+            string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                            Managers.Player.GetString(Define.USER_ID) };
+
+            Managers.Web.SendUniRequest("api/planet/main/" + id, "GET", null, (uwr) =>
+            {
+                var response = JsonUtility.FromJson<Response<ResponseMainPlanet>>(uwr.downloadHandler.text);
+
+                if (response.code == 1000)
+                {
+                    GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
+                    tmp.GetComponent<UI_FriendMain>().InitView(response);
+                }
+                else if(response.code == 6000)
+                {
+                    Managers.Player.SendTokenRequest(() =>
+                    {
+                        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                                        "User-Id" };
+                        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                                        Managers.Player.GetString(Define.USER_ID) };
+
+                        Managers.Web.SendUniRequest("api/planet/main/" + id, "GET", null, (uwr) =>
+                        {
+                            var response = JsonUtility.FromJson<Response<ResponseMainPlanet>>(uwr.downloadHandler.text);
+
+                            if (response.code == 1000)
+                            {
+                                GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
+                                tmp.GetComponent<UI_FriendMain>().InitView(response);
+                            }
+                            else
+                            {
+                                Debug.Log("토큰 발급 실패");
+                            }
+                        }, hN, hV);
+                    });
+                }
+                else
+                {
+                    Debug.Log(response.message);
+                }
+            }, hN, hV);
         });
     }
 }

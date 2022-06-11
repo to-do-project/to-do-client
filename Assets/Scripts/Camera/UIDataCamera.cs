@@ -27,7 +27,6 @@ public class UIDataCamera : MonoBehaviour
             Response<ResponseAnnounce> response = JsonUtility.FromJson<Response<ResponseAnnounce>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                Debug.Log("공지사항 정보 >> " + response.result);
                 announceList = response.result.noticeList;
             }
             else if (response.code == 6000)
@@ -53,7 +52,6 @@ public class UIDataCamera : MonoBehaviour
             Response<ResponseStoreItemsId> response = JsonUtility.FromJson<Response<ResponseStoreItemsId>>(uwr.downloadHandler.text);
             if (response.code == 1000)
             {
-                Debug.Log("아이템 스토어 정보 >> " + response.result);
                 charBtnId = response.result.characterItemIdList;
                 planetBtnId = response.result.planetItemIdList;
             }
@@ -80,7 +78,6 @@ public class UIDataCamera : MonoBehaviour
             Response<ResponseCloset> response = JsonUtility.FromJson<Response<ResponseCloset>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                Debug.Log("옷장 정보 >> " + uwr.result);
                 invenIdList = response.result.characterItemIdList;
             }
             else if (response.code == 6000)

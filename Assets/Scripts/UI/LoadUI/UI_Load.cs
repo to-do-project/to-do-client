@@ -90,8 +90,11 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
     {
         AsyncOperation op = SceneManager.LoadSceneAsync("Loading");
         op.allowSceneActivation = false;
+        while(op.progress < 0.8)
+        {
+            yield return null;
+        }
         yield return StartCoroutine(Fade(true));
-        Managers.UI.Clear();
         op.allowSceneActivation = true;
         yield break;
     }
@@ -99,6 +102,12 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
     private IEnumerator ExLoadSceneProcess()
     {
         AsyncOperation op = SceneManager.LoadSceneAsync(loadSceneName);
+        op.allowSceneActivation = false;
+        while (op.progress < 0.8)
+        {
+            yield return null;
+        }
+        op.allowSceneActivation = true;
         yield break;
     }
 

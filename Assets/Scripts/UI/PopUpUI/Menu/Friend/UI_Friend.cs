@@ -76,6 +76,7 @@ public class UI_Friend : UI_PopupMenu
 
     private void SetContents()
     {
+        /*
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -105,6 +106,7 @@ public class UI_Friend : UI_PopupMenu
                 Debug.Log(response.message);
             }
         }, hN, hV);
+        */
     }
 
     private void SetBtns()
@@ -140,6 +142,7 @@ public class UI_Friend : UI_PopupMenu
             FriendContent tmp = target.GetComponent<FriendContent>();
             tmp.SetParent(this.gameObject);
             tmp.SetName(name);
+            tmp.SetID(friendCount + 10);
 
             friendCount++;
             RelocationAll();

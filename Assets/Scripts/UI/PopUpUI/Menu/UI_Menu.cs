@@ -80,8 +80,26 @@ public class UI_Menu : UI_PopupMenu
             ChangeCcount("0");
         }
 
-        Debug.Log(System.DateTime.Now.ToString());
         //열기 애니메이션 실행
+    }
+
+    void CalcDate()
+    {
+        System.DateTime date = System.DateTime.Now;
+        int sum = date.Year * 430 + date.Month * 32 + date.Day;
+        if(PlayerPrefs.HasKey("DateTime") == false)
+        {
+            Debug.Log("새로운 접속");
+            Managers.Player.SetInt("DateTime", sum);
+        } 
+        else
+        {
+            if(Managers.Player.GetInt("DateTime") < sum)
+            {
+                Debug.Log("하루 이상 지났습니다");
+            }
+            Managers.Player.SetInt("DateTime", sum);
+        }
     }
 
     private void SetBtns()
@@ -207,30 +225,5 @@ public class UI_Menu : UI_PopupMenu
     public void ChangeCcount(string count)
     {
         ccountText.text = count;
-    }
-
-    public void TokenRefresh()
-    {
-        string[] hN = { Define.JWT_REFRESH_TOKEN,
-                        Define.USER_ID };
-        string[] hV = { Managers.Player.GetString(Define.JWT_REFRESH_TOKEN),
-                        Managers.Player.GetString(Define.USER_ID) };
-
-        RequestTokenRefresh request = new RequestTokenRefresh();
-        request.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
-
-        Managers.Web.SendUniRequest("access-token", "POST", request, (uwr) => {
-            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-            if (response.isSuccess)
-            {
-                Debug.Log(response.result);
-                Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
-                Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
-            }
-            else
-            {
-                Debug.Log(response.message);
-            }
-        }, hN, hV);
     }
 }
