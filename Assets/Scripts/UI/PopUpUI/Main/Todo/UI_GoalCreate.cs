@@ -54,6 +54,9 @@ public class UI_GoalCreate : UI_Popup
 
     Action<UnityWebRequest> callback;
     Response<string> res;
+    string openFlag = "PUBLIC";
+
+    RequestGoalCreate val;
 
     public override void Init()
     {
@@ -91,6 +94,19 @@ public class UI_GoalCreate : UI_Popup
         DateTime today = DateTime.Now;
         date.text = today.ToString("yyyy") + "." + today.ToString("mm") + "." + today.ToString("dd");
 
+
+        Toggle openToggle = Get<Toggle>((int)Toggles.open_toggle);
+        openToggle.onValueChanged.AddListener((bool bOn) =>
+        {
+            if (openToggle.isOn)
+            {
+                openFlag = "PRIVATE";
+            }
+            else
+            {
+                openFlag = "PUBLIC";
+            }
+        });
     }
 
     private void CheckBtnClick(PointerEventData data)
@@ -98,12 +114,21 @@ public class UI_GoalCreate : UI_Popup
         InfoGather();
         //goal 추가 API 날리기
 
+        if (val != null)
+        {
+            //API 날리기
+            //PlayerManager tokenrequest 날리고 이너 액션으로 생성 API 날리기
+            //Managers.Web.SendGetRequest("/api/goals",null,);
+            val = null;
+        }
+
+
         ClosePopupUI();
     }
 
     private void InfoGather()
     {
-        RequestGoalCreate val = new RequestGoalCreate();
+        val = new RequestGoalCreate();
 
         InputField todoNameInputfield = GetInputfiled((int)InputFields.todoName_inputfield);
         if (IsValidTitle(todoNameInputfield.text))
@@ -114,6 +139,20 @@ public class UI_GoalCreate : UI_Popup
         {
 
         }
+        val.openFlag = openFlag;
+
+        if (memberList.Count != 0)
+        {
+            val.groupFlag = "GROUP";
+            val.memberList = memberList;
+        }
+        else
+        {
+            val.groupFlag = "PERSONAL";
+            val.memberList = null;
+        }
+
+        
 
 
     }
