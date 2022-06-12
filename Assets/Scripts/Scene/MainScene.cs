@@ -115,6 +115,26 @@ public class MainScene : BaseScene
         Managers.Player.FirstInstantiate();
 
     }
-    
 
+    bool CalcDate() // 마지막 접속과 비교해 새 접속이거나 하루 이상 지났으면 true, 아니면 false 반환
+    {
+        DateTime date = DateTime.Now;
+        int sum = date.Year * 430 + date.Month * 32 + date.Day; // yy-mm-dd를 int값으로 병합
+        if (PlayerPrefs.HasKey(Define.DATETIME) == false)       // 저장된 데이터가 없으면(새 접속이면)
+        {
+            Debug.Log("새로운 접속");
+            Managers.Player.SetInt(Define.DATETIME, sum);
+            return true;    // true 반환 (웹 통신 후 point 획득했을 시 팝업창 띄우기?)
+        }
+        else
+        {
+            if (Managers.Player.GetInt(Define.DATETIME) < sum)  // 저장된 데이터와 현재 시간 비교
+            {
+                Debug.Log("하루 이상 지났습니다");
+                return true;
+            }
+            Managers.Player.SetInt(Define.DATETIME, sum);       // 현재 시간 데이터 저장
+            return false;
+        }
+    }
 }

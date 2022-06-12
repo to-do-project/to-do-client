@@ -452,6 +452,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487420211}
   m_CullTransparentMesh: 1
+--- !u!1 &616938451 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2917290078236257977, guid: 63240e67cac12d04989bb6b60774f6cd, type: 3}
+  m_PrefabInstance: {fileID: 377004820}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &616938455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616938451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03875ca4de6b9214aa9e3d9adf92f2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  announceList: []
+  charBtnId: 
+  planetBtnId: 
+  invenIdList: 
+  friendList: []
+  waitFriendList: []
 --- !u!1 &906592220
 GameObject:
   m_ObjectHideFlags: 0

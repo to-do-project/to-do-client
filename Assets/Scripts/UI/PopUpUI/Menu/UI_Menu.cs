@@ -83,25 +83,6 @@ public class UI_Menu : UI_PopupMenu
         //열기 애니메이션 실행
     }
 
-    void CalcDate()
-    {
-        System.DateTime date = System.DateTime.Now;
-        int sum = date.Year * 430 + date.Month * 32 + date.Day;
-        if(PlayerPrefs.HasKey("DateTime") == false)
-        {
-            Debug.Log("새로운 접속");
-            Managers.Player.SetInt("DateTime", sum);
-        } 
-        else
-        {
-            if(Managers.Player.GetInt("DateTime") < sum)
-            {
-                Debug.Log("하루 이상 지났습니다");
-            }
-            Managers.Player.SetInt("DateTime", sum);
-        }
-    }
-
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
