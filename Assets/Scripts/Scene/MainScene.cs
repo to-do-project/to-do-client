@@ -44,7 +44,8 @@ public class MainScene : BaseScene
         PlanetSetting();
         //Managers.Player.SendTokenRequest(innerCallback);
 
-
+        //test ÄÚµå
+        Managers.Sound.PlayBGMSound();
     }
 
     void Awake()
