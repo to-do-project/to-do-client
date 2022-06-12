@@ -8,10 +8,7 @@ using UnityEngine.UI;
 public class UI_GgoalContent : UI_Base
 {
 
-    enum Buttons
-    {
-        groupCheck_btn,
-    }
+
 
     enum Texts
     {
@@ -23,22 +20,30 @@ public class UI_GgoalContent : UI_Base
     {
         Goal,
         Todo,
+        groupCheck_btn,
     }
 
     GameObject todo, goal;
 
     public override void Init()
     {
-        Bind<Button>(typeof(Buttons));
-        Bind<Text>(typeof(Texts));
 
+
+        Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
         todo = Get<GameObject>((int)GameObjects.Todo);
         goal = Get<GameObject>((int)GameObjects.Goal);
 
-        //todo.SetActive(false);
+        GameObject groupCheckBtn = Get<GameObject>((int)GameObjects.groupCheck_btn);
 
-        //BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+        Canvas.ForceUpdateCanvases();
+
+        BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+        BindEvent(groupCheckBtn, GroupCheckClicked, Define.TouchEvent.Touch);
+
+        todo.SetActive(false);
+
+
     }
 
     void Start()
@@ -50,18 +55,25 @@ public class UI_GgoalContent : UI_Base
     {
         //그룹목표확인창 띄우기
         //
+        Managers.UI.ShowPopupUI<UI_GroupGoalParticipants>("GroupGoalParticipantsView", "Main");
+        //Managers.UI.ShowPopupUI<UI_GroupGoalCreater>("GroupGoalCreaterView","Main");
+
     }
 
-    public void GoalClick()
+    public void GoalClick(PointerEventData data)
     {
-        
+        Canvas.ForceUpdateCanvases();
         if (todo.activeSelf)
         {
+
+            
             todo.SetActive(false);
+           
         }
         else
         {
             todo.SetActive(true);
+
         }
 
     }

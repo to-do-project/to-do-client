@@ -213,7 +213,7 @@ public class UI_PlanetSet : UI_UserInfo
                             Managers.Player.SetString(Define.EMAIL, result.email);
                             Managers.Player.SetString(Define.NICKNAME, result.nickname);
                             Managers.Player.SetString(Define.USER_ID, result.userId.ToString());
-                            Managers.Player.SetString(Define.PLANET_ID, result.userId.ToString());
+                            Managers.Player.SetString(Define.PLANET_ID, result.planetId.ToString());
                             Managers.Player.SetInt(Define.PLANET_LEVEL, result.planetLevel);
                             Managers.Player.SetString(Define.PLANET_COLOR, result.planetColor);
                             Managers.Player.SetString(Define.EMAIL, result.email);

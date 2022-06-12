@@ -11,7 +11,9 @@ public class UI_PgoalContent : UI_Base
     {
         Goal,
         Todo,
+        edit_btn,
     }
+
 
     GameObject todo, goal;
 
@@ -26,22 +28,38 @@ public class UI_PgoalContent : UI_Base
         todo = Get<GameObject>((int)GameObjects.Todo);
         goal = Get<GameObject>((int)GameObjects.Goal);
 
+        GameObject edit = Get<GameObject>((int)GameObjects.edit_btn);
+
+        Canvas.ForceUpdateCanvases();
+
+        BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+        BindEvent(edit, EditBtnClick);
+
         todo.SetActive(false);
 
-        //BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+
     }
 
-    public void GoalClick()
+    public void GoalClick(PointerEventData data)
     {
+        Canvas.ForceUpdateCanvases();
         if (todo.activeSelf)
         {
             todo.SetActive(false);
+
         }
         else
         {
             todo.SetActive(true);
+
         }
 
+    }
+
+    public void EditBtnClick(PointerEventData data)
+    {
+        Debug.Log("Editbtn click");
+        Managers.UI.ShowPopupUI<UI_GoalModify>("GoalModifyView","Main");
     }
 
     public void SetGoalName(string name)

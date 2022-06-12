@@ -10,11 +10,18 @@ using UnityEngine.UI;
 [System.Serializable]
 public class ResponseInven
 {
+    public int totalInventoryItemCount;
+    public List<InventroyList> inventoryList;
+}
+[System.Serializable]
+public class InventroyList
+{
     public string itemCode;
     public int totalCount;
     public int placedCount;
     public int remainingCount;
 }
+
 public class UI_Edit : UI_Panel
 {
 
@@ -35,23 +42,30 @@ public class UI_Edit : UI_Panel
     enum GameObjects 
     {
         Content,
+        ContentArea,
+    }
+
+    enum Texts
+    {
+        invenCount_txt,
     }
 
     EditScene edit;
     GameObject contentRoot;
-
+    GameObject contentArea;
 
     Action<UnityWebRequest> callback;
-    Response<List<ResponseInven>> res;
+    Response<ResponseInven> res;
 
     Action innerCallback;
 
-    List<ResponseInven> invenList;
-
+    List<InventroyList> invenList;
+    Text invenCountTxt;
 
     public override void Init()
     {
         base.Init();
+
 
         callback -= ResponseAction;
         callback += ResponseAction;
@@ -78,8 +92,12 @@ public class UI_Edit : UI_Panel
         Bind<Button>(typeof(Buttons));
         Bind<Toggle>(typeof(Toggles));
         Bind<GameObject>(typeof(GameObjects));
+        Bind<Text>(typeof(Texts));
 
         contentRoot = Get<GameObject>((int)GameObjects.Content);
+        contentArea = Get<GameObject>((int)GameObjects.ContentArea);
+
+        invenCountTxt = GetText((int)Texts.invenCount_txt);
 
         GameObject editDoneBtn = GetButton((int)Buttons.editDone_btn).gameObject;
         GameObject editCancleBtn = GetButton((int)Buttons.editCancle_btn).gameObject;
@@ -90,9 +108,9 @@ public class UI_Edit : UI_Panel
         Toggle etc = Get<Toggle>((int)Toggles.etc_toggle);
 
         edit.category = "plant";
-        Debug.Log(Managers.Player.GetHeaderValue()[1]);
-        Debug.Log(PlayerPrefs.GetString(Define.USER_ID));
-        Managers.Player.SendTokenRequest(innerCallback);
+        /*        Debug.Log(Managers.Player.GetHeaderValue()[1]);
+                Debug.Log(PlayerPrefs.GetString(Define.USER_ID));*/
+        SendInvenListRequest();
 
         plant.onValueChanged.AddListener((bool bOn) =>
         {
@@ -133,6 +151,9 @@ public class UI_Edit : UI_Panel
 
         BindEvent(editCancleBtn, EditCancleBtnClick, Define.TouchEvent.Touch);
         BindEvent(editDoneBtn, EditDoneBtnClick, Define.TouchEvent.Touch);
+
+        Managers.Player.UIaction -= ScrollViewDownAction;
+        Managers.Player.UIaction += ScrollViewDownAction;
     }
 
     void Start()
@@ -152,11 +173,11 @@ public class UI_Edit : UI_Panel
 
     }
 
-
+    //인벤 조회 API 날리기
     private void SendInvenListRequest()
     {
         Debug.Log("InvenList request");
-        res = new Response<List<ResponseInven>>();
+        res = new Response<ResponseInven>();
         Managers.Web.SendGetRequest("api/inventory/planet-items/", edit.category, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
     }
@@ -165,22 +186,26 @@ public class UI_Edit : UI_Panel
     {
         if (res != null)
         {
-            res = JsonUtility.FromJson<Response<List<ResponseInven>>>(request.downloadHandler.text);
+            res = JsonUtility.FromJson<Response<ResponseInven>>(request.downloadHandler.text);
 
             if (res.isSuccess)
             {
                 if (res.code == 1000)
                 {
-                    invenList = res.result;
+
+                    invenCountTxt.text = res.result.totalInventoryItemCount.ToString() + "/" + "100";
+                    invenList = res.result.inventoryList;
                     ClearScrollView();
 
                     for (int i = 0; i < invenList.Count; i++)
                     {
 
                         Debug.Log(invenList[i].itemCode);
-                        UI_EditItem go = Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform,invenList[i].itemCode);
+                        UI_EditItem go = Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, invenList[i].itemCode);
                         go.SetText(invenList[i].totalCount, invenList[i].remainingCount, invenList[i].placedCount);
                     }
+
+
                 }
             }
 
@@ -190,7 +215,7 @@ public class UI_Edit : UI_Panel
                 //token 재발급
                 if (res.code == 6000 || res.code == 6004 || res.code == 6006)
                 {
-
+                    Managers.Player.SendTokenRequest(innerCallback);
                 }
             }
 
@@ -217,4 +242,29 @@ public class UI_Edit : UI_Panel
 
         
     }
+
+
+    private void ScrollViewDownAction(bool down)
+    {
+
+        if (contentArea != null)
+        {
+            if (down)
+            {
+                Vector3 pos = new Vector3(contentArea.transform.localPosition.x, -2256f, contentArea.transform.localPosition.z); ;
+
+                contentArea.transform.localPosition = pos;
+                
+            }
+            else
+            {
+                Vector3 pos = new Vector3(contentArea.transform.localPosition.x, -1520f, contentArea.transform.localPosition.z); ;
+
+                contentArea.transform.localPosition = pos;
+            }
+        }
+
+    }
+
+    
 }

@@ -217,5 +217,6 @@ public class UI_Auth : UI_SignUp
         time = 0f;
         nextBtn.GetComponent<Button>().interactable = false;
         ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+        timeover = false;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class UI_Main : UI_Panel
     enum Texts
     {
         date_txt,
+        title_txt,
     }
 
     enum GameObjects
@@ -24,6 +26,7 @@ public class UI_Main : UI_Panel
     }
 
     //GameObject goalList;
+
 
     public override void Init()
     {
@@ -45,6 +48,14 @@ public class UI_Main : UI_Panel
 
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
+        Bind<GameObject>(typeof(GameObjects));
+
+        Text title = GetText((int)Texts.title_txt);
+        title.text = Managers.Player.GetString(Define.NICKNAME)+"님의 목표리스트";
+
+        Text date = GetText((int)Texts.date_txt);
+        DateTime today = DateTime.Now;
+        date.text = today.ToString("yyyy")+"."+today.ToString("mm")+"."+today.ToString("dd");
 
         GameObject menuBtn = GetButton((int)Buttons.menu_btn).gameObject;
         BindEvent(menuBtn, MenuBtnClick, Define.TouchEvent.Touch);
@@ -63,6 +74,5 @@ public class UI_Main : UI_Panel
     {
         Managers.UI.ShowPopupUI<UI_Menu>("MenuView", "Menu");
     }
-
 
 }

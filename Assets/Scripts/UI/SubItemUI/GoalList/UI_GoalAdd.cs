@@ -22,6 +22,6 @@ public class UI_GoalAdd : UI_Base
 
     private void AddBtnClick(PointerEventData data)
     {
-        Managers.UI.ShowPopupUI<UI_TodoCreate>("TodoCreateView","Main");
+        Managers.UI.ShowPopupUI<UI_GoalCreate>("GoalCreateView","Main");
     }
 }
