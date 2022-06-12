@@ -8,12 +8,15 @@ public class UIDataCamera : MonoBehaviour
     public List<long> charBtnId = null;
     public List<long> planetBtnId = null;
     public List<long> invenIdList = null;
+    public List<ResponseFriendList> friendList;
+    public List<ResponseFriendList> waitFriendList;
 
     void DataInit()
     {
         RefreshAnnounceData();
         RefreshItemStoreData();
         RefreshDecoData();
+        RefreshFriendData();
     }
 
     public void RefreshAnnounceData()
@@ -31,7 +34,6 @@ public class UIDataCamera : MonoBehaviour
             }
             else if (response.code == 6000)
             {
-                Debug.Log(response.message);
                 Managers.Player.SendTokenRequest(RefreshAnnounceData);
             } 
             else
@@ -57,7 +59,6 @@ public class UIDataCamera : MonoBehaviour
             }
             else if (response.code == 6000)
             {
-                Debug.Log(response.message);
                 Managers.Player.SendTokenRequest(RefreshItemStoreData);
             }
             else
@@ -82,8 +83,32 @@ public class UIDataCamera : MonoBehaviour
             }
             else if (response.code == 6000)
             {
-                Debug.Log(response.message);
                 Managers.Player.SendTokenRequest(RefreshDecoData);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
+    }
+
+    public void RefreshFriendData()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/friends", "GET", null, (uwr) => {
+            Response<ResponseFriend> response = JsonUtility.FromJson<Response<ResponseFriend>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                friendList = response.result.friends;
+                waitFriendList = response.result.waitFriends;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(RefreshFriendData);
             }
             else
             {

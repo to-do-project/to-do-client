@@ -88,7 +88,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
 
     private IEnumerator ToLoadSceneProcess()
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync("Loading");
+        AsyncOperation op = SceneManager.LoadSceneAsync(Define.Scene.Loading.ToString());
         op.allowSceneActivation = false;
         while(op.progress < 0.8)
         {

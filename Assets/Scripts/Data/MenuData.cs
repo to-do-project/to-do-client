@@ -123,3 +123,29 @@ public class ResponseAnnounceList
     public string content;
     public string createAt;
 }
+
+[Serializable]
+public class ResponseFriend
+{
+    public List<ResponseFriendList> waitFriends;
+    public List<ResponseFriendList> friends;
+}
+
+[Serializable]
+public class ResponseFriendList
+{
+    public long friendId;
+    public long userId;
+    public string nickName;
+    public string profileColor;
+    public bool waitFlag;
+}
+
+[Serializable]
+public class ResponseSearchFriend
+{
+    public long userId;
+    public string nickname;
+    public string profileColor;
+    public int planetLevel;
+}

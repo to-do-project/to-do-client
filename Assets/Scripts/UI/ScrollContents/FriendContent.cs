@@ -51,7 +51,7 @@ public class FriendContent : UI_PopupMenu
         SetBtn((int)Buttons.FriendPlanet_btn, (data) => {
             if (check) return;
             check = true;
-            Debug.Log("模备 青己 愁矾啊扁 >> " + name + " id >> " + id);
+            Debug.Log("模备 青己 愁矾啊扁 >> " + name + " id >> " + id + " userID >> " + Managers.Player.GetString(Define.USER_ID));
 
             string[] hN = { Define.JWT_ACCESS_TOKEN,
                             "User-Id" };
