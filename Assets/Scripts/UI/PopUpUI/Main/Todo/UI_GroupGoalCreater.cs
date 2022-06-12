@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_TodoModify : UI_Popup
+public class UI_GroupGoalCreater : UI_Popup
 {
-    public override void Init()
-    {
-        base.Init();
-
-    }
-
     void Start()
     {
         Init();
     }
 
+    public override void Init()
+    {
+        base.Init();
+    }
 }

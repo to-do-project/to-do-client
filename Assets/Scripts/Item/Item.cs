@@ -7,6 +7,7 @@ public class Item : MonoBehaviour
 {
     public Action OnItemClickAction = null;
     public Action OnItemDragAction = null;
+    public Action OnItemExitAction = null;
 
     void OnMouseDown()
     {
@@ -24,4 +25,11 @@ public class Item : MonoBehaviour
         }
     }
 
+    private void OnMouseUp()
+    {
+        if (OnItemExitAction != null)
+        {
+            OnItemExitAction.Invoke();
+        }
+    }
 }

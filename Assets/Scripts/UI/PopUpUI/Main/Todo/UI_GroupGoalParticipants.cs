@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UI_TodoCreate : UI_Popup
+public class UI_GroupGoalParticipants : UI_Popup
 {
-    enum Buttons
+    enum Texts
     {
-
-    }
-
-    enum Inputfields
-    {
-
+        date_txt,
+        GoalTitle_txt,
+        GoalRate_txt,
     }
 
     void Start()
@@ -22,5 +20,8 @@ public class UI_TodoCreate : UI_Popup
     public override void Init()
     {
         base.Init();
+
+
     }
+
 }

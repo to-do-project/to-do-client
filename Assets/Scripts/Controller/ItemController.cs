@@ -9,7 +9,7 @@ public class ItemController : MonoBehaviour
     private Vector3 initMousePos;
 
     GameObject FalseBtn, CheckBtn, DisableImg;
-    GameObject Height;
+    GameObject Height, Coll;
 
     //아이템 프리팹 최상위 오브젝트
     GameObject root;
@@ -20,10 +20,12 @@ public class ItemController : MonoBehaviour
     FixBtn_EventHandler Fixevt;
     Item item;
 
+    CameraZoom zoomCam;
+
     private bool isFixed; //false면 편집가능상태 아니면 편집 불가 상태
 
     private float timer = 0f;
-    private float MaxDragTime = 0.3f;
+    private float MaxDragTime = 0.5f;
 
     private bool canFixed;
 
@@ -51,10 +53,13 @@ public class ItemController : MonoBehaviour
     //드래그
     void OnMouseDragEvt()
     {
+        zoomCam.RemoveAction();
+
         //Debug.Log("isFixed : " + isFixed);
         //이동 상태
         if (!isFixed)
         {
+
             //Debug.Log(root.name);
             //Height.SetActive(true);
             timer = 0f;
@@ -71,10 +76,20 @@ public class ItemController : MonoBehaviour
             initMousePos.z = 0f;
             initMousePos = Camera.main.ScreenToWorldPoint(initMousePos);
 
-            root.transform.position = new Vector3(root.transform.position.x + diffPos.x, root.transform.position.y +
-                diffPos.y, root.transform.position.z);
+
+            //움직인 위치가 자기자신이면??
+/*            Vector3 movePos = new Vector3(root.transform.position.x + diffPos.x, root.transform.position.y + diffPos.y, root.transform.position.z);
+
+            int layerMask = 1 << LayerMask.NameToLayer("Item");
+            BoxCollider2D coll = Height.GetComponent<BoxCollider2D>();*/
+
+            //root.transform.position = new Vector3(worldPoint.x, worldPoint.y, root.transform.position.z);
             
+            root.transform.position = new Vector3(root.transform.position.x + diffPos.x, root.transform.position.y + diffPos.y, root.transform.position.z);
+
+
             CheckOnGround();
+            CheckOnItem();
 
         }
 
@@ -83,7 +98,15 @@ public class ItemController : MonoBehaviour
             if (timer >= MaxDragTime)
             {
                 timer = 0f;
-                ChangeFixState(true);
+                if (Managers.Player.CheckItemFixState())
+                {
+                    ChangeFixState(true);
+                }
+
+                initMousePos = Input.mousePosition;
+                initMousePos.z = 0f;
+                initMousePos = Camera.main.ScreenToWorldPoint(initMousePos);
+
             }
             else
             {
@@ -91,6 +114,12 @@ public class ItemController : MonoBehaviour
             }
         }
 
+
+    }
+
+    void OnMouseExitEvt()
+    {
+        zoomCam.AddAction();
 
     }
 
@@ -103,36 +132,107 @@ public class ItemController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(pos, transform.forward, 100f, layerMask);
         if (hit)
         {
+            UI_ItemButton itemBtn = Util.GetOrAddComponent<UI_ItemButton>(CheckBtn);
+            itemBtn.ChangeButtonColor(false);
             DisableImg.SetActive(false);
             canFixed = true;
         }
         else
         {
+            UI_ItemButton itemBtn = Util.GetOrAddComponent<UI_ItemButton>(CheckBtn);
+            itemBtn.ChangeButtonColor(true);
             DisableImg.SetActive(true);
             canFixed = false;
         }
+
+        /*int layerMask = 1 << LayerMask.NameToLayer("PlanetGround");
+        BoxCollider2D coll = Height.GetComponent<BoxCollider2D>();
+
+        RaycastHit2D hit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, transform.forward, 100f, layerMask);
+
+        Debug.DrawRay(coll.bounds.center + new Vector3(0, 0, -0.1f), transform.forward * 10f, Color.red);
+
+        if (hit)
+        {
+
+            DisableImg.SetActive(false);
+            canFixed = true;
+
+        }
+        else
+        {
+            DisableImg.SetActive(true);
+            canFixed = false;
+
+            //Debug.Log("Didn't hit");
+        }*/
+    }
+
+    private void CheckOnItem()
+    {
+        int layerMask = 1 << LayerMask.NameToLayer("Item");
+        BoxCollider2D coll = Height.GetComponent<BoxCollider2D>();
+
+        //RaycastHit2D hit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size/2, 0f, transform.forward, 100f, layerMask);
+        //Debug.DrawRay(coll.bounds.center, transform.forward * 10f, Color.red);
+        RaycastHit2D[] hitArray = Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size / 2, 0f, transform.forward, 100f, layerMask);
+
+        foreach(RaycastHit2D hit in hitArray)
+        {
+            if (hit)
+            {
+
+                if (hit.collider as BoxCollider2D != coll && Util.FindChild(hit.transform.parent.gameObject, "collider", true) != Coll)
+                {
+                    if (!hit.collider.name.Equals("collider"))
+                    {
+                        UI_ItemButton itemBtn = Util.GetOrAddComponent<UI_ItemButton>(CheckBtn);
+                        itemBtn.ChangeButtonColor(true);
+                        // Debug.Log(hit.transform.parent.gameObject.name);
+                        DisableImg.SetActive(true);
+                        canFixed = false;
+                    }
+
+
+                }
+                else
+                {
+                    //Debug.Log(hit.transform.parent.gameObject.name);
+
+                }
+            }
+            else
+            {
+                UI_ItemButton itemBtn = Util.GetOrAddComponent<UI_ItemButton>(CheckBtn);
+                itemBtn.ChangeButtonColor(false);
+                DisableImg.SetActive(false);
+                canFixed = true;
+            }
+
+        }
+       
     }
 
 
 
     //아이템 편집 모드로 전환
-    private void ChangeFixState(bool change)
+    //change가 true면 편집 가능상태로
+    //false면 편집 불가상태로
+    public void ChangeFixState(bool change)
     {
         isFixed = !change;
         FalseBtn.SetActive(change);
         CheckBtn.SetActive(change);
         //Height.SetActive(!change);
         DisableImg.SetActive(change);
-        if (change)
-        {
-            Colevt.OnCollisionEvent -= CollisionCheck;
-            Colevt.OnCollisionEvent += CollisionCheck;
-        }
-        else
-        {
-            Colevt.OnCollisionEvent -= CollisionCheck;
 
+        if (Managers.Player.UIaction != null)
+        {
+            Managers.Player.UIaction.Invoke(change);
         }
+
+
+
     }
 
     private void BindChildren()
@@ -143,6 +243,7 @@ public class ItemController : MonoBehaviour
         FalseBtn = Util.FindChild(root, "False_btn", true);
         DisableImg = Util.FindChild(gameObject, "disable_img", true);
         Height = Util.FindChild(gameObject, "height", true);
+        Coll = Util.FindChild(gameObject, "collider", true);
 
         Fixevt = Util.GetOrAddComponent<FixBtn_EventHandler>(CheckBtn);
         Falseevt = Util.GetOrAddComponent<FalseBtn_EventHandler>(FalseBtn);
@@ -156,8 +257,9 @@ public class ItemController : MonoBehaviour
     {
         if (type==Define.Scene.Edit)
         {
-            Colevt.OnCollisionEvent -= CollisionCheck;
-            Colevt.OnCollisionEvent += CollisionCheck;
+            zoomCam = GameObject.Find("ZoomCam").GetComponent<CameraZoom>();
+            //Colevt.OnCollisionEvent -= CollisionCheck;
+            //Colevt.OnCollisionEvent += CollisionCheck;
 
             Fixevt.OnClickHandler -= FixItem;
             Fixevt.OnClickHandler += FixItem;
@@ -171,16 +273,20 @@ public class ItemController : MonoBehaviour
             item.OnItemDragAction -= OnMouseDragEvt;
             item.OnItemDragAction += OnMouseDragEvt;
 
+            item.OnItemExitAction -= OnMouseExitEvt;
+            item.OnItemExitAction += OnMouseExitEvt;
+
         }
 
         else
         {
             ChangeFixState(false);
-            Colevt.OnCollisionEvent -= CollisionCheck;
+            //Colevt.OnCollisionEvent -= CollisionCheck;
             Fixevt.OnClickHandler -= FixItem;
             Falseevt.OnClickHandler -= CancleItem;
             item.OnItemClickAction -= OnMouseDownEvt;
             item.OnItemDragAction -= OnMouseDragEvt;
+            item.OnItemExitAction -= OnMouseExitEvt;
 
         }
     }
@@ -204,14 +310,20 @@ public class ItemController : MonoBehaviour
     //아이템 취소 버튼 클릭 시
     private void CancleItem()
     {
+        if (Managers.Player.UIaction != null)
+        {
+            Managers.Player.UIaction.Invoke(false);
+        }
         Debug.Log("Cancle Item");
         //Managers.Resource.Destroy(root);
         Managers.Player.RemoveItemList(root);
         Managers.Resource.Destroy(root);
+
+
     }
 
     //아이템 충돌 체크
-    void CollisionCheck(Collider2D collision)
+/*    void CollisionCheck(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Item"))
         {
@@ -231,7 +343,7 @@ public class ItemController : MonoBehaviour
             canFixed = true;
             //collision.transform.parent.GetComponent<ItemController>().ChangeColor(false);
         }
-    }
+    }*/
 
 
     /*    void CollisionExitCheck(Collider2D collision)

@@ -20,7 +20,7 @@ public class UI_EditItem : UI_Base
     string path;
     Text countTxt;
 
-    int have, total, remain;
+    int total, remain, placed;
 
 
     public override void Init()
@@ -35,7 +35,7 @@ public class UI_EditItem : UI_Base
 
         BindEvent(item, ItemClick, Define.TouchEvent.Touch);
 
-        countTxt.text = have.ToString() + "/" + total.ToString();
+        countTxt.text = remain.ToString() + "/" + total.ToString();
     }
 
     void Start()
@@ -45,29 +45,31 @@ public class UI_EditItem : UI_Base
 
     void ItemClick(PointerEventData data)
     {
-
-
-        if (remain != 0)
+        //total remainÀ¸·Î ¹Ù²ã¾ßÛ¤±
+        if (Managers.Player.CountItem(this.gameObject.name) >= total)
         {
-            if (Managers.Player.CountItem(this.gameObject.name)>= have)
-            {
-                return;
-            }
-            string name = Util.RemoveCloneString(this.gameObject.name);
-            path = "Items/" + name;
-            Debug.Log(path);
-
-            GameObject go = Managers.Resource.Instantiate(path, Managers.Player.GetPlanet().transform.GetChild(2).transform);
-            Util.FindChild<ItemController>(go, "ItemInner", true).ChangeMode(Define.Scene.Edit);
-            Managers.Player.AddItemList(go);
+            Debug.Log(Managers.Player.CountItem(this.gameObject.name) +" "+total);
+            return;
         }
+        string name = Util.RemoveCloneString(this.gameObject.name);
+        path = "Items/" + name;
+        Debug.Log(path);
+
+        GameObject go = Managers.Resource.Instantiate(path, Managers.Player.GetPlanet().transform.GetChild(2).transform);
+        ItemController ic = Util.FindChild<ItemController>(go, "ItemInner", true);
+
+        ic.ChangeMode(Define.Scene.Edit);
+        ic.ChangeFixState(true);
+
+
+        Managers.Player.AddItemList(go);
     }
 
     public void SetText(int totalCount, int remainingCount, int placedCount)
     {
-        have = remainingCount+placedCount;
         total = totalCount;
         remain = remainingCount;
+        placed = placedCount;
     }
 
 

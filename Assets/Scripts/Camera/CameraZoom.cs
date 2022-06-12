@@ -9,7 +9,7 @@ public class CameraZoom : MonoBehaviour
     float perspectiveZoomSpeed = 0.5f;
     float orthoZoomSpeed = 0.3f;
 
-    float zoomSpeed = 10f;
+    float zoomSpeed = 5f;
 
 
     private float Speed = 0.7f;
@@ -84,6 +84,7 @@ public class CameraZoom : MonoBehaviour
                 prePos = touch.position - touch.deltaPosition;
             }
         }
+        //카메라 이동
         else if(evt== Define.TouchEvent.TouchMove || evt==Define.TouchEvent.Press)
         {
             Touch touch = Input.GetTouch(0);
@@ -132,5 +133,16 @@ public class CameraZoom : MonoBehaviour
         }
 
 
+    }
+
+    public void AddAction()
+    {
+        Managers.Input.TouchAction -= Zoom;
+        Managers.Input.TouchAction += Zoom;
+    }
+
+    public void RemoveAction()
+    {
+        Managers.Input.TouchAction -= Zoom;
     }
 }
