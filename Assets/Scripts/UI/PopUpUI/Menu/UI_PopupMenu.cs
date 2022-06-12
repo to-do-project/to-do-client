@@ -6,6 +6,8 @@ using System;
 
 public class UI_PopupMenu : UI_Popup // Menu에서 많이 사용하는 함수들을 여기에 정리
 {
+    protected UIDataCamera dataContainer; // UICamera를 활용한 바인딩 데이터 저장소
+
     protected void SetBtn(int index, Action<PointerEventData> action) // 바인드된 버튼들을 무명 메소드로 이벤트 연결
     {
         GameObject btn = GetButton(index).gameObject;
@@ -21,6 +23,7 @@ public class UI_PopupMenu : UI_Popup // Menu에서 많이 사용하는 함수들을 여기에 �
         {
             Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
             canvas.worldCamera = cam;
+            dataContainer = cam.gameObject.GetComponent<UIDataCamera>();
         }
         else
         {

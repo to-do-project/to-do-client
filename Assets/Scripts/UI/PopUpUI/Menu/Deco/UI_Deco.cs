@@ -22,7 +22,6 @@ public class UI_Deco : UI_PopupMenu
     GameObject invenScroll, invenContent, invenButton;
     ItemImageContainer itemImages;
 
-    List<long> invenIdList;
     Dictionary<long, GameObject> contentList;
 
     string itemPath = "Prefabs/UI/ScrollContents/Item_btn";
@@ -36,7 +35,6 @@ public class UI_Deco : UI_PopupMenu
     public override void Init()
     {
         contentList = new Dictionary<long, GameObject>();
-        invenIdList = new List<long>();
         base.Init();
 
         CameraSet();
@@ -57,7 +55,7 @@ public class UI_Deco : UI_PopupMenu
 
         itemImages = GetComponent<ItemImageContainer>();
 
-        InvenWeb();
+        SetInven();
     }
 
     void SetBtns()
@@ -70,7 +68,7 @@ public class UI_Deco : UI_PopupMenu
 
         SetBtn((int)Buttons.Cancel_btn, (data) => {
             index = startIndex;
-            ChangeCloth(invenIdList[index]);
+            ChangeCloth(dataContainer.invenIdList[index]);
             Managers.Resource.Instantiate(fadePath + "CancelFadeView");
         });
 
@@ -78,14 +76,14 @@ public class UI_Deco : UI_PopupMenu
         BindEvent(leftBtn.gameObject, (data) => {
             if (index == 0) return;
             index--; 
-            ChangeCloth(invenIdList[index]); 
+            ChangeCloth(dataContainer.invenIdList[index]); 
         }, Define.TouchEvent.Touch);
 
         rightBtn = GetButton((int)Buttons.Right_btn);
         BindEvent(rightBtn.gameObject, (data) => {
-            if (index == invenIdList.Count - 1) return;
+            if (index == dataContainer.invenIdList.Count - 1) return;
             index++; 
-            ChangeCloth(invenIdList[index]);
+            ChangeCloth(dataContainer.invenIdList[index]);
         }, Define.TouchEvent.Touch);
     }
 
@@ -94,66 +92,20 @@ public class UI_Deco : UI_PopupMenu
         Init();
     }
 
-    void InvenWeb()
+    void SetInven()
     {
+        InitContents();
+        RefreshBtnLR();
+
         SetIndex(Managers.Player.GetInt(Define.CHARACTER_ITEM));
-        ChangeCloth(invenIdList[index]);
+        startIndex = index;
 
-        string[] hN = { Define.JWT_ACCESS_TOKEN,
-                        "User-Id" };
-        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
-                        Managers.Player.GetString(Define.USER_ID) };
-
-        Managers.Web.SendUniRequest("api/closet/character-items", "GET", null, (uwr) => {
-            Response<ResponseCloset> response = JsonUtility.FromJson<Response<ResponseCloset>>(uwr.downloadHandler.text);
-            if(response.isSuccess)
-            {
-                Debug.Log(uwr.downloadHandler.text);
-                invenIdList = response.result.characterItemIdList;
-
-                InitContents();
-                RefreshBtnLR();
-
-                SetIndex(Managers.Player.GetInt(Define.CHARACTER_ITEM));
-                startIndex = index;
-                Debug.Log(startIndex);
-
-                ChangeCloth(invenIdList[index]);
-            } else
-            {
-                Debug.Log(response.message);
-            }
-        }, hN, hV);
-    }
-
-    void SaveInven()
-    {
-        if (onSave) return;
-        onSave = true;
-        string[] hN = { Define.JWT_ACCESS_TOKEN,
-                        "User-Id" };
-        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
-                        Managers.Player.GetString(Define.USER_ID) };
-
-        Managers.Web.SendUniRequest("api/closet/character-items/" + invenIdList[index].ToString(), "PATCH", null, (uwr) => {
-            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-            if (response.isSuccess)
-            {
-                Debug.Log(response.result);
-                Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)invenIdList[index]);
-                Managers.Resource.Instantiate(fadePath + "DoneFadeView");
-            }
-            else
-            {
-                Debug.Log(response.message);
-            }
-            onSave = false;
-        }, hN, hV);
+        ChangeCloth(dataContainer.invenIdList[index]);
     }
 
     void InitContents()
     {
-        foreach (var tmp in invenIdList)
+        foreach (var tmp in dataContainer.invenIdList)
         {
             GameObject item = Instantiate(Resources.Load<GameObject>(itemPath));
             item.transform.SetParent(invenContent.transform, false);
@@ -174,15 +126,17 @@ public class UI_Deco : UI_PopupMenu
         if (index == 0)
         {
             leftBtn.interactable = false;
-        } else
+        }
+        else
         {
             leftBtn.interactable = true;
         }
 
-        if(index == invenIdList.Count - 1)
+        if (index == dataContainer.invenIdList.Count - 1)
         {
             rightBtn.interactable = false;
-        } else
+        }
+        else
         {
             rightBtn.interactable = true;
         }
@@ -190,9 +144,9 @@ public class UI_Deco : UI_PopupMenu
 
     void SetIndex(long id)
     {
-        for(int i = 0; i < invenIdList.Count; i++)
+        for (int i = 0; i < dataContainer.invenIdList.Count; i++)
         {
-            if (invenIdList[i] == id) index = i;
+            if (dataContainer.invenIdList[i] == id) index = i;
         }
     }
 
@@ -215,5 +169,35 @@ public class UI_Deco : UI_PopupMenu
 
         SetIndex(id);
         RefreshBtnLR();
+    }
+
+    void SaveInven()
+    {
+        if (onSave) return;
+        onSave = true;
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/closet/character-items/" + dataContainer.invenIdList[index].ToString(), "PATCH", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                Debug.Log(response.result);
+                Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)dataContainer.invenIdList[index]);
+                Managers.Resource.Instantiate(fadePath + "DoneFadeView");
+            }
+            else if(response.code == 6000)
+            {
+                Debug.Log(response.message);
+                Managers.Player.SendTokenRequest(SaveInven);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+            onSave = false;
+        }, hN, hV);
     }
 }

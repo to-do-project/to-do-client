@@ -21,6 +21,7 @@ public class UI_AddFriend : UI_PopupMenu
     Text friendNameTxt, friendLevelTxt;
     GameObject parent;
     UI_Friend friend;
+    public int id { private get; set; }
 
     public override void Init()
     {
@@ -47,6 +48,11 @@ public class UI_AddFriend : UI_PopupMenu
         friendLevelTxt = GetText((int)Texts.FriendLevel_txt);
     }
 
+    public void SetLevel(int level)
+    {
+        friendLevelTxt.text = "Lv. " + level.ToString();
+    }
+
     private void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
@@ -57,7 +63,7 @@ public class UI_AddFriend : UI_PopupMenu
             if (CheckFriend())
             {
                 Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/FriendFadeView"));
-                friend.AddFriend(friendNameTxt.text);
+                friend.AddFriend(friendNameTxt.text, id);
             }
             else
             {

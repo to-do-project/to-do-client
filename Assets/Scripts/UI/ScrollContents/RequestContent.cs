@@ -8,6 +8,7 @@ public class RequestContent : MonoBehaviour
 
     [SerializeField]
     private Text nameTxt;
+    int id;
 
     GameObject parent;
     public void SetParent(GameObject parent)
@@ -25,9 +26,14 @@ public class RequestContent : MonoBehaviour
         nameTxt.text = name;
     }
 
+    public void SetId(int id)
+    {
+        this.id = id;
+    }
+
     public void AcceptRequest()
     {
-        parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text);
+        parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text, id);
         DeleteRequest();
     }
 

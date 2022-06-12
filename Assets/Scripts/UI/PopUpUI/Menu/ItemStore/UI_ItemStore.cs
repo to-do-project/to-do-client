@@ -27,9 +27,6 @@ public class UI_ItemStore : UI_PopupMenu
     Image profileImage;
     ItemImageContainer itemImages;
 
-    List<long> charBtnId;
-    List<long> planetBtnId;
-
     Dictionary<long, Transform> charBtnDict;
     Dictionary<long, Transform> planetBtnDict;
 
@@ -87,38 +84,10 @@ public class UI_ItemStore : UI_PopupMenu
 
         itemImages = GetComponent<ItemImageContainer>();
 
-        charBtnId = new List<long>();
-        planetBtnId = new List<long>();
-
         charBtnDict = new Dictionary<long, Transform>();
         planetBtnDict = new Dictionary<long, Transform>();
 
-        ItemRequest();
-
-        /*      테스트용 코드
-#if UNITY_EDITOR
-        for(int i = 0; i < 10; i++)
-        {
-            charBtnId.Add(i);
-            planetBtnId.Add(i);
-            planetBtnId.Add(i + 10);
-        }
-#endif
-        
-        // 아이템 정보 불러온 후 무명 메소드에 넣을 것
-
-        foreach (var i in charBtnId)
-        {
-            AddCharItem(i);
-        }
-
-        foreach (var i in charBtnId)
-        {
-            AddPlanetItem(i);
-        }
-
-        // ----------------------------------------
-        */
+        InitItemBtns();
     }
 
     private void SetBtns()
@@ -127,36 +96,17 @@ public class UI_ItemStore : UI_PopupMenu
 
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
     }
-    void ItemRequest()
+    void InitItemBtns()
     {
-        string[] hN = { Define.JWT_ACCESS_TOKEN,
-                        "User-Id" };
-        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
-                        Managers.Player.GetString(Define.USER_ID) };
+        foreach (var i in dataContainer.charBtnId)
+        {
+            AddCharItem(i);
+        }
 
-        Managers.Web.SendUniRequest("api/store", "GET", null, (uwr) => {
-            Response<ResponseStoreItemsId> response = JsonUtility.FromJson<Response<ResponseStoreItemsId>>(uwr.downloadHandler.text);
-            if (response.code == 1000)
-            {
-                Debug.Log(uwr.downloadHandler.text);
-                charBtnId = response.result.characterItemIdList;
-                planetBtnId = response.result.planetItemIdList;
-
-                foreach (var i in charBtnId)
-                {
-                    AddCharItem(i);
-                }
-
-                foreach (var i in planetBtnId)
-                {
-                    AddPlanetItem(i);
-                }
-            }
-            else
-            {
-                Debug.Log(response.message);
-            }
-        }, hN, hV);
+        foreach (var i in dataContainer.planetBtnId)
+        {
+            AddPlanetItem(i);
+        }
     }
 
     private void AddCharItem(long id)
@@ -198,14 +148,39 @@ public class UI_ItemStore : UI_PopupMenu
             {
                 Debug.Log(response.result);
                 UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
-                item.SetValue(id, response.result.type, response.result.name, response.result.description, 
-                                response.result.price, response.result.maxCnt, gameObject, sprite);
+                item.SetValue(id, response.result.type, response.result.name, response.result.description,
+                              response.result.price, response.result.maxCnt, gameObject, sprite);
+                onBtn = false;
+            }
+            else if (response.code == 6000)
+            {
+                Debug.Log(response.message);
+                string[] new_hN = { Define.JWT_ACCESS_TOKEN,
+                                    "User-Id" };
+                string[] new_hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                                    Managers.Player.GetString(Define.USER_ID) };
+                Managers.Web.SendUniRequest("api/store/items/" + id, "GET", null, (uwr) =>
+                {
+                    Response<ResponseItemDetail> response = JsonUtility.FromJson<Response<ResponseItemDetail>>(uwr.downloadHandler.text);
+                    if (response.code == 1000)
+                    {
+                        Debug.Log(response.result);
+                        UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
+                        item.SetValue(id, response.result.type, response.result.name, response.result.description,
+                                      response.result.price, response.result.maxCnt, gameObject, sprite);
+                    } 
+                    else
+                    {
+                        Debug.Log("토큰 재발급 실패(아이템 스토어)");
+                    }
+                    onBtn = false;
+                }, new_hN, new_hV);
             }
             else
             {
                 Debug.Log(response.message);
+                onBtn = false;
             }
-            onBtn = false;
         }, hN, hV);
     }
 
@@ -217,13 +192,24 @@ public class UI_ItemStore : UI_PopupMenu
 
     public void DeleteItem(long id)
     {
-        if (charBtnDict.ContainsKey(id)) Destroy(charBtnDict[id].gameObject);
-        if (planetBtnDict.ContainsKey(id)) Destroy(planetBtnDict[id].gameObject);
+        if (charBtnDict.ContainsKey(id))
+        {
+            Destroy(charBtnDict[id].gameObject);
+            for(int i = 0; i < dataContainer.charBtnId.Count; i++)
+                if (dataContainer.charBtnId[i] == id) dataContainer.charBtnId.RemoveAt(i);
+            dataContainer.invenIdList.Add(id);
+        }
+
+        if (planetBtnDict.ContainsKey(id)) {
+            Destroy(planetBtnDict[id].gameObject);
+            for (int i = 0; i < dataContainer.planetBtnId.Count; i++)
+                if (dataContainer.planetBtnId[i] == id) dataContainer.planetBtnId.RemoveAt(i);
+        }
     }
 
     public void ChangeColor(string color)
     {
-        int index = 0;
+        int index;
         index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
         profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }

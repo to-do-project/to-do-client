@@ -9,7 +9,6 @@ public class UI_Friend : UI_PopupMenu
     enum Buttons
     {
         Back_btn,
-        Test_btn,
         Search_btn,
     }
     enum Texts
@@ -37,6 +36,7 @@ public class UI_Friend : UI_PopupMenu
     GameObject friendContent = null;
     int requestCount = 0;
     int friendCount = 0;
+    bool onSearch = false;
     public string Name { get; private set; }
 
     public override void Init()
@@ -76,35 +76,14 @@ public class UI_Friend : UI_PopupMenu
 
     private void SetContents()
     {
-        string[] hN = { Define.JWT_ACCESS_TOKEN,
-                        "User-Id" };
-        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
-                        Managers.Player.GetString(Define.USER_ID) };
-
-        string platform;
-
-        if (Application.platform == RuntimePlatform.Android) platform = "aos";
-        else if (Application.platform == RuntimePlatform.IPhonePlayer) platform = "ios";
-        else platform = "aos";
-
-        Managers.Web.SendUniRequest("api/friends" + "/platform=" + platform, "GET", null, (uwr) => {
-            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-            if (response.code == 1000)
-            {
-                Debug.Log(response.result);
-                Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
-
-                Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
-                Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
-
-                Debug.Log(uwr.GetResponseHeader("Jwt-Access-Token"));
-                Debug.Log(Managers.Player.GetString(Define.JWT_ACCESS_TOKEN));
-            }
-            else
-            {
-                Debug.Log(response.message);
-            }
-        }, hN, hV);
+        foreach (var tmp in dataContainer.friendList)
+        {
+            AddFriend(tmp.nickName, (int)tmp.friendId);
+        }
+        foreach (var tmp in dataContainer.waitFriendList)
+        {
+            AddRequest(tmp.nickName, (int)tmp.friendId);
+        }
     }
 
     private void SetBtns()
@@ -113,15 +92,45 @@ public class UI_Friend : UI_PopupMenu
 
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        SetBtn((int)Buttons.Test_btn, (data) => { AddRequest($"Å×½ºÆ® {requestCount}"); });
-
         SetBtn((int)Buttons.Search_btn, (data) => {
             Name = friendInputField.text;
             if (string.IsNullOrWhiteSpace(Name) == false)
             {
-                Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
+                if (onSearch) return;
+                onSearch = true;
+
+                SearchFriend();
             }
         });
+    }
+
+    void SearchFriend()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                                "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                                Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/users/keyword=" + Name, "GET", null, (uwr) => {
+            Response<ResponseSearchFriend> response = JsonUtility.FromJson<Response<ResponseSearchFriend>>(uwr.downloadHandler.text);
+
+            if (response.isSuccess)
+            {
+                var friend = Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
+                friend.id = (int)response.result.userId;
+                friend.SetLevel(response.result.planetLevel);
+                onSearch = false;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(SearchFriend);
+            }
+            else
+            {
+                Debug.Log(response.message);
+                onSearch = false;
+            }
+        }, hN, hV);
     }
 
     private void Start()
@@ -129,7 +138,7 @@ public class UI_Friend : UI_PopupMenu
         Init();
     }
 
-    public bool AddFriend(string name)
+    public bool AddFriend(string name, int id)
     {
         if(friendCount < 100)
         {
@@ -140,6 +149,7 @@ public class UI_Friend : UI_PopupMenu
             FriendContent tmp = target.GetComponent<FriendContent>();
             tmp.SetParent(this.gameObject);
             tmp.SetName(name);
+            tmp.SetID(id);
 
             friendCount++;
             RelocationAll();
@@ -156,7 +166,7 @@ public class UI_Friend : UI_PopupMenu
         RelocationAll();
     }
 
-    void AddRequest(string name)
+    void AddRequest(string name, int id)
     {
         GameObject target = Managers.Resource.Instantiate(contentPath + "RequestContent");
         target.transform.SetParent(requestContent.transform);
@@ -165,6 +175,7 @@ public class UI_Friend : UI_PopupMenu
         RequestContent tmp = target.GetComponent<RequestContent>();
         tmp.SetParent(this.gameObject);
         tmp.SetName(name);
+        tmp.SetId(id);
 
         requestCount++;
         RelocationAll();
