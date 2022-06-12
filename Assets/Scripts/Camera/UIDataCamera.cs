@@ -11,7 +11,7 @@ public class UIDataCamera : MonoBehaviour
     public List<ResponseFriendList> friendList;
     public List<ResponseFriendList> waitFriendList;
 
-    void DataInit()
+    public void DataInit()
     {
         RefreshAnnounceData();
         RefreshItemStoreData();

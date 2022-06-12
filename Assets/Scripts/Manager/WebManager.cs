@@ -202,7 +202,6 @@ public class WebManager : MonoBehaviour
         }
         else 
         {
-            Debug.Log("Recv " + uwr.downloadHandler.text);
             callback.Invoke(uwr);   // 성공 시 메소드 실행
         }
     }

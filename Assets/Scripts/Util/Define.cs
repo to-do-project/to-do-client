@@ -23,6 +23,7 @@ public class Define
     public const string AVG_COMPLETE = "avgGoalCompleteRate";
     public const string GET_GOOD = "getFavoriteCount";
     public const string GIVE_GOOD = "putFavoriteCount";
+    public const string DATETIME = "DateTime";
 
     public enum Scene
     {
