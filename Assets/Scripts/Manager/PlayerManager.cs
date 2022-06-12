@@ -166,7 +166,7 @@ public class PlayerManager : MonoBehaviour
         {
             Tokenres = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
 
-            Debug.Log(Tokenres.message);
+            //Debug.Log(Tokenres.message);
             if (Tokenres.isSuccess)
             {
 
@@ -182,7 +182,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                Debug.Log(Tokenres.message);
+                //Debug.Log(Tokenres.message);
                 if (Tokenres.code ==6023)
                 {
                     Managers.UI.Clear();
@@ -243,6 +243,7 @@ public class PlayerManager : MonoBehaviour
     //행성 메인 화면 조희 API 호출
     public void SendSettingPlanetRequest(string userId)
     {
+        Debug.Log("Planet Setting");
         Mainres = new Response<ResponseMainPlanet>();
 
         header[0] = Define.JWT_ACCESS_TOKEN;
