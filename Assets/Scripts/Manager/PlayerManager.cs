@@ -496,19 +496,45 @@ public class PlayerManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    
+
     public string GetString(string key, string defalutValue = null)
     {
-       return PlayerPrefs.GetString(key);
+        if (PlayerPrefs.HasKey(key))
+        {
+            return PlayerPrefs.GetString(key);
+        }
+
+        else
+        {
+            return null;
+        }
     }
 
     public int GetInt(string key, string defalutValue = null)
     {
-        return PlayerPrefs.GetInt(key);
+        if (PlayerPrefs.HasKey(key))
+        {
+            return PlayerPrefs.GetInt(key);
+        }
+
+        else
+        {
+            return -1;
+        }
     }
 
     public float GetFloat(string key, string defalutValue = null)
     {
-        return PlayerPrefs.GetFloat(key);
+        if (PlayerPrefs.HasKey(key))
+        {
+            return PlayerPrefs.GetFloat(key);
+        }
+
+        else
+        {
+            return -1;
+        };
     }
 
     public string[] GetHeader(bool access = true)
