@@ -50,6 +50,7 @@ public class PlayerManager : MonoBehaviour
 
 
     public Action<UnityWebRequest, Action> tokenCallback;
+    Action tokenInnerActions;
     Action<UnityWebRequest> mainCallback;
     Action<UnityWebRequest> arrangeCallback;
 
@@ -161,7 +162,7 @@ public class PlayerManager : MonoBehaviour
     //토큰 재발급 APi 호출 후 action
     private void TokenResponseAction(UnityWebRequest request, Action callback)
     {
-        
+
         if (Tokenres != null)
         {
             Tokenres = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
@@ -174,9 +175,9 @@ public class PlayerManager : MonoBehaviour
                 PlayerPrefs.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
                 PlayerPrefs.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
 
-                if (callback != null)
+                if (tokenInnerActions != null)
                 {
-                    callback.Invoke();
+                    tokenInnerActions.Invoke();
                 }
 
             }
@@ -205,6 +206,8 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("Tokenres null");
         }
+
+        tokenInnerActions = null;
     }
 
     //편집 완료 후 아이템 배치 API 호출 action
@@ -263,6 +266,14 @@ public class PlayerManager : MonoBehaviour
     //TokenResponseAction에서 응답 확인 후 인자로 받은 callback invoke
     public void SendTokenRequest(Action innnerCallback)
     {
+        if (tokenInnerActions != null)
+        {
+            tokenInnerActions += innnerCallback;
+            return;
+        }
+
+        tokenInnerActions += innnerCallback;
+
         Tokenres = new Response<string>();
         RequestToken val = new RequestToken { deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier }; //디바이스 토큰 수정 필요
         header[0] = Define.JWT_REFRESH_TOKEN;
