@@ -21,6 +21,7 @@ public class Managers : MonoBehaviour
     SceneManagerEx scene = new SceneManagerEx();
     SoundManager sound = new SoundManager();
     DataManager data = new DataManager();
+    TodoManager todo = new TodoManager();
     static PlayerManager player;
     static WebManager web;
 
@@ -30,6 +31,7 @@ public class Managers : MonoBehaviour
     public static SceneManagerEx Scene { get { return Instance().scene; } }
     public static SoundManager Sound { get { return Instance().sound; } }
     public static DataManager Data { get { return Instance().data; } }
+    public static TodoManager Todo { get { return Instance().todo; } }
     public static WebManager Web { get { return web; } }
     public static PlayerManager Player { get { return player; } }
     
@@ -64,6 +66,7 @@ public class Managers : MonoBehaviour
             //다른 매니저들 Init도 여기서 해주기
             instance.data.Init();
             instance.sound.Init();
+            instance.todo.Init();
 
 /*
             if (web.InternetCheck())
