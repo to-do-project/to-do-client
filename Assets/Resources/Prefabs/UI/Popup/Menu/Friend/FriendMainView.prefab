@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2024181357460133398}
   - component: {fileID: -584926708495986996}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: FriendMainView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 209495436801707796, guid: 565f48a1f5a30c0458abe6b5e097212c, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2293419833629439077, guid: 565f48a1f5a30c0458abe6b5e097212c, type: 3}
       propertyPath: m_RootOrder
@@ -105,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2293419833629439078, guid: 565f48a1f5a30c0458abe6b5e097212c, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2293419833629439078, guid: 565f48a1f5a30c0458abe6b5e097212c, type: 3}
       propertyPath: m_IsActive
@@ -113,7 +113,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2293419834691108679, guid: 565f48a1f5a30c0458abe6b5e097212c, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 565f48a1f5a30c0458abe6b5e097212c, type: 3}

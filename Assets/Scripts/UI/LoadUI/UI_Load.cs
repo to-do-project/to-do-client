@@ -28,6 +28,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
     }
 
     bool canClick = true;
+    bool canFade = true;
 
     [SerializeField]
     CanvasGroup canvasGroup;
@@ -57,8 +58,18 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
     {
         canClick = false;
         gameObject.SetActive(true);
+        canvasGroup.alpha = 0;
         loadSceneName = sceneName;
         StartCoroutine(ToLoadSceneProcess());
+    }
+
+    public void InstantLoad(string sceneName)
+    {
+        canClick = false;
+        gameObject.SetActive(true);
+        canvasGroup.alpha = 0;
+        loadSceneName = sceneName;
+        StartCoroutine(InstantLoadSceneProcess());
     }
 
     public void ExLoad()    // 실제 가고싶은 씬 로드
@@ -94,6 +105,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
         {
             yield return null;
         }
+        canFade = true;
         yield return StartCoroutine(Fade(true));
         op.allowSceneActivation = true;
         yield break;
@@ -107,12 +119,25 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
         {
             yield return null;
         }
+        if (loadSceneName == Define.Scene.Main.ToString()) canFade = false;
         op.allowSceneActivation = true;
         yield break;
     }
 
+    private IEnumerator InstantLoadSceneProcess()
+    {
+        yield return StartCoroutine(ToLoadSceneProcess());
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        yield return StartCoroutine(ExLoadSceneProcess());
+    }
+
     private IEnumerator Fade(bool isFadeIn)
     {
+        while(canFade == false)
+        {
+            yield return null;  // canFade가 true가 될 때까지 대기
+        }
+
         float time = 0.5f;
         while (time >= 0 && !isFadeIn)
         {
@@ -131,6 +156,11 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
         {
             gameObject.SetActive(false);
         }
+    }
+
+    public void CompleteLoad()
+    {
+        canFade = true;
     }
 
     void CameraSet()

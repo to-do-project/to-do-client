@@ -107,15 +107,16 @@ public class UI_Friend : UI_PopupMenu
     void SearchFriend()
     {
         string[] hN = { Define.JWT_ACCESS_TOKEN,
-                                "User-Id" };
+                        "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
-                                Managers.Player.GetString(Define.USER_ID) };
+                        Managers.Player.GetString(Define.USER_ID) };
 
-        Managers.Web.SendUniRequest("api/users/keyword=" + Name, "GET", null, (uwr) => {
+        Managers.Web.SendUniRequest("api/users?keyword=" + Name, "GET", null, (uwr) => {
             Response<ResponseSearchFriend> response = JsonUtility.FromJson<Response<ResponseSearchFriend>>(uwr.downloadHandler.text);
 
             if (response.isSuccess)
             {
+                Debug.Log(uwr.downloadHandler.text);
                 var friend = Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
                 friend.id = (int)response.result.userId;
                 friend.SetLevel(response.result.planetLevel);

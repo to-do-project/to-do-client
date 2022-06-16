@@ -31,7 +31,7 @@ public class UI_Sound : UI_PopupMenu
     Button missionBtn, bgmBtn, sfxBtn;
     Slider bgmSlider, sfxSlider;
     GameObject bgmToggle, sfxToggle;
-    bool mission, bgm, sfx;
+    bool mission, bgm, sfx, clicked = false;
 
     public override void Init()
     {
@@ -56,6 +56,10 @@ public class UI_Sound : UI_PopupMenu
         sfxToggle = Get<GameObject>((int)GameObjects.Sfx_toggle);
 
         mission = bgm = sfx = true; //값 가져오기(임시로 true 설정)
+
+
+        if (PlayerPrefs.HasKey(Define.SYSTEM_MISSION)) mission = (Managers.Player.GetInt(Define.SYSTEM_MISSION) == 1);
+        else mission = true;
 
         //버튼 이미지 초기화
         missionBtn.image.sprite = imageSet.GetImage(mission);
@@ -86,8 +90,41 @@ public class UI_Sound : UI_PopupMenu
     #region ButtonEvents
     public void MissionBtnClick(PointerEventData data)
     {
+        if (clicked) return;
+        clicked = true;
         mission = !mission;
-        missionBtn.image.sprite = imageSet.GetImage(mission);
+
+        MissionWeb();
+    }
+
+    void MissionWeb()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        int status = 0;
+        if (mission) status = 1;
+        else status = 0;
+
+        Managers.Web.SendUniRequest("api/setting/operator-mission/" + status, "PATCH", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                missionBtn.image.sprite = imageSet.GetImage(mission);
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(MissionWeb);
+            }
+            else
+            {
+                mission = !mission;
+                Debug.Log(response.message);
+            }
+            clicked = false;
+        }, hN, hV);
     }
     public void BgmBtnClick(PointerEventData data)
     {

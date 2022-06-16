@@ -21,6 +21,7 @@ public class UI_AddFriend : UI_PopupMenu
     Text friendNameTxt, friendLevelTxt;
     GameObject parent;
     UI_Friend friend;
+    int level = 1;
     public int id { private get; set; }
 
     public override void Init()
@@ -46,11 +47,15 @@ public class UI_AddFriend : UI_PopupMenu
         friendNameTxt.text = friend.Name;
 
         friendLevelTxt = GetText((int)Texts.FriendLevel_txt);
+        SetLevel(level);
     }
 
     public void SetLevel(int level)
     {
-        friendLevelTxt.text = "Lv. " + level.ToString();
+        if (friendLevelTxt != null)
+            friendLevelTxt.text = "Lv. " + level.ToString();
+        else
+            this.level = level;
     }
 
     private void SetBtns()

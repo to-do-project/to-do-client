@@ -49,6 +49,14 @@ public class FriendContent : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
         SetBtn((int)Buttons.FriendPlanet_btn, (data) => {
+            Managers.UI.DeactiveAllUI();
+            GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
+            ResponseMainPlanet res = new ResponseMainPlanet();
+            res.characterItem = 1;
+            res.level = 0;
+            res.planetColor = "BLUE";
+            tmp.GetComponent<UI_FriendMain>().InitView(res);
+            /*
             if (check) return;
             check = true;
             Debug.Log("模备 青己 愁矾啊扁 >> " + name + " id >> " + id + " userID >> " + Managers.Player.GetString(Define.USER_ID));
@@ -64,8 +72,9 @@ public class FriendContent : UI_PopupMenu
 
                 if (response.code == 1000)
                 {
+                    Managers.UI.DeactiveAllUI();
                     GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
-                    tmp.GetComponent<UI_FriendMain>().InitView(response);
+                    tmp.GetComponent<UI_FriendMain>().InitView(response.result);
                 }
                 else if(response.code == 6000)
                 {
@@ -82,6 +91,7 @@ public class FriendContent : UI_PopupMenu
 
                             if (response.code == 1000)
                             {
+                                Managers.UI.DeactiveAllUI();
                                 GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
                                 tmp.GetComponent<UI_FriendMain>().InitView(response);
                             }
@@ -97,6 +107,7 @@ public class FriendContent : UI_PopupMenu
                     Debug.Log(response.message);
                 }
             }, hN, hV);
+            */
         });
     }
 }

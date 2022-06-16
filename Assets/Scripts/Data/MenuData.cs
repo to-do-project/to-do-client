@@ -149,3 +149,37 @@ public class ResponseSearchFriend
     public string profileColor;
     public int planetLevel;
 }
+
+[Serializable]
+public class ResponsePush
+{
+    public List<ResponsePushNotice> noticeNotifications;
+    public List<ResponsePushFriend> friendReqNotifications;
+    public List<ResponsePushGroup> groupReqNotifications;
+    public List<ResponsePushNotice> etcNotifications;
+}
+
+[Serializable]
+public class ResponsePushNotice
+{
+    public long notificationId;
+    public long userId;
+    public string category;
+    public string content;
+    public string createAt;
+    public string readStatus;
+}
+
+[Serializable]
+public class ResponsePushFriend : ResponsePushNotice
+{
+    public long friendId;
+    public string confirmStatus;
+}
+
+[Serializable]
+public class ResponsePushGroup : ResponsePushNotice
+{
+    public long goalId;
+    public string confirmStatus;
+}
