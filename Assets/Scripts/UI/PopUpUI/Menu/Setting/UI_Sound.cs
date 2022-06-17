@@ -47,9 +47,11 @@ public class UI_Sound : UI_PopupMenu
         Bind<GameObject>(typeof(GameObjects));
 
         bgmSlider = Get<Slider>((int)Sliders.Bgm_slider);
+        bgmSlider.value = Managers.Sound.masterVolumeBGM * 100;
         bgmSlider.onValueChanged.AddListener(delegate { ValueChangeBGM(); });
 
         sfxSlider = Get<Slider>((int)Sliders.Sfx_slider);
+        sfxSlider.value = Managers.Sound.masterVolumeSFX * 100;
         sfxSlider.onValueChanged.AddListener(delegate { ValueChangeSFX(); });
 
         bgmToggle = Get<GameObject>((int)GameObjects.Bgm_toggle);
@@ -131,25 +133,35 @@ public class UI_Sound : UI_PopupMenu
         bgm = !bgm;
         bgmBtn.image.sprite = imageSet.GetImage(bgm);
         bgmToggle.SetActive(bgm);
+        Managers.Sound.StopOrPlayBGM(bgm);
+        Managers.Player.SetInt("onBGM", bgm ? 1 : 0);
     }
+
     public void SfxBtnClick(PointerEventData data)
     {
         sfx = !sfx;
         sfxBtn.image.sprite = imageSet.GetImage(sfx);
         sfxToggle.SetActive(sfx);
+        Managers.Sound.onSFX = sfx;
+        Managers.Player.SetInt("onSFX", sfx ? 1 : 0);
     }
     #endregion
 
     public void ValueChangeBGM()
     {
         //BGM 소리 값 전달
-        Debug.Log($"BGM = {bgmSlider.value}");
+        Debug.Log($"BGM = {bgmSlider.value / 100}");
+        Managers.Sound.masterVolumeBGM = bgmSlider.value / 100;
+        Managers.Sound.BGMSoundChange(bgmSlider.value / 100);
+        Managers.Player.SetFloat("volumeBGM", bgmSlider.value / 100);
     }
 
     public void ValueChangeSFX()
     {
         //SFX 소리 값 전달
         Debug.Log($"SFX = {sfxSlider.value}");
+        Managers.Sound.masterVolumeSFX = sfxSlider.value / 100;
+        Managers.Player.SetFloat("volumeSFX", sfxSlider.value / 100);
     }
 
     private void Start()
