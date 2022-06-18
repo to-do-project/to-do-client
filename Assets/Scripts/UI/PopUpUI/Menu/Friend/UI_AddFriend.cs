@@ -17,12 +17,19 @@ public class UI_AddFriend : UI_PopupMenu
         FriendName_txt,
         FriendLevel_txt,
     }
+    enum Images
+    {
+        FriendProfile_image,
+    }
 
     Text friendNameTxt, friendLevelTxt;
+    Image profileImage;
     GameObject parent;
     UI_Friend friend;
     int level = 1;
+    bool clicked = false;
     public int id { private get; set; }
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     public override void Init()
     {
@@ -65,26 +72,51 @@ public class UI_AddFriend : UI_PopupMenu
         SetBtn((int)Buttons.Blind_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.Accept_btn, (data) => {
-            if (CheckFriend())
-            {
-                Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/FriendFadeView"));
-                friend.AddFriend(friendNameTxt.text, id);
-            }
-            else
-            {
-                Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/CantFindFadeView"));
-            }
-            Managers.UI.ClosePopupUI();
+            CheckFriend();
         });
 
         SetBtn((int)Buttons.Cancel_btn, ClosePopupUI);
     }
 
-    bool CheckFriend()
+    void CheckFriend()
     {
-        //해당 닉네임을 가지는 친구가 친구 목록에 없고, 검색이 되면 true 반환, 아니면 false 반환
-        //API에서 넘어오는 값으로 정하면 된다.
-        return true;
+        if (clicked) return;
+
+        clicked = true;
+
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/friends/" + id, "POST", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/FriendFadeView"));
+                Managers.UI.ClosePopupUI();
+                clicked = false;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(CheckFriend);
+            }
+            else
+            {
+                Debug.Log(response.message);
+                Managers.UI.ClosePopupUI();
+                clicked = false;
+            }
+        }, hN, hV);
+    }
+
+    public void SetImage(string color)
+    {
+        Bind<Image>(typeof(Images));
+        profileImage = GetImage((int)Images.FriendProfile_image);
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
 
     private void Start()

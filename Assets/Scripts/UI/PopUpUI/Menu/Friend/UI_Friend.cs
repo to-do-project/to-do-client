@@ -72,17 +72,54 @@ public class UI_Friend : UI_PopupMenu
         SetContents();
 
         RelocationAll();
+
+        StartCoroutine(PlusCheck());
+    }
+
+    IEnumerator PlusCheck()
+    {
+        Dictionary<long, ResponseFriendList> tmpFriend = new Dictionary<long, ResponseFriendList>();
+        Dictionary<long, ResponseFriendList> tmpWait = new Dictionary<long, ResponseFriendList>();
+
+        foreach (var tmp in dataContainer.friendList)
+        {
+            if (tmpFriend.ContainsKey(tmp.friendId)) continue;
+            tmpFriend.Add(tmp.friendId, tmp);
+        }
+        foreach (var tmp in dataContainer.waitFriendList)
+        {
+            if (tmpWait.ContainsKey(tmp.friendId)) continue;
+            tmpWait.Add(tmp.friendId, tmp);
+        }
+        dataContainer.RefreshFriendData();
+        while(dataContainer.friendCheck)
+        {
+            yield return null;
+        }
+
+        foreach (var tmp in dataContainer.friendList)
+        {
+            if (tmpFriend.ContainsKey(tmp.friendId)) continue;
+            AddFriend(tmp.nickName, (int)tmp.userId, tmp.profileColor);
+        }
+        foreach (var tmp in dataContainer.waitFriendList)
+        {
+            if (tmpWait.ContainsKey(tmp.friendId)) continue;
+            AddRequest(tmp.nickName, (int)tmp.userId, tmp.profileColor);
+        }
+
+        RelocationAll();
     }
 
     private void SetContents()
     {
         foreach (var tmp in dataContainer.friendList)
         {
-            AddFriend(tmp.nickName, (int)tmp.friendId);
+            AddFriend(tmp.nickName, (int)tmp.userId, tmp.profileColor);
         }
         foreach (var tmp in dataContainer.waitFriendList)
         {
-            AddRequest(tmp.nickName, (int)tmp.friendId);
+            AddRequest(tmp.nickName, (int)tmp.userId, tmp.profileColor);
         }
     }
 
@@ -120,11 +157,17 @@ public class UI_Friend : UI_PopupMenu
                 var friend = Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
                 friend.id = (int)response.result.userId;
                 friend.SetLevel(response.result.planetLevel);
+                friend.SetImage(response.result.profileColor);
                 onSearch = false;
             }
             else if (response.code == 6000)
             {
                 Managers.Player.SendTokenRequest(SearchFriend);
+            }
+            else if (response.code == 5003 || response.code == 5004 || response.code == 6001)
+            {
+                Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/CantFindFadeView"));
+                onSearch = false;
             }
             else
             {
@@ -139,7 +182,7 @@ public class UI_Friend : UI_PopupMenu
         Init();
     }
 
-    public bool AddFriend(string name, int id)
+    public bool AddFriend(string name, int id, string color)
     {
         if(friendCount < 100)
         {
@@ -151,6 +194,7 @@ public class UI_Friend : UI_PopupMenu
             tmp.SetParent(this.gameObject);
             tmp.SetName(name);
             tmp.SetID(id);
+            tmp.SetImage(color);
 
             friendCount++;
             RelocationAll();
@@ -167,7 +211,7 @@ public class UI_Friend : UI_PopupMenu
         RelocationAll();
     }
 
-    void AddRequest(string name, int id)
+    void AddRequest(string name, int id, string color)
     {
         GameObject target = Managers.Resource.Instantiate(contentPath + "RequestContent");
         target.transform.SetParent(requestContent.transform);
@@ -177,6 +221,7 @@ public class UI_Friend : UI_PopupMenu
         tmp.SetParent(this.gameObject);
         tmp.SetName(name);
         tmp.SetId(id);
+        tmp.SetImage(color);
 
         requestCount++;
         RelocationAll();

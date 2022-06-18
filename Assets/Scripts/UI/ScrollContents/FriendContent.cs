@@ -19,15 +19,18 @@ public class FriendContent : UI_PopupMenu
     long id;
     bool check = false;
     GameObject parent;
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     public void SetParent(GameObject parent)
     {
         this.parent = parent;
     }
 
-    public void SetImage(UI_Color.Colors color)
+    public void SetImage(string color)
     {
-        Debug.Log(color.ToString());
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profile.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
 
     public void SetID(long id)
@@ -49,14 +52,6 @@ public class FriendContent : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
         SetBtn((int)Buttons.FriendPlanet_btn, (data) => {
-            Managers.UI.DeactiveAllUI();
-            GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
-            ResponseMainPlanet res = new ResponseMainPlanet();
-            res.characterItem = 1;
-            res.level = 0;
-            res.planetColor = "BLUE";
-            tmp.GetComponent<UI_FriendMain>().InitView(res);
-            /*
             if (check) return;
             check = true;
             Debug.Log("模备 青己 愁矾啊扁 >> " + name + " id >> " + id + " userID >> " + Managers.Player.GetString(Define.USER_ID));
@@ -75,6 +70,7 @@ public class FriendContent : UI_PopupMenu
                     Managers.UI.DeactiveAllUI();
                     GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
                     tmp.GetComponent<UI_FriendMain>().InitView(response.result);
+                    GameObject sec = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendUIView");
                 }
                 else if(response.code == 6000)
                 {
@@ -93,7 +89,7 @@ public class FriendContent : UI_PopupMenu
                             {
                                 Managers.UI.DeactiveAllUI();
                                 GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
-                                tmp.GetComponent<UI_FriendMain>().InitView(response);
+                                tmp.GetComponent<UI_FriendMain>().InitView(response.result);
                             }
                             else
                             {
@@ -107,7 +103,6 @@ public class FriendContent : UI_PopupMenu
                     Debug.Log(response.message);
                 }
             }, hN, hV);
-            */
         });
     }
 }
