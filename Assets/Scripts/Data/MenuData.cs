@@ -54,9 +54,10 @@ public class RequestBuyItem
 }
 
 [Serializable]
-public class RequestTokenRefresh
+public class RequestFriendAccept
 {
-    public string deviceToken;
+    public long friendId;
+    public bool accepted;
 }
 
 // -------- À§ Request -------- ¾Æ·¡ Response ---------
@@ -156,11 +157,11 @@ public class ResponsePush
     public List<ResponsePushNotice> noticeNotifications;
     public List<ResponsePushFriend> friendReqNotifications;
     public List<ResponsePushGroup> groupReqNotifications;
-    public List<ResponsePushNotice> etcNotifications;
+    public List<ResponsePushBase> etcNotifications;
 }
 
 [Serializable]
-public class ResponsePushNotice
+public class ResponsePushBase
 {
     public long notificationId;
     public long userId;
@@ -170,16 +171,28 @@ public class ResponsePushNotice
     public string readStatus;
 }
 
+public class ResponsePushNotice : ResponsePushBase
+{
+    public long noticeId;
+}
+
 [Serializable]
-public class ResponsePushFriend : ResponsePushNotice
+public class ResponsePushFriend : ResponsePushBase
 {
     public long friendId;
     public string confirmStatus;
 }
 
 [Serializable]
-public class ResponsePushGroup : ResponsePushNotice
+public class ResponsePushGroup : ResponsePushBase
 {
     public long goalId;
     public string confirmStatus;
+}
+
+[Serializable]
+public class ResponseGoalList
+{
+    public long goalId;
+    public string title;
 }

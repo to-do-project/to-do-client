@@ -36,12 +36,6 @@ public class UI_Announce : UI_PopupMenu
 
         announces = new Dictionary<long, UI_AnnounceContent>();
 
-        AddAnnounce(1, "공지사항 1", "업데이트 내용\n가\n나\n다");
-        AddAnnounce(2, "공지사항 2", "업데이트 내용\n라\n마\n바\n사");
-        AddAnnounce(3, "공지사항 3", "업데이트 내용\n아\n자");
-        AddAnnounce(4, "공지사항 4", "업데이트 내용\n차\n카\n타\n파\n하");
-        AddAnnounce(5, "공지사항 5", "업데이트 내용");
-
         InitContents();
 
         check = false;

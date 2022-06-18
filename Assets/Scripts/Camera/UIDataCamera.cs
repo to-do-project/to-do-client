@@ -8,17 +8,22 @@ public class UIDataCamera : MonoBehaviour
     public List<long> charBtnId = null;
     public List<long> planetBtnId = null;
     public List<long> invenIdList = null;
-    public List<ResponseFriendList> friendList;
-    public List<ResponseFriendList> waitFriendList;
-    public ResponsePush pushLists;
+    public List<ResponseFriendList> friendList = null, waitFriendList = null;
+    public ResponsePush pushLists = null;
+    public List<ResponseGoalList> goalList = null;
+
+    public bool friendCheck = false;
 
     public void DataInit()
     {
+        if (PlayerPrefs.HasKey(Define.DEVICETOKEN) == false)
+            Managers.Player.SetString(Define.DEVICETOKEN, SystemInfo.deviceUniqueIdentifier);
         RefreshAnnounceData();
         RefreshItemStoreData();
         RefreshDecoData();
         RefreshFriendData();
         RefreshPushData();
+        RefreshGoalData();
     }
 
     public void RefreshAnnounceData()
@@ -96,6 +101,7 @@ public class UIDataCamera : MonoBehaviour
 
     public void RefreshFriendData()
     {
+        friendCheck = true;
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -107,23 +113,7 @@ public class UIDataCamera : MonoBehaviour
             {
                 friendList = response.result.friends;
                 waitFriendList = response.result.waitFriends;
-
-                ResponseFriendList friends = new ResponseFriendList();
-                friends.friendId = 1;
-                friends.nickName = "nick";
-                friends.profileColor = UI_Color.Colors.Blue.ToString();
-                friends.userId = 33;
-                friends.waitFlag = false;
-
-                ResponseFriendList friend2 = new ResponseFriendList();
-                friend2.friendId = 2;
-                friend2.nickName = "name";
-                friend2.profileColor = UI_Color.Colors.LightRed.ToString();
-                friend2.userId = 33;
-                friend2.waitFlag = true;
-
-                friendList.Add(friends);
-                waitFriendList.Add(friend2);
+                friendCheck = false;
 
                 UI_Load.Instance.CompleteLoad();
             }
@@ -153,52 +143,34 @@ public class UIDataCamera : MonoBehaviour
                 pushLists.friendReqNotifications = response.result.friendReqNotifications;
                 pushLists.groupReqNotifications = response.result.groupReqNotifications;
                 pushLists.etcNotifications = response.result.etcNotifications;
-
-                //테스트용
-
-                ResponsePushNotice notice = new ResponsePushNotice();
-                notice.notificationId = 1;
-                notice.userId = 1;
-                notice.category = UI_Signal.SignalType.NOTICE_TWO.ToString();
-                notice.createAt = "2022-06-12 11:55:21";
-                notice.readStatus = "NOT_READ";
-                notice.content = "[공지] 첫번째 공지사항";
-                pushLists.noticeNotifications.Add(notice);
-
-                ResponsePushFriend friend = new ResponsePushFriend();
-                friend.notificationId = 2;
-                friend.userId = 2;
-                friend.category = UI_Signal.SignalType.FRIEND_REQUEST.ToString();
-                friend.createAt = "2022-06-12 11:55:30";
-                friend.readStatus = "NOT_READ";
-                friend.content = "플래닛good3님에게 친구 초대!!";
-                friend.friendId = 10;
-                friend.confirmStatus = "NOT_CONFIRM";
-                pushLists.friendReqNotifications.Add(friend);
-
-                ResponsePushGroup group = new ResponsePushGroup();
-                group.notificationId = 3;
-                group.userId = 3;
-                group.category = UI_Signal.SignalType.GROUP_REQUEST.ToString();
-                group.createAt = "2022-06-12 11:55:40";
-                group.readStatus = "NOT_READ";
-                group.content = "플래닛good3님을 그룹 목표에 초대함!!";
-                group.goalId = 1;
-                group.confirmStatus = "NOT_CONFIRM";
-                pushLists.groupReqNotifications.Add(group);
-
-                ResponsePushNotice etc = new ResponsePushNotice();
-                etc.notificationId = 4;
-                etc.userId = 4;
-                etc.category = UI_Signal.SignalType.PRIVATE_FAVORITE.ToString();
-                etc.createAt = "2022-06-12 11:56:21";
-                etc.readStatus = "NOT_READ";
-                etc.content = "개인 투두 좋아요";
-                pushLists.etcNotifications.Add(etc);
             }
             else if (response.code == 6000)
             {
                 Managers.Player.SendTokenRequest(RefreshPushData);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
+    }
+
+    public void RefreshGoalData()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/goals/archive", "GET", null, (uwr) => {
+            Response<List<ResponseGoalList>> response = JsonUtility.FromJson<Response<List<ResponseGoalList>>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                goalList = response.result;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(RefreshGoalData);
             }
             else
             {

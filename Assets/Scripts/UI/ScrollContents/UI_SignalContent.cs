@@ -15,6 +15,7 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
     string type;
     long noticeId, id;
     bool clicked = false;
+    bool isRead = false;
 
     //GameObject parent;
 
@@ -44,6 +45,11 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
         this.id = id;
     }
 
+    public void SetRead()
+    {
+        isRead = true;
+    }
+
     public void OnPointerClick(PointerEventData data)
     {
         ReadSave();
@@ -71,26 +77,15 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
                 {
                     Managers.UI.ShowPopupUI<UI_Friend>("FriendView", "Menu/Friend");
                 }
-                else if (type == UI_Signal.SignalType.GROUP_REQUEST.ToString())
+
+                if (isRead == false)
                 {
-                    Managers.UI.ClosePopupUI();
+                    if (type == UI_Signal.SignalType.GROUP_REQUEST.ToString())
+                    {
+                        Managers.UI.ClosePopupUI();
+                    }
                 }
-                else if (type == UI_Signal.SignalType.GROUP_CHEER.ToString())
-                {
-                    Managers.UI.ClosePopupUI();
-                }
-                else if (type == UI_Signal.SignalType.PRIVATE_FAVORITE.ToString())
-                {
-                    Managers.UI.ClosePopupUI();
-                }
-                else if (type == UI_Signal.SignalType.PRIVATE_CHEER.ToString())
-                {
-                    Managers.UI.ClosePopupUI();
-                }
-                else
-                {
-                    Debug.Log("잘못된 타입 >> " + type);
-                }
+                isRead = true;
             }
             else if (response.code == 6000)
             {
