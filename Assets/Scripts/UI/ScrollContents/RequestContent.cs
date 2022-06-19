@@ -10,6 +10,7 @@ public class RequestContent : MonoBehaviour
     private Text nameTxt;
 
     int id;
+    long userId;
     const string profileName = "Art/UI/Profile/Profile_Color_3x";
     string color;
     bool clicked = false;
@@ -33,6 +34,11 @@ public class RequestContent : MonoBehaviour
     public void SetId(int id)
     {
         this.id = id;
+    }
+
+    public void SetUserID(long id)
+    {
+        this.userId = id;
     }
 
     public void SetImage(string color)
@@ -64,7 +70,7 @@ public class RequestContent : MonoBehaviour
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text, id, color);
+                parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text, id, color, userId);
                 DeleteContent();
                 clicked = false;
             }
@@ -100,7 +106,7 @@ public class RequestContent : MonoBehaviour
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text, id, color);
+                parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text, id, color, userId);
                 DeleteContent();
                 clicked = false;
             }

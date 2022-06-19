@@ -57,11 +57,14 @@ public class UI_Sound : UI_PopupMenu
         bgmToggle = Get<GameObject>((int)GameObjects.Bgm_toggle);
         sfxToggle = Get<GameObject>((int)GameObjects.Sfx_toggle);
 
-        mission = bgm = sfx = true; //값 가져오기(임시로 true 설정)
-
-
         if (PlayerPrefs.HasKey(Define.SYSTEM_MISSION)) mission = (Managers.Player.GetInt(Define.SYSTEM_MISSION) == 1);
         else mission = true;
+
+        if (PlayerPrefs.HasKey("onBGM")) bgm = (Managers.Player.GetInt("onSFX") == 1);
+        else bgm = true;
+
+        if (PlayerPrefs.HasKey("onSFX")) sfx = (Managers.Player.GetInt("onSFX") == 1);
+        else sfx = true;
 
         //버튼 이미지 초기화
         missionBtn.image.sprite = imageSet.GetImage(mission);
@@ -106,15 +109,14 @@ public class UI_Sound : UI_PopupMenu
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                         Managers.Player.GetString(Define.USER_ID) };
 
-        int status = 0;
-        if (mission) status = 1;
-        else status = 0;
+        int status = mission ? 1 : 0;
 
         Managers.Web.SendUniRequest("api/setting/operator-mission/" + status, "PATCH", null, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
                 missionBtn.image.sprite = imageSet.GetImage(mission);
+                Managers.Player.SetInt(Define.SYSTEM_MISSION, mission ? 1 : 0);
             }
             else if (response.code == 6000)
             {
@@ -150,7 +152,6 @@ public class UI_Sound : UI_PopupMenu
     public void ValueChangeBGM()
     {
         //BGM 소리 값 전달
-        Debug.Log($"BGM = {bgmSlider.value / 100}");
         Managers.Sound.masterVolumeBGM = bgmSlider.value / 100;
         Managers.Sound.BGMSoundChange(bgmSlider.value / 100);
         Managers.Player.SetFloat("volumeBGM", bgmSlider.value / 100);
@@ -159,7 +160,6 @@ public class UI_Sound : UI_PopupMenu
     public void ValueChangeSFX()
     {
         //SFX 소리 값 전달
-        Debug.Log($"SFX = {sfxSlider.value}");
         Managers.Sound.masterVolumeSFX = sfxSlider.value / 100;
         Managers.Player.SetFloat("volumeSFX", sfxSlider.value / 100);
     }

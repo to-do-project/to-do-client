@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_FriendUI : UI_PopupMenu
@@ -56,7 +53,7 @@ public class UI_FriendUI : UI_PopupMenu
         date.text = today.ToString("yyyy") + "." + today.ToString("mm") + "." + today.ToString("dd");
 
         SetBtn((int)Buttons.Back_btn, (data) => {
-            Destroy(GameObject.Find("FriendMainView(Clone)"));
+            FindObjectOfType<UI_FriendMain>().DestroyAll();
             Managers.UI.ActiveAllUI();
             Destroy(gameObject);
         });

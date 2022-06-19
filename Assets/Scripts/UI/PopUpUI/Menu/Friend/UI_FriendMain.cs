@@ -7,12 +7,18 @@ public class UI_FriendMain : UI_Popup
     GameObject planet;
     GameObject character;
 
+    public void DestroyAll()
+    {
+        Destroy(planet);
+        Destroy(gameObject);
+    }
+
     public void InitView(ResponseMainPlanet data)
     {
         //행성, 아이템, 캐릭터 생성
         PlanetInstantiate(data.planetColor, data.level);
         CharacterInstantiate(data.characterItem);
-        // ItemInstantiate(data.planetItemList);
+        ItemInstantiate(data.planetItemList);
     }
 
     private void PlanetInstantiate(string color, int level)

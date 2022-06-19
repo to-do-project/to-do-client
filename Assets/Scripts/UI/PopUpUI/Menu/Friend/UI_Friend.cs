@@ -69,7 +69,7 @@ public class UI_Friend : UI_PopupMenu
             friendContent = GameObject.Find("FriendContents");
         }
 
-        SetContents();
+        StartCoroutine(SetContents());
 
         RelocationAll();
 
@@ -100,26 +100,30 @@ public class UI_Friend : UI_PopupMenu
         foreach (var tmp in dataContainer.friendList)
         {
             if (tmpFriend.ContainsKey(tmp.friendId)) continue;
-            AddFriend(tmp.nickName, (int)tmp.userId, tmp.profileColor);
+            AddFriend(tmp.nickName, (int)tmp.friendId, tmp.profileColor, tmp.userId);
         }
         foreach (var tmp in dataContainer.waitFriendList)
         {
             if (tmpWait.ContainsKey(tmp.friendId)) continue;
-            AddRequest(tmp.nickName, (int)tmp.userId, tmp.profileColor);
+            AddRequest(tmp.nickName, (int)tmp.friendId, tmp.profileColor, tmp.userId);
         }
 
         RelocationAll();
     }
 
-    private void SetContents()
+    IEnumerator SetContents()
     {
+        while (dataContainer.friendCheck)
+        {
+            yield return null;
+        }
         foreach (var tmp in dataContainer.friendList)
         {
-            AddFriend(tmp.nickName, (int)tmp.userId, tmp.profileColor);
+            AddFriend(tmp.nickName, (int)tmp.friendId, tmp.profileColor, tmp.userId);
         }
         foreach (var tmp in dataContainer.waitFriendList)
         {
-            AddRequest(tmp.nickName, (int)tmp.userId, tmp.profileColor);
+            AddRequest(tmp.nickName, (int)tmp.friendId, tmp.profileColor, tmp.userId);
         }
     }
 
@@ -182,7 +186,7 @@ public class UI_Friend : UI_PopupMenu
         Init();
     }
 
-    public bool AddFriend(string name, int id, string color)
+    public bool AddFriend(string name, int friendId, string color, long userId)
     {
         if(friendCount < 100)
         {
@@ -193,7 +197,8 @@ public class UI_Friend : UI_PopupMenu
             FriendContent tmp = target.GetComponent<FriendContent>();
             tmp.SetParent(this.gameObject);
             tmp.SetName(name);
-            tmp.SetID(id);
+            tmp.SetID(friendId);
+            tmp.SetUserID(userId);
             tmp.SetImage(color);
 
             friendCount++;
@@ -211,7 +216,7 @@ public class UI_Friend : UI_PopupMenu
         RelocationAll();
     }
 
-    void AddRequest(string name, int id, string color)
+    void AddRequest(string name, int friendId, string color, long userId)
     {
         GameObject target = Managers.Resource.Instantiate(contentPath + "RequestContent");
         target.transform.SetParent(requestContent.transform);
@@ -220,7 +225,8 @@ public class UI_Friend : UI_PopupMenu
         RequestContent tmp = target.GetComponent<RequestContent>();
         tmp.SetParent(this.gameObject);
         tmp.SetName(name);
-        tmp.SetId(id);
+        tmp.SetId(friendId);
+        tmp.SetUserID(userId);
         tmp.SetImage(color);
 
         requestCount++;
@@ -229,6 +235,7 @@ public class UI_Friend : UI_PopupMenu
 
     public void DeleteRequest(GameObject target)
     {
+        dataContainer.RefreshFriendData();
         requestCount--;
         target.SetActive(false);
         Destroy(target);
