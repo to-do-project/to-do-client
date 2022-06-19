@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 
@@ -16,6 +18,10 @@ public class UI_GoalList : UI_Base
     GameObject goalAddbtn;
     GameObject goalParent;
 
+    Response<List<ResponseMainTodo>> res;
+    public Action<UnityWebRequest> callback;
+    Action innerCallback;
+
     public override void Init()
     {
         //API 호출해서 목표 정보 받아옴
@@ -26,6 +32,10 @@ public class UI_GoalList : UI_Base
 
         //목표추가 버튼
         //Managers.UI.MakeSubItem<>();
+        Debug.Log("GoalList 호출");
+        innerCallback -= SendGoalListRequest;
+        innerCallback += SendGoalListRequest;
+
         Bind<GameObject>(typeof(GameObjects));
         goalParent = Get<GameObject>((int)GameObjects.Content);
 
@@ -33,16 +43,20 @@ public class UI_GoalList : UI_Base
         Canvas.ForceUpdateCanvases();
         //운영자 미션 생성
 
-        if (Managers.Player.GetString(Define.SYSTEM_MISSION) != null)
+        if (Managers.Player.GetString(Define.MISSION_STATUS) != null)
         {
             Managers.UI.MakeSubItem<UI_SystemMission>("GoalList", goalParent.transform, "SystemMission");
 
         }
 
         Canvas.ForceUpdateCanvases();
-        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
+        
+        callback -= GoalInit;
+        callback += GoalInit;
 
 
+        SendGoalListRequest();
+        //Managers.Todo.UserTodoInstantiate(callback);
         //GoalInit();
         /*Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList",goalParent.transform, "Ggoal_content");
         Managers.UI.MakeSubItem<UI_PgoalContent>("GoalList",goalParent.transform, "Pgoal_content");
@@ -55,30 +69,62 @@ public class UI_GoalList : UI_Base
         Init();
     }
 
-
-    //innerAction 쓰는 함수 불러서 GoalInit을 콜백으로 사용하기
-
-    private void GoalInit()
+    void SendGoalListRequest()
     {
-        if (Managers.Todo.goalList != null)
+        Managers.Todo.UserTodoInstantiate(callback);
+    }
+
+    private void GoalInit(UnityWebRequest request)
+    {
+        Debug.Log("목표 띄우기");
+        res = JsonUtility.FromJson<Response<List<ResponseMainTodo>>>(request.downloadHandler.text);
+        if (res.isSuccess)
         {
+            Managers.Todo.goalList = res.result;
+
+            Transform[] childList = goalParent.GetComponentsInChildren<Transform>();
+            if (childList != null)
+            {
+                foreach(Transform child in childList)
+                {
+                    if (child != goalParent.transform)
+                    {
+                        Managers.Resource.Destroy(child.gameObject);
+                    }
+                }
+            }
+
             foreach (ResponseMainTodo item in Managers.Todo.goalList)
             {
                 if (item.groupFlag)
                 {
                     UI_GgoalContent goal = Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList", goalParent.transform, "Ggoal_content");
-                    /*                goal.SetGoalName();
-                                    goal.SetGoalRate();*/
-
+                    /*                    goal.SetGoalName(item.goalTitle);
+                                        goal.SetGoalRate(item.percentage.ToString());*/
+                    goal.SetGgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.managerFlag);
                 }
                 else
                 {
-
+                    UI_PgoalContent goal = Managers.UI.MakeSubItem<UI_PgoalContent>("GoalList", goalParent.transform, "Pgoal_content");
+                    /*                    goal.SetGoalName(item.goalTitle);
+                                        goal.SetGoalRate(item.percentage.ToString());*/
+                    goal.SetPgoalContent(item.goalTitle,item.percentage.ToString(),item.goalId,item.getTodoMainResList, item.openFlag);
                 }
 
-                goalAddbtn.transform.SetAsLastSibling();
+                
+            }
+            goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
+            goalAddbtn.transform.SetAsLastSibling();
+        }
+        else
+        {
+            if (res.code == 6000 || res.code == 6004 || res.code == 6006)
+            {
+                Managers.Player.SendTokenRequest(innerCallback);
             }
         }
-        
+
+
+
     }
 }

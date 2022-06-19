@@ -24,12 +24,13 @@ public class MainScene : BaseScene
         base.Init();
         SceneType = Define.Scene.Main;
 
+        //Debug.Log("MainScene");
         Managers.UI.ShowPanelUI<UI_Main>("MainView");
 
 
 
         PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
-        Debug.Log(PlanetCamera.name);
+        //Debug.Log(PlanetCamera.name);
 
         innerCallback -= PlanetSetting;
         innerCallback += PlanetSetting;

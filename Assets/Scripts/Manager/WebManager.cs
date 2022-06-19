@@ -140,7 +140,7 @@ public class WebManager : MonoBehaviour
     IEnumerator GetRequest(string url, string param, Action<UnityWebRequest> callback = null, string[] header = null, string[] headerValue = null)
     {
         string sendUrl = $"{baseUrl}/{url}{param}";
-
+        Debug.Log(sendUrl);
         using (UnityWebRequest uwr = UnityWebRequest.Get(sendUrl))
         {
             if (header != null && headerValue != null)

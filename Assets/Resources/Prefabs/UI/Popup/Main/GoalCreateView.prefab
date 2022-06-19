@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 5469102344700765107}
   - component: {fileID: 4336710015351624632}
   m_Layer: 0
-  m_Name: Text
+  m_Name: toast_txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
