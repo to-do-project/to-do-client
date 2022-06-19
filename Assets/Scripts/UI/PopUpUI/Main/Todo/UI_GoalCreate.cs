@@ -32,6 +32,7 @@ public class UI_GoalCreate : UI_Popup
     enum Texts
     {
         date_txt,
+        toast_txt,
     }
 
     enum Toggles
@@ -54,13 +55,27 @@ public class UI_GoalCreate : UI_Popup
 
     Action<UnityWebRequest> callback;
     Response<string> res;
+
+    Action innerAction;
+
     string openFlag = "PUBLIC";
 
+
     RequestGoalCreate val;
+    GameObject checkbtn;
+
+    GameObject toastMessage;
+    Text toast;
 
     public override void Init()
     {
         base.Init();
+        callback -= ResponseAction;
+        callback += ResponseAction;
+        innerAction -= InfoGather;
+        innerAction += InfoGather;
+
+        memberList = new List<long>();
 
         Canvas canvas = GetComponent<Canvas>();
         Camera UIcam = canvas.worldCamera;
@@ -84,7 +99,7 @@ public class UI_GoalCreate : UI_Popup
         friendNameInputfield = GetInputfiled((int)InputFields.friendAdd_inputfield);
         friendNameInputfield.onEndEdit.AddListener(delegate { SearchFriendName(); });
 
-        GameObject checkbtn = GetButton((int)Buttons.check_btn).gameObject;
+        checkbtn = GetButton((int)Buttons.check_btn).gameObject;
         BindEvent(checkbtn, CheckBtnClick);
 
         GameObject backBtn = GetButton((int)Buttons.exit_btn).gameObject;
@@ -94,6 +109,9 @@ public class UI_GoalCreate : UI_Popup
         DateTime today = DateTime.Now;
         date.text = today.ToString("yyyy") + "." + today.ToString("mm") + "." + today.ToString("dd");
 
+        toast = GetText((int)Texts.toast_txt);
+        toastMessage = Get<GameObject>((int)GameObjects.ToastMessage);
+        toastMessage.SetActive(false);
 
         Toggle openToggle = Get<Toggle>((int)Toggles.open_toggle);
         openToggle.onValueChanged.AddListener((bool bOn) =>
@@ -112,32 +130,21 @@ public class UI_GoalCreate : UI_Popup
     private void CheckBtnClick(PointerEventData data)
     {
         InfoGather();
-        //goal 추가 API 날리기
-
-        if (val != null)
-        {
-            //API 날리기
-            //PlayerManager tokenrequest 날리고 이너 액션으로 생성 API 날리기
-            //Managers.Web.SendGetRequest("/api/goals",null,);
-            val = null;
-        }
-
-
-        ClosePopupUI();
     }
 
     private void InfoGather()
     {
         val = new RequestGoalCreate();
 
-        InputField todoNameInputfield = GetInputfiled((int)InputFields.todoName_inputfield);
-        if (IsValidTitle(todoNameInputfield.text))
+        InputField goalNameInputfield = GetInputfiled((int)InputFields.todoName_inputfield);
+        if (IsValidTitle(goalNameInputfield.text))
         {
-            val.title = todoNameInputfield.text;
+            val.title = goalNameInputfield.text;
         }
         else
         {
-
+            showToastMessage("목표를 다시 입력해주세요.", 1.2f);
+            return;
         }
         val.openFlag = openFlag;
 
@@ -152,9 +159,9 @@ public class UI_GoalCreate : UI_Popup
             val.memberList = null;
         }
 
-        
-
-
+        res = new Response<string>();
+        Managers.Web.SendPostRequest<RequestGoalCreate>("api/goals", val, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+        goalNameInputfield.text = "";
     }
 
     private void SearchFriendName()
@@ -167,11 +174,38 @@ public class UI_GoalCreate : UI_Popup
     }
 
 
-    private void ResponseAction()
+    private void ResponseAction(UnityWebRequest request)
     {
         if (res != null)
         {
+            res = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
 
+            Debug.Log(res.code);
+            if (res.isSuccess)
+            {
+                Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+                ClosePopupUI();
+            }
+            else
+            {
+                switch (res.code)
+                {
+
+                    case 5007:
+                        showToastMessage("목표를 작성해주세요.",1.2f);
+                        break;
+                    case 5010:
+                        showToastMessage("목표명은 20자까지만 입력가능합니다.", 1.2f);
+                        break;
+
+                    case 6023:
+                        Managers.Player.SendTokenRequest(innerAction);
+                        break;
+
+
+
+                }
+            }
             res = null;
         }
 
@@ -186,7 +220,7 @@ public class UI_GoalCreate : UI_Popup
         }
         try
         {
-            return Regex.IsMatch(title, @"^.{0,50}$",
+            return Regex.IsMatch(title, @"^.{0,20}$",
                 RegexOptions.None,TimeSpan.FromMilliseconds(250));
         }
         catch(RegexMatchTimeoutException)
@@ -194,4 +228,30 @@ public class UI_GoalCreate : UI_Popup
             return false;
         }
     }
+
+    private void showToastMessage(string msg, float time)
+    {
+        StartCoroutine(showToastMessageCoroutine(msg, time));
+    }
+
+    private IEnumerator showToastMessageCoroutine(string msg, float time)
+    {
+        
+        float elapsedTime = 0.0f;
+
+        toastMessage.SetActive(true);
+        toast.text = msg;
+
+        while (elapsedTime < time)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return null;
+
+        toast.text = "";
+        toastMessage.SetActive(false);
+    }
+
 }

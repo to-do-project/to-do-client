@@ -7,6 +7,12 @@ using UnityEngine.UI;
 
 public class UI_PgoalContent : UI_Base
 {
+
+    enum Texts
+    {
+        Goal_txt,
+        GoalRate_txt,
+    }
     enum GameObjects
     {
         Goal,
@@ -14,8 +20,16 @@ public class UI_PgoalContent : UI_Base
         edit_btn,
     }
 
-
+    GameObject todoAdd;
     GameObject todo, goal;
+
+    List<TodoItem> todoList = new List<TodoItem>();
+    Text goalTitle;
+    Text goalRate;
+
+    long goalId;
+    string title, rate = "";
+    bool open;
 
     void Start()
     {
@@ -24,9 +38,13 @@ public class UI_PgoalContent : UI_Base
 
     public override void Init()
     {
+        Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
         todo = Get<GameObject>((int)GameObjects.Todo);
         goal = Get<GameObject>((int)GameObjects.Goal);
+
+        goalTitle = GetText((int)Texts.Goal_txt);
+        goalRate = GetText((int)Texts.GoalRate_txt);
 
         GameObject edit = Get<GameObject>((int)GameObjects.edit_btn);
 
@@ -35,8 +53,12 @@ public class UI_PgoalContent : UI_Base
         BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
         BindEvent(edit, EditBtnClick);
 
-        todo.SetActive(false);
+        todoAdd = Managers.UI.MakeSubItem<UI_AddTodo>("GoalList", todo.transform, "AddTodo").gameObject;
 
+
+        Canvas.ForceUpdateCanvases();
+        
+        SetPgoalContent();
 
     }
 
@@ -45,11 +67,13 @@ public class UI_PgoalContent : UI_Base
         Canvas.ForceUpdateCanvases();
         if (todo.activeSelf)
         {
+
             todo.SetActive(false);
 
         }
         else
         {
+
             todo.SetActive(true);
 
         }
@@ -59,16 +83,45 @@ public class UI_PgoalContent : UI_Base
     public void EditBtnClick(PointerEventData data)
     {
         Debug.Log("Editbtn click");
-        Managers.UI.ShowPopupUI<UI_GoalModify>("GoalModifyView","Main");
+        UI_GoalModify gm = Managers.UI.ShowPopupUI<UI_GoalModify>("GoalModifyView","Main");
+        gm.Setting(goalId, title,open, false); //open은 임시로, API 바뀌면 넣어야함
     }
 
-    public void SetGoalName(string name)
+    public void SetPgoalContent(string name, string rate, long goalId, List<TodoItem> todolist, bool open)
     {
-
+        title = name;
+        this.rate = rate;
+        this.goalId = goalId;
+        todoList = todolist;
+        this.open = open;
     }
 
-    public void SetGoalRate(string rate)
+    private void SetPgoalContent()
     {
+        goalTitle.text = title;
+        goalRate.text = rate;
 
+        todoAdd.GetComponent<UI_AddTodo>().Setting(goalId);
+
+        Canvas.ForceUpdateCanvases();
+
+
+        if (todoList.Count != 0 && todo!=null)
+        {
+            Debug.Log("Count: " + todoList.Count);
+            foreach (TodoItem item in todoList)
+            {
+                Debug.Log($"{item.todoTitle} {item.todoMemberId}");
+                UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", todo.transform, "Ptodo_content");
+                
+                todoItem.Setting(goalId, item.todoTitle, item.likeFlag, item.likeCount);
+            }
+        }
+        
+        todoAdd.transform.SetAsLastSibling();
+
+        Canvas.ForceUpdateCanvases();
+
+        todo.SetActive(false);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 
 //API response request class 만들기
+[System.Serializable]
 public class ResponseMainTodo
 {
     public long goalId;
@@ -13,9 +14,10 @@ public class ResponseMainTodo
     public bool groupFlag;
     public int percentage;
     public bool managerFlag;
-    public List<TodoItem> getIdoMainResList;
+    public bool openFlag;
+    public List<TodoItem> getTodoMainResList;
 }
-
+[System.Serializable]
 public class TodoItem
 {
     public long todoMemberId;
@@ -30,34 +32,40 @@ public class TodoManager
     public List<ResponseMainTodo> goalList; //목표 리스트
     
     Response<List<ResponseMainTodo>> res;
-    Action innerAction;
     Action<UnityWebRequest> callback;
 
-
+    UI_GoalList goalListGameObject;
 
     public void Init()
     {
-        innerAction -= UserTodoInstantiate;
-        innerAction += UserTodoInstantiate;
 
         callback -= MainGoalResponseAction;
         callback += MainGoalResponseAction;
     }
 
 
-    public void SendMainGoalRequest(string userId)
+    public void SendMainGoalRequest(string userId, Action<UnityWebRequest> callback)
     {
         res = new Response<List<ResponseMainTodo>>();
 
 
-        Managers.Web.SendGetRequest("api/goals",userId ,callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
+        Managers.Web.SendGetRequest("api/goals/main/", userId ,callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
         
     }
 
-    public void UserTodoInstantiate()
+    public void SendMainGoalRequest(string userId)
     {
-        SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+        res = new Response<List<ResponseMainTodo>>();
+
+        Managers.Web.SendGetRequest("api/goals/main/", userId, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
+    }
+
+    public void UserTodoInstantiate(Action<UnityWebRequest> callback)
+    {
+        SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID), callback);
     }
 
     void MainGoalResponseAction(UnityWebRequest request)
@@ -69,12 +77,15 @@ public class TodoManager
             if (res.isSuccess)
             {
                 goalList = res.result;
+
+                goalListGameObject = GameObject.Find("GoalList").GetComponent<UI_GoalList>();
+                goalListGameObject.callback.Invoke(request);
             }
             else
             {
-                if(res.code==6000 || res.code==6004 || res.code == 6006)
+                if (res.code == 6000 || res.code == 6004 || res.code == 6006)
                 {
-                    Managers.Player.SendTokenRequest(innerAction);
+                    //Managers.Player.SendTokenRequest(innerAction);
                 }
             }
         }
