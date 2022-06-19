@@ -28,7 +28,7 @@ public class UI_AddTodo : UI_Base
     }
 
     GameObject addBtn;
-    InputField todo_input;
+    InputField todoName;
 
     Action<UnityWebRequest> callback;
     Action innerAction;
@@ -45,6 +45,8 @@ public class UI_AddTodo : UI_Base
 
         Bind<Button>(typeof(Buttons));
         Bind<InputField>(typeof(InputFields));
+
+        todoName = GetInputfiled((int)InputFields.todo_inputfield);
 
         addBtn = GetButton((int)Buttons.todoAdd_btn).gameObject;
         BindEvent(addBtn, AddBtnClick);
@@ -64,7 +66,7 @@ public class UI_AddTodo : UI_Base
 
     private void InfoGather()
     {
-        InputField todoName = GetInputfiled((int)InputFields.todo_inputfield);
+
         if (isValidTodo(todoName.text))
         {
             val = new RequestTodoCreate();
@@ -113,9 +115,14 @@ public class UI_AddTodo : UI_Base
                 Canvas.ForceUpdateCanvases();
 
                 UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", this.transform.parent, "Ptodo_content");
-                todoItem.Setting(goalId, val.title, false, 0);
+                todoItem.Setting(goalId,1, val.title, false, 0);
                 this.transform.SetAsLastSibling();
+
+                LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent);
                 Canvas.ForceUpdateCanvases();
+                todoName.text = "";
+
+                
             }
 
             else
