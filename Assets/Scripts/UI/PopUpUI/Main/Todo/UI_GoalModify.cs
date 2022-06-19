@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 
 
-public class RequestTodoModify
+public class RequestGoalModify
 {
     public long goalId;
     public string title;
@@ -54,7 +54,7 @@ public class UI_GoalModify : UI_Popup
 
 
     string openFlag;
-    RequestTodoModify val;
+    RequestGoalModify val;
     Response<string> modifyRes;
     Action innerAction;
 
@@ -133,6 +133,7 @@ public class UI_GoalModify : UI_Popup
 
             if (res.isSuccess)
             {
+                Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
                 ClosePopupUI();
             }
             else
@@ -158,6 +159,7 @@ public class UI_GoalModify : UI_Popup
 
             if (res.isSuccess)
             {
+                Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
                 ClosePopupUI();
             }
             else
@@ -177,7 +179,7 @@ public class UI_GoalModify : UI_Popup
 
     private void InfoGather()
     {
-        val = new RequestTodoModify();
+        val = new RequestGoalModify();
 
         val.goalId = goalId;
 

@@ -110,7 +110,7 @@ public class PlayerManager : MonoBehaviour
             //Debug.Log("Token ¿÷¿Ω");
             Debug.Log(PlayerPrefs.GetString(Define.JWT_ACCESS_TOKEN));
             Debug.Log(PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN));
-            Managers.Scene.LoadScene(Define.Scene.Main);
+            //Managers.Scene.LoadScene(Define.Scene.Main);
             //SendTokenRequest(null);
 
             FirstInstantiate();

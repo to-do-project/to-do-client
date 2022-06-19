@@ -114,7 +114,7 @@ public class UI_Email : UI_SignUp
             Authres = new Response<string>();
 
             Managers.Web.SendPostRequest<string>("join/auth/new-num",val, callback);
-            //Managers.UI.ShowPopupUI<UI_Auth>("AuthView", "SignUp");
+            Managers.UI.ShowPopupUI<UI_Auth>("AuthView", "SignUp");
         }
         
     }
@@ -132,7 +132,7 @@ public class UI_Email : UI_SignUp
                 switch (Authres.code)
                 {
                     case 1000:
-                        Managers.UI.ShowPopupUI<UI_Auth>("AuthView", "SignUp");
+                       // Managers.UI.ShowPopupUI<UI_Auth>("AuthView", "SignUp");
                         break;
                    
                 }
