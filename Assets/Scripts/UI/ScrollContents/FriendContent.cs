@@ -17,22 +17,31 @@ public class FriendContent : UI_PopupMenu
     private Text nameTxt;
 
     long id;
+    long userId = 0;
     bool check = false;
     GameObject parent;
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     public void SetParent(GameObject parent)
     {
         this.parent = parent;
     }
 
-    public void SetImage(UI_Color.Colors color)
+    public void SetImage(string color)
     {
-        Debug.Log(color.ToString());
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profile.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
 
     public void SetID(long id)
     {
         this.id = id;
+    }
+
+    public void SetUserID(long id)
+    {
+        userId = id;
     }
 
     public void SetName(string name)
@@ -51,21 +60,23 @@ public class FriendContent : UI_PopupMenu
         SetBtn((int)Buttons.FriendPlanet_btn, (data) => {
             if (check) return;
             check = true;
-            Debug.Log("模备 青己 愁矾啊扁 >> " + name + " id >> " + id + " userID >> " + Managers.Player.GetString(Define.USER_ID));
+            Debug.Log("模备 青己 愁矾啊扁 >> " + name + " id >> " + userId + " userID >> " + Managers.Player.GetString(Define.USER_ID));
 
             string[] hN = { Define.JWT_ACCESS_TOKEN,
                             "User-Id" };
             string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                             Managers.Player.GetString(Define.USER_ID) };
 
-            Managers.Web.SendUniRequest("api/planet/main/" + id, "GET", null, (uwr) =>
+            Managers.Web.SendUniRequest("api/planet/main/" + userId, "GET", null, (uwr) =>
             {
                 var response = JsonUtility.FromJson<Response<ResponseMainPlanet>>(uwr.downloadHandler.text);
 
                 if (response.code == 1000)
                 {
+                    Managers.UI.DeactiveAllUI();
                     GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
-                    tmp.GetComponent<UI_FriendMain>().InitView(response);
+                    tmp.GetComponent<UI_FriendMain>().InitView(response.result);
+                    GameObject sec = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendUIView");
                 }
                 else if(response.code == 6000)
                 {
@@ -76,14 +87,15 @@ public class FriendContent : UI_PopupMenu
                         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                                         Managers.Player.GetString(Define.USER_ID) };
 
-                        Managers.Web.SendUniRequest("api/planet/main/" + id, "GET", null, (uwr) =>
+                        Managers.Web.SendUniRequest("api/planet/main/" + userId, "GET", null, (uwr) =>
                         {
                             var response = JsonUtility.FromJson<Response<ResponseMainPlanet>>(uwr.downloadHandler.text);
 
                             if (response.code == 1000)
                             {
+                                Managers.UI.DeactiveAllUI();
                                 GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
-                                tmp.GetComponent<UI_FriendMain>().InitView(response);
+                                tmp.GetComponent<UI_FriendMain>().InitView(response.result);
                             }
                             else
                             {

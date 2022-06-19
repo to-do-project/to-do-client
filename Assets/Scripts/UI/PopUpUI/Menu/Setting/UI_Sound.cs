@@ -31,7 +31,7 @@ public class UI_Sound : UI_PopupMenu
     Button missionBtn, bgmBtn, sfxBtn;
     Slider bgmSlider, sfxSlider;
     GameObject bgmToggle, sfxToggle;
-    bool mission, bgm, sfx;
+    bool mission, bgm, sfx, clicked = false;
 
     public override void Init()
     {
@@ -47,15 +47,24 @@ public class UI_Sound : UI_PopupMenu
         Bind<GameObject>(typeof(GameObjects));
 
         bgmSlider = Get<Slider>((int)Sliders.Bgm_slider);
+        bgmSlider.value = Managers.Sound.masterVolumeBGM * 100;
         bgmSlider.onValueChanged.AddListener(delegate { ValueChangeBGM(); });
 
         sfxSlider = Get<Slider>((int)Sliders.Sfx_slider);
+        sfxSlider.value = Managers.Sound.masterVolumeSFX * 100;
         sfxSlider.onValueChanged.AddListener(delegate { ValueChangeSFX(); });
 
         bgmToggle = Get<GameObject>((int)GameObjects.Bgm_toggle);
         sfxToggle = Get<GameObject>((int)GameObjects.Sfx_toggle);
 
-        mission = bgm = sfx = true; //값 가져오기(임시로 true 설정)
+        if (PlayerPrefs.HasKey(Define.SYSTEM_MISSION)) mission = (Managers.Player.GetInt(Define.SYSTEM_MISSION) == 1);
+        else mission = true;
+
+        if (PlayerPrefs.HasKey("onBGM")) bgm = (Managers.Player.GetInt("onSFX") == 1);
+        else bgm = true;
+
+        if (PlayerPrefs.HasKey("onSFX")) sfx = (Managers.Player.GetInt("onSFX") == 1);
+        else sfx = true;
 
         //버튼 이미지 초기화
         missionBtn.image.sprite = imageSet.GetImage(mission);
@@ -86,33 +95,73 @@ public class UI_Sound : UI_PopupMenu
     #region ButtonEvents
     public void MissionBtnClick(PointerEventData data)
     {
+        if (clicked) return;
+        clicked = true;
         mission = !mission;
-        missionBtn.image.sprite = imageSet.GetImage(mission);
+
+        MissionWeb();
+    }
+
+    void MissionWeb()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        int status = mission ? 1 : 0;
+
+        Managers.Web.SendUniRequest("api/setting/operator-mission/" + status, "PATCH", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                missionBtn.image.sprite = imageSet.GetImage(mission);
+                Managers.Player.SetInt(Define.SYSTEM_MISSION, mission ? 1 : 0);
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(MissionWeb);
+            }
+            else
+            {
+                mission = !mission;
+                Debug.Log(response.message);
+            }
+            clicked = false;
+        }, hN, hV);
     }
     public void BgmBtnClick(PointerEventData data)
     {
         bgm = !bgm;
         bgmBtn.image.sprite = imageSet.GetImage(bgm);
         bgmToggle.SetActive(bgm);
+        Managers.Sound.StopOrPlayBGM(bgm);
+        Managers.Player.SetInt("onBGM", bgm ? 1 : 0);
     }
+
     public void SfxBtnClick(PointerEventData data)
     {
         sfx = !sfx;
         sfxBtn.image.sprite = imageSet.GetImage(sfx);
         sfxToggle.SetActive(sfx);
+        Managers.Sound.onSFX = sfx;
+        Managers.Player.SetInt("onSFX", sfx ? 1 : 0);
     }
     #endregion
 
     public void ValueChangeBGM()
     {
         //BGM 소리 값 전달
-        Debug.Log($"BGM = {bgmSlider.value}");
+        Managers.Sound.masterVolumeBGM = bgmSlider.value / 100;
+        Managers.Sound.BGMSoundChange(bgmSlider.value / 100);
+        Managers.Player.SetFloat("volumeBGM", bgmSlider.value / 100);
     }
 
     public void ValueChangeSFX()
     {
         //SFX 소리 값 전달
-        Debug.Log($"SFX = {sfxSlider.value}");
+        Managers.Sound.masterVolumeSFX = sfxSlider.value / 100;
+        Managers.Player.SetFloat("volumeSFX", sfxSlider.value / 100);
     }
 
     private void Start()

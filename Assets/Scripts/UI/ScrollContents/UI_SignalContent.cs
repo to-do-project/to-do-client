@@ -13,6 +13,9 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
 
     Text title;
     string type;
+    long noticeId, id;
+    bool clicked = false;
+    bool isRead = false;
 
     //GameObject parent;
 
@@ -32,21 +35,68 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
         this.type = type;
     }
 
+    public void SetNoticeId(long id)
+    {
+        this.noticeId = id;
+    }
+
+    public void SetId(long id)
+    {
+        this.id = id;
+    }
+
+    public void SetRead()
+    {
+        isRead = true;
+    }
+
     public void OnPointerClick(PointerEventData data)
     {
-        if(type == UI_Signal.SignalType.Announce.ToString()) {
-            Managers.UI.ShowPopupUI<UI_Announce>("AnnounceView", "Menu/Setting");
-        } else if (type == UI_Signal.SignalType.Request.ToString()) {
-            Managers.UI.ShowPopupUI<UI_Friend>("FriendView", "Menu/Friend");
-        } else if (type == UI_Signal.SignalType.GroupClear.ToString()) {
-            Managers.UI.ClosePopupUI();
-        } else if (type == UI_Signal.SignalType.GroupCheer.ToString()) {
-            Managers.UI.ClosePopupUI();
-        } else if (type == UI_Signal.SignalType.GroupInvite.ToString()) {
-            Managers.UI.ClosePopupUI();
-        } else {
-            Debug.Log("잘못된 타입 >> " + type);
-        }
+        ReadSave();
+    }
+
+    void ReadSave()
+    {
+        if (clicked) return;
+        clicked = true;
+
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/notifications/read/" + noticeId, "PATCH", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                if (type == UI_Signal.SignalType.NOTICE_TWO.ToString())
+                {
+                    Managers.UI.ShowPopupUI<UI_Announce>("AnnounceView", "Menu/Setting").ExpandContent(noticeId);
+                }
+                else if (type == UI_Signal.SignalType.FRIEND_REQUEST.ToString())
+                {
+                    Managers.UI.ShowPopupUI<UI_Friend>("FriendView", "Menu/Friend");
+                }
+
+                if (isRead == false)
+                {
+                    if (type == UI_Signal.SignalType.GROUP_REQUEST.ToString())
+                    {
+                        Managers.UI.ClosePopupUI();
+                    }
+                }
+                isRead = true;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(ReadSave);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+            clicked = false;
+        }, hN, hV);
     }
 
     /*public void SetParent(GameObject parent)

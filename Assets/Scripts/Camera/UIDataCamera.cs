@@ -8,15 +8,22 @@ public class UIDataCamera : MonoBehaviour
     public List<long> charBtnId = null;
     public List<long> planetBtnId = null;
     public List<long> invenIdList = null;
-    public List<ResponseFriendList> friendList;
-    public List<ResponseFriendList> waitFriendList;
+    public List<ResponseFriendList> friendList = null, waitFriendList = null;
+    public ResponsePush pushLists = null;
+    public List<ResponseGoalList> goalList = null;
+
+    public bool friendCheck = false;
 
     public void DataInit()
     {
+        if (PlayerPrefs.HasKey(Define.DEVICETOKEN) == false)
+            Managers.Player.SetString(Define.DEVICETOKEN, SystemInfo.deviceUniqueIdentifier);
         RefreshAnnounceData();
         RefreshItemStoreData();
         RefreshDecoData();
         RefreshFriendData();
+        RefreshPushData();
+        RefreshGoalData();
     }
 
     public void RefreshAnnounceData()
@@ -94,6 +101,7 @@ public class UIDataCamera : MonoBehaviour
 
     public void RefreshFriendData()
     {
+        friendCheck = true;
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -105,10 +113,64 @@ public class UIDataCamera : MonoBehaviour
             {
                 friendList = response.result.friends;
                 waitFriendList = response.result.waitFriends;
+                friendCheck = false;
+
+                UI_Load.Instance.CompleteLoad();
             }
             else if (response.code == 6000)
             {
                 Managers.Player.SendTokenRequest(RefreshFriendData);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
+    }
+
+    public void RefreshPushData()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/notifications", "GET", null, (uwr) => {
+            Response<ResponsePush> response = JsonUtility.FromJson<Response<ResponsePush>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                pushLists.noticeNotifications = response.result.noticeNotifications;
+                pushLists.friendReqNotifications = response.result.friendReqNotifications;
+                pushLists.groupReqNotifications = response.result.groupReqNotifications;
+                pushLists.etcNotifications = response.result.etcNotifications;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(RefreshPushData);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
+    }
+
+    public void RefreshGoalData()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/goals/archive", "GET", null, (uwr) => {
+            Response<List<ResponseGoalList>> response = JsonUtility.FromJson<Response<List<ResponseGoalList>>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                goalList = response.result;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(RefreshGoalData);
             }
             else
             {

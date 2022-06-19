@@ -7,12 +7,18 @@ public class UI_FriendMain : UI_Popup
     GameObject planet;
     GameObject character;
 
-    public void InitView(Response<ResponseMainPlanet> data)
+    public void DestroyAll()
+    {
+        Destroy(planet);
+        Destroy(gameObject);
+    }
+
+    public void InitView(ResponseMainPlanet data)
     {
         //행성, 아이템, 캐릭터 생성
-        PlanetInstantiate(data.result.planetColor, data.result.level);
-        CharacterInstantiate(data.result.characterItem);
-        ItemInstantiate(data.result.planetItemList);
+        PlanetInstantiate(data.planetColor, data.level);
+        CharacterInstantiate(data.characterItem);
+        ItemInstantiate(data.planetItemList);
     }
 
     private void PlanetInstantiate(string color, int level)
@@ -26,7 +32,7 @@ public class UI_FriendMain : UI_Popup
                     level.ToString();
 
             planet = Managers.Resource.Instantiate(path);
-            DontDestroyOnLoad(planet);
+            planet.transform.position = new Vector3(0, 0, 105);
         }
 
     }
@@ -44,7 +50,6 @@ public class UI_FriendMain : UI_Popup
                 Vector3 pos = new Vector3(0, 5.81f, planet.transform.position.z);
 
                 character = Managers.Resource.Instantiate(pos, path, planet.transform);
-                DontDestroyOnLoad(character);
             }
         }
     }

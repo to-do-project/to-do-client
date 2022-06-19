@@ -106,10 +106,9 @@ public class SoundManager
 
     public float masterVolumeSFX = 1f;
     public float masterVolumeBGM = 1f;
+    public bool onBGM = true;
+    public bool onSFX = true;
 
-    //슬라이더로 조절 시 clamp범위
-    private float minVol = 0f;
-    private float maxVol = 10f;
     
     private AudioClip mainBgmAudioClip; //main BGM
 
@@ -142,12 +141,25 @@ public class SoundManager
             Debug.Log("mainBgmAudioClip is null");
         }
 
+        if (PlayerPrefs.HasKey("volumeBGM")) masterVolumeBGM = Managers.Player.GetFloat("volumeBGM");
+        else masterVolumeBGM = 1f;
+
+        if (PlayerPrefs.HasKey("volumeSFX")) masterVolumeSFX = Managers.Player.GetFloat("volumeSFX");
+        else masterVolumeSFX = 1f;
+
+        if (PlayerPrefs.HasKey("onBGM")) onBGM = Managers.Player.GetInt("onBGM") == 1;
+        else onBGM = true;
+
+        if (PlayerPrefs.HasKey("onSFX")) onSFX = Managers.Player.GetInt("onSFX") == 1;
+        else onSFX = true;
     }
 
     //이름으로 효과음 재생
     //경로 쓰면 클립 추가해서 재생
     public void PlaySFXSound(string name, float volume = 1f, string path = null)
     {
+        if (onSFX == false) return;
+
         if (audioClipDic.ContainsKey(name) == false)
         {
             if (path.Contains("Sound/") == false)
@@ -169,6 +181,8 @@ public class SoundManager
     //경로 쓰면 클립 변경해서 재생
     public void PlayBGMSound(float volume = 1f, string path = null)
     {
+        if (onBGM == false) return;
+
         AudioClip audioClip;
         if (path==null)
         {
@@ -192,6 +206,28 @@ public class SoundManager
         bgmPlayer.clip = audioClip;
         bgmPlayer.volume = volume * masterVolumeBGM;
         bgmPlayer.Play();
+    }
+
+    // BGM의 볼륨을 조절하는 코드
+    // <param name="volume"></param> 볼륨 값
+    public void BGMSoundChange(float volume = 1f)
+    {
+        if (volume > 1 || volume < 0)
+        {
+            Debug.Log("오류 >> 볼륨이 0 ~ 1 사이의 수가 아닙니다!");
+        }
+        bgmPlayer.volume = volume * masterVolumeBGM;
+    }
+
+    public void StopOrPlayBGM(bool play)
+    {
+        if(play && bgmPlayer.isPlaying == false) {
+            bgmPlayer.Play();
+        }
+        else {
+            bgmPlayer.Stop();
+        }
+        onBGM = play;
     }
 
     //sfx 클립 목록에 새 클립 추가
