@@ -57,7 +57,7 @@ public class UI_Sound : UI_PopupMenu
         bgmToggle = Get<GameObject>((int)GameObjects.Bgm_toggle);
         sfxToggle = Get<GameObject>((int)GameObjects.Sfx_toggle);
 
-        if (PlayerPrefs.HasKey(Define.SYSTEM_MISSION)) mission = (Managers.Player.GetInt(Define.SYSTEM_MISSION) == 1);
+        if (PlayerPrefs.HasKey(Define.MISSION_STATUS)) mission = (Managers.Player.GetInt(Define.MISSION_STATUS) == 1);
         else mission = true;
 
         if (PlayerPrefs.HasKey("onBGM")) bgm = (Managers.Player.GetInt("onSFX") == 1);
@@ -116,7 +116,7 @@ public class UI_Sound : UI_PopupMenu
             if (response.isSuccess)
             {
                 missionBtn.image.sprite = imageSet.GetImage(mission);
-                Managers.Player.SetInt(Define.SYSTEM_MISSION, mission ? 1 : 0);
+                Managers.Player.SetInt(Define.MISSION_STATUS, mission ? 1 : 0);
             }
             else if (response.code == 6000)
             {
