@@ -7,6 +7,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+public class RequestTodoModify
+{
+    public string title;
+}
+
 public class UI_PtodoContent : UI_Base
 {
     enum Buttons
@@ -31,18 +36,22 @@ public class UI_PtodoContent : UI_Base
     }
 
     long goalId;
+    long todoMemberId;
     string title;
     bool likeFlag;
     int likeCount;
 
     InputField todoInputfield;
     Text todoTitle,likeTxt;
+    Action innerAction;
 
 
     public override void Init()
     {
+        innerAction -= SendTodoModifyRequest;
+        innerAction += SendTodoModifyRequest;
 
-        Debug.Log("GoalId " + goalId);
+        //Debug.Log("GoalId " + goalId);
         Bind<InputField>(typeof(InputFields));
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
@@ -57,14 +66,15 @@ public class UI_PtodoContent : UI_Base
         BindEvent(likeBtn, LikeBtnClick);
         BindEvent(editBtn, EditBtnClick);
 
-
+        SetTodo();
         
         todoInputfield.onEndEdit.AddListener(delegate
         {
             SendTodoModifyRequest();
             todoInputfield.DeactivateInputField();
-            todoInputfield.interactable = false;
+            //todoInputfield.interactable = false;
         });
+
 
     }
 
@@ -75,11 +85,12 @@ public class UI_PtodoContent : UI_Base
 
     private void LikeBtnClick(PointerEventData data)
     {
-
+        Managers.UI.ShowPopupUI<UI_Like>("LikeView","Main");
     }
 
     private void EditBtnClick(PointerEventData data)
     {
+        todoTitle.text = "";
         todoInputfield.interactable = true;
         todoInputfield.ActivateInputField();
 
@@ -90,20 +101,52 @@ public class UI_PtodoContent : UI_Base
         if (IsValidTitle(todoInputfield.text))
         {
 
+            RequestTodoModify val = new RequestTodoModify();
+            val.title = todoInputfield.text;
+            Managers.Web.SendPostRequest<RequestTodoModify>("api/todo/change/" + todoMemberId.ToString(), val, (uwr) => { 
+                Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+
+                Debug.Log(res.message);
+                if (res.isSuccess)
+                {
+                    todoTitle.text = todoInputfield.text;
+                    title = todoInputfield.text;
+                }
+                else
+                {
+                    switch (res.code)
+                    {
+
+                        case 6023:
+                            Managers.Player.SendTokenRequest(innerAction);
+                            break;
+                    }
+                }
+
+
+            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
         }
     }
 
 
-    public void Setting(long id, string title, bool likeFlag, int likeCount) 
+    public void Setting(long goalId,long todoId, string title, bool likeFlag, int likeCount) 
     {
         //goalId = id;
 
-        Debug.Log($"setting {id} {title}");
+        //Debug.Log($"setting {goalId} {title}");
 
-        goalId = id;
+        this.goalId = goalId;
+        this.todoMemberId = todoId;
         this.title = title;
         this.likeFlag = likeFlag;
         this.likeCount = likeCount;
+    }
+
+    private void SetTodo()
+    {
+        todoTitle.text = title;
+        likeTxt.text = likeCount.ToString();
     }
 
     private bool IsValidTitle(string title)
@@ -121,5 +164,11 @@ public class UI_PtodoContent : UI_Base
         {
             return false;
         }
+    }
+
+    public void ClearUI()
+    {
+        todoTitle.text = title;
+        todoInputfield.DeactivateInputField();
     }
 }

@@ -67,6 +67,15 @@ public class UI_PgoalContent : UI_Base
         Canvas.ForceUpdateCanvases();
         if (todo.activeSelf)
         {
+            //todo.GetComponent<UI_PtodoContent>().ClearUI();
+            UI_PtodoContent[] childList = todo.GetComponentsInChildren<UI_PtodoContent>();
+            if (childList != null)
+            {
+                foreach(UI_PtodoContent child in childList)
+                {
+                    child.ClearUI();
+                }
+            }
 
             todo.SetActive(false);
 
@@ -114,7 +123,7 @@ public class UI_PgoalContent : UI_Base
                 Debug.Log($"{item.todoTitle} {item.todoMemberId}");
                 UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", todo.transform, "Ptodo_content");
                 
-                todoItem.Setting(goalId, item.todoTitle, item.likeFlag, item.likeCount);
+                todoItem.Setting(goalId,item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount);
             }
         }
         
