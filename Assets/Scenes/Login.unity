@@ -291,6 +291,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackgroundWhite
       objectReference: {fileID: 0}
+    - target: {fileID: 1185009025657060396, guid: 7fbedd47b2273234d8772da3cb4869fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1185009025657060399, guid: 7fbedd47b2273234d8772da3cb4869fb, type: 3}
       propertyPath: m_RootOrder
       value: 4

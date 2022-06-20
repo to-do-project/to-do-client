@@ -24,5 +24,5 @@ public class CameraResolution : MonoBehaviour
     }
 
     //레터박스 위를 검정색으로 칠해줌
-    //void OnPreCull() => GL.Clear(true, true, Color.black);
+   //void OnPreCull() => GL.Clear(true, true, Color.black);
 }

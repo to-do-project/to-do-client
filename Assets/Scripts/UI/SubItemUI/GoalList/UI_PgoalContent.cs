@@ -108,7 +108,7 @@ public class UI_PgoalContent : UI_Base
     private void SetPgoalContent()
     {
         goalTitle.text = title;
-        goalRate.text = rate;
+        goalRate.text = rate+"%";
 
         todoAdd.GetComponent<UI_AddTodo>().Setting(goalId);
 
@@ -123,7 +123,8 @@ public class UI_PgoalContent : UI_Base
                 Debug.Log($"{item.todoTitle} {item.todoMemberId}");
                 UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", todo.transform, "Ptodo_content");
                 
-                todoItem.Setting(goalId,item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount);
+                
+                todoItem.Setting(goalId,item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
             }
         }
         
@@ -132,5 +133,11 @@ public class UI_PgoalContent : UI_Base
         Canvas.ForceUpdateCanvases();
 
         todo.SetActive(false);
+    }
+
+    public void SetPercentage(int percentage)
+    {
+        //Debug.Log(percentage);
+        goalRate.text = percentage.ToString() + "%";
     }
 }

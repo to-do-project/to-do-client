@@ -35,8 +35,8 @@ public class MainScene : BaseScene
         innerCallback -= PlanetSetting;
         innerCallback += PlanetSetting;
 
-        Managers.Input.TouchAction -= EnterArrayMode;
-        Managers.Input.TouchAction += EnterArrayMode;
+        /*Managers.Input.TouchAction -= EnterArrayMode;
+        Managers.Input.TouchAction += EnterArrayMode;*/
 
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
@@ -56,7 +56,7 @@ public class MainScene : BaseScene
     
     
 
-    //배치모드로 진입
+/*    //배치모드로 진입
     void EnterArrayMode(Define.TouchEvent evt)
     {
         if (evt != Define.TouchEvent.Press)
@@ -96,10 +96,7 @@ public class MainScene : BaseScene
             
         }
 
-        
-
-
-    }
+    }*/
 
     void OnBackTouched(Define.SystemEvent evt)
     {

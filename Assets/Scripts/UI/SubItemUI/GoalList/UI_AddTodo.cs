@@ -14,6 +14,11 @@ public class RequestTodoCreate
     public string title;
 }
 
+public class ResponseTodoCreate
+{
+    public long todoMemberId;
+}
+
 public class UI_AddTodo : UI_Base
 {
 
@@ -32,7 +37,7 @@ public class UI_AddTodo : UI_Base
 
     Action<UnityWebRequest> callback;
     Action innerAction;
-    Response<string> res;
+    Response<ResponseTodoCreate> res;
     RequestTodoCreate val;
     public override void Init()
     {
@@ -73,7 +78,7 @@ public class UI_AddTodo : UI_Base
             val.goalId = goalId;
             val.title = todoName.text;
 
-            res = new Response<string>();
+            res = new Response<ResponseTodoCreate>();
             //상세할일 추가
             Managers.Web.SendPostRequest<RequestTodoCreate>("api/todo", val, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
@@ -106,7 +111,7 @@ public class UI_AddTodo : UI_Base
     {
         if (res != null)
         {
-            res = JsonUtility.FromJson<Response<string>>(request.downloadHandler.text);
+            res = JsonUtility.FromJson<Response<ResponseTodoCreate>>(request.downloadHandler.text);
 
             if (res.isSuccess)
             {
@@ -115,7 +120,7 @@ public class UI_AddTodo : UI_Base
                 Canvas.ForceUpdateCanvases();
 
                 UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", this.transform.parent, "Ptodo_content");
-                todoItem.Setting(goalId,1, val.title, false, 0);
+                todoItem.Setting(goalId,res.result.todoMemberId, val.title, false, 0, false);
                 this.transform.SetAsLastSibling();
 
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent);

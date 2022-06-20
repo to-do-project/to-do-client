@@ -148,12 +148,15 @@ public class UI_Login : UI_Panel
 
     private void SignUpBtnClick(PointerEventData data)
     {
+        failMessage.text = "";
         Managers.UI.ShowPopupUI<UI_Info>("InfoView", "SignUp");
 
     }
 
     private void FindPWBtnClick(PointerEventData data)
     {
+        //Debug.Log("Find click");
+        failMessage.text = "";
         Managers.UI.ShowPopupUI<UI_PWfind>("FindView", "PWfind");
     }
 
@@ -171,6 +174,7 @@ public class UI_Login : UI_Panel
                 Debug.Log("Success Login");
                 if (res.code == 1000)
                 {
+                    failMessage.text = "";
                     //토큰 저장
                     Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, request.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
                     Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, request.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
