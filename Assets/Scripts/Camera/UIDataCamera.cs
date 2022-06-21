@@ -11,6 +11,7 @@ public class UIDataCamera : MonoBehaviour
     public List<ResponseFriendList> friendList = null, waitFriendList = null;
     public ResponsePush pushLists = null;
     public List<ResponseGoalList> goalList = null;
+    public ResponseSetting settings = null;
 
     public bool friendCheck = false;
 
@@ -24,6 +25,7 @@ public class UIDataCamera : MonoBehaviour
         RefreshFriendData();
         RefreshPushData();
         RefreshGoalData();
+        RefreshSettingData();
     }
 
     public void RefreshAnnounceData()
@@ -171,6 +173,32 @@ public class UIDataCamera : MonoBehaviour
             else if (response.code == 6000)
             {
                 Managers.Player.SendTokenRequest(RefreshGoalData);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
+    }
+
+    public void RefreshSettingData()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id",
+                        "Device-Token"};
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID),
+                        Managers.Player.GetString(Define.DEVICETOKEN)};
+
+        Managers.Web.SendUniRequest("api/alarms", "GET", null, (uwr) => {
+            Response<ResponseSetting> response = JsonUtility.FromJson<Response<ResponseSetting>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                settings = response.result;
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(RefreshSettingData);
             }
             else
             {

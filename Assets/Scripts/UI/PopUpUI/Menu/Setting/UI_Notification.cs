@@ -58,42 +58,63 @@ public class UI_Notification : UI_PopupMenu
     private void SetToggles()
     {
         push = false;
-        friend = false;
-        group = false;
-        skill = false;
-        announce = false;
+        friend = dataContainer.settings.friendFlag == 1;
+        group = dataContainer.settings.groupFlag == 1;
+        skill = dataContainer.settings.settingFlag == 1;
+        announce = dataContainer.settings.noticeFlag == 1;
+        CheckPush();
+        ChangeBtnImage();
     }
 
     #region ButtonEvents
     public void PushBtnClick(PointerEventData data)
     {
-        friend = group = skill = announce = !push;
-        push = !push;
-        ChangeBtnImage();
+        SendSettingData("ALL", () =>
+        {
+            friend = group = skill = announce = !push;
+            push = !push;
+            ChangeBtnImage();
+        });
     }
     public void FriendBtnClick(PointerEventData data)
     {
-        friend = !friend;
-        CheckPush();
-        ChangeBtnImage();
+        SendSettingData("FRIEND", () =>
+        {
+            friend = !friend;
+            dataContainer.settings.friendFlag = friend ? 1 : 0;
+            CheckPush();
+            ChangeBtnImage();
+        });
     }
     public void GroupBtnClick(PointerEventData data)
     {
-        group = !group;
-        CheckPush();
-        ChangeBtnImage();
+        SendSettingData("GROUP", () =>
+        {
+            group = !group;
+            dataContainer.settings.groupFlag = group ? 1 : 0;
+            CheckPush();
+            ChangeBtnImage();
+        });
     }
     public void SkillBtnClick(PointerEventData data)
     {
-        skill = !skill;
-        CheckPush();
-        ChangeBtnImage();
+        SendSettingData("SETTING", () =>
+        {
+            skill = !skill;
+            dataContainer.settings.settingFlag = skill ? 1 : 0;
+            CheckPush();
+            ChangeBtnImage();
+        });
     }
     public void AnnounceBtnClick(PointerEventData data)
     {
-        announce = !announce;
-        CheckPush();
-        ChangeBtnImage();
+        SendSettingData("NOTICE", () =>
+        {
+            announce = !announce;
+            dataContainer.settings.noticeFlag = announce ? 1 : 0;
+            CheckPush();
+            ChangeBtnImage();
+        });
     }
     #endregion
 
@@ -109,6 +130,63 @@ public class UI_Notification : UI_PopupMenu
         groupBtn.image.sprite = imageSet.GetImage(group);
         skillBtn.image.sprite = imageSet.GetImage(skill);
         announceBtn.image.sprite = imageSet.GetImage(announce);
+    }
+
+    void SendSettingData(string data, System.Action action)
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        RequestSetting req = new RequestSetting
+        {
+            flag = data,
+            deviceToken = Managers.Player.GetString(Define.DEVICETOKEN)
+        };
+
+        Managers.Web.SendUniRequest("api/alarms", "PATCH", req, (uwr) => {
+            Response<ResponseSetting> response = JsonUtility.FromJson<Response<ResponseSetting>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                action.Invoke();
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(() => {
+                    string[] hN = { Define.JWT_ACCESS_TOKEN,
+                                    "User-Id" };
+                    string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                                    Managers.Player.GetString(Define.USER_ID) };
+
+                    RequestSetting req = new RequestSetting
+                    {
+                        flag = data,
+                        deviceToken = Managers.Player.GetString(Define.DEVICETOKEN)
+                    };
+
+                    Managers.Web.SendUniRequest("api/alarms", "PATCH", req, (uwr) => {
+                        Response<ResponseSetting> response = JsonUtility.FromJson<Response<ResponseSetting>>(uwr.downloadHandler.text);
+                        if (response.isSuccess)
+                        {
+                            action.Invoke();
+                        }
+                        else if (response.code == 6000)
+                        {
+                            Debug.Log("토큰 재발급 실패");
+                        }
+                        else
+                        {
+                            Debug.Log(response.message);
+                        }
+                    }, hN, hV);
+                });
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
     private void Start()
