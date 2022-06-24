@@ -7,6 +7,7 @@ public class UI_FriendUI : UI_PopupMenu
     enum Buttons
     {
         Back_btn,
+        Fighting_btn,
     }
 
     enum Texts
@@ -55,7 +56,12 @@ public class UI_FriendUI : UI_PopupMenu
         SetBtn((int)Buttons.Back_btn, (data) => {
             FindObjectOfType<UI_FriendMain>().DestroyAll();
             Managers.UI.ActiveAllUI();
+            Managers.Player.GetPlanet().SetActive(true);
             Destroy(gameObject);
+        });
+
+        SetBtn((int)Buttons.Fighting_btn, (data) => {
+            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/NotComplete"));
         });
     }
 

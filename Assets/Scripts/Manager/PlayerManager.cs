@@ -488,6 +488,13 @@ public class PlayerManager : MonoBehaviour
         return true;
     }
 
+    public void UpdateCharacterItem(long characterColor)
+    {
+        if (character != null) Destroy(character);
+        character = null;
+        CharacterInstantiate(characterColor);
+    }
+
     #region PlayerPrefs
     public void SetString(string key, string value)
     {

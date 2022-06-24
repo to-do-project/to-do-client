@@ -213,3 +213,18 @@ public class ResponseSetting
     public int settingFlag;
     public int noticeFlag;
 }
+
+[Serializable]
+public class ResponseGoalRequest
+{
+    public string title;
+    public List<ResponseGoalRequestList> goalMemberList;
+}
+
+[Serializable]
+public class ResponseGoalRequestList
+{
+    public string nickname;
+    public string profileColor;
+    public bool managerFlag;
+}

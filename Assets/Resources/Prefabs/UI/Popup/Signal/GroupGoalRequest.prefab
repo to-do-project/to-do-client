@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 88988703869713696}
   - component: {fileID: 6725743447561977499}
   m_Layer: 5
-  m_Name: Decept
+  m_Name: Decept_btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 1577076160906128407}
   - component: {fileID: 1577076160906128400}
   m_Layer: 5
-  m_Name: Accept
+  m_Name: Accept_btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1170,7 +1170,6 @@ GameObject:
   - component: {fileID: 5517761194489285197}
   - component: {fileID: 5517761194489285192}
   - component: {fileID: 5517761194489285193}
-  - component: {fileID: 7836848954699364536}
   m_Layer: 5
   m_Name: GroupGoalRequest
   m_TagString: Untagged
@@ -1305,18 +1304,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7836848954699364536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5517761194489285196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6b4506ecf75a3945b7c4bd08d8b5ed6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5517761194533849493
 GameObject:
   m_ObjectHideFlags: 0
