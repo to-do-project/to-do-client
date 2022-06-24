@@ -108,12 +108,20 @@ public class UI_GgoalContent : UI_Base
     private void SetGgoalContent()
     {
         goalTitle.text = title;
-        goalRate.text = rate;
+        goalRate.text = rate+"%";
 
 
-        foreach (TodoItem todo in todoList)
+        foreach (TodoItem item in todoList)
         {
-            
+            UI_GtodoContent todoItem = Managers.UI.MakeSubItem<UI_GtodoContent>("GoalList", todo.transform, "Gtodo_content");
+            //todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
+
         }
+    }
+
+    public void SetPercentage(int percentage)
+    {
+        //Debug.Log(percentage);
+        goalRate.text = percentage.ToString() + "%";
     }
 }

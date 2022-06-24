@@ -14,6 +14,7 @@ public class RequestTodoCreate
     public string title;
 }
 
+[System.Serializable]
 public class ResponseTodoCreate
 {
     public long todoMemberId;

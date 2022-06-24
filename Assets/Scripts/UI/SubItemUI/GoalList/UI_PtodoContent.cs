@@ -85,58 +85,32 @@ public class UI_PtodoContent : UI_Base
         });
 
         checkToggle.onValueChanged.AddListener((bool bOn)=> {
-            if (checkToggle.isOn)
+
+            string flag = bOn ? "true" : "false";
+            
+
+            Managers.Web.SendUniRequest("api/todo/" + todoMemberId.ToString()+"?flag="+flag, "PATCH", null, (uwr) =>
             {
-                Managers.Web.SendPostRequest<ResponseTodoCheck>("api/todo/" + todoMemberId.ToString(), null, (uwr) =>
+                Response<ResponseTodoCheck> res = JsonUtility.FromJson<Response<ResponseTodoCheck>>(uwr.downloadHandler.text);
+
+                if (res.isSuccess)
                 {
-                    Response<ResponseTodoCheck> res = JsonUtility.FromJson<Response<ResponseTodoCheck>>(uwr.downloadHandler.text);
 
-                    if (res.isSuccess)
-                    {
-
-                        this.transform.parent.parent.gameObject.GetComponent<UI_PgoalContent>().SetPercentage(res.result.percentage);
-
-                    }
-                    else
-                    {
-                        Debug.Log(res.message);
-                        switch (res.code)
-                        {
-                            case 6023:
-                                Managers.Player.SendTokenRequest(innerAction);
-                                break;
-
-                        }
-                    }
-
-                }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
-            }
-            else
-            {
-                Managers.Web.SendUniRequest("api/todo/" + todoMemberId.ToString(),"PATCH", null, (uwr) =>
+                    this.transform.parent.parent.gameObject.GetComponent<UI_PgoalContent>().SetPercentage(res.result.percentage);
+                }
+                else
                 {
-                    Response<ResponseTodoCheck> res = JsonUtility.FromJson<Response<ResponseTodoCheck>>(uwr.downloadHandler.text);
-
-                    if (res.isSuccess)
+                    Debug.Log(res.message);
+                    switch (res.code)
                     {
+                        case 6023:
+                            Managers.Player.SendTokenRequest(innerAction);
+                            break;
 
-                        this.transform.parent.parent.gameObject.GetComponent<UI_PgoalContent>().SetPercentage(res.result.percentage);
                     }
-                    else
-                    {
-                        Debug.Log(res.message);
-                        switch (res.code)
-                        {
-                            case 6023:
-                                Managers.Player.SendTokenRequest(innerAction);
-                                break;
+                }
 
-                        }
-                    }
-
-                }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
-
-            }
+            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
         });
 
@@ -149,7 +123,9 @@ public class UI_PtodoContent : UI_Base
 
     private void LikeBtnClick(PointerEventData data)
     {
-        Managers.UI.ShowPopupUI<UI_Like>("LikeView","Main");
+        UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView","Main");
+        ui.Setting(todoMemberId.ToString());
+        Debug.Log("todoMember id "+todoMemberId.ToString());
     }
 
     private void EditBtnClick(PointerEventData data)

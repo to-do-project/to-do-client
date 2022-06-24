@@ -15,12 +15,21 @@ public class RequestGoalCreate
     public List<long> memberList;
 }
 
+[System.Serializable]
+public class ResponseMemberFind
+{
+    public long userId;
+    public string nickname;
+    public string profileColor;
+}
+
 public class UI_GoalCreate : UI_Popup
 {
     enum Buttons
     {
         check_btn,
         exit_btn,
+        friend_add_btn,
     }
 
     enum InputFields
@@ -43,6 +52,7 @@ public class UI_GoalCreate : UI_Popup
     enum GameObjects
     {
         ToastMessage,
+        friendContent,
     }
 
     void Start()
@@ -51,7 +61,7 @@ public class UI_GoalCreate : UI_Popup
     }
 
     InputField friendNameInputfield;
-    List<long> memberList;
+    List<ResponseMemberFind> memberList;
 
     Action<UnityWebRequest> callback;
     Response<string> res;
@@ -64,8 +74,10 @@ public class UI_GoalCreate : UI_Popup
     RequestGoalCreate val;
     GameObject checkbtn;
 
-    GameObject toastMessage;
+    GameObject toastMessage, friendRoot;
     Text toast;
+
+    Toggle openToggle;
 
     public override void Init()
     {
@@ -75,7 +87,7 @@ public class UI_GoalCreate : UI_Popup
         innerAction -= InfoGather;
         innerAction += InfoGather;
 
-        memberList = new List<long>();
+        memberList = new List<ResponseMemberFind>();
 
         Canvas canvas = GetComponent<Canvas>();
         Camera UIcam = canvas.worldCamera;
@@ -99,21 +111,26 @@ public class UI_GoalCreate : UI_Popup
         friendNameInputfield = GetInputfiled((int)InputFields.friendAdd_inputfield);
         friendNameInputfield.onEndEdit.AddListener(delegate { SearchFriendName(); });
 
+        friendRoot = Get<GameObject>((int)GameObjects.friendContent);
+
         checkbtn = GetButton((int)Buttons.check_btn).gameObject;
         BindEvent(checkbtn, CheckBtnClick);
 
         GameObject backBtn = GetButton((int)Buttons.exit_btn).gameObject;
         BindEvent(backBtn, ClosePopupUI);
 
+        GameObject friendAddBtn = GetButton((int)Buttons.friend_add_btn).gameObject;
+        BindEvent(friendAddBtn, FriendAddBtnClick);
+
         Text date = GetText((int)Texts.date_txt);
         DateTime today = DateTime.Now;
-        date.text = today.ToString("yyyy") + "." + today.ToString("mm") + "." + today.ToString("dd");
+        date.text = today.ToString("yyyy") + "." + today.ToString("MM") + "." + today.ToString("dd");
 
         toast = GetText((int)Texts.toast_txt);
         toastMessage = Get<GameObject>((int)GameObjects.ToastMessage);
         toastMessage.SetActive(false);
 
-        Toggle openToggle = Get<Toggle>((int)Toggles.open_toggle);
+        openToggle = Get<Toggle>((int)Toggles.open_toggle);
         openToggle.onValueChanged.AddListener((bool bOn) =>
         {
             if (openToggle.isOn)
@@ -132,6 +149,28 @@ public class UI_GoalCreate : UI_Popup
         InfoGather();
     }
 
+    private void FriendAddBtnClick(PointerEventData data)
+    {
+        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
+
+        if (childList != null)
+        {
+            foreach (Transform child in childList)
+            {
+                if (child != friendRoot.transform)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+
+        foreach (ResponseMemberFind friend in memberList)
+        {
+            UI_FriendAddContent content = Managers.UI.MakeSubItem<UI_FriendAddContent>("TodoGroup", friendRoot.transform, "friendAddContent");
+            content.Setting(friend.userId, friend.nickname, friend.profileColor);
+        }
+    }
+
     private void InfoGather()
     {
         val = new RequestGoalCreate();
@@ -140,6 +179,7 @@ public class UI_GoalCreate : UI_Popup
         if (IsValidTitle(goalNameInputfield.text))
         {
             val.title = goalNameInputfield.text;
+            
         }
         else
         {
@@ -151,7 +191,7 @@ public class UI_GoalCreate : UI_Popup
         if (memberList.Count != 0)
         {
             val.groupFlag = "GROUP";
-            val.memberList = memberList;
+            //val.memberList = memberList;
         }
         else
         {
@@ -168,9 +208,43 @@ public class UI_GoalCreate : UI_Popup
     {
         string name = friendNameInputfield.text;
 
-        //친구 검색 APi
+        if (isValidNickname(name))
+        {
+            openToggle.isOn = false;
+            Managers.Web.SendUniRequest("api/goals/users?nickname=" + name,"POST",null,(uwr)=> { 
+                Response<List<ResponseMemberFind>> res = JsonUtility.FromJson<Response<List<ResponseMemberFind>>>(uwr.downloadHandler.text);
+                if (res.isSuccess)
+                {
+                    Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
 
-        //있으면 memberList에 추가
+                    if (childList != null)
+                    {
+                        foreach(Transform child in childList)
+                        {
+                            if (child != friendRoot.transform)
+                            {
+                                Managers.Resource.Destroy(child.gameObject);
+                            }
+                        }
+                    }
+
+                    foreach(ResponseMemberFind friend in res.result)
+                    {
+                        UI_FriendAddContent content =  Managers.UI.MakeSubItem<UI_FriendAddContent>("TodoGroup",friendRoot.transform,"friendAddContent");
+                        content.Setting(friend.userId,friend.nickname,friend.profileColor);
+                        memberList.Add(friend);
+                    }
+                }
+                else
+                {
+                    switch (res.code) { }
+
+                }
+
+            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue()) ;
+        }
+        //친구 검색 APi
+        
     }
 
 
@@ -224,6 +298,23 @@ public class UI_GoalCreate : UI_Popup
                 RegexOptions.None,TimeSpan.FromMilliseconds(250));
         }
         catch(RegexMatchTimeoutException)
+        {
+            return false;
+        }
+    }
+
+    private bool isValidNickname(string nickname)
+    {
+        if (string.IsNullOrWhiteSpace(nickname))
+        {
+            return false;
+        }
+        try
+        {
+            return Regex.IsMatch(nickname, @"^.{0,8}$",
+                RegexOptions.None, TimeSpan.FromMilliseconds(250));
+        }
+        catch (RegexMatchTimeoutException)
         {
             return false;
         }

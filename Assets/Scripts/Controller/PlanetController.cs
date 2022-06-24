@@ -10,7 +10,7 @@ public class PlanetController : MonoBehaviour
 
     void Start()
     {
-        
+        Debug.Log("Planet");
     }
 
     void Update()

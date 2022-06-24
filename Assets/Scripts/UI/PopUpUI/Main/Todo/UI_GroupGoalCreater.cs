@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,6 +48,12 @@ public class UI_GroupGoalCreater : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
 
+        //시간 표시
+        Text date = GetText((int)Texts.date_txt);
+        DateTime today = DateTime.Now;
+        date.text = today.ToString("yyyy") + "." + today.ToString("MM") + "." + today.ToString("dd");
 
     }
+
+
 }
