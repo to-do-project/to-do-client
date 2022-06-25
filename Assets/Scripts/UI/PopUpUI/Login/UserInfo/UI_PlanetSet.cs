@@ -221,7 +221,8 @@ public class UI_PlanetSet : UI_UserInfo
                             Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
 
                             Managers.Player.Init();
-                            Managers.Scene.LoadScene(Define.Scene.Main);
+                            UI_Load.Instance.InstantLoad("Main");
+                            //Managers.Scene.LoadScene(Define.Scene.Main);
                         }
 
                         else

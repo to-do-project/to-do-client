@@ -148,7 +148,11 @@ public class UI_GoalModify : UI_Popup
                 {
 
                     case 6023:
-                        Managers.Player.SendTokenRequest(innerAction);
+                        Action action = delegate ()
+                        {
+                            DeleteBtnClick(data);
+                        };
+                        Managers.Player.SendTokenRequest(action);
                         break;
                 }
             }
@@ -174,7 +178,7 @@ public class UI_GoalModify : UI_Popup
                 {
 
                     case 6023:
-                        Managers.Player.SendTokenRequest(innerAction);
+                        //Managers.Player.SendTokenRequest(innerAction);
                         break;
                 }
             }

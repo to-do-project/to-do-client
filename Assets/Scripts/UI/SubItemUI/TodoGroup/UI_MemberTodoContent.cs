@@ -5,9 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_GtodoContent : UI_Base
+public class UI_MemberTodoContent : UI_Base
 {
-
     enum Buttons
     {
         like_btn,
@@ -36,6 +35,9 @@ public class UI_GtodoContent : UI_Base
 
     public override void Init()
     {
+        innerAction -= SendLikeClickBtnRequest;
+        innerAction += SendLikeClickBtnRequest;
+
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
         Bind<Toggle>(typeof(Toggles));
@@ -54,12 +56,37 @@ public class UI_GtodoContent : UI_Base
     {
         Init();
     }
+    
+    private void SendLikeClickBtnRequest()
+    {
+        Managers.Web.SendUniRequest("api/todo/like/" + todoMemberId.ToString(), "POST", null, (uwr) => {
+
+            Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+
+            if (res.isSuccess)
+            {
+
+                //하트 색깔 바꾸기
+            }
+            else
+            {
+                Debug.Log(res.message);
+                switch (res.code)
+                {
+                    case 6023:
+                        Managers.Player.SendTokenRequest(innerAction);
+                        break;
+
+                }
+            }
+
+
+        }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+    }
 
     private void LikeBtnClick(PointerEventData data)
     {
-        UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView", "Main");
-        ui.Setting(todoMemberId.ToString());
-        Debug.Log("todoMember id " + todoMemberId.ToString());
+        SendLikeClickBtnRequest();
     }
 
     public void Setting(long goalId, long todoId, string title, bool likeFlag, int likeCount, bool completeFlag)
@@ -82,5 +109,4 @@ public class UI_GtodoContent : UI_Base
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
     }
-
 }

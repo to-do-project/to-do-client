@@ -199,7 +199,8 @@ public class UI_Login : UI_Panel
                     Managers.Player.SetInt(Define.MISSION_STATUS, result.missionStatus);
 
                     Managers.Player.Init();
-                    Managers.Scene.LoadScene(Define.Scene.Main);
+                    UI_Load.Instance.InstantLoad("Main");
+                    //Managers.Scene.LoadScene(Define.Scene.Main);
 
                     Debug.Log("user id ? "+result.userId.ToString()+" "+PlayerPrefs.GetString(Define.USER_ID));
                 }

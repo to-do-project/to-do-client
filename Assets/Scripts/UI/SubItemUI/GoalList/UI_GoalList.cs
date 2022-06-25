@@ -101,6 +101,7 @@ public class UI_GoalList : UI_Base
                     UI_GgoalContent goal = Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList", goalParent.transform, "Ggoal_content");
                     /*                    goal.SetGoalName(item.goalTitle);
                                         goal.SetGoalRate(item.percentage.ToString());*/
+                   
                     goal.SetGgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.managerFlag);
                 }
                 else

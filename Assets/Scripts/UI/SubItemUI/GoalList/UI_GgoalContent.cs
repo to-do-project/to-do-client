@@ -51,7 +51,6 @@ public class UI_GgoalContent : UI_Base
         BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
         BindEvent(groupCheckBtn, GroupCheckClicked, Define.TouchEvent.Touch);
 
-        todo.SetActive(false);
         SetGgoalContent();
 
     }
@@ -67,8 +66,8 @@ public class UI_GgoalContent : UI_Base
         //
         if (creater)
         {
-            Managers.UI.ShowPopupUI<UI_GroupGoalCreater>("GroupGoalCreaterView", "Main");
-
+            UI_GroupGoalCreater ui = Managers.UI.ShowPopupUI<UI_GroupGoalCreater>("GroupGoalCreaterView", "Main");
+            ui.Setting(goalId);
         }
         else
         {
@@ -115,8 +114,12 @@ public class UI_GgoalContent : UI_Base
         {
             UI_GtodoContent todoItem = Managers.UI.MakeSubItem<UI_GtodoContent>("GoalList", todo.transform, "Gtodo_content");
             //todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
-
+            todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag,item.likeCount, item.completeFlag);
         }
+
+        Canvas.ForceUpdateCanvases();
+
+        todo.SetActive(false);
     }
 
     public void SetPercentage(int percentage)

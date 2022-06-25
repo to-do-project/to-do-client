@@ -2367,7 +2367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4774890711743307170}
-  - component: {fileID: 4477344529630602519}
+  - component: {fileID: 8669201158604559763}
   m_Layer: 5
   m_Name: AddTodo
   m_TagString: Untagged
@@ -2398,7 +2398,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1312, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4477344529630602519
+--- !u!114 &8669201158604559763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2407,6 +2407,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8977062633630952947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90009b5815f646449b4596765171e105, type: 3}
+  m_Script: {fileID: 11500000, guid: a84fe823a53a08e468c22262fde776ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

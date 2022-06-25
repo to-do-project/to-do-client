@@ -36,6 +36,8 @@ public class TodoManager
 
     UI_GoalList goalListGameObject;
 
+    public Action<ResponseMemberFind> goalFriendAddAction;
+
     public void Init()
     {
 

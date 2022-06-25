@@ -88,6 +88,8 @@ public class UI_Like : UI_Popup
                 switch (res.code)
                 {
                     case 5039:
+                        likenum.text = "0";
+
                         break;
                     case 6023:
                         break;

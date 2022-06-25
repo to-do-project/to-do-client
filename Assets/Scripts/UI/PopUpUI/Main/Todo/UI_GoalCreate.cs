@@ -87,6 +87,9 @@ public class UI_GoalCreate : UI_Popup
         innerAction -= InfoGather;
         innerAction += InfoGather;
 
+        Managers.Todo.goalFriendAddAction -= AddfriendList;
+        Managers.Todo.goalFriendAddAction += AddfriendList;
+
         memberList = new List<ResponseMemberFind>();
 
         Canvas canvas = GetComponent<Canvas>();
@@ -109,7 +112,13 @@ public class UI_GoalCreate : UI_Popup
         Bind<Toggle>(typeof(Toggles));
 
         friendNameInputfield = GetInputfiled((int)InputFields.friendAdd_inputfield);
-        friendNameInputfield.onEndEdit.AddListener(delegate { SearchFriendName(); });
+        
+
+        friendNameInputfield.onEndEdit.AddListener(delegate { 
+            SearchFriendName();
+            //friendNameInputfield.caretPosition = friendNameInputfield.text.Length;
+            //friendNameInputfield.ForceLabelUpdate();
+        });
 
         friendRoot = Get<GameObject>((int)GameObjects.friendContent);
 
@@ -133,9 +142,17 @@ public class UI_GoalCreate : UI_Popup
         openToggle = Get<Toggle>((int)Toggles.open_toggle);
         openToggle.onValueChanged.AddListener((bool bOn) =>
         {
+
             if (openToggle.isOn)
             {
+
+                if (memberList.Count != 0)
+                {
+                    openToggle.interactable = false;
+                }
+
                 openFlag = "PRIVATE";
+                
             }
             else
             {
@@ -166,7 +183,7 @@ public class UI_GoalCreate : UI_Popup
 
         foreach (ResponseMemberFind friend in memberList)
         {
-            UI_FriendAddContent content = Managers.UI.MakeSubItem<UI_FriendAddContent>("TodoGroup", friendRoot.transform, "friendAddContent");
+            UI_AddedFriendContent content = Managers.UI.MakeSubItem<UI_AddedFriendContent>("TodoGroup", friendRoot.transform, "addedFriendContent");
             content.Setting(friend.userId, friend.nickname, friend.profileColor);
         }
     }
@@ -191,7 +208,7 @@ public class UI_GoalCreate : UI_Popup
         if (memberList.Count != 0)
         {
             val.groupFlag = "GROUP";
-            //val.memberList = memberList;
+            val.memberList = MakeMemberList();
         }
         else
         {
@@ -206,33 +223,34 @@ public class UI_GoalCreate : UI_Popup
 
     private void SearchFriendName()
     {
+        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
+
+        if (childList != null)
+        {
+            foreach (Transform child in childList)
+            {
+                if (child != friendRoot.transform)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+
         string name = friendNameInputfield.text;
 
         if (isValidNickname(name))
         {
-            openToggle.isOn = false;
-            Managers.Web.SendUniRequest("api/goals/users?nickname=" + name,"POST",null,(uwr)=> { 
+            Managers.Web.SendGetRequest("api/goals/users?nickname=",name,(uwr)=> { 
                 Response<List<ResponseMemberFind>> res = JsonUtility.FromJson<Response<List<ResponseMemberFind>>>(uwr.downloadHandler.text);
                 if (res.isSuccess)
                 {
-                    Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
-
-                    if (childList != null)
-                    {
-                        foreach(Transform child in childList)
-                        {
-                            if (child != friendRoot.transform)
-                            {
-                                Managers.Resource.Destroy(child.gameObject);
-                            }
-                        }
-                    }
 
                     foreach(ResponseMemberFind friend in res.result)
                     {
                         UI_FriendAddContent content =  Managers.UI.MakeSubItem<UI_FriendAddContent>("TodoGroup",friendRoot.transform,"friendAddContent");
                         content.Setting(friend.userId,friend.nickname,friend.profileColor);
-                        memberList.Add(friend);
+                        //memberList.Add(friend);
+
                     }
                 }
                 else
@@ -243,7 +261,7 @@ public class UI_GoalCreate : UI_Popup
 
             }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue()) ;
         }
-        //친구 검색 APi
+        
         
     }
 
@@ -345,4 +363,45 @@ public class UI_GoalCreate : UI_Popup
         toastMessage.SetActive(false);
     }
 
+    private void AddfriendList(ResponseMemberFind val)
+    {
+        if (memberList.Find(x=> x.userId==val.userId)==null)
+        {
+            //Debug.Log(val.nickname);
+            //friendNameInputfield.text = friendNameInputfield.text + " ";
+            memberList.Add(val);
+            openToggle.isOn = false;
+            openToggle.interactable = false;
+        }
+
+        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
+
+        if (childList != null)
+        {
+            foreach (Transform child in childList)
+            {
+                if (child != friendRoot.transform)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+    }
+
+    private List<long> MakeMemberList()
+    {
+        List<long> list = new List<long>();
+        
+        foreach(ResponseMemberFind item in memberList)
+        {
+            list.Add(item.userId);
+        }
+
+        return list;
+    }
+
+    private void DeleteFriendList(long userId)
+    {
+
+    }
 }
