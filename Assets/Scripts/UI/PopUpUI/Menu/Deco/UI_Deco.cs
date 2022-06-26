@@ -186,6 +186,7 @@ public class UI_Deco : UI_PopupMenu
             {
                 Debug.Log(response.result);
                 Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)dataContainer.invenIdList[index]);
+                Managers.Player.UpdateCharacterItem(dataContainer.invenIdList[index]);
                 Managers.Resource.Instantiate(fadePath + "DoneFadeView");
             }
             else if(response.code == 6000)

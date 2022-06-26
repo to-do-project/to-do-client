@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class TargetContent : MonoBehaviour
 {
-    public Text title;
-
+    [SerializeField]
+    Text title;
     long id;
+    UI_Collector parent;
 
     public void ChangeText(string text)
     {
-        this.title.text = text;
+        title.text = text;
     }
 
     public void SetId(long id)
@@ -19,8 +20,36 @@ public class TargetContent : MonoBehaviour
         this.id = id;
     }
 
+    public void SetParent(UI_Collector parent)
+    {
+        this.parent = parent;
+    }
+
     public void BtnClicked()
     {
-        Debug.Log("목표 시작하기");
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/goals/archive/" + id, "PATCH", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+            if (response.isSuccess)
+            {
+                Managers.Todo.UserTodoInstantiate((uwr) => {
+                    parent.DeleteTarget(id);
+                    FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
+                    Managers.UI.CloseAllPopupUI();
+                });
+            }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(BtnClicked);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 }

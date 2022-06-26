@@ -9,10 +9,15 @@ public class UI_Collector : UI_PopupMenu
     enum Buttons
     {
         Back_btn,
-        Test_btn
     }
 
     private GameObject content = null;
+    GameObject parent;
+
+    public void SetParent(GameObject parent)
+    {
+        this.parent = parent;
+    }
 
     public override void Init()
     {
@@ -26,6 +31,11 @@ public class UI_Collector : UI_PopupMenu
         {
             content = GameObject.Find("CollectorContent");
         }
+
+        foreach (var tmp in dataContainer.goalList)
+        {
+            AddTarget(tmp.title, tmp.goalId);
+        }
     }
 
     private void SetBtns()
@@ -33,8 +43,6 @@ public class UI_Collector : UI_PopupMenu
         Bind<Button>(typeof(Buttons));
 
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
-
-        SetBtn((int)Buttons.Test_btn, (data) => { AddTarget("목표 제목", "한 달 전"); });
     }
 
     private void Start()
@@ -43,10 +51,26 @@ public class UI_Collector : UI_PopupMenu
     }
 
     //API에서 데이터 가져와서 컨텐츠에 집어넣기(최신순 먼저)
-    void AddTarget(string name, string period)
+    void AddTarget(string title, long id)
     {
         GameObject target = Managers.Resource.Instantiate("UI/ScrollContents/TargetContent");
-        target.transform.SetParent(content.transform);
-        target.transform.localScale = new Vector3(1, 1, 1);
+        target.transform.SetParent(content.transform, false);
+
+        TargetContent tmp = target.GetComponent<TargetContent>();
+        tmp.ChangeText(title);
+        tmp.SetId(id);
+        tmp.SetParent(GetComponent<UI_Collector>());
+    }
+
+    public void DeleteTarget(long id)
+    {
+        foreach(var tmp in dataContainer.goalList)
+        {
+            if(tmp.goalId == id)
+            {
+                dataContainer.goalList.Remove(tmp);
+            }
+        }
+        parent.GetComponent<UI_Menu>().ChangeCcount();
     }
 }

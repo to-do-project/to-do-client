@@ -74,6 +74,7 @@ public class FriendContent : UI_PopupMenu
                 if (response.code == 1000)
                 {
                     Managers.UI.DeactiveAllUI();
+                    Managers.Player.GetPlanet().SetActive(false);
                     GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
                     tmp.GetComponent<UI_FriendMain>().InitView(response.result);
                     GameObject sec = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendUIView");

@@ -59,10 +59,7 @@ public class UI_Menu : UI_PopupMenu
             ChangeNickname(Managers.Player.GetString(Define.NICKNAME));
         }
 
-        if (PlayerPrefs.HasKey("targetCount"))
-        {
-            ChangeCcount("0");
-        }
+        ChangeCcount();
 
         //열기 애니메이션 실행
     }
@@ -75,7 +72,7 @@ public class UI_Menu : UI_PopupMenu
 
         SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Profile>("ProfileView", $"{pathName}/Profile"); });
 
-        SetBtn((int)Buttons.Collector_btn, (data) => { Managers.UI.ShowPopupUI<UI_Collector>("CollectorView", $"{pathName}/Target"); });
+        SetBtn((int)Buttons.Collector_btn, (data) => { Managers.UI.ShowPopupUI<UI_Collector>("CollectorView", $"{pathName}/Target").SetParent(gameObject); });
 
         SetBtn((int)Buttons.Friend_btn, (data) => { Managers.UI.ShowPopupUI<UI_Friend>("FriendView", $"{pathName}/Friend"); });
 
@@ -106,8 +103,8 @@ public class UI_Menu : UI_PopupMenu
         profileText.text = nickname;
     }
 
-    public void ChangeCcount(string count)
+    public void ChangeCcount()
     {
-        ccountText.text = count;
+        ccountText.text = dataContainer.goalList.Count.ToString();
     }
 }

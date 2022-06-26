@@ -60,6 +60,13 @@ public class RequestFriendAccept
     public bool accepted;
 }
 
+[Serializable]
+public class RequestSetting
+{
+    public string flag;
+    public string deviceToken;
+}
+
 // -------- À§ Request -------- ¾Æ·¡ Response ---------
 
 [Serializable]
@@ -195,4 +202,29 @@ public class ResponseGoalList
 {
     public long goalId;
     public string title;
+}
+
+[Serializable]
+public class ResponseSetting
+{
+    public int allFlag;
+    public int friendFlag;
+    public int groupFlag;
+    public int settingFlag;
+    public int noticeFlag;
+}
+
+[Serializable]
+public class ResponseGoalRequest
+{
+    public string title;
+    public List<ResponseGoalRequestList> goalMemberList;
+}
+
+[Serializable]
+public class ResponseGoalRequestList
+{
+    public string nickname;
+    public string profileColor;
+    public bool managerFlag;
 }
