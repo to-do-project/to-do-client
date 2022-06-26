@@ -326,8 +326,9 @@ GameObject:
   - component: {fileID: 1180544043390567812}
   - component: {fileID: 6703069549875534353}
   - component: {fileID: 7002466097558178554}
+  - component: {fileID: 3803955089750334258}
   m_Layer: 5
-  m_Name: PGFgoal_content
+  m_Name: MemberGoal_content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -402,6 +403,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3803955089750334258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180544043390567814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06315cc6645dbed4c9a9e81f621260c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6509472284537484513
 GameObject:
   m_ObjectHideFlags: 0

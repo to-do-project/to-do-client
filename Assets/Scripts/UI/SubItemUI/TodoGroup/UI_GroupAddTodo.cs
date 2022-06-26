@@ -7,22 +7,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-
-public class RequestTodoCreate
+public class UI_GroupAddTodo : UI_Base
 {
-    public long goalId;
-    public string title;
-}
-
-[System.Serializable]
-public class ResponseTodoCreate
-{
-    public long todoMemberId;
-}
-
-public class UI_AddTodo : UI_Base
-{
-
     enum Buttons
     {
         todoAdd_btn,
@@ -64,6 +50,7 @@ public class UI_AddTodo : UI_Base
     }
 
     long goalId;
+    UI_GroupGoalCreater parent;
 
     private void AddBtnClick(PointerEventData data)
     {
@@ -91,7 +78,7 @@ public class UI_AddTodo : UI_Base
         if (string.IsNullOrWhiteSpace(text))
         {
             return false;
-        } 
+        }
         try
         {
             return Regex.IsMatch(text, @"^.{0,50}$",
@@ -108,6 +95,11 @@ public class UI_AddTodo : UI_Base
         goalId = id;
     }
 
+    public void SettingParent(UI_GroupGoalCreater go)
+    {
+        parent = go;
+    }
+
     private void ResponseAction(UnityWebRequest request)
     {
         if (res != null)
@@ -121,14 +113,16 @@ public class UI_AddTodo : UI_Base
                 Canvas.ForceUpdateCanvases();
 
                 UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", this.transform.parent, "Ptodo_content");
-                todoItem.Setting(goalId,res.result.todoMemberId, val.title, false, 0, false);
+                todoItem.Setting(goalId, res.result.todoMemberId, val.title, false, 0, false);
                 this.transform.SetAsLastSibling();
 
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent);
                 Canvas.ForceUpdateCanvases();
                 todoName.text = "";
 
+                parent.Setting(goalId);
                 
+
             }
 
             else

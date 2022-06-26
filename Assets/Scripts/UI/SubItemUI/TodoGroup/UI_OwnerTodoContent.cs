@@ -5,9 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_GtodoContent : UI_Base
+public class UI_OwnerTodoContent : UI_Base
 {
-
     enum Buttons
     {
         like_btn,
@@ -22,7 +21,7 @@ public class UI_GtodoContent : UI_Base
     {
         todoCheck_toggle
     }
-
+    
     long goalId;
     long todoMemberId;
     string title;
@@ -32,7 +31,7 @@ public class UI_GtodoContent : UI_Base
     Text todoTitle, likeTxt;
     Toggle checkToggle;
 
-    Action innerAction;
+    //Action innerAction;
 
     public override void Init()
     {
@@ -43,7 +42,7 @@ public class UI_GtodoContent : UI_Base
         todoTitle = GetText((int)Texts.todo_title);
         likeTxt = GetText((int)Texts.like_txt);
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
-
+        
         GameObject likeBtn = GetButton((int)Buttons.like_btn).gameObject;
         BindEvent(likeBtn, LikeBtnClick);
 
@@ -52,7 +51,7 @@ public class UI_GtodoContent : UI_Base
 
     void Start()
     {
-        Init();
+        Init();   
     }
 
     private void LikeBtnClick(PointerEventData data)
@@ -82,5 +81,4 @@ public class UI_GtodoContent : UI_Base
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
     }
-
 }

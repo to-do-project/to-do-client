@@ -95,7 +95,12 @@ public class UI_GoalModify : UI_Popup
         BindEvent(todoStoreBtn, StoreBtnClick);
 
         goalNameInputfield = GetInputfiled((int)InputFields.todoName_inputfield);
-        goalNameInputfield.placeholder.GetComponent<Text>().text = title;
+        //goalNameInputfield.placeholder.GetComponent<Text>().text = title;
+        goalNameInputfield.text = title;
+
+        Text date = GetText((int)Texts.date_txt);
+        DateTime today = DateTime.Now;
+        date.text = today.ToString("yyyy") + "." + today.ToString("MM") + "." + today.ToString("dd");
 
         toast = GetText((int)Texts.toast_txt);
         toastMessage = Get<GameObject>((int)GameObjects.ToastMessage);
@@ -131,6 +136,7 @@ public class UI_GoalModify : UI_Popup
 
             res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
 
+            Debug.Log(res.message);
             if (res.isSuccess)
             {
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
@@ -142,7 +148,11 @@ public class UI_GoalModify : UI_Popup
                 {
 
                     case 6023:
-                        Managers.Player.SendTokenRequest(innerAction);
+                        Action action = delegate ()
+                        {
+                            DeleteBtnClick(data);
+                        };
+                        Managers.Player.SendTokenRequest(action);
                         break;
                 }
             }
@@ -152,11 +162,11 @@ public class UI_GoalModify : UI_Popup
 
     private void StoreBtnClick(PointerEventData data)
     {
-        Managers.Web.SendUniRequest("/api/goals/archive/" + goalId.ToString(),  "POST", null, (uwr) => {
+        Managers.Web.SendUniRequest("api/goals/archive/" + goalId.ToString(),  "POST", null, (uwr) => {
             Response<string> res = new Response<string>();
 
             res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-
+            Debug.Log(res.message);
             if (res.isSuccess)
             {
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
@@ -168,7 +178,7 @@ public class UI_GoalModify : UI_Popup
                 {
 
                     case 6023:
-                        Managers.Player.SendTokenRequest(innerAction);
+                        //Managers.Player.SendTokenRequest(innerAction);
                         break;
                 }
             }

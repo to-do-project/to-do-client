@@ -55,7 +55,7 @@ public class UI_Main : UI_Panel
 
         Text date = GetText((int)Texts.date_txt);
         DateTime today = DateTime.Now;
-        date.text = today.ToString("yyyy")+"."+today.ToString("mm")+"."+today.ToString("dd");
+        date.text = today.ToString("yyyy")+"."+today.ToString("MM")+"."+today.ToString("dd");
 
         GameObject menuBtn = GetButton((int)Buttons.menu_btn).gameObject;
         BindEvent(menuBtn, MenuBtnClick, Define.TouchEvent.Touch);

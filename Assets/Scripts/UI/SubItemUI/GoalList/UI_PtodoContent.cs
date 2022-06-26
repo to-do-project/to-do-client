@@ -12,6 +12,13 @@ public class RequestTodoModify
     public string title;
 }
 
+[System.Serializable]
+public class ResponseTodoCheck
+{
+    public int percentage;
+}
+
+
 public class UI_PtodoContent : UI_Base
 {
     enum Buttons
@@ -38,13 +45,13 @@ public class UI_PtodoContent : UI_Base
     long goalId;
     long todoMemberId;
     string title;
-    bool likeFlag;
+    bool likeFlag, completeFlag;
     int likeCount;
 
     InputField todoInputfield;
     Text todoTitle,likeTxt;
     Action innerAction;
-
+    Toggle checkToggle;
 
     public override void Init()
     {
@@ -60,6 +67,8 @@ public class UI_PtodoContent : UI_Base
         todoInputfield = GetInputfiled((int)InputFields.todo_inputfield);
         todoTitle = GetText((int)Texts.todo_title);
         likeTxt = GetText((int)Texts.like_txt);
+        checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
+
 
         GameObject likeBtn = GetButton((int)Buttons.like_btn).gameObject;
         GameObject editBtn = GetButton((int)Buttons.edit_btn).gameObject;
@@ -75,6 +84,35 @@ public class UI_PtodoContent : UI_Base
             //todoInputfield.interactable = false;
         });
 
+        checkToggle.onValueChanged.AddListener((bool bOn)=> {
+
+            string flag = bOn ? "true" : "false";
+            
+
+            Managers.Web.SendUniRequest("api/todo/" + todoMemberId.ToString()+"?flag="+flag, "PATCH", null, (uwr) =>
+            {
+                Response<ResponseTodoCheck> res = JsonUtility.FromJson<Response<ResponseTodoCheck>>(uwr.downloadHandler.text);
+
+                if (res.isSuccess)
+                {
+
+                    this.transform.parent.parent.gameObject.GetComponent<UI_PgoalContent>().SetPercentage(res.result.percentage);
+                }
+                else
+                {
+                    Debug.Log(res.message);
+                    switch (res.code)
+                    {
+                        case 6023:
+                            Managers.Player.SendTokenRequest(innerAction);
+                            break;
+
+                    }
+                }
+
+            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
+        });
 
     }
 
@@ -85,7 +123,9 @@ public class UI_PtodoContent : UI_Base
 
     private void LikeBtnClick(PointerEventData data)
     {
-        Managers.UI.ShowPopupUI<UI_Like>("LikeView","Main");
+        UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView","Main");
+        ui.Setting(todoMemberId.ToString());
+        Debug.Log("todoMember id "+todoMemberId.ToString());
     }
 
     private void EditBtnClick(PointerEventData data)
@@ -130,7 +170,7 @@ public class UI_PtodoContent : UI_Base
     }
 
 
-    public void Setting(long goalId,long todoId, string title, bool likeFlag, int likeCount) 
+    public void Setting(long goalId,long todoId, string title, bool likeFlag, int likeCount, bool completeFlag) 
     {
         //goalId = id;
 
@@ -141,12 +181,14 @@ public class UI_PtodoContent : UI_Base
         this.title = title;
         this.likeFlag = likeFlag;
         this.likeCount = likeCount;
+        this.completeFlag = completeFlag;
     }
 
     private void SetTodo()
     {
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
+        checkToggle.isOn = completeFlag;
     }
 
     private bool IsValidTitle(string title)
