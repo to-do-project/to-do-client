@@ -12,6 +12,12 @@ public class UI_Collector : UI_PopupMenu
     }
 
     private GameObject content = null;
+    GameObject parent;
+
+    public void SetParent(GameObject parent)
+    {
+        this.parent = parent;
+    }
 
     public override void Init()
     {
@@ -30,7 +36,6 @@ public class UI_Collector : UI_PopupMenu
         {
             AddTarget(tmp.title, tmp.goalId);
         }
-        AddTarget("Å×½ºÆ®", 1);
     }
 
     private void SetBtns()
@@ -54,5 +59,18 @@ public class UI_Collector : UI_PopupMenu
         TargetContent tmp = target.GetComponent<TargetContent>();
         tmp.ChangeText(title);
         tmp.SetId(id);
+        tmp.SetParent(GetComponent<UI_Collector>());
+    }
+
+    public void DeleteTarget(long id)
+    {
+        foreach(var tmp in dataContainer.goalList)
+        {
+            if(tmp.goalId == id)
+            {
+                dataContainer.goalList.Remove(tmp);
+            }
+        }
+        parent.GetComponent<UI_Menu>().ChangeCcount();
     }
 }

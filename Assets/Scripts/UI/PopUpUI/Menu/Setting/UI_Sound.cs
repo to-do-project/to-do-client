@@ -60,7 +60,7 @@ public class UI_Sound : UI_PopupMenu
         if (PlayerPrefs.HasKey(Define.MISSION_STATUS)) mission = (Managers.Player.GetInt(Define.MISSION_STATUS) == 1);
         else mission = true;
 
-        if (PlayerPrefs.HasKey("onBGM")) bgm = (Managers.Player.GetInt("onSFX") == 1);
+        if (PlayerPrefs.HasKey("onBGM")) bgm = (Managers.Player.GetInt("onBGM") == 1);
         else bgm = true;
 
         if (PlayerPrefs.HasKey("onSFX")) sfx = (Managers.Player.GetInt("onSFX") == 1);
