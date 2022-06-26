@@ -164,11 +164,12 @@ public class UI_GoalCreate : UI_Popup
     private void CheckBtnClick(PointerEventData data)
     {
         InfoGather();
+
     }
 
     private void FriendAddBtnClick(PointerEventData data)
     {
-        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
+/*        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
 
         if (childList != null)
         {
@@ -179,7 +180,7 @@ public class UI_GoalCreate : UI_Popup
                     Managers.Resource.Destroy(child.gameObject);
                 }
             }
-        }
+        }*/
 
         foreach (ResponseMemberFind friend in memberList)
         {
@@ -200,7 +201,7 @@ public class UI_GoalCreate : UI_Popup
         }
         else
         {
-            showToastMessage("목표를 다시 입력해주세요.", 1.2f);
+            showToastMessage(toastMessage, toast, "목표를 다시 입력해주세요.", 1.2f);
             return;
         }
         val.openFlag = openFlag;
@@ -215,26 +216,17 @@ public class UI_GoalCreate : UI_Popup
             val.groupFlag = "PERSONAL";
             val.memberList = null;
         }
+        goalNameInputfield.text = "";
+
+        ClosePopupUI();
 
         res = new Response<string>();
         Managers.Web.SendPostRequest<RequestGoalCreate>("api/goals", val, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
-        goalNameInputfield.text = "";
+
     }
 
     private void SearchFriendName()
     {
-        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
-
-        if (childList != null)
-        {
-            foreach (Transform child in childList)
-            {
-                if (child != friendRoot.transform)
-                {
-                    Managers.Resource.Destroy(child.gameObject);
-                }
-            }
-        }
 
         string name = friendNameInputfield.text;
 
@@ -276,7 +268,7 @@ public class UI_GoalCreate : UI_Popup
             if (res.isSuccess)
             {
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
-                ClosePopupUI();
+                //ClosePopupUI();
             }
             else
             {
@@ -284,10 +276,10 @@ public class UI_GoalCreate : UI_Popup
                 {
 
                     case 5007:
-                        showToastMessage("목표를 작성해주세요.",1.2f);
+                        showToastMessage(toastMessage, toast,"목표를 작성해주세요.",1.2f);
                         break;
                     case 5010:
-                        showToastMessage("목표명은 20자까지만 입력가능합니다.", 1.2f);
+                        showToastMessage(toastMessage, toast,"목표명은 20자까지만 입력가능합니다.", 1.2f);
                         break;
 
                     case 6023:
@@ -338,30 +330,7 @@ public class UI_GoalCreate : UI_Popup
         }
     }
 
-    private void showToastMessage(string msg, float time)
-    {
-        StartCoroutine(showToastMessageCoroutine(msg, time));
-    }
 
-    private IEnumerator showToastMessageCoroutine(string msg, float time)
-    {
-        
-        float elapsedTime = 0.0f;
-
-        toastMessage.SetActive(true);
-        toast.text = msg;
-
-        while (elapsedTime < time)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        yield return null;
-
-        toast.text = "";
-        toastMessage.SetActive(false);
-    }
 
     private void AddfriendList(ResponseMemberFind val)
     {
@@ -370,8 +339,13 @@ public class UI_GoalCreate : UI_Popup
             //Debug.Log(val.nickname);
             //friendNameInputfield.text = friendNameInputfield.text + " ";
             memberList.Add(val);
-            openToggle.isOn = false;
-            openToggle.interactable = false;
+
+            if (openToggle.IsInteractable())
+            {
+                openToggle.isOn = false;
+                openToggle.interactable = false;
+            }
+
         }
 
         Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
@@ -387,6 +361,8 @@ public class UI_GoalCreate : UI_Popup
             }
         }
     }
+    
+
 
     private List<long> MakeMemberList()
     {

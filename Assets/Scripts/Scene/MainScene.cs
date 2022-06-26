@@ -45,6 +45,12 @@ public class MainScene : BaseScene
         PlanetSetting();
         //Managers.Player.SendTokenRequest(innerCallback);
 
+
+        if (CalcDate())
+        {
+            //Managers.UI.ShowPopupUI<UI_DailySettleView>();
+        }
+
         //test ÄÚµå
         Managers.Sound.PlayBGMSound();
     }

@@ -53,6 +53,11 @@ public class UI_PtodoContent : UI_Base
     Action innerAction;
     Toggle checkToggle;
 
+    const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x.png";
+    const int fullHeart = 19;
+    const int hollowHeart = 20;
+    const int grayHeart = 21;
+
     public override void Init()
     {
         innerAction -= SendTodoModifyRequest;
@@ -212,5 +217,11 @@ public class UI_PtodoContent : UI_Base
     {
         todoTitle.text = title;
         todoInputfield.DeactivateInputField();
+    }
+
+    private void SetLikeBtnImage()
+    {
+        //like 버튼 이미지 변경
+        
     }
 }

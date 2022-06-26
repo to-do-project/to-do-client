@@ -4,37 +4,35 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
-public class UI_MemberGoalContent : UI_Base
+public class UI_OwnerGoalContent : UI_Base
 {
-
     enum Texts
     {
-        name_txt,
-        GoalRate_txt,
-        GoalAttend_txt,
+        myName_txt,
+        myGoalRate_txt,
     }
     enum GameObjects
     {
-        Goal,
-        Todo,
+        OwnerGoal,
+        OwnerTodo,
+        AddTodo,
     }
 
     enum Images
     {
-        profile_img,
+        myProfile_img,
     }
 
+    GameObject todoAdd;
     GameObject todo, goal;
 
     List<GetTodoMembers> todoList = new List<GetTodoMembers>();
-    Text nickname;
-    Text goalRate;
-    Text goalAttend;
+    Text nicknameTxt;
+    Text goalRateTxt;
 
     long goalId;
-    string title, rate = "";
-    bool wait;
+    string nickname, rate = "";
+
 
     void Start()
     {
@@ -47,16 +45,18 @@ public class UI_MemberGoalContent : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
 
-        todo = Get<GameObject>((int)GameObjects.Todo);
-        goal = Get<GameObject>((int)GameObjects.Goal);
+        todo = Get<GameObject>((int)GameObjects.OwnerTodo);
+        goal = Get<GameObject>((int)GameObjects.OwnerGoal);
 
-        nickname = GetText((int)Texts.name_txt);
-        goalRate = GetText((int)Texts.GoalRate_txt);
-        goalAttend = GetText((int)Texts.GoalAttend_txt);
+        nicknameTxt = GetText((int)Texts.myName_txt);
+        goalRateTxt = GetText((int)Texts.myGoalRate_txt);
 
         Canvas.ForceUpdateCanvases();
 
         BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+
+        todoAdd = Get<GameObject>((int)GameObjects.AddTodo);
+
 
         Canvas.ForceUpdateCanvases();
 
@@ -82,29 +82,18 @@ public class UI_MemberGoalContent : UI_Base
 
     }
 
-    public void SetGoalContent(string name, string rate, long goalId, List<GetTodoMembers> todolist, bool wait)
+    public void SetGoalContent(string name, string rate, long goalId, List<GetTodoMembers> todolist)
     {
-        title = name;
+        this.nickname = name;
         this.rate = rate;
         this.goalId = goalId;
         todoList = todolist;
-        this.wait = wait;
     }
 
     private void SetGoalContent()
     {
-        if (wait)
-        {
-            goalAttend.text = "수락 대기 중";
-            goalRate.text = "";
-
-            todo.SetActive(false);
-
-            return;
-        }
-
-        nickname.text = title;
-        goalRate.text = rate + "%";
+        nicknameTxt.text = nickname;
+        goalRateTxt.text = rate + "%";
 
         Canvas.ForceUpdateCanvases();
 
@@ -115,13 +104,14 @@ public class UI_MemberGoalContent : UI_Base
             foreach (GetTodoMembers item in todoList)
             {
                 Debug.Log($"{item.todoTitle} {item.todoMemberId}");
-                UI_MemberTodoContent todoItem = Managers.UI.MakeSubItem<UI_MemberTodoContent>("TodoGroup", todo.transform, "MemberTodo_content");
+                UI_OwnerTodoContent todoItem = Managers.UI.MakeSubItem<UI_OwnerTodoContent>("TodoGroup", todo.transform, "MemberTodo_content");
 
 
                 todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
             }
         }
 
+        todoAdd.transform.SetAsLastSibling();
 
         Canvas.ForceUpdateCanvases();
 
@@ -131,6 +121,6 @@ public class UI_MemberGoalContent : UI_Base
     public void SetPercentage(int percentage)
     {
         //Debug.Log(percentage);
-        goalRate.text = percentage.ToString() + "%";
+        goalRateTxt.text = percentage.ToString() + "%";
     }
 }

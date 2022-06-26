@@ -26,6 +26,11 @@ public class UI_FriendAddContent : UI_Base
     string nickname;
     string profileColor;
 
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
+
+    Image profile;
+    Text nicknameTxt;
+
     public override void Init()
     {
         Bind<Text>(typeof(Texts));
@@ -35,9 +40,12 @@ public class UI_FriendAddContent : UI_Base
         GameObject background = Get<GameObject>((int)GameObjects.background);
         BindEvent(background, OnAddClick, Define.TouchEvent.Touch);
 
-        Text nicknameTxt = GetText((int)Texts.friend_name);
+        nicknameTxt = GetText((int)Texts.friend_name);
         nicknameTxt.text = nickname;
 
+        profile = GetImage((int)Images.friend_profile_img);
+
+        SetImage(profileColor);
 
     }
 
@@ -69,5 +77,11 @@ public class UI_FriendAddContent : UI_Base
         this.profileColor = profileColor;
     }
 
+    public void SetImage(string color)
+    {
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profile.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+    }
 
 }

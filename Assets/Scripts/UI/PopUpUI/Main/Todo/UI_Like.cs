@@ -32,6 +32,7 @@ public class UI_Like : UI_Popup
 
     string todoMemberId;
 
+
     GameObject root;
     Text likenum;
 

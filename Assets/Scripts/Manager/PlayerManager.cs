@@ -224,7 +224,9 @@ public class PlayerManager : MonoBehaviour
 
                 if (Arrangeres.code == 1000)
                 {
-                    Managers.Scene.LoadScene(Define.Scene.Main);
+                    UI_Load.Instance.InstantLoad("Main");
+
+                    //Managers.Scene.LoadScene(Define.Scene.Main);
                     //SendSettingPlanetRequest(PlayerPrefs.GetString(Define.USER_ID));
 
 
@@ -440,6 +442,10 @@ public class PlayerManager : MonoBehaviour
         return planet;
     }
 
+    public long GetUserId()
+    {
+        return Convert.ToInt64(PlayerPrefs.GetString(Define.USER_ID));
+    }
 
     public void AddItemList(GameObject go)
     {
