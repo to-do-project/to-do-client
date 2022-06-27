@@ -16,18 +16,21 @@ public class UI_LikeFriendContent : UI_Base
         profile_img,
     }
 
-    string name, image;
+    string name, color;
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
+
+    Image profile;
+    Text friendName;
 
     public override void Init()
     {
         Bind<Text>(typeof(Texts));
         Bind<Image>(typeof(Images));
 
-        Text friendName = GetText((int)Texts.friendname_txt);
-        Image profile = GetImage((int)Images.profile_img);
+        friendName = GetText((int)Texts.friendname_txt);
+        profile = GetImage((int)Images.profile_img);
 
-        friendName.text = name;
-
+        Setting();
 
     }
 
@@ -36,10 +39,19 @@ public class UI_LikeFriendContent : UI_Base
         Init();
     }
 
-    public void Setting(string name, string image)
+    public void Setting(string name, string color)
     {
         this.name = name;
-        this.image = image;
+        this.color = color;
     }
 
+    private void Setting()
+    {
+        friendName.text = name;
+
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profile.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+
+    }
 }

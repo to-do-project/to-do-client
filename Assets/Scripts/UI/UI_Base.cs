@@ -93,4 +93,60 @@ public abstract class UI_Base : MonoBehaviour
                 break;
         }
     }
+
+    public void showToastMessage(GameObject toastMessage, Text toast, string msg, float time)
+    {
+        Debug.Log("show toast message");
+        StartCoroutine(showToastMessageCoroutine(toastMessage,toast, msg, time));
+    }
+
+    private IEnumerator showToastMessageCoroutine(GameObject toastMessage, Text toast, string msg, float time)
+    {
+        Debug.Log("in show toast message");
+        toastMessage.SetActive(true);
+        toast.text = msg;
+
+        yield return fadeInOut(toastMessage.GetComponent<CanvasGroup>(), 0.3f, true);
+
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime < time)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return fadeInOut(toastMessage.GetComponent<CanvasGroup>(), 0.3f, false);
+
+        toast.text = "";
+        toastMessage.SetActive(false);
+    }
+
+
+    private IEnumerator fadeInOut(CanvasGroup target, float durationTime, bool inOut)
+    {
+        float start, end;
+        if (inOut)
+        {
+            start = 0.0f;
+            end = 1.0f;
+        }
+        else
+        {
+            start = 1.0f;
+            end = 0f;
+        }
+
+        //Color current = Color.clear; /* (0, 0, 0, 0) = 검은색 글자, 투명도 100% */
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime < durationTime)
+        {
+            float alpha = Mathf.Lerp(start, end, elapsedTime / durationTime);
+            target.alpha = alpha;
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+    }
 }

@@ -112,7 +112,7 @@ public class UI_GroupAddTodo : UI_Base
 
                 Canvas.ForceUpdateCanvases();
 
-                UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", this.transform.parent, "Ptodo_content");
+                UI_MemberTodoContent todoItem = Managers.UI.MakeSubItem<UI_MemberTodoContent>("TodoGroup", this.transform.parent, "MemberTodo_content");
                 todoItem.Setting(goalId, res.result.todoMemberId, val.title, false, 0, false);
                 this.transform.SetAsLastSibling();
 
@@ -120,7 +120,7 @@ public class UI_GroupAddTodo : UI_Base
                 Canvas.ForceUpdateCanvases();
                 todoName.text = "";
 
-                parent.Setting(goalId);
+                //parent.Setting(goalId);
                 
 
             }

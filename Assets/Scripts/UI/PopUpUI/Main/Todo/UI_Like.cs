@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class UI_Like : UI_Popup
     enum GameObjects
     {
         Content,
+        exit_btn,
     }
 
     enum Texts
@@ -31,6 +33,7 @@ public class UI_Like : UI_Popup
     }
 
     string todoMemberId;
+
 
     GameObject root;
     Text likenum;
@@ -58,6 +61,8 @@ public class UI_Like : UI_Popup
         root = Get<GameObject>((int)GameObjects.Content);
         likenum = GetText((int)Texts.likenum2_txt);
 
+        GameObject exitBtn = Get<GameObject>((int)GameObjects.exit_btn);
+        BindEvent(exitBtn, ClosePopupUI);
 
     }
 
@@ -92,6 +97,8 @@ public class UI_Like : UI_Popup
 
                         break;
                     case 6023:
+                        Action action = delegate { };
+                        
                         break;
                 }
             }

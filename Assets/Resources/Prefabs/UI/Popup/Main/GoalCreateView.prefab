@@ -360,8 +360,8 @@ RectTransform:
   - {fileID: 7696027317412754987}
   - {fileID: 3588324513313256414}
   - {fileID: 3520270186932487773}
-  - {fileID: 8346455071546764909}
   - {fileID: 4182042691306875798}
+  - {fileID: 8346455071546764909}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -701,10 +701,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 32
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 32
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -2338,7 +2338,7 @@ RectTransform:
   m_Children:
   - {fileID: 2429819815679730919}
   m_Father: {fileID: 3727899579119732999}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -2396,7 +2396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 819927396491412949}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -2438,6 +2438,7 @@ GameObject:
   - component: {fileID: 8346455071546764909}
   - component: {fileID: 6492246574852314408}
   - component: {fileID: 2258305935330719433}
+  - component: {fileID: 2362174696931246137}
   m_Layer: 0
   m_Name: ToastMessage
   m_TagString: Untagged
@@ -2458,7 +2459,7 @@ RectTransform:
   m_Children:
   - {fileID: 6892873408820643371}
   m_Father: {fileID: 3727899579119732999}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -2503,3 +2504,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &2362174696931246137
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8493970808210473858}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
