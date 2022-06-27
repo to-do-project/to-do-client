@@ -48,6 +48,36 @@ public class UI_GtodoContent : UI_Base
         BindEvent(likeBtn, LikeBtnClick);
 
         SetTodo();
+
+        checkToggle.onValueChanged.AddListener((bool bOn) => {
+
+            string flag = bOn ? "true" : "false";
+
+
+            Managers.Web.SendUniRequest("api/todo/" + todoMemberId.ToString() + "?flag=" + flag, "PATCH", null, (uwr) =>
+            {
+                Response<ResponseTodoCheck> res = JsonUtility.FromJson<Response<ResponseTodoCheck>>(uwr.downloadHandler.text);
+
+                if (res.isSuccess)
+                {
+
+                    this.transform.parent.parent.gameObject.GetComponent<UI_GgoalContent>().SetPercentage(res.result.percentage);
+                }
+                else
+                {
+                    Debug.Log(res.message);
+                    switch (res.code)
+                    {
+                        case 6023:
+                            //Managers.Player.SendTokenRequest(innerAction);
+                            break;
+
+                    }
+                }
+
+            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
+        });
     }
 
     void Start()

@@ -107,13 +107,42 @@ public class PlayerManager : MonoBehaviour
         //토큰 확인 & 재발급 (자동로그인 상태)
         if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
         {
-            //Debug.Log("Token 있음");
-            Debug.Log(PlayerPrefs.GetString(Define.JWT_ACCESS_TOKEN));
-            Debug.Log(PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN));
+            RequestToken val = new RequestToken { deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier }; //디바이스 토큰 수정 필요
+            header[0] = Define.JWT_REFRESH_TOKEN;
+            header[1] = "User-Id";
+
+            //Debug.Log("user id is : " + PlayerPrefs.GetString(Define.USER_ID));
+            headerValue[0] = PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN);
+            headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
+
+            Managers.Web.SendPostRequest<RequestToken>("access-token", val,(uwr)=> {
+
+                Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+
+                if (res.isSuccess)
+                {
+                    UI_Load.Instance.InstantLoad("Main");
+                    //UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
+                    
+                }
+                else
+                {
+                    if (res.code == 6023)
+                    {
+                        Managers.UI.Clear();
+                        PlayerPrefs.DeleteKey(Define.JWT_ACCESS_TOKEN);
+                        PlayerPrefs.DeleteKey(Define.JWT_REFRESH_TOKEN);
+                        Managers.Scene.LoadScene(Define.Scene.Login);
+                    }
+                }
+
+                ///FirstInstantiate();
+
+            }, header, headerValue);
             //Managers.Scene.LoadScene(Define.Scene.Main);
             //SendTokenRequest(null);
 
-            FirstInstantiate();
+
         }
         else
         {

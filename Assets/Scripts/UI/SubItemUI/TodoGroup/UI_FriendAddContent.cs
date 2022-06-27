@@ -37,8 +37,8 @@ public class UI_FriendAddContent : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
 
-        GameObject background = Get<GameObject>((int)GameObjects.background);
-        BindEvent(background, OnAddClick, Define.TouchEvent.Touch);
+        //GameObject background = Get<GameObject>((int)GameObjects.background);
+        BindEvent(this.gameObject, OnAddClick, Define.TouchEvent.Touch);
 
         nicknameTxt = GetText((int)Texts.friend_name);
         nicknameTxt.text = nickname;

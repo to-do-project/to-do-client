@@ -169,7 +169,7 @@ public class UI_GoalCreate : UI_Popup
 
     private void FriendAddBtnClick(PointerEventData data)
     {
-/*        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
+        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
 
         if (childList != null)
         {
@@ -180,7 +180,7 @@ public class UI_GoalCreate : UI_Popup
                     Managers.Resource.Destroy(child.gameObject);
                 }
             }
-        }*/
+        }
 
         foreach (ResponseMemberFind friend in memberList)
         {
@@ -359,6 +359,12 @@ public class UI_GoalCreate : UI_Popup
                     Managers.Resource.Destroy(child.gameObject);
                 }
             }
+        }
+
+        foreach (ResponseMemberFind friend in memberList)
+        {
+            UI_AddedFriendContent content = Managers.UI.MakeSubItem<UI_AddedFriendContent>("TodoGroup", friendRoot.transform, "addedFriendContent");
+            content.Setting(friend.userId, friend.nickname, friend.profileColor);
         }
     }
     

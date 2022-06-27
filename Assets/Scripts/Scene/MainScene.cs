@@ -5,6 +5,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
+public class ResponseDailyResult
+{
+    public int total_exp;
+    public int total_point;
+}
+
 public class MainScene : BaseScene
 {
     Camera PlanetCamera;
@@ -49,6 +55,22 @@ public class MainScene : BaseScene
         if (CalcDate())
         {
             //Managers.UI.ShowPopupUI<UI_DailySettleView>();
+
+            Managers.Web.SendGetRequest("api/users/result", null, (uwr)=> {
+                Response<ResponseDailyResult> res = JsonUtility.FromJson<Response<ResponseDailyResult>>(uwr.downloadHandler.text);
+
+                if (res.isSuccess)
+                {
+                    //Managers.UI.ShowPopupUI<UI_DailySettleView>();
+                }
+                else
+                {
+
+                }
+
+            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
+
         }
 
         //test ÄÚµå

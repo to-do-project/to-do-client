@@ -21,6 +21,7 @@ public class UI_GgoalContent : UI_Base
         Goal,
         Todo,
         groupCheck_btn,
+        GroupCheck,
     }
 
     GameObject todo, goal;
@@ -33,6 +34,8 @@ public class UI_GgoalContent : UI_Base
     string title, rate = "";
     bool open, creater;
 
+    GameObject groupCheck;
+
     public override void Init()
     {
 
@@ -43,6 +46,7 @@ public class UI_GgoalContent : UI_Base
         goal = Get<GameObject>((int)GameObjects.Goal);
         goalTitle = GetText((int)Texts.Goal_txt);
         goalRate = GetText((int)Texts.GoalRate_txt);
+        groupCheck = Get<GameObject>((int)GameObjects.GroupCheck);
 
         GameObject groupCheckBtn = Get<GameObject>((int)GameObjects.groupCheck_btn);
 
@@ -62,19 +66,8 @@ public class UI_GgoalContent : UI_Base
 
     private void GroupCheckClicked(PointerEventData data)
     {
-        //그룹목표확인창 띄우기
-        //
-        if (creater)
-        {
-            UI_GroupGoalCreater ui = Managers.UI.ShowPopupUI<UI_GroupGoalCreater>("GroupGoalCreaterView", "Main");
-            ui.Setting(goalId);
-        }
-        else
-        {
-            Managers.UI.ShowPopupUI<UI_GroupGoalParticipants>("GroupGoalParticipantsView", "Main");
-
-        }
-        //
+        UI_GroupGoalCreater ui = Managers.UI.ShowPopupUI<UI_GroupGoalCreater>("GroupGoalCreaterView", "Main");
+        ui.Setting(goalId);
     }
 
     public void GoalClick(PointerEventData data)
@@ -116,6 +109,8 @@ public class UI_GgoalContent : UI_Base
             //todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
             todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag,item.likeCount, item.completeFlag);
         }
+
+        groupCheck.transform.SetAsLastSibling();
 
         Canvas.ForceUpdateCanvases();
 

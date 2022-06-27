@@ -31,10 +31,14 @@ public class UI_MemberGoalContent : UI_Base
     Text nickname;
     Text goalRate;
     Text goalAttend;
+    Image profile;
 
     long goalId;
-    string title, rate = "";
+    string memberName, rate, color = "";
     bool wait;
+
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
+
 
     void Start()
     {
@@ -53,6 +57,7 @@ public class UI_MemberGoalContent : UI_Base
         nickname = GetText((int)Texts.name_txt);
         goalRate = GetText((int)Texts.GoalRate_txt);
         goalAttend = GetText((int)Texts.GoalAttend_txt);
+        profile = GetImage((int)Images.profile_img);
 
         Canvas.ForceUpdateCanvases();
 
@@ -82,9 +87,10 @@ public class UI_MemberGoalContent : UI_Base
 
     }
 
-    public void SetGoalContent(string name, string rate, long goalId, List<GetTodoMembers> todolist, bool wait)
+    public void SetGoalContent(string name, string color, string rate, long goalId, List<GetTodoMembers> todolist, bool wait)
     {
-        title = name;
+        this.memberName = name;
+        this.color = color;
         this.rate = rate;
         this.goalId = goalId;
         todoList = todolist;
@@ -93,8 +99,11 @@ public class UI_MemberGoalContent : UI_Base
 
     private void SetGoalContent()
     {
+        nickname.text = memberName;
+        SetImage(color);
         if (wait)
         {
+
             goalAttend.text = "수락 대기 중";
             goalRate.text = "";
 
@@ -103,8 +112,8 @@ public class UI_MemberGoalContent : UI_Base
             return;
         }
 
-        nickname.text = title;
         goalRate.text = rate + "%";
+        //SetImage();
 
         Canvas.ForceUpdateCanvases();
 
@@ -132,5 +141,12 @@ public class UI_MemberGoalContent : UI_Base
     {
         //Debug.Log(percentage);
         goalRate.text = percentage.ToString() + "%";
+    }
+
+    public void SetImage(string color)
+    {
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profile.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
 }

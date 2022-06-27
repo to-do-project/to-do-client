@@ -20,6 +20,7 @@ public class GoalMemberDetails
 {
     public long userId;
     public string nickname;
+    public string profileColor;
     public int percentage;
     public bool managerFlag;
     public bool waitFlag;
@@ -51,6 +52,8 @@ public class UI_GroupGoalCreater : UI_Popup
         date_txt,
         GoalRate_txt,
         GoalTitle_txt,
+        GroupDelete_txt,
+        del_res_txt,
     }
 
     enum GameObjects
@@ -59,7 +62,9 @@ public class UI_GroupGoalCreater : UI_Popup
         AddTodo,
         GroupDeleteView,
         OwnerGoal_content,
+        OwnerTodo,
     }
+
 
     long goalId;
 
@@ -72,9 +77,13 @@ public class UI_GroupGoalCreater : UI_Popup
     GameObject addTodo;
     GameObject deleteView;
     GameObject ownerGoal;
+    GameObject ownerTodo;
 
     Text goalTitle;
     Text goalRate;
+    Text deletbtnTxt;
+    Text delresTxt;
+    bool isManager;
 
     public override void Init()
     {
@@ -89,15 +98,19 @@ public class UI_GroupGoalCreater : UI_Popup
         date.text = today.ToString("yyyy") + "." + today.ToString("MM") + "." + today.ToString("dd");
 
         scrollRoot = Get<GameObject>((int)GameObjects.Content);
-        addTodo = Get<GameObject>((int)GameObjects.AddTodo);
-        addTodo.GetComponent<UI_GroupAddTodo>().SettingParent(this.GetComponent<UI_GroupGoalCreater>());
-
+        //addTodo = Get<GameObject>((int)GameObjects.AddTodo);
+        //addTodo.GetComponent<UI_GroupAddTodo>().SettingParent(this.GetComponent<UI_GroupGoalCreater>());
         ownerGoal = Get<GameObject>((int)GameObjects.OwnerGoal_content);
+        ownerTodo = Get<GameObject>((int)GameObjects.OwnerTodo);
+
+        deletbtnTxt = GetText((int)Texts.GroupDelete_txt);
+        delresTxt = GetText((int)Texts.del_res_txt);
 
         goalTitle = GetText((int)Texts.GoalTitle_txt);
         goalRate = GetText((int)Texts.GoalRate_txt);
 
         deleteView = Get<GameObject>((int)GameObjects.GroupDeleteView);
+
         deleteView.SetActive(false);
 
         GameObject doneBtn = GetButton((int)Buttons.done_btn).gameObject;
@@ -108,11 +121,15 @@ public class UI_GroupGoalCreater : UI_Popup
 
         GameObject deleteBtn = GetButton((int)Buttons.GroupDelete_btn).gameObject;
         BindEvent(deleteBtn, DeleteBtnClick);
+
+        GameObject exitBtn = GetButton((int)Buttons.exit_btn).gameObject;
+        BindEvent(exitBtn, ClosePopupUI);
     }
 
     private void CancleBtnClick(PointerEventData data)
     {
         deleteView.SetActive(false);
+
     }
 
     private void DoneBtnClick(PointerEventData data)
@@ -145,7 +162,7 @@ public class UI_GroupGoalCreater : UI_Popup
 
     private void DeleteBtnClick(PointerEventData data)
     {
-
+        
         deleteView.SetActive(true);
     }
 
@@ -159,32 +176,50 @@ public class UI_GroupGoalCreater : UI_Popup
 
              if (res.isSuccess)
              {
+                 //자식 클리어
+                 //Transform[] childList = 
+
+
                  //res.result;
                  goalTitle.text = res.result.goalTitle;
                  goalRate.text = res.result.goalPercentage.ToString() + "%";
 
-                 
 
+                 Canvas.ForceUpdateCanvases();
 
                  //멤버별 개인
-                 foreach(GoalMemberDetails item in res.result.goalMemberDetails)
+                 foreach (GoalMemberDetails item in res.result.goalMemberDetails)
                  {
-                     //생성자
+                     //본인
                      if (item.userId == Managers.Player.GetUserId())
                      {
 
-                         ownerGoal.GetComponent<UI_OwnerGoalContent>().SetGoalContent(item.nickname, item.percentage.ToString(), res.result.goalId, item.getTodoMembers);
-
+                         ownerGoal.GetComponent<UI_OwnerGoalContent>().SetGoalContent(item.nickname,item.profileColor, item.percentage.ToString(), res.result.goalId, item.getTodoMembers);
+                         //매니저면
+                         if (item.managerFlag)
+                         {
+                             addTodo = Managers.UI.MakeSubItem<UI_GroupAddTodo>("TodoGroup", ownerTodo.transform, "AddTodo").gameObject;
+                             addTodo.GetComponent<UI_GroupAddTodo>().Setting(res.result.goalId);
+                             deletbtnTxt.text = "그룹 목표 삭제하기";
+                             isManager = true;
+                             delresTxt.text = "그룹 목표를 삭제하시겠습니까?";
+                             addTodo.transform.SetAsLastSibling();
+                         }
                      }
-                     else    //생성자 아니면
+                     else    //본인 아니면
                      {
                          UI_MemberGoalContent ui = Managers.UI.MakeSubItem<UI_MemberGoalContent>("TodoGroup", scrollRoot.transform, "MemberGoal_content") ;
-                         ui.SetGoalContent(item.nickname, item.percentage.ToString(), res.result.goalId, item.getTodoMembers, item.waitFlag);
-                     
+                         ui.SetGoalContent(item.nickname, item.profileColor, item.percentage.ToString(), res.result.goalId, item.getTodoMembers, item.waitFlag);
+                         deletbtnTxt.text = "그룹 탈퇴하기";
+                         isManager = false;
+                         delresTxt.text = "그룹 목표를 탈퇴하시겠습니까?";
                      }
 
 
                  }
+
+
+                 Canvas.ForceUpdateCanvases();
 
              }
              else

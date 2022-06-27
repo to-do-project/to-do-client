@@ -52,10 +52,11 @@ public class UI_PtodoContent : UI_Base
     Text todoTitle,likeTxt;
     Action innerAction;
     Toggle checkToggle;
+    GameObject likeBtn;
 
-    const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x.png";
+    const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
     const int fullHeart = 19;
-    const int hollowHeart = 20;
+    const int emptyHeart = 20;
     const int grayHeart = 21;
 
     public override void Init()
@@ -75,7 +76,7 @@ public class UI_PtodoContent : UI_Base
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
 
 
-        GameObject likeBtn = GetButton((int)Buttons.like_btn).gameObject;
+        likeBtn = GetButton((int)Buttons.like_btn).gameObject;
         GameObject editBtn = GetButton((int)Buttons.edit_btn).gameObject;
         BindEvent(likeBtn, LikeBtnClick);
         BindEvent(editBtn, EditBtnClick);
@@ -109,7 +110,7 @@ public class UI_PtodoContent : UI_Base
                     switch (res.code)
                     {
                         case 6023:
-                            Managers.Player.SendTokenRequest(innerAction);
+                            //Managers.Player.SendTokenRequest(innerAction);
                             break;
 
                     }
@@ -194,6 +195,8 @@ public class UI_PtodoContent : UI_Base
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
+
+        SetLikeBtnImage();
     }
 
     private bool IsValidTitle(string title)
@@ -222,6 +225,23 @@ public class UI_PtodoContent : UI_Base
     private void SetLikeBtnImage()
     {
         //like 버튼 이미지 변경
-        
+        int index;
+        if (!likeFlag)
+        {
+            Debug.Log("full heart");
+            index = fullHeart;
+            likeBtn.GetComponent<Button>().interactable = true;
+            BindEvent(likeBtn, LikeBtnClick);
+        }
+        else
+        {
+            Debug.Log("empty heart");
+            index = emptyHeart;
+            likeBtn.GetComponent<Button>().interactable = false;
+            ClearEvent(likeBtn,LikeBtnClick);
+        }
+
+
+        likeBtn.GetComponent<Image>().sprite = Resources.LoadAll<Sprite>(likeImageName)[index];
     }
 }

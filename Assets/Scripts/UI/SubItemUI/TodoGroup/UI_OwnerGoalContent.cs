@@ -31,8 +31,11 @@ public class UI_OwnerGoalContent : UI_Base
     Text goalRateTxt;
 
     long goalId;
-    string nickname, rate = "";
+    string nickname, rate, color = "";
 
+    Image profileImg;
+
+    const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     void Start()
     {
@@ -50,23 +53,24 @@ public class UI_OwnerGoalContent : UI_Base
 
         nicknameTxt = GetText((int)Texts.myName_txt);
         goalRateTxt = GetText((int)Texts.myGoalRate_txt);
+        profileImg = GetImage((int)Images.myProfile_img);
 
         Canvas.ForceUpdateCanvases();
 
-        BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+        //BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
 
-        todoAdd = Get<GameObject>((int)GameObjects.AddTodo);
+        //todoAdd = Get<GameObject>((int)GameObjects.AddTodo);
 
 
         Canvas.ForceUpdateCanvases();
 
-        SetGoalContent();
+        //SetGoalContent();
 
     }
 
     public void GoalClick(PointerEventData data)
     {
-        Canvas.ForceUpdateCanvases();
+/*        Canvas.ForceUpdateCanvases();
         if (todo.activeSelf)
         {
 
@@ -79,21 +83,25 @@ public class UI_OwnerGoalContent : UI_Base
             todo.SetActive(true);
 
         }
-
+*/
     }
 
-    public void SetGoalContent(string name, string rate, long goalId, List<GetTodoMembers> todolist)
+    public void SetGoalContent(string name, string color, string rate, long goalId, List<GetTodoMembers> todolist)
     {
         this.nickname = name;
+        this.color = color;
         this.rate = rate;
         this.goalId = goalId;
         todoList = todolist;
+
+        SetGoalContent();
     }
 
     private void SetGoalContent()
     {
         nicknameTxt.text = nickname;
         goalRateTxt.text = rate + "%";
+        SetImage(color);
 
         Canvas.ForceUpdateCanvases();
 
@@ -111,16 +119,22 @@ public class UI_OwnerGoalContent : UI_Base
             }
         }
 
-        todoAdd.transform.SetAsLastSibling();
+        //todoAdd.transform.SetAsLastSibling();
 
         Canvas.ForceUpdateCanvases();
 
-        todo.SetActive(false);
     }
 
     public void SetPercentage(int percentage)
     {
         //Debug.Log(percentage);
         goalRateTxt.text = percentage.ToString() + "%";
+    }
+
+    public void SetImage(string color)
+    {
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
+        profileImg.sprite = Resources.LoadAll<Sprite>(profileName)[index];
     }
 }
