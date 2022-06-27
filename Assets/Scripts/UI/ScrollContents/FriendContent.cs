@@ -78,6 +78,7 @@ public class FriendContent : UI_PopupMenu
                     GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
                     tmp.GetComponent<UI_FriendMain>().InitView(response.result);
                     GameObject sec = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendUIView");
+                    check = false;
                 }
                 else if(response.code == 6000)
                 {
@@ -102,12 +103,14 @@ public class FriendContent : UI_PopupMenu
                             {
                                 Debug.Log("토큰 발급 실패");
                             }
+                            check = false;
                         }, hN, hV);
                     });
                 }
                 else
                 {
                     Debug.Log(response.message);
+                    check = false;
                 }
             }, hN, hV);
         });

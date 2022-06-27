@@ -21,6 +21,8 @@ public class PlanetController : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (Managers.UI.checkPopupOn()) return;
+
         if (timer >= maxTime)
         {
             timer = 0f;

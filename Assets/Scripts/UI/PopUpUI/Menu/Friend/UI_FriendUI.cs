@@ -22,7 +22,9 @@ public class UI_FriendUI : UI_PopupMenu
     }
 
     //GameObject goalList;
-
+    GameObject btn = null;
+    long memberId = 0;
+    bool clicked = false;
 
     public override void Init()
     {
@@ -51,7 +53,8 @@ public class UI_FriendUI : UI_PopupMenu
 
         Text date = GetText((int)Texts.date_txt);
         DateTime today = DateTime.Now;
-        date.text = today.ToString("yyyy") + "." + today.ToString("mm") + "." + today.ToString("dd");
+        date.text = today.ToString("yyyy") + "." + today.ToString("MM") + "." + today.ToString("dd");
+        Debug.Log(today);
 
         SetBtn((int)Buttons.Back_btn, (data) => {
             FindObjectOfType<UI_FriendMain>().DestroyAll();
@@ -60,9 +63,52 @@ public class UI_FriendUI : UI_PopupMenu
             Destroy(gameObject);
         });
 
-        SetBtn((int)Buttons.Fighting_btn, (data) => {
-            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/NotComplete"));
+        btn = SetBtn((int)Buttons.Fighting_btn, (data) => {
+            Ex_Like();
+            btn.SetActive(false);
         });
+
+        btn.SetActive(false);
+    }
+
+    public void OnFightingView(long id)
+    {
+        memberId = id;
+        if(btn.activeSelf == false)
+        {
+            btn.SetActive(true);
+            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/NotComplete"));
+        }
+    }
+
+    void Ex_Like()
+    {
+        if (clicked) return;
+        clicked = true;
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/todo/" + memberId, "GET", null, (uwr) => {
+            Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+
+            if (response.isSuccess)
+            {
+                Debug.Log(response.result);
+                clicked = false;
+            }
+            else if (response.code == 6000)
+            {
+                clicked = false;
+                Managers.Player.SendTokenRequest(Ex_Like);
+            }
+            else
+            {
+                Debug.Log(response.message);
+                clicked = false;
+            }
+        }, hN, hV);
     }
 
     private void Start()

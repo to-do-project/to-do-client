@@ -8,10 +8,11 @@ public class UI_PopupMenu : UI_Popup // Menu에서 많이 사용하는 함수들을 여기에 �
 {
     protected UIDataCamera dataContainer; // UICamera를 활용한 바인딩 데이터 저장소
 
-    protected void SetBtn(int index, Action<PointerEventData> action) // 바인드된 버튼들을 무명 메소드로 이벤트 연결
+    protected GameObject SetBtn(int index, Action<PointerEventData> action) // 바인드된 버튼들을 무명 메소드로 이벤트 연결
     {
         GameObject btn = GetButton(index).gameObject;
         BindEvent(btn, action, Define.TouchEvent.Touch);
+        return btn;
     }
 
     protected void CameraSet()  // 캔버스에 UI 카메라 연결, Init()에 사용
