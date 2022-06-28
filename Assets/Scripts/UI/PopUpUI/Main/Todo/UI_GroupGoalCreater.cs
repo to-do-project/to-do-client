@@ -205,16 +205,21 @@ public class UI_GroupGoalCreater : UI_Popup
                              delresTxt.text = "그룹 목표를 삭제하시겠습니까?";
                              addTodo.transform.SetAsLastSibling();
                          }
+                         else
+                         {
+                             deletbtnTxt.text = "그룹 탈퇴하기";
+                             isManager = false;
+                             delresTxt.text = "그룹 목표를 탈퇴하시겠습니까?";
+                         }
                      }
                      else    //본인 아니면
                      {
                          UI_MemberGoalContent ui = Managers.UI.MakeSubItem<UI_MemberGoalContent>("TodoGroup", scrollRoot.transform, "MemberGoal_content") ;
                          ui.SetGoalContent(item.nickname, item.profileColor, item.percentage.ToString(), res.result.goalId, item.getTodoMembers, item.waitFlag);
-                         deletbtnTxt.text = "그룹 탈퇴하기";
-                         isManager = false;
-                         delresTxt.text = "그룹 목표를 탈퇴하시겠습니까?";
+
                      }
 
+                     
 
                  }
 

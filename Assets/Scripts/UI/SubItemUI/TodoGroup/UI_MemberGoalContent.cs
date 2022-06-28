@@ -71,7 +71,7 @@ public class UI_MemberGoalContent : UI_Base
 
     public void GoalClick(PointerEventData data)
     {
-        Canvas.ForceUpdateCanvases();
+
         if (todo.activeSelf)
         {
 
@@ -84,6 +84,8 @@ public class UI_MemberGoalContent : UI_Base
             todo.SetActive(true);
 
         }
+
+        Canvas.ForceUpdateCanvases();
 
     }
 

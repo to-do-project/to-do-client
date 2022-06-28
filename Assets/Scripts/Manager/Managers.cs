@@ -32,8 +32,8 @@ public class Managers : MonoBehaviour
     public static SoundManager Sound { get { return Instance().sound; } }
     public static DataManager Data { get { return Instance().data; } }
     public static TodoManager Todo { get { return Instance().todo; } }
-    public static WebManager Web { get { return web; } }
-    public static PlayerManager Player { get { return player; } }
+    public static WebManager Web { get { Instance(); return web; } }
+    public static PlayerManager Player { get { Instance(); return player; } }
     
 
     void Start()

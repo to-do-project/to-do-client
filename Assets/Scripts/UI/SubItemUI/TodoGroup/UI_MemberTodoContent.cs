@@ -108,5 +108,6 @@ public class UI_MemberTodoContent : UI_Base
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
+        checkToggle.interactable = false;
     }
 }

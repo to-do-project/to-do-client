@@ -105,7 +105,7 @@ public class PlayerManager : MonoBehaviour
         innerArrageCallback += SendArrangementRequest;
 
         //토큰 확인 & 재발급 (자동로그인 상태)
-        if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
+        /*if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
         {
             RequestToken val = new RequestToken { deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier }; //디바이스 토큰 수정 필요
             header[0] = Define.JWT_REFRESH_TOKEN;
@@ -148,7 +148,7 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("No token");
             //토큰 없으면
-        }
+        }*/
 
 
     }
@@ -623,5 +623,7 @@ public class PlayerManager : MonoBehaviour
             return headerValue;
         }
     }
+
+
     #endregion
 }
