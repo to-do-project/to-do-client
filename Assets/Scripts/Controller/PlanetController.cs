@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlanetController : MonoBehaviour
 {
@@ -23,6 +24,11 @@ public class PlanetController : MonoBehaviour
     {
         if (Managers.UI.checkPopupOn()) return;
 
+        if (string.Equals("Edit", Managers.Scene.CurrentSceneName()))
+        {
+            return;
+        }
+        
         if (timer >= maxTime)
         {
             timer = 0f;

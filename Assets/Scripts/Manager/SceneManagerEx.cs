@@ -30,4 +30,9 @@ public class SceneManagerEx
     {
         CurrentScene.Clear();
     }
+
+    public string CurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
 }
