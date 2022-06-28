@@ -36,6 +36,11 @@ public class CameraZoom : MonoBehaviour
         {
             cam.fieldOfView = 23;
         }
+        else
+        {
+            cam.transform.position = new Vector3(0, 0, -7);
+            cam.orthographicSize = 11f;
+        }
         
 
     }
