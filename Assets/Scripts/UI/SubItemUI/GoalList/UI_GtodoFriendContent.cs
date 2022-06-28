@@ -1,18 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
-
-public class UI_PtodoFriendContent : UI_Base
+public class UI_GtodoFriendContent : UI_Base
 {
     enum Buttons
     {
-        like_btn,
+        friendlike_btn,
     }
 
     enum Texts
@@ -25,22 +22,20 @@ public class UI_PtodoFriendContent : UI_Base
         todoCheck_toggle
     }
 
-    enum InputFields
-    {
-        todo_inputfield,
-    }
-
     long goalId;
     long todoMemberId;
     string title;
     bool likeFlag, completeFlag, clicked = false;
     int likeCount;
 
-    InputField todoInputfield;
     Text todoTitle, likeTxt;
     Toggle checkToggle;
-    UI_FriendUI parent;
-    GameObject likeBtn;
+
+    Action innerAction;
+
+    UI_FriendUI parent = null;
+
+    GameObject likeBtn = null;
 
     const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
     const int fullHeart = 19;
@@ -48,26 +43,18 @@ public class UI_PtodoFriendContent : UI_Base
 
     public override void Init()
     {
-
-        //Debug.Log("GoalId " + goalId);
-        Bind<InputField>(typeof(InputFields));
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
         Bind<Toggle>(typeof(Toggles));
 
-        todoInputfield = GetInputfiled((int)InputFields.todo_inputfield);
         todoTitle = GetText((int)Texts.todo_title);
         likeTxt = GetText((int)Texts.like_txt);
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
 
-
-        likeBtn = GetButton((int)Buttons.like_btn).gameObject;
+        likeBtn = GetButton((int)Buttons.friendlike_btn).gameObject;
         SetLikeBtnImage();
 
         SetTodo();
-
-        todoInputfield.DeactivateInputField();
-        todoInputfield.interactable = false;
 
         parent = FindObjectOfType<UI_FriendUI>();
     }
@@ -79,7 +66,8 @@ public class UI_PtodoFriendContent : UI_Base
 
     private void LikeBtnClick(PointerEventData data)
     {
-        if(checkToggle.isOn)
+        Debug.Log("½ÇÇà");
+        if (checkToggle.isOn)
         {
             Ex_Like();
         }
@@ -140,12 +128,6 @@ public class UI_PtodoFriendContent : UI_Base
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
-    }
-
-    public void ClearUI()
-    {
-        todoTitle.text = title;
-        todoInputfield.DeactivateInputField();
     }
 
     private void SetLikeBtnImage()

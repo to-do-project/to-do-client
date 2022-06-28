@@ -8,7 +8,6 @@ public class TargetContent : MonoBehaviour
     [SerializeField]
     Text title;
     long id;
-    UI_Collector parent;
 
     public void ChangeText(string text)
     {
@@ -18,11 +17,6 @@ public class TargetContent : MonoBehaviour
     public void SetId(long id)
     {
         this.id = id;
-    }
-
-    public void SetParent(UI_Collector parent)
-    {
-        this.parent = parent;
     }
 
     public void BtnClicked()
@@ -37,7 +31,7 @@ public class TargetContent : MonoBehaviour
             if (response.isSuccess)
             {
                 Managers.Todo.UserTodoInstantiate((uwr) => {
-                    parent.DeleteTarget(id);
+                    FindObjectOfType<UIDataCamera>().RefreshGoalData();
                     FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
                     Managers.UI.CloseAllPopupUI();
                 });

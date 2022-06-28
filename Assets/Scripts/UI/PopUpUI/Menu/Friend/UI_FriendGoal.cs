@@ -63,7 +63,20 @@ public class UI_FriendGoal : UI_Base
 
     void SendGoalListRequest()
     {
-        Managers.Todo.UserTodoInstantiate(callback);
+        UserTodoInstantiate(callback);
+    }
+
+
+    void UserTodoInstantiate(Action<UnityWebRequest> callback)
+    {
+        SendMainGoalRequest(FindObjectOfType<UI_FriendUI>().GetUserId().ToString(), callback);
+    }
+
+    void SendMainGoalRequest(string userId, Action<UnityWebRequest> callback)
+    {
+        res = new Response<List<ResponseMainTodo>>();
+
+        Managers.Web.SendGetRequest("api/goals/main/", userId, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
     }
 
     private void GoalInit(UnityWebRequest request)
@@ -90,7 +103,7 @@ public class UI_FriendGoal : UI_Base
             {
                 if (item.groupFlag)
                 {
-                    UI_GgoalContent goal = Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList", goalParent.transform, "Ggoal_content");
+                    UI_GgoalFriendContent goal = Managers.UI.MakeSubItem<UI_GgoalFriendContent>("GoalList", goalParent.transform, "Ggoal_FriendContent");
                     /*                    goal.SetGoalName(item.goalTitle);
                                         goal.SetGoalRate(item.percentage.ToString());*/
 

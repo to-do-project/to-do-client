@@ -60,7 +60,7 @@ public class FriendContent : UI_PopupMenu
         SetBtn((int)Buttons.FriendPlanet_btn, (data) => {
             if (check) return;
             check = true;
-            Debug.Log("模备 青己 愁矾啊扁 >> " + name + " id >> " + userId + " userID >> " + Managers.Player.GetString(Define.USER_ID));
+            Debug.Log("模备 青己 愁矾啊扁 >> " + nameTxt.text + " id >> " + userId + " userID >> " + Managers.Player.GetString(Define.USER_ID));
 
             string[] hN = { Define.JWT_ACCESS_TOKEN,
                             "User-Id" };
@@ -77,7 +77,9 @@ public class FriendContent : UI_PopupMenu
                     Managers.Player.GetPlanet().SetActive(false);
                     GameObject tmp = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendMainView");
                     tmp.GetComponent<UI_FriendMain>().InitView(response.result);
-                    GameObject sec = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendUIView");
+                    var sec = Managers.Resource.Instantiate("UI/Popup/Menu/Friend/FriendUIView").GetComponent<UI_FriendUI>();
+                    sec.SetUserId(userId);
+                    sec.nickname = nameTxt.text;
                     check = false;
                 }
                 else if(response.code == 6000)

@@ -82,13 +82,6 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
                     WebGetGroup();
                 }
 
-                if (isRead == false)
-                {
-                    if (type == UI_Signal.SignalType.GROUP_REQUEST.ToString())
-                    {
-                        Managers.UI.ClosePopupUI();
-                    }
-                }
                 isRead = true;
             }
             else if (response.code == 6000)
@@ -114,7 +107,7 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
             Response<ResponseGoalRequest> response = JsonUtility.FromJson<Response<ResponseGoalRequest>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                UI_GroupGoal tmp = Managers.UI.ShowPopupUI<UI_GroupGoal>("GroupGoalView", "Menu/Signal");
+                UI_GroupGoal tmp = Managers.UI.ShowPopupUI<UI_GroupGoal>("GroupGoalRequest", "Signal");
                 tmp.Setid(id);
                 tmp.SetText(response.result.title);
                 tmp.Members = response.result.goalMemberList;

@@ -59,7 +59,6 @@ public class UI_Collector : UI_PopupMenu
         TargetContent tmp = target.GetComponent<TargetContent>();
         tmp.ChangeText(title);
         tmp.SetId(id);
-        tmp.SetParent(GetComponent<UI_Collector>());
     }
 
     public void DeleteTarget(long id)

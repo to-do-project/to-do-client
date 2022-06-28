@@ -101,7 +101,10 @@ public class UI_GroupGoal : UI_PopupMenu
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                ClosePopupUI();
+                Managers.Todo.UserTodoInstantiate((uwr) => {
+                    FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
+                    Managers.UI.CloseAllPopupUI();
+                });
             }
             else if (response.code == 6000)
             {
@@ -114,7 +117,10 @@ public class UI_GroupGoal : UI_PopupMenu
                     Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
                     if (response.isSuccess)
                     {
-                        ClosePopupUI();
+                        Managers.Todo.UserTodoInstantiate((uwr) => {
+                            FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
+                            Managers.UI.CloseAllPopupUI();
+                        });
                     }
                     else if (response.code == 6000)
                     {
