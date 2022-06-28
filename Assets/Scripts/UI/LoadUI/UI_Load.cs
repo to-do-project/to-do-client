@@ -71,21 +71,17 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
         loadSceneName = sceneName;
         StartCoroutine(InstantLoadSceneProcess());
     }
+    public void CompleteLoad()
+    {
+        canFade = true;
+    }
 
-    public void ExLoad()    // 실제 가고싶은 씬 로드
+    void ExLoad()    // 실제 가고싶은 씬 로드
     {
         canClick = false;
         gameObject.SetActive(true);
         SceneManager.sceneLoaded += OnSceneLoaded;
         StartCoroutine(ExLoadSceneProcess());
-    }
-
-    public void ExLoad(string sceneName)    // 특수 코드. ToLoad 없이 바로 로드
-    {
-        canClick = false;
-        gameObject.SetActive(true);
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        loadSceneName = sceneName;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -101,10 +97,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
     {
         AsyncOperation op = SceneManager.LoadSceneAsync(Define.Scene.Loading.ToString());
         op.allowSceneActivation = false;
-        while(op.progress < 0.8)
-        {
-            yield return null;
-        }
+
         canFade = true;
         yield return StartCoroutine(Fade(true));
         op.allowSceneActivation = true;
@@ -114,14 +107,11 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
     private IEnumerator ExLoadSceneProcess()
     {
         AsyncOperation op = SceneManager.LoadSceneAsync(loadSceneName);
-        op.allowSceneActivation = false;
-        while (op.progress < 0.8)
+        while (op.isDone == false)
         {
             yield return null;
         }
         if (loadSceneName == Define.Scene.Main.ToString()) canFade = false;
-        op.allowSceneActivation = true;
-        yield break;
     }
 
     private IEnumerator InstantLoadSceneProcess()
@@ -156,11 +146,6 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
         {
             gameObject.SetActive(false);
         }
-    }
-
-    public void CompleteLoad()
-    {
-        canFade = true;
     }
 
     void CameraSet()

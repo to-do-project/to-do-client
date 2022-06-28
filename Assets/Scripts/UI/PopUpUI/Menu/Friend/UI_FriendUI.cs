@@ -23,8 +23,9 @@ public class UI_FriendUI : UI_PopupMenu
 
     //GameObject goalList;
     GameObject btn = null;
-    long memberId = 0;
+    long memberId = 0, userId = 0;
     bool clicked = false;
+    public string nickname { private get; set; } = "";
 
     public override void Init()
     {
@@ -49,7 +50,7 @@ public class UI_FriendUI : UI_PopupMenu
         Bind<GameObject>(typeof(GameObjects));
 
         Text title = GetText((int)Texts.title_txt);
-        title.text = Managers.Player.GetString(Define.NICKNAME) + "님의 목표리스트";
+        title.text = nickname + "님의 목표리스트";
 
         Text date = GetText((int)Texts.date_txt);
         DateTime today = DateTime.Now;
@@ -79,6 +80,16 @@ public class UI_FriendUI : UI_PopupMenu
             btn.SetActive(true);
             Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/NotComplete"));
         }
+    }
+
+    public void SetUserId(long userId)
+    {
+        this.userId = userId;
+    }
+
+    public long GetUserId()
+    {
+        return userId;
     }
 
     void Ex_Like()
