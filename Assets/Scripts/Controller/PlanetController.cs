@@ -22,10 +22,12 @@ public class PlanetController : MonoBehaviour
 
     private void OnMouseDrag()
     {
+
         if (Managers.UI.checkPopupOn()) return;
 
         if (string.Equals("Edit", Managers.Scene.CurrentSceneName()))
         {
+            Debug.Log("Edit scene ≥ª∫Œ¿”");
             return;
         }
         

@@ -30,15 +30,15 @@ public class CameraZoom : MonoBehaviour
         Managers.Input.TouchAction += Zoom;
         
         cam = this.GetComponent<Camera>();
+        cam.transform.position = new Vector3(0, 0, -7);
 
-        
         if (!cam.orthographic)
         {
             cam.fieldOfView = 23;
         }
         else
         {
-            cam.transform.position = new Vector3(0, 0, -7);
+
             cam.orthographicSize = 11f;
         }
         

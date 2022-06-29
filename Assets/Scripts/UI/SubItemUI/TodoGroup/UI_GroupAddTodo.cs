@@ -120,8 +120,8 @@ public class UI_GroupAddTodo : UI_Base
                 Canvas.ForceUpdateCanvases();
                 todoName.text = "";
 
-                //parent.Setting(goalId);
-                
+                parent.Setting(goalId);
+                Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
 
             }
 

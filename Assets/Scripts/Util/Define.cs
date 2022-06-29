@@ -33,6 +33,7 @@ public class Define
         Main,
         Edit,
         Menu,
+        Start,
         Loading,
     }
 

@@ -33,6 +33,11 @@ public class UI_MemberTodoContent : UI_Base
 
     Action innerAction;
 
+    const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
+    const int fullHeart = 19;
+    const int emptyHeart = 20;
+    const int grayHeart = 21;
+
     public override void Init()
     {
         innerAction -= SendLikeClickBtnRequest;
@@ -109,5 +114,10 @@ public class UI_MemberTodoContent : UI_Base
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
         checkToggle.interactable = false;
+    }
+
+    private void SetLikeBtnImage()
+    {
+
     }
 }

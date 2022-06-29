@@ -82,6 +82,8 @@ public class UI_GoalCreate : UI_Popup
     public override void Init()
     {
         base.Init();
+
+
         callback -= ResponseAction;
         callback += ResponseAction;
         innerAction -= InfoGather;
@@ -93,13 +95,13 @@ public class UI_GoalCreate : UI_Popup
         memberList = new List<ResponseMemberFind>();
 
         Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Camera UIcam = canvas.worldCamera;
         if (UIcam == null)
         {
             Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
             canvas.worldCamera = cam;
         }
-
         else
         {
             Debug.Log($"{UIcam.name}");
@@ -247,7 +249,18 @@ public class UI_GoalCreate : UI_Popup
                 }
                 else
                 {
-                    switch (res.code) { }
+                    switch (res.code) {
+                        case 6023:
+                            Action action = delegate ()
+                            {
+                                SearchFriendName();
+                            };
+                            Managers.Player.SendTokenRequest(action);
+                            break;
+                        case 5030:
+                            Debug.Log("No Search Friend");
+                            break;
+                    }
 
                 }
 

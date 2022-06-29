@@ -72,6 +72,19 @@ public class UI_GoalModify : UI_Popup
     {
         base.Init();
 
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Camera UIcam = canvas.worldCamera;
+        if (UIcam == null)
+        {
+            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+            canvas.worldCamera = cam;
+        }
+        else
+        {
+            Debug.Log($"{UIcam.name}");
+        }
+
         innerAction -= InfoGather;
         innerAction += InfoGather;
 
@@ -108,7 +121,7 @@ public class UI_GoalModify : UI_Popup
 
 
         Toggle openToggle = Get<Toggle>((int)Toggles.open_toggle);
-        openToggle.isOn = open;
+        openToggle.isOn = !open;
 
         openToggle.onValueChanged.AddListener((bool bOn) =>
         {
@@ -179,7 +192,11 @@ public class UI_GoalModify : UI_Popup
                 {
 
                     case 6023:
-                        //Managers.Player.SendTokenRequest(innerAction);
+                        Action action = delegate ()
+                        {
+                            StoreBtnClick(data);
+                        };
+                        Managers.Player.SendTokenRequest(action);
                         break;
                 }
             }

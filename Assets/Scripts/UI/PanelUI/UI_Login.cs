@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
@@ -111,6 +112,8 @@ public class UI_Login : UI_Panel
         RequestLogin val = new RequestLogin();
         //아이디 입력 확인
         InputField idInput = Get<InputField>((int)InputFields.ID_inputfield);
+
+
         if (isValidEmail(idInput.text))
         {
             val.email = idInput.text;

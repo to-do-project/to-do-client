@@ -253,6 +253,7 @@ public class PlayerManager : MonoBehaviour
 
                 if (Arrangeres.code == 1000)
                 {
+                    Managers.Scene.Clear();
                     UI_Load.Instance.InstantLoad("Main");
 
                     //Managers.Scene.LoadScene(Define.Scene.Main);
