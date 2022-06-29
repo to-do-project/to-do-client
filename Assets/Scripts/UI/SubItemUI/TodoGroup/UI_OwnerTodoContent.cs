@@ -94,7 +94,7 @@ public class UI_OwnerTodoContent : UI_Base
     {
         //like 버튼 이미지 변경
         int index;
-        if (!likeFlag)
+        if (likeFlag)
         {
             Debug.Log("full heart");
             index = fullHeart;

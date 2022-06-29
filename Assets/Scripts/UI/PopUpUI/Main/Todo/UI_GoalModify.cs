@@ -184,6 +184,7 @@ public class UI_GoalModify : UI_Popup
             {
                 FindObjectOfType<UIDataCamera>().RefreshGoalData();
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+                
                 ClosePopupUI();
             }
             else
