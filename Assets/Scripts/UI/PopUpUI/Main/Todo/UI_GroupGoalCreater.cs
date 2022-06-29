@@ -120,6 +120,7 @@ public class UI_GroupGoalCreater : UI_Popup
         ownerTodo = Get<GameObject>((int)GameObjects.OwnerTodo);
         memberGoal = Get<GameObject>((int)GameObjects.MemberGoal);
 
+
         deletbtnTxt = GetText((int)Texts.GroupDelete_txt);
         delresTxt = GetText((int)Texts.del_res_txt);
 
@@ -170,6 +171,11 @@ public class UI_GroupGoalCreater : UI_Popup
 
                     case 6023:
                         //Managers.Player.SendTokenRequest(innerAction);
+                        Action action = delegate ()
+                        {
+                            DoneBtnClick(data);
+                        };
+                        Managers.Player.SendTokenRequest(action);
                         break;
                 }
             }
@@ -239,7 +245,7 @@ public class UI_GroupGoalCreater : UI_Popup
                          ui.SetGoalContent(item.nickname, item.profileColor, item.percentage.ToString(), res.result.goalId, item.getTodoMembers, item.waitFlag);
 
                      }
-
+                     
                      
 
                  }

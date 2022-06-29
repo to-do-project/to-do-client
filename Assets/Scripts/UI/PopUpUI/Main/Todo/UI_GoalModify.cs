@@ -192,7 +192,11 @@ public class UI_GoalModify : UI_Popup
                 {
 
                     case 6023:
-                        //Managers.Player.SendTokenRequest(innerAction);
+                        Action action = delegate ()
+                        {
+                            StoreBtnClick(data);
+                        };
+                        Managers.Player.SendTokenRequest(action);
                         break;
                 }
             }

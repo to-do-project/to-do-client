@@ -249,7 +249,18 @@ public class UI_GoalCreate : UI_Popup
                 }
                 else
                 {
-                    switch (res.code) { }
+                    switch (res.code) {
+                        case 6023:
+                            Action action = delegate ()
+                            {
+                                SearchFriendName();
+                            };
+                            Managers.Player.SendTokenRequest(action);
+                            break;
+                        case 5030:
+                            Debug.Log("No Search Friend");
+                            break;
+                    }
 
                 }
 
