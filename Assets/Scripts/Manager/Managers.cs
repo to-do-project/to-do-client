@@ -25,6 +25,8 @@ public class Managers : MonoBehaviour
     static PlayerManager player;
     static WebManager web;
 
+    bool internetFlag;
+
     public static InputManager Input { get { return Instance().input; } }
     public static ResourceManager Resource { get { return Instance().resource; } }
     public static UIManager UI { get { return Instance().ui; } }
@@ -39,11 +41,30 @@ public class Managers : MonoBehaviour
     void Start()
     {
         Init();
+        internetFlag = true;
     }
 
     private void Update()
     {
         Input.OnUpdate();
+        if (!Web.InternetCheck())
+        {
+            //로딩 씬으로 돌아가기
+            if (internetFlag)
+            {
+                UI.ShowPopupUI<UI_Internet>("InternetView");
+                internetFlag = false;
+            }
+
+        }
+        else
+        {
+            if (!internetFlag)
+            {
+                internetFlag = true;
+                Scene.LoadScene(Define.Scene.Start);
+            }
+        }
     }
 
     static void Init()

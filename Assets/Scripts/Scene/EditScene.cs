@@ -11,7 +11,7 @@ public class EditScene : BaseScene
 
     public override void Clear()
     {
-        //Managers.UI.Clear();
+        Managers.UI.Clear();
         //throw new System.NotImplementedException();
     }
 

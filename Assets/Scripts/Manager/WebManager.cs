@@ -245,17 +245,17 @@ public class WebManager : MonoBehaviour
     }*/
 
     //API 호출 전에 부르기?
-    /*    public bool InternetCheck()
+    public bool InternetCheck()
+    {
+        //인터넷에 연결되어 있는지 확인
+        if (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            //인터넷에 연결되어 있는지 확인
-            if (Application.internetReachability == NetworkReachability.NotReachable)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }*/
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 }

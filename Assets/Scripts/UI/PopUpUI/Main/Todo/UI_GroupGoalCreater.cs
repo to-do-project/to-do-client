@@ -63,6 +63,7 @@ public class UI_GroupGoalCreater : UI_Popup
         GroupDeleteView,
         OwnerGoal_content,
         OwnerTodo,
+        MemberGoal,
     }
 
 
@@ -78,6 +79,7 @@ public class UI_GroupGoalCreater : UI_Popup
     GameObject deleteView;
     GameObject ownerGoal;
     GameObject ownerTodo;
+    GameObject memberGoal;
 
     Text goalTitle;
     Text goalRate;
@@ -88,6 +90,20 @@ public class UI_GroupGoalCreater : UI_Popup
     public override void Init()
     {
         base.Init();
+
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Camera UIcam = canvas.worldCamera;
+        if (UIcam == null)
+        {
+            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+            canvas.worldCamera = cam;
+        }
+        else
+        {
+            Debug.Log($"{UIcam.name}");
+        }
+
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
         Bind<GameObject>(typeof(GameObjects));
@@ -102,6 +118,7 @@ public class UI_GroupGoalCreater : UI_Popup
         //addTodo.GetComponent<UI_GroupAddTodo>().SettingParent(this.GetComponent<UI_GroupGoalCreater>());
         ownerGoal = Get<GameObject>((int)GameObjects.OwnerGoal_content);
         ownerTodo = Get<GameObject>((int)GameObjects.OwnerTodo);
+        memberGoal = Get<GameObject>((int)GameObjects.MemberGoal);
 
         deletbtnTxt = GetText((int)Texts.GroupDelete_txt);
         delresTxt = GetText((int)Texts.del_res_txt);
@@ -176,8 +193,11 @@ public class UI_GroupGoalCreater : UI_Popup
 
              if (res.isSuccess)
              {
-                 //자식 클리어
-                 //Transform[] childList = 
+
+                 //본인 투두 클리어
+                 ClearChild(ownerTodo);
+                 //나머지 멤버 클리어
+                 ClearChild(memberGoal);
 
 
                  //res.result;
@@ -200,6 +220,7 @@ public class UI_GroupGoalCreater : UI_Popup
                          {
                              addTodo = Managers.UI.MakeSubItem<UI_GroupAddTodo>("TodoGroup", ownerTodo.transform, "AddTodo").gameObject;
                              addTodo.GetComponent<UI_GroupAddTodo>().Setting(res.result.goalId);
+                             addTodo.GetComponent<UI_GroupAddTodo>().SettingParent(this);
                              deletbtnTxt.text = "그룹 목표 삭제하기";
                              isManager = true;
                              delresTxt.text = "그룹 목표를 삭제하시겠습니까?";
@@ -214,7 +235,7 @@ public class UI_GroupGoalCreater : UI_Popup
                      }
                      else    //본인 아니면
                      {
-                         UI_MemberGoalContent ui = Managers.UI.MakeSubItem<UI_MemberGoalContent>("TodoGroup", scrollRoot.transform, "MemberGoal_content") ;
+                         UI_MemberGoalContent ui = Managers.UI.MakeSubItem<UI_MemberGoalContent>("TodoGroup", memberGoal.transform, "MemberGoal_content") ;
                          ui.SetGoalContent(item.nickname, item.profileColor, item.percentage.ToString(), res.result.goalId, item.getTodoMembers, item.waitFlag);
 
                      }
@@ -240,4 +261,22 @@ public class UI_GroupGoalCreater : UI_Popup
          }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
     }
 
+
+    void ClearChild(GameObject root)
+    {
+        Transform[] childList = root.GetComponentsInChildren<Transform>();
+        if (childList != null)
+        {
+            foreach (Transform child in childList)
+            {
+                if (child != root.transform)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+
+    }
+
+    
 }
