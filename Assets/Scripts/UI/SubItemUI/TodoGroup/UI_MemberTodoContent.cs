@@ -118,6 +118,20 @@ public class UI_MemberTodoContent : UI_Base
 
     private void SetLikeBtnImage()
     {
+        if (likeFlag)
+        {
 
+        }
+        else
+        {
+            if (completeFlag)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
     }
 }

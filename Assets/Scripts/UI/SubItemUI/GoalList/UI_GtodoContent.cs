@@ -33,6 +33,12 @@ public class UI_GtodoContent : UI_Base
     Toggle checkToggle;
 
     Action innerAction;
+    GameObject likeBtn;
+
+    const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
+    const int fullHeart = 19;
+    const int emptyHeart = 20;
+    const int grayHeart = 21;
 
     public override void Init()
     {
@@ -44,7 +50,7 @@ public class UI_GtodoContent : UI_Base
         likeTxt = GetText((int)Texts.like_txt);
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
 
-        GameObject likeBtn = GetButton((int)Buttons.like_btn).gameObject;
+        likeBtn = GetButton((int)Buttons.like_btn).gameObject;
         BindEvent(likeBtn, LikeBtnClick);
 
         SetTodo();
@@ -111,6 +117,31 @@ public class UI_GtodoContent : UI_Base
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
+
+        SetLikeBtnImage();
+    }
+
+    private void SetLikeBtnImage()
+    {
+        //like 버튼 이미지 변경
+        int index;
+        if (likeFlag)
+        {
+            Debug.Log("full heart");
+            index = fullHeart;
+            likeBtn.GetComponent<Button>().interactable = true;
+            BindEvent(likeBtn, LikeBtnClick);
+        }
+        else
+        {
+            Debug.Log("empty heart");
+            index = emptyHeart;
+            likeBtn.GetComponent<Button>().interactable = false;
+            ClearEvent(likeBtn, LikeBtnClick);
+        }
+
+
+        likeBtn.GetComponent<Image>().sprite = Resources.LoadAll<Sprite>(likeImageName)[index];
     }
 
 }

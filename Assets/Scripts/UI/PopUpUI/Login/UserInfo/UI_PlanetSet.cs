@@ -55,11 +55,18 @@ public class UI_PlanetSet : UI_UserInfo
         Blue,
     }
 
+    enum ScrollRects
+    {
+        Planet_scview,
+    }
+
     Define.Planet planet = Define.Planet.EMPTY;
 
     GameObject nextBtn;
     //GameObject toggleGroup;
     Toggle red, green, blue;
+    ScrollRect planetSc;
+
 
     public override void Init()
     {
@@ -68,13 +75,17 @@ public class UI_PlanetSet : UI_UserInfo
         Bind<Button>(typeof(Buttons));
         //Bind<ToggleGroup>(typeof(ToggleGroups));
         Bind<Toggle>(typeof(Toggles));
+        Bind<ScrollRect>(typeof(ScrollRects));
 
         GameObject backBtn = GetButton((int)Buttons.Back_btn).gameObject;
         BindEvent(backBtn, ClosePopupUI, Define.TouchEvent.Touch);
 
+        planetSc = Get<ScrollRect>((int)ScrollRects.Planet_scview);
+
         nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
         nextBtn.GetComponent<Button>().interactable = false;
-
+        
+        
 
         //toggleGroup = Get<ToggleGroup>((int)ToggleGroups.PlanetRadioGroup).gameObject;
 
@@ -89,6 +100,10 @@ public class UI_PlanetSet : UI_UserInfo
                 planet = Define.Planet.RED;
                 nextBtn.GetComponent<Button>().interactable = true;
                 BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+
+                //planetSc.horizontalNormalizedPosition = Mathf.Lerp(planetSc.horizontalNormalizedPosition,1f,1f);
+                SmoothScroll(1f, planetSc.horizontalNormalizedPosition);
+                Canvas.ForceUpdateCanvases();
             }
             else
             {
@@ -104,6 +119,9 @@ public class UI_PlanetSet : UI_UserInfo
                 planet = Define.Planet.GREEN;
                 nextBtn.GetComponent<Button>().interactable = true;
                 BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+                //planetSc.horizontalNormalizedPosition = Mathf.Lerp(planetSc.horizontalNormalizedPosition, 0.5f, 1f);
+                SmoothScroll(0.5f, planetSc.horizontalNormalizedPosition);
+                Canvas.ForceUpdateCanvases();
             }
             else
             {
@@ -119,6 +137,9 @@ public class UI_PlanetSet : UI_UserInfo
                 planet = Define.Planet.BLUE;
                 nextBtn.GetComponent<Button>().interactable = true;
                 BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
+                //planetSc.horizontalNormalizedPosition = Mathf.Lerp(planetSc.horizontalNormalizedPosition, 0f, 1f);
+                SmoothScroll(0f, planetSc.horizontalNormalizedPosition);
+                Canvas.ForceUpdateCanvases();
             }           
             else
             {
@@ -247,4 +268,26 @@ public class UI_PlanetSet : UI_UserInfo
         }
     }
     
+
+    private void SmoothScroll(float targetPos, float originPos)
+    {
+        StartCoroutine(smoothScroll(targetPos, originPos));
+    }
+
+    private IEnumerator smoothScroll(float targetPos, float originPos)
+    {
+
+        float timer = 0.0f;
+        float durationTime = 0.1f;
+
+        while(timer<durationTime)
+        {
+            float pos = Mathf.Lerp(originPos, targetPos, timer / durationTime);
+            planetSc.horizontalNormalizedPosition = pos;
+            timer += Time.deltaTime;
+
+            yield return null;
+        }
+
+    }
 }
