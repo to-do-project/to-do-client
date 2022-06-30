@@ -71,11 +71,15 @@ public class UI_PgoalFriendContent : UI_Base
 
             todo.SetActive(false);
 
+            LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+
         }
         else
         {
 
             todo.SetActive(true);
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
 
         }
 
@@ -96,20 +100,20 @@ public class UI_PgoalFriendContent : UI_Base
         goalTitle.text = title;
         goalRate.text = rate + "%";
 
-        Canvas.ForceUpdateCanvases();
+
 
         if (todoList.Count != 0 && todo != null)
         {
             foreach (TodoItem item in todoList)
             {
+                Canvas.ForceUpdateCanvases();
                 UI_PtodoFriendContent todoItem = Managers.UI.MakeSubItem<UI_PtodoFriendContent>("GoalList", todo.transform, "Ptodo_FriendContent");
-
-
                 todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
             }
         }
 
         Canvas.ForceUpdateCanvases();
+
 
         todo.SetActive(false);
     }

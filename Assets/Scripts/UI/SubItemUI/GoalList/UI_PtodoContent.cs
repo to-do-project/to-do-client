@@ -25,6 +25,7 @@ public class UI_PtodoContent : UI_Base
     {
         like_btn,
         edit_btn,
+        like_num,
     }
 
     enum Texts 
@@ -52,7 +53,7 @@ public class UI_PtodoContent : UI_Base
     Text todoTitle,likeTxt;
     Action innerAction;
     Toggle checkToggle;
-    GameObject likeBtn;
+    GameObject likeBtn, likeNumBtn;
 
     const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
     const int fullHeart = 19;
@@ -75,10 +76,13 @@ public class UI_PtodoContent : UI_Base
         likeTxt = GetText((int)Texts.like_txt);
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
 
-
-        likeBtn = GetButton((int)Buttons.like_btn).gameObject;
         GameObject editBtn = GetButton((int)Buttons.edit_btn).gameObject;
-        BindEvent(likeBtn, LikeBtnClick);
+        likeBtn = GetButton((int)Buttons.like_btn).gameObject;
+
+        likeNumBtn = GetButton((int)Buttons.like_num).gameObject;
+        likeBtn.GetComponent<Button>().interactable = false;
+        //BindEvent(likeBtn, LikeBtnClick);
+        BindEvent(likeNumBtn, LikeNumBtnClick);
         BindEvent(editBtn, EditBtnClick);
 
         SetTodo();
@@ -87,7 +91,7 @@ public class UI_PtodoContent : UI_Base
         {
             SendTodoModifyRequest();
             todoInputfield.DeactivateInputField();
-            //todoInputfield.interactable = false;
+            todoInputfield.interactable = false;
         });
 
         checkToggle.onValueChanged.AddListener((bool bOn)=> {
@@ -129,15 +133,22 @@ public class UI_PtodoContent : UI_Base
 
     private void LikeBtnClick(PointerEventData data)
     {
-        UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView","Main");
+
+    }
+
+    private void LikeNumBtnClick(PointerEventData data)
+    {
+        UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView", "Main");
         ui.Setting(todoMemberId.ToString());
-        Debug.Log("todoMember id "+todoMemberId.ToString());
+        Debug.Log("todoMember id " + todoMemberId.ToString());
     }
 
     private void EditBtnClick(PointerEventData data)
     {
         todoTitle.text = "";
+
         todoInputfield.interactable = true;
+        todoInputfield.text = "";
         todoInputfield.ActivateInputField();
 
     }
@@ -157,6 +168,9 @@ public class UI_PtodoContent : UI_Base
                 {
                     todoTitle.text = todoInputfield.text;
                     title = todoInputfield.text;
+                    todoInputfield.placeholder.GetComponent<Text>().text = "";
+                    todoInputfield.text = "";
+
                 }
                 else
                 {
@@ -192,11 +206,16 @@ public class UI_PtodoContent : UI_Base
 
     private void SetTodo()
     {
+        Canvas.ForceUpdateCanvases();
+
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
 
         SetLikeBtnImage();
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
     private bool IsValidTitle(string title)
@@ -230,15 +249,15 @@ public class UI_PtodoContent : UI_Base
         {
             Debug.Log("full heart");
             index = fullHeart;
-            likeBtn.GetComponent<Button>().interactable = true;
-            BindEvent(likeBtn, LikeBtnClick);
+            likeNumBtn.GetComponent<Button>().interactable = true;
+            BindEvent(likeNumBtn, LikeNumBtnClick);
         }
         else
         {
             Debug.Log("empty heart");
             index = emptyHeart;
-            likeBtn.GetComponent<Button>().interactable = false;
-            ClearEvent(likeBtn,LikeBtnClick);
+            likeNumBtn.GetComponent<Button>().interactable = false;
+            ClearEvent(likeNumBtn,LikeNumBtnClick);
         }
 
 

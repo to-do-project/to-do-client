@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class UI_Cheer : UI_Popup
@@ -15,6 +17,8 @@ public class UI_Cheer : UI_Popup
     {
         cheer_btn
     }
+
+    long todoMemberId;
 
     void Start()
     {
@@ -47,6 +51,32 @@ public class UI_Cheer : UI_Popup
     void CheerBtnClick(PointerEventData data)
     {
         //응원 API 날리기
+
+        Managers.Web.SendGetRequest("api/todo/",todoMemberId.ToString(), (uwr)=> {
+
+            Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+
+            if (res.isSuccess)
+            {
+                ClosePopupUI();
+            }
+            else
+            {
+                switch (res.code)
+                {
+                    case 6023:
+                        Action action = delegate { CheerBtnClick(data); };
+                        Managers.Player.SendTokenRequest(action);
+                        break;
+                }
+            }
+
+        },Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+    }
+
+    public void Setting(long todoMemberId)
+    {
+        this.todoMemberId = todoMemberId;
     }
 
 }

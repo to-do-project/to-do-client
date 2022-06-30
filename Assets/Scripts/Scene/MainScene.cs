@@ -61,7 +61,7 @@ public class MainScene : BaseScene
 
                 if (res.isSuccess)
                 {
-                    //Managers.UI.ShowPopupUI<UI_DailySettleView>();
+                    Managers.UI.ShowPopupUI<UI_DailySettleView>("DaliySettleView","Main");
                 }
                 else
                 {

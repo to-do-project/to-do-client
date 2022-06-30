@@ -11,6 +11,7 @@ public class UI_GtodoContent : UI_Base
     enum Buttons
     {
         like_btn,
+        like_num,
     }
 
     enum Texts
@@ -33,7 +34,7 @@ public class UI_GtodoContent : UI_Base
     Toggle checkToggle;
 
     Action innerAction;
-    GameObject likeBtn;
+    GameObject likeBtn, likeNumBtn;
 
     const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
     const int fullHeart = 19;
@@ -51,8 +52,11 @@ public class UI_GtodoContent : UI_Base
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
 
         likeBtn = GetButton((int)Buttons.like_btn).gameObject;
-        BindEvent(likeBtn, LikeBtnClick);
-
+        likeNumBtn = GetButton((int)Buttons.like_num).gameObject;
+        likeBtn.GetComponent<Button>().interactable = false;
+        //BindEvent(likeBtn, LikeBtnClick);
+        BindEvent(likeNumBtn, LikeNumBtnClick);
+       
         SetTodo();
 
         checkToggle.onValueChanged.AddListener((bool bOn) => {
@@ -93,6 +97,11 @@ public class UI_GtodoContent : UI_Base
 
     private void LikeBtnClick(PointerEventData data)
     {
+
+    }
+
+    private void LikeNumBtnClick(PointerEventData data)
+    {
         UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView", "Main");
         ui.Setting(todoMemberId.ToString());
         Debug.Log("todoMember id " + todoMemberId.ToString());
@@ -114,11 +123,16 @@ public class UI_GtodoContent : UI_Base
 
     private void SetTodo()
     {
+        Canvas.ForceUpdateCanvases();
+
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
 
         SetLikeBtnImage();
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
     private void SetLikeBtnImage()
@@ -129,15 +143,15 @@ public class UI_GtodoContent : UI_Base
         {
             Debug.Log("full heart");
             index = fullHeart;
-            likeBtn.GetComponent<Button>().interactable = true;
-            BindEvent(likeBtn, LikeBtnClick);
+            likeNumBtn.GetComponent<Button>().interactable = true;
+            BindEvent(likeNumBtn, LikeNumBtnClick);
         }
         else
         {
             Debug.Log("empty heart");
             index = emptyHeart;
-            likeBtn.GetComponent<Button>().interactable = false;
-            ClearEvent(likeBtn, LikeBtnClick);
+            likeNumBtn.GetComponent<Button>().interactable = false;
+            ClearEvent(likeNumBtn, LikeNumBtnClick);
         }
 
 

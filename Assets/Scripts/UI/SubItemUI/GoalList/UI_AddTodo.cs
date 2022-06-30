@@ -124,9 +124,11 @@ public class UI_AddTodo : UI_Base
                 todoItem.Setting(goalId,res.result.todoMemberId, val.title, false, 0, false);
                 this.transform.SetAsLastSibling();
 
+                todoName.text = "";
+
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent);
                 Canvas.ForceUpdateCanvases();
-                todoName.text = "";
+
 
                 
             }

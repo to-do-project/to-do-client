@@ -25,6 +25,7 @@ public class Define
     public const string GIVE_GOOD = "putFavoriteCount";
     public const string DATETIME = "DateTime";
     public const string MISSION_STATUS = "missionStatus";
+    public const string EXP = "exp";
 
     public enum Scene
     {
