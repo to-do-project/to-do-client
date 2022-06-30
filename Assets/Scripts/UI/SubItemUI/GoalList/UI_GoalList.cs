@@ -102,6 +102,7 @@ public class UI_GoalList : UI_Base
                                         goal.SetGoalRate(item.percentage.ToString());*/
                    
                     goal.SetGgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.managerFlag);
+                    Canvas.ForceUpdateCanvases();
                 }
                 else
                 {
@@ -109,6 +110,7 @@ public class UI_GoalList : UI_Base
                     /*                    goal.SetGoalName(item.goalTitle);
                                         goal.SetGoalRate(item.percentage.ToString());*/
                     goal.SetPgoalContent(item.goalTitle,item.percentage.ToString(),item.goalId,item.getTodoMainResList, item.openFlag);
+                    Canvas.ForceUpdateCanvases();
                 }
 
                 

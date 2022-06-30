@@ -10,6 +10,7 @@ public class UI_MemberTodoContent : UI_Base
     enum Buttons
     {
         like_btn,
+        like_num,
     }
 
     enum Texts
@@ -32,6 +33,7 @@ public class UI_MemberTodoContent : UI_Base
     Toggle checkToggle;
 
     Action innerAction;
+    GameObject likeBtn, likeNumBtn;
 
     const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
     const int fullHeart = 19;
@@ -40,8 +42,8 @@ public class UI_MemberTodoContent : UI_Base
 
     public override void Init()
     {
-        innerAction -= SendLikeClickBtnRequest;
-        innerAction += SendLikeClickBtnRequest;
+        innerAction -= SendLikeNumClickBtnRequest;
+        innerAction += SendLikeNumClickBtnRequest;
 
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
@@ -51,8 +53,11 @@ public class UI_MemberTodoContent : UI_Base
         likeTxt = GetText((int)Texts.like_txt);
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
 
-        GameObject likeBtn = GetButton((int)Buttons.like_btn).gameObject;
+        likeBtn = GetButton((int)Buttons.like_btn).gameObject;
         BindEvent(likeBtn, LikeBtnClick);
+
+        likeNumBtn = GetButton((int)Buttons.like_num).gameObject;
+        BindEvent(likeNumBtn, LikeNumBtnClick);
 
         SetTodo();
     }
@@ -62,7 +67,7 @@ public class UI_MemberTodoContent : UI_Base
         Init();
     }
     
-    private void SendLikeClickBtnRequest()
+    private void SendLikeNumClickBtnRequest()
     {
         Managers.Web.SendUniRequest("api/todo/like/" + todoMemberId.ToString(), "POST", null, (uwr) => {
 
@@ -91,7 +96,12 @@ public class UI_MemberTodoContent : UI_Base
 
     private void LikeBtnClick(PointerEventData data)
     {
-        SendLikeClickBtnRequest();
+
+    }
+
+    private void LikeNumBtnClick(PointerEventData data)
+    {
+        SendLikeNumClickBtnRequest();
     }
 
     public void Setting(long goalId, long todoId, string title, bool likeFlag, int likeCount, bool completeFlag)
@@ -114,6 +124,8 @@ public class UI_MemberTodoContent : UI_Base
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
         checkToggle.interactable = false;
+
+        SetLikeBtnImage();
     }
 
     private void SetLikeBtnImage()
@@ -130,7 +142,8 @@ public class UI_MemberTodoContent : UI_Base
             }
             else
             {
-
+                //UI_Cheer ui =  Managers.UI.ShowPopupUI<UI_Cheer>("CheerView","Main");
+               // ui.Setting(todoMemberId);
             }
         }
     }

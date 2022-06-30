@@ -78,13 +78,17 @@ public class UI_PgoalContent : UI_Base
             }
 
             todo.SetActive(false);
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent.GetComponent<ContentSizeFitter>().transform);
+            Canvas.ForceUpdateCanvases();
 
         }
         else
         {
 
             todo.SetActive(true);
-
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent.GetComponent<ContentSizeFitter>().transform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.GetComponent<ContentSizeFitter>().transform);
+            Canvas.ForceUpdateCanvases();
         }
 
     }
@@ -117,10 +121,10 @@ public class UI_PgoalContent : UI_Base
 
         if (todoList.Count != 0 && todo!=null)
         {
-            Debug.Log("Count: " + todoList.Count);
+            //Debug.Log("Count: " + todoList.Count);
             foreach (TodoItem item in todoList)
             {
-                Debug.Log($"{item.todoTitle} {item.todoMemberId}");
+                //Debug.Log($"{item.todoTitle} {item.todoMemberId}");
                 UI_PtodoContent todoItem = Managers.UI.MakeSubItem<UI_PtodoContent>("GoalList", todo.transform, "Ptodo_content");
                 
                 
@@ -129,6 +133,9 @@ public class UI_PgoalContent : UI_Base
         }
         
         todoAdd.transform.SetAsLastSibling();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.GetComponent<ContentSizeFitter>().transform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent.GetComponent<ContentSizeFitter>().transform);
 
         Canvas.ForceUpdateCanvases();
 
