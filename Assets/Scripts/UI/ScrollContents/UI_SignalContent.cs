@@ -15,7 +15,6 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
     string type;
     long noticeId, id;
     bool clicked = false;
-    bool isRead = false;
 
     //GameObject parent;
 
@@ -43,11 +42,6 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
     public void SetId(long id)
     {
         this.id = id;
-    }
-
-    public void SetRead()
-    {
-        isRead = true;
     }
 
     public void OnPointerClick(PointerEventData data)
@@ -81,8 +75,6 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
                 {
                     WebGetGroup();
                 }
-
-                isRead = true;
             }
             else if (response.code == 6000)
             {

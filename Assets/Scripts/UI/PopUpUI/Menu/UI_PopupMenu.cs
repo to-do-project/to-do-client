@@ -22,9 +22,9 @@ public class UI_PopupMenu : UI_Popup // Menu에서 많이 사용하는 함수들을 여기에 �
         Camera UIcam = canvas.worldCamera;
         if (UIcam == null)
         {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>(); // UICamera를 찾아 설정
             canvas.worldCamera = cam;
-            dataContainer = cam.gameObject.GetComponent<UIDataCamera>();
+            dataContainer = cam.gameObject.GetComponent<UIDataCamera>();            // UICamera에 있는 데이터 컨테이너 연결
         }
         else
         {

@@ -16,7 +16,7 @@ public class UI_LikeFriendContent : UI_Base
         profile_img,
     }
 
-    string name, color;
+    string nickname, color;
     const string profileName = "Art/UI/Profile/Profile_Color_3x";
 
     Image profile;
@@ -41,13 +41,13 @@ public class UI_LikeFriendContent : UI_Base
 
     public void Setting(string name, string color)
     {
-        this.name = name;
+        nickname = name;
         this.color = color;
     }
 
     private void Setting()
     {
-        friendName.text = name;
+        friendName.text = nickname;
 
         int index = 0;
         index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));

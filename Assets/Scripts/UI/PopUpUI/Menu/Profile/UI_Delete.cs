@@ -72,6 +72,8 @@ public class UI_Delete : UI_PopupMenu
         RequestDelete req = new RequestDelete();
         req.password = Pswdfield.text;
 
+        Debug.Log(req.password);
+
         Managers.Web.SendUniRequest("api/user", "DELETE", req, (data) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(data.downloadHandler.text);
             if (response.isSuccess)
@@ -81,9 +83,14 @@ public class UI_Delete : UI_PopupMenu
                 PlayerPrefs.DeleteAll();
                 Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
             }
+            else if (response.code == 6000)
+            {
+                Managers.Player.SendTokenRequest(ComparePassword);
+            }
             else
             {
                 Debug.Log(response.message);
+                Debug.Log(response.code);
                 PswdChecktxt.text = "*비밀번호를 잘못 입력했습니다.";
             }
         }, hN, hV);
