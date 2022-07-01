@@ -29,6 +29,7 @@ public class UI_MemberTodoContent : UI_Base
     bool likeFlag, completeFlag;
     int likeCount;
 
+
     Text todoTitle, likeTxt;
     Toggle checkToggle;
 
@@ -42,8 +43,8 @@ public class UI_MemberTodoContent : UI_Base
 
     public override void Init()
     {
-        innerAction -= SendLikeNumClickBtnRequest;
-        innerAction += SendLikeNumClickBtnRequest;
+        innerAction -= SendLikeClickBtnRequest;
+        innerAction += SendLikeClickBtnRequest;
 
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
@@ -67,7 +68,7 @@ public class UI_MemberTodoContent : UI_Base
         Init();
     }
     
-    private void SendLikeNumClickBtnRequest()
+    private void SendLikeClickBtnRequest()
     {
         Managers.Web.SendUniRequest("api/todo/like/" + todoMemberId.ToString(), "POST", null, (uwr) => {
 
@@ -75,8 +76,13 @@ public class UI_MemberTodoContent : UI_Base
 
             if (res.isSuccess)
             {
+                likeBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(likeBtn, LikeBtnClick);
 
+                ChangeLikeBtnImage(fullHeart);
+                likeTxt.text = (likeCount + 1).ToString();
                 //하트 색깔 바꾸기
+                
             }
             else
             {
@@ -94,14 +100,31 @@ public class UI_MemberTodoContent : UI_Base
         }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
     }
 
+
     private void LikeBtnClick(PointerEventData data)
     {
 
+
+        if (completeFlag)
+        {
+            if (!likeFlag)
+            {
+                SendLikeClickBtnRequest();
+            }
+        }
+        else
+        {
+
+            UI_Cheer ui =  Managers.UI.ShowPopupUI<UI_Cheer>("CheerView","Main");
+            ui.Setting(todoMemberId, this.GetComponentInParent<UI_MemberGoalContent>().GetNickname());
+        }
     }
 
     private void LikeNumBtnClick(PointerEventData data)
     {
-        SendLikeNumClickBtnRequest();
+        UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView", "Main");
+        ui.Setting(todoMemberId.ToString());
+       // Debug.Log("todoMember id " + todoMemberId.ToString());
     }
 
     public void Setting(long goalId, long todoId, string title, bool likeFlag, int likeCount, bool completeFlag)
@@ -120,31 +143,58 @@ public class UI_MemberTodoContent : UI_Base
 
     private void SetTodo()
     {
+        Canvas.ForceUpdateCanvases();
+
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
         checkToggle.interactable = false;
 
         SetLikeBtnImage();
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
     private void SetLikeBtnImage()
     {
-        if (likeFlag)
+        int index;
+        if (completeFlag)
         {
-
-        }
-        else
-        {
-            if (completeFlag)
+            //상대가 투두 완료 했으면
+            if (likeFlag)
             {
-
+                //내가 좋아요 눌렀음
+                index = fullHeart;
+                likeBtn.GetComponent<Button>().interactable = false;
+                ClearEvent(likeBtn, LikeBtnClick);
             }
             else
             {
-                //UI_Cheer ui =  Managers.UI.ShowPopupUI<UI_Cheer>("CheerView","Main");
-               // ui.Setting(todoMemberId);
+                //내가 좋아요 안눌렀음
+                index = grayHeart;
+                likeBtn.GetComponent<Button>().interactable = true;
+                BindEvent(likeBtn, LikeBtnClick);
             }
+
+            likeNumBtn.GetComponent<Button>().interactable = true;
+            BindEvent(likeNumBtn, LikeNumBtnClick);
         }
+        else
+        {
+            index = emptyHeart;
+
+            likeNumBtn.GetComponent<Button>().interactable = false;
+            ClearEvent(likeNumBtn, LikeNumBtnClick);
+
+        }
+
+        likeBtn.GetComponent<Image>().sprite = Resources.LoadAll<Sprite>(likeImageName)[index];
+
+    }
+
+    private void ChangeLikeBtnImage(int index)
+    {
+        likeBtn.GetComponent<Image>().sprite = Resources.LoadAll<Sprite>(likeImageName)[index];
     }
 }

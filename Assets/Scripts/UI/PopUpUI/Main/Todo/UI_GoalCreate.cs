@@ -61,6 +61,7 @@ public class UI_GoalCreate : UI_Popup
     }
 
     InputField friendNameInputfield;
+
     List<ResponseMemberFind> memberList;
 
     Action<UnityWebRequest> callback;
@@ -91,6 +92,7 @@ public class UI_GoalCreate : UI_Popup
 
         Managers.Todo.goalFriendAddAction -= AddfriendList;
         Managers.Todo.goalFriendAddAction += AddfriendList;
+
 
         memberList = new List<ResponseMemberFind>();
 
@@ -179,6 +181,7 @@ public class UI_GoalCreate : UI_Popup
             {
                 if (child != friendRoot.transform)
                 {
+                    Debug.Log(child.name);
                     Managers.Resource.Destroy(child.gameObject);
                 }
             }
@@ -231,6 +234,21 @@ public class UI_GoalCreate : UI_Popup
     {
 
         string name = friendNameInputfield.text;
+
+        UI_FriendAddContent[] childList = friendRoot.GetComponentsInChildren<UI_FriendAddContent>();
+        if (childList != null)
+        {
+            foreach (UI_FriendAddContent child in childList)
+            {
+                if (child.gameObject != friendRoot.gameObject)
+                {
+                    Debug.Log("serach friend name in "+child.name);
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+
+
 
         if (isValidNickname(name))
         {
@@ -345,7 +363,7 @@ public class UI_GoalCreate : UI_Popup
 
 
 
-    private void AddfriendList(ResponseMemberFind val)
+    public void AddfriendList(ResponseMemberFind val)
     {
         if (memberList.Find(x=> x.userId==val.userId)==null)
         {
@@ -355,20 +373,23 @@ public class UI_GoalCreate : UI_Popup
 
             if (openToggle.IsInteractable())
             {
-                openToggle.isOn = false;
                 openToggle.interactable = false;
+                openToggle.isOn = false;
+
             }
 
         }
 
+        friendRoot = Get<GameObject>((int)GameObjects.friendContent);
+        
         Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
-
         if (childList != null)
         {
             foreach (Transform child in childList)
             {
-                if (child != friendRoot.transform)
+                if (child.gameObject != friendRoot.gameObject)
                 {
+                    Debug.Log("AddfriendList in " + child.name);
                     Managers.Resource.Destroy(child.gameObject);
                 }
             }

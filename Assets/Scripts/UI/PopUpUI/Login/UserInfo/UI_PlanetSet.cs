@@ -241,6 +241,8 @@ public class UI_PlanetSet : UI_UserInfo
                             Managers.Player.SetString(Define.NICKNAME, result.nickname);
                             Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
 
+                            Managers.Player.SetInt("FirstStart", 0);
+
                             Managers.Player.Init();
                             UI_Load.Instance.InstantLoad("Main");
                             //Managers.Scene.LoadScene(Define.Scene.Main);

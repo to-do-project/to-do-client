@@ -42,11 +42,11 @@ public class UI_GoalList : UI_Base
 
         Canvas.ForceUpdateCanvases();
         
-        //款康磊 固记 积己
+/*        //款康磊 固记 积己
         if (Managers.Player.GetString(Define.MISSION_STATUS) != null)
         {
             Managers.UI.MakeSubItem<UI_SystemMission>("GoalList", goalParent.transform, "SystemMission");
-        }
+        }*/
 
         Canvas.ForceUpdateCanvases();
         

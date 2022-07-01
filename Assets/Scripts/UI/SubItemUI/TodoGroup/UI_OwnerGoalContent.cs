@@ -15,7 +15,6 @@ public class UI_OwnerGoalContent : UI_Base
     {
         OwnerGoal,
         OwnerTodo,
-        AddTodo,
     }
 
     enum Images
@@ -112,7 +111,7 @@ public class UI_OwnerGoalContent : UI_Base
             foreach (GetTodoMembers item in todoList)
             {
                 Debug.Log($"{item.todoTitle} {item.todoMemberId}");
-                UI_OwnerTodoContent todoItem = Managers.UI.MakeSubItem<UI_OwnerTodoContent>("TodoGroup", todo.transform, "MemberTodo_content");
+                UI_OwnerTodoContent todoItem = Managers.UI.MakeSubItem<UI_OwnerTodoContent>("TodoGroup", todo.transform, "OwnerTodo_content");
 
 
                 todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
