@@ -19,6 +19,7 @@ public class UI_Cheer : UI_Popup
     }
 
     long todoMemberId;
+    string nickname;
 
     void Start()
     {
@@ -43,6 +44,9 @@ public class UI_Cheer : UI_Popup
         {
             Debug.Log($"{UIcam.name}");
         }
+
+        Text cheerTxt = GetText((int)Texts.cheer_txt);
+        cheerTxt.text = nickname + "님이 아직 to-do를 완료하지 않았습니다.";
 
         GameObject cheerBtn = GetButton((int)Buttons.cheer_btn).gameObject;
         BindEvent(cheerBtn, CheerBtnClick);
@@ -74,9 +78,10 @@ public class UI_Cheer : UI_Popup
         },Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
     }
 
-    public void Setting(long todoMemberId)
+    public void Setting(long todoMemberId, string nickname)
     {
         this.todoMemberId = todoMemberId;
+        this.nickname = nickname;
     }
 
 }

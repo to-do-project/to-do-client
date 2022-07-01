@@ -66,7 +66,8 @@ public class UI_FriendAddContent : UI_Base
                 profileColor = this.profileColor
             };
 
-            Managers.Todo.goalFriendAddAction.Invoke(val);
+            //Managers.Todo.goalFriendAddAction.Invoke(val);
+            this.transform.parent.parent.parent.parent.GetComponent<UI_GoalCreate>().AddfriendList(val);
         }
     }
 

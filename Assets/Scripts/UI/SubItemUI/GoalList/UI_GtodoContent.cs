@@ -139,7 +139,7 @@ public class UI_GtodoContent : UI_Base
     {
         //like 버튼 이미지 변경
         int index;
-        if (likeFlag)
+        if (likeCount!=0)
         {
             Debug.Log("full heart");
             index = fullHeart;
