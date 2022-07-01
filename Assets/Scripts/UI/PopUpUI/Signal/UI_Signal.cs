@@ -88,7 +88,6 @@ public class UI_Signal : UI_PopupMenu
         signal.SetType(type);
         signal.SetId(id);
         signal.SetNoticeId(noticeId);
-        if (readStatus == "READ") signal.SetRead();
 
         SizeRefresh();
     }
