@@ -14,7 +14,7 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
     Text title;
     string type;
     long noticeId, id;
-    bool clicked = false;
+    bool clicked = false, group = false;
 
     //GameObject parent;
 
@@ -52,6 +52,7 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
     void ReadSave()
     {
         if (clicked) return;
+        if (group) return;
         clicked = true;
 
         string[] hN = { Define.JWT_ACCESS_TOKEN,
@@ -75,9 +76,11 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
                 {
                     WebGetGroup();
                 }
+                clicked = false;
             }
             else if (response.code == 6000)
             {
+                clicked = false;
                 Managers.Player.SendTokenRequest(ReadSave);
             }
             else
@@ -90,6 +93,8 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
 
     void WebGetGroup()
     {
+        if (group) return;
+        group = true;
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -103,14 +108,17 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
                 tmp.Setid(id);
                 tmp.SetText(response.result.title);
                 tmp.Members = response.result.goalMemberList;
+                group = false;
             }
             else if (response.code == 6000)
             {
+                group = false;
                 Managers.Player.SendTokenRequest(WebGetGroup);
             }
             else
             {
                 Debug.Log(response.message);
+                group = false;
             }
         }, hN, hV);
     }

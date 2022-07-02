@@ -156,7 +156,7 @@ public class UI_GtodoFriendContent : UI_Base
             index = grayHeart;
             likeNumBtn.SetActive(false);
         }
-        else if (likeCount != 0 && likeFlag)
+        else if (likeCount != 0 && likeFlag == false)
         {
             index = grayHeart;
             likeNumBtn.SetActive(true);
@@ -172,6 +172,7 @@ public class UI_GtodoFriendContent : UI_Base
         if(isInit == false)
             BindEvent(likeBtn, LikeBtnClick);
         isInit = true;
+        likeTxt.text = likeCount.ToString();
 
         likeBtn.GetComponent<Image>().sprite = Resources.LoadAll<Sprite>(likeImageName)[index];
     }
