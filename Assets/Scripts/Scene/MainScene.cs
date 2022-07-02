@@ -52,24 +52,33 @@ public class MainScene : BaseScene
         //Managers.Player.SendTokenRequest(innerCallback);
 
 
-        if (CalcDate())
+        if (PlayerPrefs.GetInt("FirstStart") == 0)
         {
-            //Managers.UI.ShowPopupUI<UI_DailySettleView>();
+            PlayerPrefs.SetInt("FirstStart", 1);
 
-            Managers.Web.SendGetRequest("api/users/result", null, (uwr)=> {
-                Response<ResponseDailyResult> res = JsonUtility.FromJson<Response<ResponseDailyResult>>(uwr.downloadHandler.text);
+        }
+        else
+        {
+            if (CalcDate())
+            {
+                //Managers.UI.ShowPopupUI<UI_DailySettleView>();
 
-                if (res.isSuccess)
-                {
-                    Managers.UI.ShowPopupUI<UI_DailySettleView>("DaliySettleView","Main");
-                }
-                else
-                {
+                Managers.Web.SendGetRequest("api/users/result", null, (uwr) => {
+                    Response<ResponseDailyResult> res = JsonUtility.FromJson<Response<ResponseDailyResult>>(uwr.downloadHandler.text);
 
-                }
+                    if (res.isSuccess)
+                    {
+                        Managers.UI.ShowPopupUI<UI_DailySettleView>("DaliySettleView", "Main");
+                    }
+                    else
+                    {
 
-            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+                    }
 
+                }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
+
+            }
 
         }
 

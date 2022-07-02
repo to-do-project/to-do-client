@@ -101,6 +101,7 @@ public class UI_MemberGoalContent : UI_Base
 
     private void SetGoalContent()
     {
+
         nickname.text = memberName;
         SetImage(color);
         if (wait)
@@ -145,10 +146,15 @@ public class UI_MemberGoalContent : UI_Base
         goalRate.text = percentage.ToString() + "%";
     }
 
-    public void SetImage(string color)
+    private void SetImage(string color)
     {
         int index = 0;
         index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
         profile.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+    }
+
+    public string GetNickname()
+    {
+        return memberName;
     }
 }

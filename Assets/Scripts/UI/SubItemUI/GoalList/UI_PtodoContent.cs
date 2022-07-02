@@ -140,7 +140,7 @@ public class UI_PtodoContent : UI_Base
     {
         UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView", "Main");
         ui.Setting(todoMemberId.ToString());
-        Debug.Log("todoMember id " + todoMemberId.ToString());
+        //Debug.Log("todoMember id " + todoMemberId.ToString());
     }
 
     private void EditBtnClick(PointerEventData data)
@@ -245,7 +245,7 @@ public class UI_PtodoContent : UI_Base
     {
         //like 버튼 이미지 변경
         int index;
-        if (likeFlag)
+        if (likeCount!=0)
         {
             Debug.Log("full heart");
             index = fullHeart;

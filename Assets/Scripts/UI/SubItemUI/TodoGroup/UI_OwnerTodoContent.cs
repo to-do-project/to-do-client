@@ -57,6 +57,38 @@ public class UI_OwnerTodoContent : UI_Base
         //BindEvent(likeBtn, LikeBtnClick);
         BindEvent(likeNumBtn, LikeNumBtnClick);
 
+
+        checkToggle.onValueChanged.AddListener((bool bOn) => {
+
+            string flag = bOn ? "true" : "false";
+
+
+            Managers.Web.SendUniRequest("api/todo/" + todoMemberId.ToString() + "?flag=" + flag, "PATCH", null, (uwr) =>
+            {
+                Response<ResponseTodoCheck> res = JsonUtility.FromJson<Response<ResponseTodoCheck>>(uwr.downloadHandler.text);
+
+                if (res.isSuccess)
+                {
+
+                    this.transform.parent.parent.gameObject.GetComponent<UI_OwnerGoalContent>().SetPercentage(res.result.percentage);
+                    Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+                }
+                else
+                {
+                    Debug.Log(res.message);
+                    switch (res.code)
+                    {
+                        case 6023:
+                            //Managers.Player.SendTokenRequest(innerAction);
+                            break;
+
+                    }
+                }
+
+            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
+        });
+
         SetTodo();
     }
 
@@ -93,18 +125,25 @@ public class UI_OwnerTodoContent : UI_Base
 
     private void SetTodo()
     {
+        Canvas.ForceUpdateCanvases();
+
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
         
         SetLikeBtnImage();
+
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+
     }
 
     private void SetLikeBtnImage()
     {
         //like 버튼 이미지 변경
         int index;
-        if (likeFlag)
+        if (likeCount!=0)
         {
             Debug.Log("full heart");
             index = fullHeart;

@@ -26,6 +26,10 @@ public class UI_GroupAddTodo : UI_Base
     Action innerAction;
     Response<ResponseTodoCreate> res;
     RequestTodoCreate val;
+
+    long goalId;
+    UI_GroupGoalCreater parent;
+
     public override void Init()
     {
 
@@ -49,8 +53,7 @@ public class UI_GroupAddTodo : UI_Base
         Init();
     }
 
-    long goalId;
-    UI_GroupGoalCreater parent;
+
 
     private void AddBtnClick(PointerEventData data)
     {
@@ -112,7 +115,7 @@ public class UI_GroupAddTodo : UI_Base
 
                 Canvas.ForceUpdateCanvases();
 
-                UI_MemberTodoContent todoItem = Managers.UI.MakeSubItem<UI_MemberTodoContent>("TodoGroup", this.transform.parent, "MemberTodo_content");
+                UI_OwnerTodoContent todoItem = Managers.UI.MakeSubItem<UI_OwnerTodoContent>("TodoGroup", this.transform.parent, "OwnerTodo_content");
                 todoItem.Setting(goalId, res.result.todoMemberId, val.title, false, 0, false);
                 this.transform.SetAsLastSibling();
 
