@@ -29,6 +29,7 @@ public class ResponseSignUp
     public int point;
     public int missionStatus;
     public string deviceToken;
+    public int exp;
 }
 
 public class UI_PlanetSet : UI_UserInfo
@@ -240,7 +241,8 @@ public class UI_PlanetSet : UI_UserInfo
                             Managers.Player.SetString(Define.EMAIL, result.email);
                             Managers.Player.SetString(Define.NICKNAME, result.nickname);
                             Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
-
+                            Managers.Player.SetInt(Define.EXP, result.exp);
+                           
                             Managers.Player.SetInt("FirstStart", 0);
 
                             Managers.Player.Init();
