@@ -97,8 +97,8 @@ public class UI_Like : UI_Popup
 
                         break;
                     case 6023:
-                        Action action = delegate { };
-                        
+                        Action action = delegate { Setting(todoMemberId); };
+                        Managers.Player.SendTokenRequest(action);
                         break;
                 }
             }

@@ -79,7 +79,8 @@ public class UI_OwnerTodoContent : UI_Base
                     switch (res.code)
                     {
                         case 6023:
-                            //Managers.Player.SendTokenRequest(innerAction);
+                            Action action = delegate {  };
+                            Managers.Player.SendTokenRequest(action);
                             break;
 
                     }

@@ -259,6 +259,10 @@ public class UI_GroupGoalCreater : UI_Popup
                  switch (res.code)
                  {
                      case 6023:
+                         Action action = delegate {
+                             Setting(goalId);
+                         };
+                         Managers.Player.SendTokenRequest(action);
                          break;
                  }
              }
