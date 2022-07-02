@@ -10,6 +10,7 @@ public class UI_GtodoFriendContent : UI_Base
     enum Buttons
     {
         friendlike_btn,
+        like_num,
     }
 
     enum Texts
@@ -25,7 +26,7 @@ public class UI_GtodoFriendContent : UI_Base
     long goalId;
     long todoMemberId;
     string title;
-    bool likeFlag, completeFlag, clicked = false;
+    bool likeFlag, completeFlag, clicked = false, isInit = false;
     int likeCount;
 
     Text todoTitle, likeTxt;
@@ -35,11 +36,12 @@ public class UI_GtodoFriendContent : UI_Base
 
     UI_FriendUI parent = null;
 
-    GameObject likeBtn = null;
+    GameObject likeBtn = null, likeNumBtn = null;
 
     const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
-    const int fullHeart = 19;
+    const int pinkHeart = 19;
     const int emptyHeart = 20;
+    const int grayHeart = 21;
 
     public override void Init()
     {
@@ -52,6 +54,7 @@ public class UI_GtodoFriendContent : UI_Base
         checkToggle = Get<Toggle>((int)Toggles.todoCheck_toggle);
 
         likeBtn = GetButton((int)Buttons.friendlike_btn).gameObject;
+        likeNumBtn = GetButton((int)Buttons.like_num).gameObject;
         SetLikeBtnImage();
 
         SetTodo();
@@ -80,6 +83,7 @@ public class UI_GtodoFriendContent : UI_Base
     void Ex_Like()
     {
         if (clicked) return;
+        if (likeFlag) return;
         clicked = true;
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
@@ -93,6 +97,7 @@ public class UI_GtodoFriendContent : UI_Base
             {
                 Debug.Log(response.result);
                 likeFlag = true;
+                likeCount++;
                 SetLikeBtnImage();
                 clicked = false;
             }
@@ -125,30 +130,48 @@ public class UI_GtodoFriendContent : UI_Base
 
     private void SetTodo()
     {
+        Canvas.ForceUpdateCanvases();
+
         todoTitle.text = title;
         likeTxt.text = likeCount.ToString();
         checkToggle.isOn = completeFlag;
+
+        SetLikeBtnImage();
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
     private void SetLikeBtnImage()
     {
         //like 버튼 이미지 변경
         int index;
-        if (likeFlag)
+        if (checkToggle.isOn == false)
         {
-            Debug.Log("full heart");
-            index = fullHeart;
-            likeBtn.GetComponent<Button>().interactable = true;
-            ClearEvent(likeBtn, LikeBtnClick);
+            index = emptyHeart;
+            likeNumBtn.SetActive(false);
+        }
+        else if (likeCount == 0 && likeFlag == false)
+        {
+            index = grayHeart;
+            likeNumBtn.SetActive(false);
+        }
+        else if (likeCount != 0 && likeFlag)
+        {
+            index = grayHeart;
+            likeNumBtn.SetActive(true);
+            likeNumBtn.GetComponent<Button>().interactable = false;
         }
         else
         {
-            Debug.Log("empty heart");
-            index = emptyHeart;
-            likeBtn.GetComponent<Button>().interactable = false;
-            BindEvent(likeBtn, LikeBtnClick);
+            index = pinkHeart;
+            likeNumBtn.SetActive(true);
+            likeNumBtn.GetComponent<Button>().interactable = true;
         }
 
+        if(isInit == false)
+            BindEvent(likeBtn, LikeBtnClick);
+        isInit = true;
 
         likeBtn.GetComponent<Image>().sprite = Resources.LoadAll<Sprite>(likeImageName)[index];
     }
