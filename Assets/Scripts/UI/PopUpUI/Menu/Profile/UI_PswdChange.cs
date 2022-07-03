@@ -168,6 +168,7 @@ public class UI_PswdChange : UI_PopupMenu
             if (response.code == 1000)
             {
                 Debug.Log(password);
+                Managers.Player.SetString(Define.PASSWORD, password);
                 Managers.UI.ClosePopupUI();
             }
             else if (response.code == 6000)

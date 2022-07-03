@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
+
+[System.Serializable]
 public class ResponseDailyResult
 {
     public int total_exp;
@@ -62,7 +64,7 @@ public class MainScene : BaseScene
             if (CalcDate())
             {
                 //Managers.UI.ShowPopupUI<UI_DailySettleView>();
-
+                Debug.Log("정산하기");
                 Managers.Web.SendGetRequest("api/users/result", null, (uwr) => {
                     Response<ResponseDailyResult> res = JsonUtility.FromJson<Response<ResponseDailyResult>>(uwr.downloadHandler.text);
 
@@ -73,7 +75,10 @@ public class MainScene : BaseScene
                     }
                     else
                     {
+                        if (res.code == 6023)
+                        {
 
+                        }
                     }
 
                 }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
@@ -167,7 +172,8 @@ public class MainScene : BaseScene
         {
             if (Managers.Player.GetInt(Define.DATETIME) < sum)  // 저장된 데이터와 현재 시간 비교
             {
-                Debug.Log("하루 이상 지났습니다");
+                Debug.Log("하루 이상 지났습니다 : "+ Managers.Player.GetInt(Define.DATETIME)+" "+sum);
+                Managers.Player.SetInt(Define.DATETIME, sum);
                 return true;
             }
             Managers.Player.SetInt(Define.DATETIME, sum);       // 현재 시간 데이터 저장

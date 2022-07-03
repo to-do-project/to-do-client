@@ -59,7 +59,7 @@ public class UI_Login : UI_Panel
     }
 
     Text failMessage;
-
+    RequestLogin val;
     public override void Init()
     {
         base.Init();
@@ -110,9 +110,10 @@ public class UI_Login : UI_Panel
 
     private void LoginBtnClick(PointerEventData data)
     {
-        RequestLogin val = new RequestLogin();
-        //아이디 입력 확인
-        InputField idInput = Get<InputField>((int)InputFields.ID_inputfield);
+        val = new RequestLogin();
+
+       //아이디 입력 확인
+       InputField idInput = Get<InputField>((int)InputFields.ID_inputfield);
 
 
         if (isValidEmail(idInput.text))
@@ -170,9 +171,9 @@ public class UI_Login : UI_Panel
         {
             res = JsonUtility.FromJson<Response<ResponseLogin>>(request.downloadHandler.text);
 
-            Debug.Log(res.code);
+/*            Debug.Log(res.code);
             Debug.Log(res.message);
-            
+            */
             if (res.isSuccess)
             {
                 Debug.Log("Success Login");
@@ -199,9 +200,10 @@ public class UI_Login : UI_Panel
                     Managers.Player.SetString(Define.NICKNAME, result.nickname);
                     Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
                     Managers.Player.SetString(Define.PROFILE_COLOR, result.profileColor);
-                    Managers.Player.SetInt(Define.POINT, result.point);
+                    //Managers.Player.SetInt(Define.POINT, result.point);
                     Managers.Player.SetInt(Define.MISSION_STATUS, result.missionStatus);
-                    Managers.Player.SetInt(Define.EXP, result.exp);
+                    //Managers.Player.SetInt(Define.EXP, result.exp);
+                    Managers.Player.SetString(Define.PASSWORD, val.password);
 
                     Managers.Player.Init();
                     UI_Load.Instance.InstantLoad("Main");
