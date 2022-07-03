@@ -139,6 +139,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.462
       objectReference: {fileID: 0}
+    - target: {fileID: 4559601966285032919, guid: 1abb0a6f885c1784ab9bb879777ba088, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1941999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559601966285032919, guid: 1abb0a6f885c1784ab9bb879777ba088, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.334
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880454187658336015, guid: 1abb0a6f885c1784ab9bb879777ba088, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1816
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880454187658336015, guid: 1abb0a6f885c1784ab9bb879777ba088, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.354
+      objectReference: {fileID: 0}
     - target: {fileID: 5030233868558641081, guid: 1abb0a6f885c1784ab9bb879777ba088, type: 3}
       propertyPath: m_Name
       value: plant_05
