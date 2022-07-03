@@ -9,7 +9,7 @@ public class UI_Sound : UI_PopupMenu
     enum Buttons
     {
         Back_btn,
-        Mission_btn,
+        //Mission_btn, 운영자 매일 미션
         Bgm_btn,
         Sfx_btn,
     }
@@ -67,7 +67,7 @@ public class UI_Sound : UI_PopupMenu
         else sfx = true;
 
         //버튼 이미지 초기화
-        missionBtn.image.sprite = imageSet.GetImage(mission);
+        //missionBtn.image.sprite = imageSet.GetImage(mission); 운영자 매일 미션
 
         bgmBtn.image.sprite = imageSet.GetImage(bgm);
         bgmToggle.SetActive(bgm);
@@ -82,8 +82,8 @@ public class UI_Sound : UI_PopupMenu
 
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        missionBtn = GetButton((int)Buttons.Mission_btn);
-        BindEvent(missionBtn.gameObject, MissionBtnClick, Define.TouchEvent.Touch);
+        //missionBtn = GetButton((int)Buttons.Mission_btn); 운영자 매일 미션
+        //BindEvent(missionBtn.gameObject, MissionBtnClick, Define.TouchEvent.Touch); 운영자 매일 미션
 
         bgmBtn = GetButton((int)Buttons.Bgm_btn);
         BindEvent(bgmBtn.gameObject, BgmBtnClick, Define.TouchEvent.Touch);
