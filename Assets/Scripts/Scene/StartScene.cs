@@ -18,8 +18,33 @@ public class StartScene : BaseScene
             //토큰 확인(자동로그인 상태)
             if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
             {
-                Managers.Player.FirstInstantiate();
-                UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
+
+                RequestLogin val = new RequestLogin() {
+                    email = Managers.Player.GetString(Define.EMAIL),
+                    password = Managers.Player.GetString(Define.PASSWORD),
+                    deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier,
+
+                };
+
+                Managers.Web.SendPostRequest<ResponseSignUp>("login", val, (uwr)=> {
+                    Response<ResponseLogin> res = JsonUtility.FromJson<Response<ResponseLogin>>(uwr.downloadHandler.text);
+
+                    if (res.isSuccess)
+                    {
+                        Managers.Player.FirstInstantiate();
+                        UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
+                    }
+                    else
+                    {
+                        Debug.Log(res.message);
+                        UI_Load.Instance.ToLoad(Define.Scene.Login.ToString());
+                    }
+                });
+
+
+
+
+
 
 
             }
