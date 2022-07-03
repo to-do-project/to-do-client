@@ -148,6 +148,11 @@ public class UI_ItemBuy : UI_PopupMenu
         ExBuy();
     }
 
+    public void ItemSizeUp()
+    {
+        itemImg.transform.localScale *= 5f;
+    }
+
     void ExBuy()
     {
         string[] hN = { Define.JWT_ACCESS_TOKEN,
