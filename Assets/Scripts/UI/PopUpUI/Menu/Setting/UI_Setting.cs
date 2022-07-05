@@ -33,7 +33,7 @@ public class UI_Setting : UI_PopupMenu
 
         Bind<Text>(typeof(Texts));
 
-        GetText((int)Texts.Version_txt).text = "0.ver";
+        GetText((int)Texts.Version_txt).text = "v." + UnityEditor.PlayerSettings.bundleVersion;
     }
 
     private void SetBtns()
