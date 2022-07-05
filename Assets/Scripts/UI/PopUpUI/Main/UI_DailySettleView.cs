@@ -58,11 +58,13 @@ public class UI_DailySettleView : UI_Popup
         int newpoint = point - Managers.Player.GetInt(Define.POINT);
         int newexp = exp - Managers.Player.GetInt(Define.EXP);
 
-        pointTxt.text = newpoint.ToString()+" point";
-        expTxt.text = newexp.ToString()+" exp";
+        pointTxt.text = newpoint.ToString() + " point";
+        expTxt.text = newexp.ToString() + " exp";
 
         Managers.Player.SetInt(Define.POINT, point);
         Managers.Player.SetInt(Define.EXP, exp);
+
+
 
     }
 

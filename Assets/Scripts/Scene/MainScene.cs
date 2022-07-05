@@ -70,8 +70,9 @@ public class MainScene : BaseScene
 
                     if (res.isSuccess)
                     {
-                        UI_DailySettleView ui =  Managers.UI.ShowPopupUI<UI_DailySettleView>("DaliySettleView", "Main");
+                        UI_DailySettleView ui = Managers.UI.ShowPopupUI<UI_DailySettleView>("DaliySettleView", "Main");
                         ui.Setting(res.result.total_point, res.result.total_exp);
+
                     }
                     else
                     {

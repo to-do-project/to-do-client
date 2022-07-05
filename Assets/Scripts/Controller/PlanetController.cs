@@ -27,7 +27,7 @@ public class PlanetController : MonoBehaviour
 
         if (string.Equals("Edit", Managers.Scene.CurrentSceneName()))
         {
-            Debug.Log("Edit scene 내부임");
+            //Debug.Log("Edit scene 내부임");
             return;
         }
         

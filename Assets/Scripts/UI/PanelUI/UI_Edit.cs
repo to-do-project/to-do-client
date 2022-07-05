@@ -114,37 +114,37 @@ public class UI_Edit : UI_Panel
 
         plant.onValueChanged.AddListener((bool bOn) =>
         {
-            if (plant.isOn)
+            if (bOn)
             {
                 edit.category = "plant";
-                Managers.Player.SendTokenRequest(innerCallback);
+                SendInvenListRequest();
             }
         });
 
         road.onValueChanged.AddListener((bool bOn) =>
         {
-            if (road.isOn)
+            if (bOn)
             {
                 edit.category = "road";
-                Managers.Player.SendTokenRequest(innerCallback);
+                SendInvenListRequest();
             }
         });
 
         rock.onValueChanged.AddListener((bool bOn) =>
         {
-            if (rock.isOn)
+            if (bOn)
             {
                 edit.category = "stone";
-                Managers.Player.SendTokenRequest(innerCallback);
+                SendInvenListRequest();
             }
         });
 
         etc.onValueChanged.AddListener((bool bOn) =>
         {
-            if (etc.isOn)
+            if (bOn)
             {
                 edit.category = "etc";
-                Managers.Player.SendTokenRequest(innerCallback);
+                SendInvenListRequest();
             }
         });
 
@@ -176,7 +176,6 @@ public class UI_Edit : UI_Panel
     //인벤 조회 API 날리기
     private void SendInvenListRequest()
     {
-        Debug.Log("InvenList request");
         res = new Response<ResponseInven>();
         Managers.Web.SendGetRequest("api/inventory/planet-items/", edit.category, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
@@ -216,6 +215,9 @@ public class UI_Edit : UI_Panel
                 if (res.code == 6000 || res.code == 6004 || res.code == 6006)
                 {
                     Managers.Player.SendTokenRequest(innerCallback);
+                }
+                else if(res.code == 6028){
+                    
                 }
             }
 

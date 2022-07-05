@@ -46,9 +46,9 @@ public class UI_EditItem : UI_Base
     void ItemClick(PointerEventData data)
     {
         //total remainÀ¸·Î ¹Ù²ã¾ßÛ¤±
-        if (Managers.Player.CountItem(this.gameObject.name) >= total)
+        if (Managers.Player.CountItem(this.gameObject.name) >= remain)
         {
-            Debug.Log(Managers.Player.CountItem(this.gameObject.name) +" "+total);
+            Debug.Log(Managers.Player.CountItem(this.gameObject.name) +" "+remain);
             return;
         }
         string name = Util.RemoveCloneString(this.gameObject.name);

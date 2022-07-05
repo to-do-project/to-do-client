@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CameraZoom : MonoBehaviour
@@ -18,7 +19,8 @@ public class CameraZoom : MonoBehaviour
 
     void Start()
     {
-        Init();
+        Invoke("Init", 0.3f);
+        //Init();
     }
 
     void Init()
@@ -48,10 +50,20 @@ public class CameraZoom : MonoBehaviour
 
     void Zoom(Define.TouchEvent evt)
     {
-        if(evt == Define.TouchEvent.TwoTouch)
+
+
+        if (evt == Define.TouchEvent.TwoTouch)
         {
+
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
+                return;
+            }
+
             Touch touchZero = Input.GetTouch(0);
             Touch touchOne = Input.GetTouch(1);
+
+
 
             //처음 터치한 위치(touchzero.position)에서 이전 프레임에서의 터치 위치와 이번 프레임에서 터치 위치의 차이를 뺌
             Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
@@ -74,31 +86,64 @@ public class CameraZoom : MonoBehaviour
                 cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 6f, 16f);
             }
 
+            if(Input.touchCount>0 && Input.touches[0].phase == TouchPhase.Began)
+            {
+                if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
+                {
+                    return;
+                }
+            }
+
         }
 #if UNITY_EDITOR
 #else
         //이동
         else if (evt == Define.TouchEvent.Touch)
         {
-
-            Touch touch = Input.GetTouch(0);
-
-
-            if (touch.phase == TouchPhase.Began)
+            if(Input.touchCount>0 && Input.touches[0].phase == TouchPhase.Began)
             {
-                prePos = touch.position - touch.deltaPosition;
+                if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
+                {
+                    return;
+                }
+            }
+
+            if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
+
+                Touch touch = Input.GetTouch(0);
+
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    prePos = touch.position - touch.deltaPosition;
+                }
+
             }
         }
         //카메라 이동
         else if(evt== Define.TouchEvent.TouchMove || evt==Define.TouchEvent.Press)
         {
-            Touch touch = Input.GetTouch(0);
+            if(Input.touchCount>0 && Input.touches[0].phase == TouchPhase.Began)
+            {
+                if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
+                {
+                    return;
+                }
+            }
 
-            nowPos = touch.position - touch.deltaPosition;
-            movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
-            cam.transform.Translate(movePos);
+            if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
 
-            prePos = touch.position - touch.deltaPosition;
+
+                Touch touch = Input.GetTouch(0);
+
+                nowPos = touch.position - touch.deltaPosition;
+                movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
+                cam.transform.Translate(movePos);
+
+                prePos = touch.position - touch.deltaPosition;
+            }
         }
 #endif
     }
