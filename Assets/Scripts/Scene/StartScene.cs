@@ -31,8 +31,17 @@ public class StartScene : BaseScene
 
                     if (res.isSuccess)
                     {
-                        Managers.Player.FirstInstantiate();
-                        UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
+                        Debug.Log("User Id : "+res.result.userId + " " + Managers.Player.GetUserId());
+                        if(res.result.userId != Managers.Player.GetUserId())
+                        {
+                            UI_Load.Instance.ToLoad(Define.Scene.Login.ToString());
+                        }
+                        else
+                        {
+                            Managers.Player.FirstInstantiate();
+                            UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
+                        }
+
                     }
                     else
                     {

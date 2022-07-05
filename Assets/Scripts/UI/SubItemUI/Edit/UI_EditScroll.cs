@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
 
@@ -36,6 +37,7 @@ public class UI_EditScroll : UI_Base
         Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "stone_01");
 */
 
+
     }
 
 
@@ -44,6 +46,23 @@ public class UI_EditScroll : UI_Base
         Init();
     }
 
+    void DragStart(PointerEventData data)
+    {
+        GameObject cam = GameObject.Find("ZoomCam");
+        cam.GetComponent<CameraZoom>().RemoveAction();
+    }
+
+    void DragEnd(PointerEventData data)
+    {
+        GameObject cam = GameObject.Find("ZoomCam");
+        cam.GetComponent<CameraZoom>().AddAction();
+    }
+
+    void Draging(PointerEventData data)
+    {
+        GameObject cam = GameObject.Find("ZoomCam");
+        cam.GetComponent<CameraZoom>().RemoveAction();
+    }
 
 
 }
