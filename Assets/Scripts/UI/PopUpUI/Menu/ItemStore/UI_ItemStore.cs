@@ -129,9 +129,10 @@ public class UI_ItemStore : UI_PopupMenu
         UI_ItemBtn btn = item.GetComponent<UI_ItemBtn>();
         btn.SetValue(id, planetScroll.GetComponent<ScrollRect>(), itemImages.PlanetItemSprites[id - itemImages.PlanetGap]);
         btn.SetItemScript(gameObject.GetComponent<UI_ItemStore>());
+        if (id - itemImages.PlanetGap == 8) btn.ItemSizeUp();
     }
 
-    public void OnBuyView(long id, Sprite sprite)
+    public void OnBuyView(long id, Sprite sprite, bool sizeUp)
     {
         if(onBtn) return;
         onBtn = true;
@@ -150,6 +151,7 @@ public class UI_ItemStore : UI_PopupMenu
                 UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
                 item.SetValue(id, response.result.type, response.result.name, response.result.description,
                               response.result.price, response.result.maxCnt, gameObject, sprite);
+                if (sizeUp) item.ItemSizeUp();
                 onBtn = false;
             }
             else if (response.code == 6000)
@@ -168,6 +170,7 @@ public class UI_ItemStore : UI_PopupMenu
                         UI_ItemBuy item = Managers.UI.ShowPopupUI<UI_ItemBuy>("ItemBuyView", "Menu/ItemStore");
                         item.SetValue(id, response.result.type, response.result.name, response.result.description,
                                       response.result.price, response.result.maxCnt, gameObject, sprite);
+                        if (sizeUp) item.ItemSizeUp();
                     } 
                     else
                     {

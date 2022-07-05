@@ -13,13 +13,15 @@ public class UI_ItemBtn : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     ScrollRect scroll;
     Action<PointerEventData> OnClickHandler;
     Sprite sprite;
+    Image image;
+    bool sizeUp = false;
 
     public void SetValue(long itemId, ScrollRect scroll, Sprite sprite)
     {
         this.itemId = itemId;
         this.scroll = scroll;
         this.sprite = sprite;
-        Image image = transform.Find("Item_img").GetComponent<Image>();
+        image = transform.Find("Item_img").GetComponent<Image>();
         image.sprite = sprite;
         image.SetNativeSize();
         image.transform.localScale *= 0.5f;
@@ -36,11 +38,17 @@ public class UI_ItemBtn : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         this.decoScript = decoScript;
     }
 
+    public void ItemSizeUp()
+    {
+        image.transform.localScale *= 5f;
+        sizeUp = true;
+    }
+
     public void ItemBtnClick(PointerEventData data)
     {
         if(itemScript != null)
         {
-            itemScript.OnBuyView(itemId, sprite);
+            itemScript.OnBuyView(itemId, sprite, sizeUp);
         }
         if(decoScript != null)
         {
