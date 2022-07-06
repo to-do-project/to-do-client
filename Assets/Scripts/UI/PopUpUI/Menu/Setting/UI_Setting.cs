@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class UI_Setting : UI_PopupMenu
 {
@@ -33,7 +32,7 @@ public class UI_Setting : UI_PopupMenu
 
         Bind<Text>(typeof(Texts));
 
-        GetText((int)Texts.Version_txt).text = "v." + UnityEditor.PlayerSettings.bundleVersion;
+        GetText((int)Texts.Version_txt).text = "v0.4.1";
     }
 
     private void SetBtns()
