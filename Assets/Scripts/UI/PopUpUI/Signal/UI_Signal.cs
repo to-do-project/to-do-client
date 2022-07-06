@@ -20,8 +20,8 @@ public class UI_Signal : UI_PopupMenu
         NOTICE_TWO,
         FRIEND_REQUEST,
         FRIEND_ACCEPT,
-        PRIVATE_FAVORITE,
-        PRIVATE_CHEER,
+        TODO_FAVORITE,
+        TODO_CHEER,
         GROUP_REQUEST,
         GROUP_ACCEPT,
         GROUP_DONE,
@@ -45,13 +45,15 @@ public class UI_Signal : UI_PopupMenu
         content = Get<GameObject>((int)Contents.SignalContents);
 
         InitContents();
+
+        Managers.UI.DeactivePanelUI();
     }
 
     void InitContents()
     {
         if(dataContainer.pushLists.noticeNotifications != null)
             foreach (var tmp in dataContainer.pushLists.noticeNotifications)
-                AddSignal(tmp.notificationId, 0, tmp.content, tmp.category, tmp.readStatus);
+                AddSignal(tmp.notificationId, tmp.noticeId, tmp.content, tmp.category, tmp.readStatus);
 
         if (dataContainer.pushLists.friendReqNotifications != null)
             foreach (var tmp in dataContainer.pushLists.friendReqNotifications)
@@ -71,6 +73,7 @@ public class UI_Signal : UI_PopupMenu
         Bind<Button>(typeof(Buttons));
 
         SetBtn((int)Buttons.Back_btn, (data) => {
+            Managers.UI.ActiveAllUI();
             dataContainer.RefreshPushData();
             ClosePopupUI();
         });

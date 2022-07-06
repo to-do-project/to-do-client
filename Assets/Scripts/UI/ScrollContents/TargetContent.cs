@@ -31,6 +31,7 @@ public class TargetContent : MonoBehaviour
             if (response.isSuccess)
             {
                 Managers.Todo.UserTodoInstantiate((uwr) => {
+                    Managers.UI.ActiveAllUI();
                     FindObjectOfType<UIDataCamera>().RefreshGoalData();
                     FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
                     Managers.UI.CloseAllPopupUI();
