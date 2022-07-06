@@ -10,8 +10,9 @@ using UnityEngine.Networking;
 /// <summary>
 /// 인벤토리 가로 스크롤뷰
 /// </summary>
-public class UI_EditScroll : UI_Base
+public class UI_EditScroll : UI_Base, IBeginDragHandler, IEndDragHandler
 {
+
 
 
     enum GameObjects
@@ -37,7 +38,7 @@ public class UI_EditScroll : UI_Base
         Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "stone_01");
 */
 
-
+        BindEvent(this.gameObject, DragEvnet, Define.TouchEvent.Drag);
     }
 
 
@@ -46,23 +47,25 @@ public class UI_EditScroll : UI_Base
         Init();
     }
 
-    void DragStart(PointerEventData data)
+    public void DragEvnet(PointerEventData data)
     {
+        //Debug.Log("Drag!!");
         GameObject cam = GameObject.Find("ZoomCam");
         cam.GetComponent<CameraZoom>().RemoveAction();
     }
 
-    void DragEnd(PointerEventData data)
+
+    public void OnBeginDrag(PointerEventData eventData)
     {
+        //Debug.Log("Begin Drag!!");
+        GameObject cam = GameObject.Find("ZoomCam");
+        cam.GetComponent<CameraZoom>().RemoveAction();
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        //Debug.Log("End Drag!!");
         GameObject cam = GameObject.Find("ZoomCam");
         cam.GetComponent<CameraZoom>().AddAction();
     }
-
-    void Draging(PointerEventData data)
-    {
-        GameObject cam = GameObject.Find("ZoomCam");
-        cam.GetComponent<CameraZoom>().RemoveAction();
-    }
-
-
 }

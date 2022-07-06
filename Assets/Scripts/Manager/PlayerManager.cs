@@ -69,7 +69,7 @@ public class PlayerManager : MonoBehaviour
 
 
     List<MainItemList> placedItemList;
-    public List<GameObject> realPlacedItemList;
+    List<GameObject> realPlacedItemList;
 
     string[] header = new string[2];
     string[] headerValue = new string[2];
