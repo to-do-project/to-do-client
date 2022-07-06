@@ -19,7 +19,7 @@ public class CameraZoom : MonoBehaviour
 
     void Start()
     {
-        Invoke("Init", 0.3f);
+        Invoke("Init", 0.5f);
         //Init();
     }
 
@@ -43,7 +43,7 @@ public class CameraZoom : MonoBehaviour
 
             cam.orthographicSize = 11f;
         }
-        
+
 
     }
 
@@ -86,7 +86,7 @@ public class CameraZoom : MonoBehaviour
                 cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 6f, 16f);
             }
 
-            if(Input.touchCount>0 && Input.touches[0].phase == TouchPhase.Began)
+            if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
             {
                 if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
                 {
@@ -95,18 +95,25 @@ public class CameraZoom : MonoBehaviour
             }
 
         }
+
+
 #if UNITY_EDITOR
 #else
+        
         //이동
         else if (evt == Define.TouchEvent.Touch)
         {
-            if(Input.touchCount>0 && Input.touches[0].phase == TouchPhase.Began)
-            {
-                if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
-                {
-                    return;
-                }
-            }
+
+                    PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+        if (results.Count > 0)
+        {
+            return;
+        }
 
             if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
@@ -124,13 +131,16 @@ public class CameraZoom : MonoBehaviour
         //카메라 이동
         else if(evt== Define.TouchEvent.TouchMove || evt==Define.TouchEvent.Press)
         {
-            if(Input.touchCount>0 && Input.touches[0].phase == TouchPhase.Began)
-            {
-                if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
-                {
-                    return;
-                }
-            }
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+        if (results.Count > 0)
+        {
+            return;
+        }
 
             if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {

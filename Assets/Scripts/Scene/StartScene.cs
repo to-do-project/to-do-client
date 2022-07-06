@@ -32,12 +32,19 @@ public class StartScene : BaseScene
                     if (res.isSuccess)
                     {
                         Debug.Log("User Id : "+res.result.userId + " " + Managers.Player.GetUserId());
-                        if(res.result.userId != Managers.Player.GetUserId())
+
+
+                        if (res.result.userId != Managers.Player.GetUserId())
                         {
                             UI_Load.Instance.ToLoad(Define.Scene.Login.ToString());
                         }
                         else
                         {
+
+
+                            Managers.Player.SetString(Define.JWT_ACCESS_TOKEN, uwr.GetResponseHeader(Define.JWT_ACCESS_TOKEN));
+                            Managers.Player.SetString(Define.JWT_REFRESH_TOKEN, uwr.GetResponseHeader(Define.JWT_REFRESH_TOKEN));
+
                             Managers.Player.FirstInstantiate();
                             UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
                         }
