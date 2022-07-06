@@ -292,5 +292,13 @@ public class UIManager
         }
     }
 
-    
+    public void DeactivePanelUI()
+    {
+        if (panelUI != null)
+        {
+            panelUI.gameObject.SetActive(false);
+        }
+    }
+
+
 }

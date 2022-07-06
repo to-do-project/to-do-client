@@ -66,7 +66,7 @@ public class UI_SignalContent : UI_Base, IPointerClickHandler
             {
                 if (type == UI_Signal.SignalType.NOTICE_TWO.ToString())
                 {
-                    Managers.UI.ShowPopupUI<UI_Announce>("AnnounceView", "Menu/Setting").ExpandContent(noticeId);
+                    Managers.UI.ShowPopupUI<UI_Announce>("AnnounceView", "Menu/Setting").ExpandContent(id);
                 }
                 else if (type == UI_Signal.SignalType.FRIEND_REQUEST.ToString())
                 {

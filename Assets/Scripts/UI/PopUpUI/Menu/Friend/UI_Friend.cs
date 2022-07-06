@@ -202,6 +202,7 @@ public class UI_Friend : UI_PopupMenu
             tmp.SetImage(color);
 
             friendCount++;
+            dataContainer.RefreshFriendData();
             RelocationAll();
             return true;
         }
@@ -211,6 +212,7 @@ public class UI_Friend : UI_PopupMenu
     public void DeleteFriend(GameObject target)
     {
         friendCount--;
+        dataContainer.RefreshFriendData();
         target.SetActive(false);
         Destroy(target);
         RelocationAll();

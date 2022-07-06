@@ -76,11 +76,11 @@ public class RequestContent : MonoBehaviour
             }
             else if (response.code == 6000)
             {
+                clicked = false;
                 Managers.Player.SendTokenRequest(AcceptRequest);
             }
             else
             {
-                DeleteContent();
                 Debug.Log(response.message);
                 clicked = false;
             }
@@ -106,17 +106,16 @@ public class RequestContent : MonoBehaviour
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text, id, color, userId);
                 DeleteContent();
                 clicked = false;
             }
             else if (response.code == 6000)
             {
+                clicked = false;
                 Managers.Player.SendTokenRequest(AcceptRequest);
             }
             else
             {
-                DeleteContent();
                 Debug.Log(response.message);
                 clicked = false;
             }

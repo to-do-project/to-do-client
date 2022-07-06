@@ -178,6 +178,7 @@ public class ResponsePushBase
     public string readStatus;
 }
 
+[Serializable]
 public class ResponsePushNotice : ResponsePushBase
 {
     public long noticeId;
