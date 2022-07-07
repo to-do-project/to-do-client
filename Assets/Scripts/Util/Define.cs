@@ -27,6 +27,7 @@ public class Define
     public const string MISSION_STATUS = "missionStatus";
     public const string EXP = "exp";
     public const string PASSWORD = "password";
+    public const string USEDPOINT = "usedPoint";
 
     public enum Scene
     {

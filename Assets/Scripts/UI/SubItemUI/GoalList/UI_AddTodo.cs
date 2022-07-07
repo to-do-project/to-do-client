@@ -53,6 +53,12 @@ public class UI_AddTodo : UI_Base
         Bind<InputField>(typeof(InputFields));
 
         todoName = GetInputfiled((int)InputFields.todo_inputfield);
+        todoName.DeactivateInputField();
+        todoName.interactable = false;
+        todoName.onEndEdit.AddListener(delegate
+        {
+            InfoGather();
+        });
 
         addBtn = GetButton((int)Buttons.todoAdd_btn).gameObject;
         BindEvent(addBtn, AddBtnClick);
@@ -67,7 +73,12 @@ public class UI_AddTodo : UI_Base
 
     private void AddBtnClick(PointerEventData data)
     {
-        InfoGather();
+        //InfoGather();
+        if (todoName.interactable == false)
+        {
+            todoName.interactable = true;
+            todoName.ActivateInputField();
+        }
     }
 
     private void InfoGather()
@@ -148,6 +159,9 @@ public class UI_AddTodo : UI_Base
                         break;
                 }
             }
+
+            todoName.DeactivateInputField();
+            todoName.interactable = false;
         }
 
 

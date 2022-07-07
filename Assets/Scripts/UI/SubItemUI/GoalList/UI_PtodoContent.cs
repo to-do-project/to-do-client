@@ -55,6 +55,8 @@ public class UI_PtodoContent : UI_Base
     Toggle checkToggle;
     GameObject likeBtn, likeNumBtn;
 
+    bool isEdit;//편집상태
+
     const string likeImageName = "Art/UI/Button/Button(Shadow)_Line_toggle_Like_2x";
     const int fullHeart = 19;
     const int emptyHeart = 20;
@@ -90,8 +92,7 @@ public class UI_PtodoContent : UI_Base
         todoInputfield.onEndEdit.AddListener(delegate
         {
             SendTodoModifyRequest();
-            todoInputfield.DeactivateInputField();
-            todoInputfield.interactable = false;
+
         });
 
         checkToggle.onValueChanged.AddListener((bool bOn)=> {
@@ -146,11 +147,16 @@ public class UI_PtodoContent : UI_Base
 
     private void EditBtnClick(PointerEventData data)
     {
-        todoTitle.text = "";
+        if (todoInputfield.interactable == false)
+        {
+            todoInputfield.interactable = true;
+            //todoInputfield.placeholder.GetComponent<Text>().text = todoTitle.text;
+            todoInputfield.text = todoTitle.text;
+            todoInputfield.ActivateInputField();
 
-        todoInputfield.interactable = true;
-        todoInputfield.text = "";
-        todoInputfield.ActivateInputField();
+            todoTitle.text = "";
+        }
+
 
     }
 
@@ -172,6 +178,7 @@ public class UI_PtodoContent : UI_Base
                     todoInputfield.placeholder.GetComponent<Text>().text = "";
                     todoInputfield.text = "";
 
+
                 }
                 else
                 {
@@ -184,6 +191,8 @@ public class UI_PtodoContent : UI_Base
                     }
                 }
 
+                todoInputfield.DeactivateInputField();
+                todoInputfield.interactable = false;
 
             }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 

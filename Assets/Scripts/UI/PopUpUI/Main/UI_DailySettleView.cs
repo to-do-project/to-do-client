@@ -54,8 +54,10 @@ public class UI_DailySettleView : UI_Popup
 
         Debug.Log($"point : {point}, origin point : {Managers.Player.GetInt(Define.POINT)}");
         Debug.Log($"exp : {exp}, origin exp : {Managers.Player.GetInt(Define.EXP)}");
+        Debug.Log($"used point : {Managers.Player.GetInt(Define.USEDPOINT)}" );
 
-        int newpoint = point - Managers.Player.GetInt(Define.POINT);
+        int usedPoint = (Managers.Player.GetInt(Define.USEDPOINT) != -1) ? Managers.Player.GetInt(Define.USEDPOINT) : 0;
+        int newpoint = (point - Managers.Player.GetInt(Define.POINT))- usedPoint;
         int newexp = exp - Managers.Player.GetInt(Define.EXP);
 
         pointTxt.text = newpoint.ToString() + " point";
@@ -63,7 +65,7 @@ public class UI_DailySettleView : UI_Popup
 
         Managers.Player.SetInt(Define.POINT, point);
         Managers.Player.SetInt(Define.EXP, exp);
-
+        Managers.Player.SetInt(Define.USEDPOINT, 0);
 
 
     }

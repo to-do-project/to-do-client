@@ -189,6 +189,9 @@ public class UI_ItemStore : UI_PopupMenu
 
     public void SetPoint(int amount)
     {
+        int originUsedPoint = (Managers.Player.GetInt(Define.USEDPOINT) != -1) ? Managers.Player.GetInt(Define.USEDPOINT) : 0; 
+        int usedPoint = amount - Managers.Player.GetInt(Define.POINT) + originUsedPoint;
+        Managers.Player.SetInt(Define.USEDPOINT, usedPoint);
         Managers.Player.SetInt(Define.POINT, amount);
         pointText.text = amount.ToString();
     }

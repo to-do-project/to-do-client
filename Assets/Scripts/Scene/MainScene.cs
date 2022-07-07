@@ -61,7 +61,7 @@ public class MainScene : BaseScene
         }
         else
         {
-            if (CalcDate())
+            //sif (CalcDate())
             {
                 //Managers.UI.ShowPopupUI<UI_DailySettleView>();
                 Debug.Log("정산하기");
