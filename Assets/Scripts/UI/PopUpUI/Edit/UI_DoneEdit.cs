@@ -16,11 +16,20 @@ public class UI_DoneEdit : UI_Popup
 
     //Action innerCallback;
 
+    enum Texts 
+    {
+        warning_txt,
+    }
+
+
+    Text warning;
+
 
     void Start()
     {
         Init();
     }
+
 
     public override void Init()
     {
@@ -44,8 +53,12 @@ public class UI_DoneEdit : UI_Popup
         arrangeCallback += ArrangeResponseAction;*/
 
         Bind<Button>(typeof(Buttons));
+        Bind<Text>(typeof(Texts));
+
         GameObject doneBtn = GetButton((int)Buttons.done_btn).gameObject;
         GameObject cancleBtn = GetButton((int)Buttons.cancle_btn).gameObject;
+        warning = GetText((int)Texts.warning_txt);
+        warning.gameObject.SetActive(false);
 
         BindEvent(doneBtn, DoneBtnClick, Define.TouchEvent.Touch);
         BindEvent(cancleBtn, CancleBtnClick, Define.TouchEvent.Touch);
@@ -59,17 +72,18 @@ public class UI_DoneEdit : UI_Popup
 
     void DoneBtnClick(PointerEventData data)
     {
+        warning.gameObject.SetActive(false);
         if (Managers.Player.CheckItemFixState())
         {
             //Managers.Player.ConvertToRequestList();
             //Managers.Player.SendTokenRequest(innerCallback);
             Managers.Player.SendArrangementRequest();
-
+            
             //Managers.Scene.LoadScene(Define.Scene.Main);
         }
         else
         {
-
+            warning.gameObject.SetActive(true);
         }
     }
 

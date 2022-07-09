@@ -163,12 +163,22 @@ public class UI_GoalCreate : UI_Popup
                 openFlag = "PUBLIC";
             }
         });
+
+        BindEvent(openToggle.gameObject, ToggleClick);
     }
 
     private void CheckBtnClick(PointerEventData data)
     {
         InfoGather();
 
+    }
+
+    private void ToggleClick(PointerEventData data)
+    {
+        if (!openToggle.interactable)
+        {
+            showToastMessage(toastMessage, toast, "그룹 목표는 비공개할 수 없습니다.", 1.2f);
+        }
     }
 
     private void FriendAddBtnClick(PointerEventData data)
@@ -277,6 +287,7 @@ public class UI_GoalCreate : UI_Popup
                             break;
                         case 5030:
                             Debug.Log("No Search Friend");
+                            showToastMessage(toastMessage, toast, "해당하는 친구가 없습니다.", 1.2f);
                             break;
                     }
 

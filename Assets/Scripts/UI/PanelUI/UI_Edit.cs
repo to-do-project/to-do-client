@@ -199,7 +199,7 @@ public class UI_Edit : UI_Panel
                     for (int i = 0; i < invenList.Count; i++)
                     {
 
-                        Debug.Log(invenList[i].itemCode);
+                        //Debug.Log(invenList[i].itemCode);
                         UI_EditItem go = Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, invenList[i].itemCode);
                         go.SetText(invenList[i].totalCount, invenList[i].remainingCount, invenList[i].placedCount);
                     }
