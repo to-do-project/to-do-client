@@ -92,6 +92,7 @@ public class UI_GroupGoal : UI_PopupMenu
     {
         if (check) return;
         check = true;
+        Managers.UI.ActiveAllUI();
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
@@ -101,37 +102,43 @@ public class UI_GroupGoal : UI_PopupMenu
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if (response.isSuccess)
             {
-                Managers.Todo.UserTodoInstantiate((uwr) => {
+                Managers.Todo.UserTodoInstantiate((uwr) =>
+                {
                     FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
+                    if (accept) Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupAcceptView"));
+                    else Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupDeceptView"));
                     Managers.UI.CloseAllPopupUI();
                 });
             }
             else if (response.code == 6000)
-            {
-                string[] hN = { Define.JWT_ACCESS_TOKEN,
+                Managers.Player.SendTokenRequest(() =>
+                {
+                    string[] hN = { Define.JWT_ACCESS_TOKEN,
                                 "User-Id" };
-                string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                    string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                                 Managers.Player.GetString(Define.USER_ID) };
 
-                Managers.Web.SendUniRequest("api/goals/" + id + "?accept=" + (accept ? 1 : 0), "PATCH", null, (uwr) => {
-                    Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-                    if (response.isSuccess)
-                    {
-                        Managers.Todo.UserTodoInstantiate((uwr) => {
-                            FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
-                            Managers.UI.CloseAllPopupUI();
-                        });
-                    }
-                    else if (response.code == 6000)
-                    {
-                        Debug.Log("토큰 발급 실패");
-                    }
-                    else
-                    {
-                        Debug.Log(response.message);
-                    }
-                }, hN, hV);
-            }
+                    Managers.Web.SendUniRequest("api/goals/" + id + "?accept=" + (accept ? 1 : 0), "PATCH", null, (uwr) => {
+                        Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+                        if (response.isSuccess)
+                        {
+                            Managers.Todo.UserTodoInstantiate((uwr) => {
+                                FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
+                                if (accept) Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupAcceptView"));
+                                else Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupDeceptView"));
+                                Managers.UI.CloseAllPopupUI();
+                            });
+                        }
+                        else if (response.code == 6000)
+                        {
+                            Debug.Log("토큰 발급 실패");
+                        }
+                        else
+                        {
+                            Debug.Log(response.message);
+                        }
+                    }, hN, hV);
+                });
             else
             {
                 Debug.Log(response.message);
