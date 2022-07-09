@@ -8,7 +8,7 @@ public class UI_Info : UI_SignUp
 {
     enum Texts
     {
-        info_txt,
+        //info_txt,
     }
 
     enum Buttons 

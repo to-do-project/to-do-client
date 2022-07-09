@@ -71,13 +71,14 @@ public class WebManager : MonoBehaviour
             if (uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.Log(uwr.error);
+                
             }
             else
             {
                 if (callback != null)
                 {
                     //그담에 수행할 이벤트 호출
-                    Debug.Log("Recv " + uwr.downloadHandler.text);
+                    //Debug.Log("Recv " + uwr.downloadHandler.text);
                     callback.Invoke(uwr);
 
                 }
@@ -140,7 +141,7 @@ public class WebManager : MonoBehaviour
     IEnumerator GetRequest(string url, string param, Action<UnityWebRequest> callback = null, string[] header = null, string[] headerValue = null)
     {
         string sendUrl = $"{baseUrl}/{url}{param}";
-        Debug.Log(sendUrl);
+        //Debug.Log(sendUrl);
         using (UnityWebRequest uwr = UnityWebRequest.Get(sendUrl))
         {
             if (header != null && headerValue != null)
@@ -162,7 +163,7 @@ public class WebManager : MonoBehaviour
             {
                 if (callback != null)
                 {
-                    Debug.Log("Recv " + uwr.downloadHandler.text);
+                    //Debug.Log("Recv " + uwr.downloadHandler.text);
                     //그담에 수행할 이벤트 호출
                     callback.Invoke(uwr);
 
