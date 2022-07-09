@@ -36,7 +36,6 @@ public class MainScene : BaseScene
         Managers.UI.ShowPanelUI<UI_Main>("MainView");
 
 
-
         PlanetCamera = GameObject.Find("PlanetCamera").GetComponent<Camera>();
         //Debug.Log(PlanetCamera.name);
 
@@ -70,6 +69,10 @@ public class MainScene : BaseScene
 
                     if (res.isSuccess)
                     {
+                        if(Managers.Player.GetInt(Define.EXP)==-1 || Managers.Player.GetInt(Define.POINT) == -1){
+                            return;
+                        }
+
                         UI_DailySettleView ui = Managers.UI.ShowPopupUI<UI_DailySettleView>("DaliySettleView", "Main");
                         ui.Setting(res.result.total_point, res.result.total_exp);
 

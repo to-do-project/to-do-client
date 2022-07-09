@@ -31,7 +31,7 @@ public class StartScene : BaseScene
 
                     if (res.isSuccess)
                     {
-                        Debug.Log("User Id : "+res.result.userId + " " + Managers.Player.GetUserId());
+                        //Debug.Log("User Id : "+res.result.userId + " " + Managers.Player.GetUserId());
 
 
                         if (res.result.userId != Managers.Player.GetUserId())

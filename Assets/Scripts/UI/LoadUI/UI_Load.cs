@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI_Load : MonoBehaviour, IPointerClickHandler
 {
@@ -35,6 +36,8 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
 
     string loadSceneName;
 
+    GameObject loadTxt;
+
     static UI_Load Init()
     {
         return Instantiate(Resources.Load<UI_Load>("Prefabs/UI/LoadUI/LoadView"));
@@ -48,6 +51,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
             return;
         }
         CameraSet();
+        loadTxt=transform.Find("LoadText").gameObject;
         SceneManager.sceneLoaded += (arg0, arg1) => { CameraSet(); canClick = true; };
         DontDestroyOnLoad(gameObject);
         gameObject.SetActive(false);
@@ -56,6 +60,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
     // 로딩 화면을 호출하는 함수
     public void ToLoad(string sceneName)    // sceneName에 로드 할 씬 이름 입력
     {
+        loadTxt.SetActive(true);
         canClick = false;
         gameObject.SetActive(true);
         canvasGroup.alpha = 0;
@@ -65,6 +70,7 @@ public class UI_Load : MonoBehaviour, IPointerClickHandler
 
     public void InstantLoad(string sceneName)
     {
+        loadTxt.SetActive(false);
         canClick = false;
         gameObject.SetActive(true);
         canvasGroup.alpha = 0;

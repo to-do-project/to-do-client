@@ -64,6 +64,7 @@ public class LoginScene : BaseScene
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
 
+        Managers.Sound.Clear();
     }
 
     void OnBackTouched(Define.SystemEvent evt)
