@@ -52,12 +52,12 @@ public class UI_DailySettleView : UI_Popup
         expTxt = GetText((int)Texts.exp_txt);
 
 
-        Debug.Log($"point : {point}, origin point : {Managers.Player.GetInt(Define.POINT)}");
+        //Debug.Log($"point : {point}, origin point : {Managers.Player.GetInt(Define.POINT)}");
         Debug.Log($"exp : {exp}, origin exp : {Managers.Player.GetInt(Define.EXP)}");
         Debug.Log($"used point : {Managers.Player.GetInt(Define.USEDPOINT)}" );
 
-        int usedPoint = (Managers.Player.GetInt(Define.USEDPOINT) != -1) ? Managers.Player.GetInt(Define.USEDPOINT) : 0;
-        int newpoint = (point - Managers.Player.GetInt(Define.POINT))- usedPoint;
+        //int usedPoint = (Managers.Player.GetInt(Define.USEDPOINT) != -1) ? Managers.Player.GetInt(Define.USEDPOINT) : 0;
+        int newpoint = (point - Managers.Player.GetInt(Define.POINT));
         int newexp = exp - Managers.Player.GetInt(Define.EXP);
 
         pointTxt.text = newpoint.ToString() + " point";
