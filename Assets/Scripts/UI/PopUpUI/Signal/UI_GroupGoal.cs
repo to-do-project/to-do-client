@@ -105,6 +105,7 @@ public class UI_GroupGoal : UI_PopupMenu
                 Managers.Todo.UserTodoInstantiate((uwr) =>
                 {
                     FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
+                    dataContainer.RefreshPushData();
                     if (accept) Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupAcceptView"));
                     else Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupDeceptView"));
                     Managers.UI.CloseAllPopupUI();
@@ -124,6 +125,7 @@ public class UI_GroupGoal : UI_PopupMenu
                         {
                             Managers.Todo.UserTodoInstantiate((uwr) => {
                                 FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
+                                dataContainer.RefreshPushData();
                                 if (accept) Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupAcceptView"));
                                 else Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupDeceptView"));
                                 Managers.UI.CloseAllPopupUI();

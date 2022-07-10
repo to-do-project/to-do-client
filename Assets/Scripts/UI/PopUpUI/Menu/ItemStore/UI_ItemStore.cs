@@ -54,7 +54,8 @@ public class UI_ItemStore : UI_PopupMenu
         {
             profileText.text = Managers.Player.GetString(Define.NICKNAME);
         }
-        if(PlayerPrefs.HasKey(Define.POINT)) {
+        if(PlayerPrefs.HasKey(Define.POINT)) 
+        {
             pointText.text = Managers.Player.GetInt(Define.POINT).ToString();
         }
         if(PlayerPrefs.HasKey(Define.PROFILE_COLOR))
@@ -88,6 +89,8 @@ public class UI_ItemStore : UI_PopupMenu
         planetBtnDict = new Dictionary<long, Transform>();
 
         InitItemBtns();
+
+        CheckPoint();
     }
 
     private void SetBtns()
@@ -218,6 +221,33 @@ public class UI_ItemStore : UI_PopupMenu
         int index;
         index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));
         profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];
+    }
+
+    void CheckPoint()
+    {
+        string[] hN = { Define.JWT_ACCESS_TOKEN,
+                        "User-Id" };
+        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+                        Managers.Player.GetString(Define.USER_ID) };
+
+        Managers.Web.SendUniRequest("api/planet/my-info", "GET", null, (uwr) => {
+            Response<ResponsePlanetInfo> response = JsonUtility.FromJson<Response<ResponsePlanetInfo>>(uwr.downloadHandler.text);
+            if (response.code == 1000)
+            {
+                Managers.Player.SetInt(Define.POINT, response.result.point);
+                pointText.text = Managers.Player.GetInt(Define.POINT).ToString();
+
+            }
+            else if (response.code == 6000)
+            {
+                Debug.Log(response.message);
+                Managers.Player.SendTokenRequest(CheckPoint);
+            }
+            else
+            {
+                Debug.Log(response.message);
+            }
+        }, hN, hV);
     }
 
     private void Start()
