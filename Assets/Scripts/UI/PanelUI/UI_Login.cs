@@ -200,9 +200,9 @@ public class UI_Login : UI_Panel
                     Managers.Player.SetString(Define.NICKNAME, result.nickname);
                     Managers.Player.SetString(Define.CHARACTER_COLOR, result.characterItem.ToString());
                     Managers.Player.SetString(Define.PROFILE_COLOR, result.profileColor);
-                    //Managers.Player.SetInt(Define.POINT, result.point);
+                    Managers.Player.SetInt(Define.POINT, result.point);
                     Managers.Player.SetInt(Define.MISSION_STATUS, result.missionStatus);
-                    //Managers.Player.SetInt(Define.EXP, result.exp);
+                    Managers.Player.SetInt(Define.EXP, result.exp);
                     Managers.Player.SetString(Define.PASSWORD, val.password);
 
                     Managers.Player.Init();
