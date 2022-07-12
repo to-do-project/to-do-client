@@ -257,14 +257,14 @@ public class UI_PtodoContent : UI_Base
         int index;
         if (likeCount!=0)
         {
-            Debug.Log("full heart");
+            //Debug.Log("full heart");
             index = fullHeart;
             likeNumBtn.GetComponent<Button>().interactable = true;
             BindEvent(likeNumBtn, LikeNumBtnClick);
         }
         else
         {
-            Debug.Log("empty heart");
+            //Debug.Log("empty heart");
             index = emptyHeart;
             likeNumBtn.GetComponent<Button>().interactable = false;
             ClearEvent(likeNumBtn,LikeNumBtnClick);

@@ -63,6 +63,7 @@ public class UI_EditItem : UI_Base
 
 
         Managers.Player.AddItemList(go);
+        Managers.Sound.PlaySFXSound("꾸미기모드_아이템 선택 소리",1f,"SFX");
     }
 
     public void SetText(int totalCount, int remainingCount, int placedCount)

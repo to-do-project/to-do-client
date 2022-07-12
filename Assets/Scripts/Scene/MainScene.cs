@@ -67,8 +67,12 @@ public class MainScene : BaseScene
                 Managers.Web.SendGetRequest("api/users/result", null, (uwr) => {
                     Response<ResponseDailyResult> res = JsonUtility.FromJson<Response<ResponseDailyResult>>(uwr.downloadHandler.text);
 
+                    Debug.Log(Managers.Player.GetInt(Define.EXP) + " " + Managers.Player.GetInt(Define.POINT));
+                    Debug.Log(res.result.total_point + " " + res.result.total_exp);
+
                     if (res.isSuccess)
                     {
+                        Debug.Log(Managers.Player.GetInt(Define.EXP) + " " + Managers.Player.GetInt(Define.POINT));
                         if(Managers.Player.GetInt(Define.EXP)==-1 || Managers.Player.GetInt(Define.POINT) == -1){
                             return;
                         }

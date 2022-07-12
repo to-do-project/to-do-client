@@ -164,7 +164,7 @@ public class SoundManager
         {
             if (path.Contains("Sound/") == false)
             {
-                path = $"Sound/{path}";
+                path = $"Sound/{path}/{name}";
             }
 
             AudioClip audioClip = GetOrAddAudioClip(name, path);
@@ -251,5 +251,15 @@ public class SoundManager
         sfxPlayer.Stop();
 
         audioClipDic.Clear();
+    }
+
+    public void PlayNormalButtonClickSound()
+    {
+        PlaySFXSound("버튼음",1f,"SFX");
+    }
+
+    public void PlayPopupSound()
+    {
+        PlaySFXSound("팝업창", 1f, "SFX");
     }
 }
