@@ -65,6 +65,7 @@ public class UI_PgoalContent : UI_Base
     public void GoalClick(PointerEventData data)
     {
         Canvas.ForceUpdateCanvases();
+        Managers.Sound.PlayNormalButtonClickSound();
         if (todo.activeSelf)
         {
             //todo.GetComponent<UI_PtodoContent>().ClearUI();
@@ -96,6 +97,7 @@ public class UI_PgoalContent : UI_Base
     public void EditBtnClick(PointerEventData data)
     {
         Debug.Log("Editbtn click");
+        Managers.Sound.PlayPopupSound();
         UI_GoalModify gm = Managers.UI.ShowPopupUI<UI_GoalModify>("GoalModifyView","Main");
         gm.Setting(goalId, title,open, false); //open은 임시로, API 바뀌면 넣어야함
     }

@@ -72,6 +72,7 @@ public class UI_Main : UI_Panel
 
     private void MenuBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.UI.ShowPopupUI<UI_Menu>("MenuView", "Menu");
     }
 

@@ -66,6 +66,7 @@ public class UI_GgoalContent : UI_Base
 
     private void GroupCheckClicked(PointerEventData data)
     {
+        Managers.Sound.PlayPopupSound();
         UI_GroupGoalCreater ui = Managers.UI.ShowPopupUI<UI_GroupGoalCreater>("GroupGoalCreaterView", "Main");
         ui.Setting(goalId);
     }
@@ -73,6 +74,7 @@ public class UI_GgoalContent : UI_Base
     public void GoalClick(PointerEventData data)
     {
         Canvas.ForceUpdateCanvases();
+        Managers.Sound.PlayNormalButtonClickSound();
         if (todo.activeSelf)
         {
 
