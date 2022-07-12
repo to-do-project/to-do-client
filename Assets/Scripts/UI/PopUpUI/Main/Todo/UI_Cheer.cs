@@ -55,7 +55,7 @@ public class UI_Cheer : UI_Popup
     void CheerBtnClick(PointerEventData data)
     {
         //응원 API 날리기
-
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.Web.SendGetRequest("api/todo/",todoMemberId.ToString(), (uwr)=> {
 
             Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);

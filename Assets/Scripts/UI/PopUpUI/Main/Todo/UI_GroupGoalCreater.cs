@@ -146,12 +146,14 @@ public class UI_GroupGoalCreater : UI_Popup
 
     private void CancleBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         deleteView.SetActive(false);
 
     }
 
     private void DoneBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.Web.SendUniRequest("api/goals?goal=" + goalId.ToString(), "DELETE", null, (uwr) => {
             Response<string> res = new Response<string>();
 
@@ -185,7 +187,7 @@ public class UI_GroupGoalCreater : UI_Popup
 
     private void DeleteBtnClick(PointerEventData data)
     {
-        
+        Managers.Sound.PlayPopupSound();
         deleteView.SetActive(true);
     }
 

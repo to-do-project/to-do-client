@@ -116,6 +116,7 @@ public class UI_Edit : UI_Panel
         {
             if (bOn)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 edit.category = "plant";
                 SendInvenListRequest();
             }
@@ -125,6 +126,7 @@ public class UI_Edit : UI_Panel
         {
             if (bOn)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 edit.category = "road";
                 SendInvenListRequest();
             }
@@ -134,6 +136,7 @@ public class UI_Edit : UI_Panel
         {
             if (bOn)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 edit.category = "stone";
                 SendInvenListRequest();
             }
@@ -143,6 +146,7 @@ public class UI_Edit : UI_Panel
         {
             if (bOn)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 edit.category = "etc";
                 SendInvenListRequest();
             }
@@ -163,12 +167,14 @@ public class UI_Edit : UI_Panel
 
     void EditDoneBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayPopupSound();
         Managers.UI.ShowPopupUI<UI_DoneEdit>("DoneEditView", "Edit");
 
     }
 
     void EditCancleBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayPopupSound();
         Managers.UI.ShowPopupUI<UI_ExitEdit>("ExitEditView", "Edit");
 
     }

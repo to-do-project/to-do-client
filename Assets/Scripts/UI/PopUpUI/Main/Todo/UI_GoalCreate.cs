@@ -169,6 +169,7 @@ public class UI_GoalCreate : UI_Popup
 
     private void CheckBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         InfoGather();
 
     }
@@ -179,10 +180,15 @@ public class UI_GoalCreate : UI_Popup
         {
             showToastMessage(toastMessage, toast, "그룹 목표는 비공개할 수 없습니다.", 1.2f);
         }
+        else
+        {
+            Managers.Sound.PlayNormalButtonClickSound();
+        }
     }
 
     private void FriendAddBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
 
         if (childList != null)

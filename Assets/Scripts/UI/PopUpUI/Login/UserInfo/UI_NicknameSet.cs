@@ -68,7 +68,7 @@ public class UI_NicknameSet : UI_UserInfo
 
     private void CheckBtnClick(PointerEventData data)
     {
-
+        Managers.Sound.PlayNormalButtonClickSound();
 
         if (IsVaildNickname(Ninput.text))
         {
@@ -156,9 +156,12 @@ public class UI_NicknameSet : UI_UserInfo
 
     private void NextBtnClick(PointerEventData data)
     {
+
         //닉네임 유효한 입력 했는지
         if (isCheck)
         {
+            Managers.Sound.PlayNormalButtonClickSound();
+
             loginScene.Nickname = Ninput.text;
             Managers.UI.ShowPopupUI<UI_PlanetSet>("PlanetView", "UserInfo");
         }

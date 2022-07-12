@@ -72,6 +72,7 @@ public class UI_DailySettleView : UI_Popup
 
     private void CheckBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.UI.ClosePopupUI();
     }
 

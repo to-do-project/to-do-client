@@ -138,12 +138,14 @@ public class UI_GoalModify : UI_Popup
 
     private void CheckBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         InfoGather();
         //ClosePopupUI();
     }
 
     private void DeleteBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.Web.SendUniRequest("api/goals?goal=" + goalId.ToString(),  "DELETE", null, (uwr) => {
             Response<string> res = new Response<string>();
 
@@ -175,6 +177,7 @@ public class UI_GoalModify : UI_Popup
 
     private void StoreBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.Web.SendUniRequest("api/goals/archive/" + goalId.ToString(),  "POST", null, (uwr) => {
             Response<string> res = new Response<string>();
 

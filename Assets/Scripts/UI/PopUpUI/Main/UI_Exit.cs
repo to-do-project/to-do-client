@@ -36,11 +36,13 @@ public class UI_Exit : UI_Popup
 
     private void ExitBtnClick(PointerEventData evt)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Application.Quit();
     }
 
     private void RemainBtnClick(PointerEventData evt)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.UI.ClosePopupUI();
     }
 }

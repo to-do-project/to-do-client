@@ -73,6 +73,7 @@ public class UI_AddTodo : UI_Base
 
     private void AddBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         //InfoGather();
         if (todoName.interactable == false)
         {

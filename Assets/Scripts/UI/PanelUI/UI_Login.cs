@@ -110,6 +110,7 @@ public class UI_Login : UI_Panel
 
     private void LoginBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         val = new RequestLogin();
 
        //아이디 입력 확인
@@ -153,6 +154,7 @@ public class UI_Login : UI_Panel
 
     private void SignUpBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         failMessage.text = "";
         Managers.UI.ShowPopupUI<UI_Info>("InfoView", "SignUp");
 
@@ -160,6 +162,7 @@ public class UI_Login : UI_Panel
 
     private void FindPWBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         //Debug.Log("Find click");
         failMessage.text = "";
         Managers.UI.ShowPopupUI<UI_PWfind>("FindView", "PWfind");

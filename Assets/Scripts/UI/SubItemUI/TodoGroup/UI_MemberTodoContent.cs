@@ -109,12 +109,13 @@ public class UI_MemberTodoContent : UI_Base
         {
             if (!likeFlag)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 SendLikeClickBtnRequest();
             }
         }
         else
         {
-
+            Managers.Sound.PlayPopupSound();
             UI_Cheer ui =  Managers.UI.ShowPopupUI<UI_Cheer>("CheerView","Main");
             ui.Setting(todoMemberId, this.GetComponentInParent<UI_MemberGoalContent>().GetNickname());
         }
@@ -122,6 +123,7 @@ public class UI_MemberTodoContent : UI_Base
 
     private void LikeNumBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayPopupSound();
         UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView", "Main");
         ui.Setting(todoMemberId.ToString());
        // Debug.Log("todoMember id " + todoMemberId.ToString());
