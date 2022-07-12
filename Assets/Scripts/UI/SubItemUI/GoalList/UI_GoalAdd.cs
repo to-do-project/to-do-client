@@ -22,6 +22,7 @@ public class UI_GoalAdd : UI_Base
 
     private void AddBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayPopupSound();
         Managers.UI.ShowPopupUI<UI_GoalCreate>("GoalCreateView","Main");
     }
 }

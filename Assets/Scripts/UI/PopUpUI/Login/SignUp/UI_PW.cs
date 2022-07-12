@@ -126,6 +126,7 @@ public class UI_PW : UI_SignUp
 
     private void NextBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         //비밀번호 유효한 입력 했는지 
         //유저 설정 화면으로 넘어가기
         if (isCheck&&isValid)

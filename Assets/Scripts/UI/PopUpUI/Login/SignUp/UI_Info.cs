@@ -38,6 +38,7 @@ public class UI_Info : UI_SignUp
 
     public void NextBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.UI.ShowPopupUI<UI_Email>("EmailView", "SignUp");
     }
 

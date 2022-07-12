@@ -82,6 +82,7 @@ public class UI_Email : UI_SignUp
 
     private void CheckBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
 
         //이메일 입력 확인
         if (IsValidEmail(Einput.text))
@@ -107,6 +108,8 @@ public class UI_Email : UI_SignUp
         //이메일 입력 확인
         if (isCheck)
         {
+            Managers.Sound.PlayNormalButtonClickSound();
+
             //이메일 인증번호 발송 API
             loginScene.Email=Einput.text;
 

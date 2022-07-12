@@ -47,11 +47,13 @@ public class UI_ExitEdit : UI_Popup
 
     void CancleBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.UI.ClosePopupUI();
     }
 
     void ExitBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.Scene.Clear();
         UI_Load.Instance.InstantLoad("Main");
 

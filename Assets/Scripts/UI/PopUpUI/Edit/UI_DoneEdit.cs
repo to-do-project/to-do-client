@@ -67,16 +67,19 @@ public class UI_DoneEdit : UI_Popup
 
     void CancleBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.UI.ClosePopupUI();
     }
 
     void DoneBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         warning.gameObject.SetActive(false);
         if (Managers.Player.CheckItemFixState())
         {
             //Managers.Player.ConvertToRequestList();
             //Managers.Player.SendTokenRequest(innerCallback);
+
             Managers.Player.SendArrangementRequest();
             
             //Managers.Scene.LoadScene(Define.Scene.Main);

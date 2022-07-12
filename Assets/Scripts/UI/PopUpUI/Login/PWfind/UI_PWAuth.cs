@@ -32,6 +32,7 @@ public class UI_PWAuth : UI_PWfind
 
     private void loginBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.UI.ShowPanelUI<UI_Login>("LoginView");
     }
 

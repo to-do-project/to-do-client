@@ -103,6 +103,7 @@ public class UI_GtodoContent : UI_Base
 
     private void LikeNumBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayPopupSound();
         UI_Like ui = Managers.UI.ShowPopupUI<UI_Like>("LikeView", "Main");
         ui.Setting(todoMemberId.ToString());
         Debug.Log("todoMember id " + todoMemberId.ToString());

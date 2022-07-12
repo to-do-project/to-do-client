@@ -98,6 +98,7 @@ public class UI_PlanetSet : UI_UserInfo
         {
             if (red.isOn)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 planet = Define.Planet.RED;
                 nextBtn.GetComponent<Button>().interactable = true;
                 BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
@@ -117,6 +118,7 @@ public class UI_PlanetSet : UI_UserInfo
         {
             if (green.isOn)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 planet = Define.Planet.GREEN;
                 nextBtn.GetComponent<Button>().interactable = true;
                 BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
@@ -135,6 +137,7 @@ public class UI_PlanetSet : UI_UserInfo
         {
             if (blue.isOn)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 planet = Define.Planet.BLUE;
                 nextBtn.GetComponent<Button>().interactable = true;
                 BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
@@ -169,6 +172,8 @@ public class UI_PlanetSet : UI_UserInfo
             //Debug.Log("행성을 선택해주세요");
             return;
         }
+
+        Managers.Sound.PlayNormalButtonClickSound();
 
         //유저 정보 서버에 넘기기
         loginScene.Planet = planet;

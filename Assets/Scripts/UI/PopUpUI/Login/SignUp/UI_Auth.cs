@@ -117,6 +117,7 @@ public class UI_Auth : UI_SignUp
 
     private void AuthCheckBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         //인증번호 미입력시
         if (string.IsNullOrWhiteSpace(Ainputfield.text))
         {
@@ -190,6 +191,7 @@ public class UI_Auth : UI_SignUp
 
     private void NextBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         //인증완료됐는지 확인
         if (timeover)
         {
@@ -205,6 +207,7 @@ public class UI_Auth : UI_SignUp
 
     private void ResendBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         //인증번호 API 다시 호출
         Ainputfield.text = "";
         RequestEmail val = new RequestEmail { email = loginScene.Email };

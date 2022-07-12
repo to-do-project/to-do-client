@@ -294,7 +294,7 @@ public class ItemController : MonoBehaviour
     //아이템 확인 버튼 클릭 시
     private void FixItem()
     {
-
+        Managers.Sound.PlayNormalButtonClickSound();
         if (canFixed)
         {
             ChangeFixState(false);
@@ -310,6 +310,7 @@ public class ItemController : MonoBehaviour
     //아이템 취소 버튼 클릭 시
     private void CancleItem()
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         if (Managers.Player.UIaction != null)
         {
             Managers.Player.UIaction.Invoke(false);

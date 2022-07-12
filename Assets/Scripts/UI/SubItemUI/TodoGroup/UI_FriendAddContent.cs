@@ -56,6 +56,7 @@ public class UI_FriendAddContent : UI_Base
 
     private void OnAddClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         Debug.Log("Friend Add Click");
         if (Managers.Todo.goalFriendAddAction != null)
         {

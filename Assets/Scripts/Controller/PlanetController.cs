@@ -36,6 +36,7 @@ public class PlanetController : MonoBehaviour
             timer = 0f;
             if (!EventSystem.current.IsPointerOverGameObject())
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 Managers.Scene.LoadScene(Define.Scene.Edit);
             }
         }

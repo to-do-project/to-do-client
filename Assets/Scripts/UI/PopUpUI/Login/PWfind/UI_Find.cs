@@ -56,6 +56,7 @@ public class UI_Find : UI_PWfind
 
     private void SendEmailBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         if (IsValidEmail(idInputfield.text))
         {
             //send email API »£√‚

@@ -71,7 +71,7 @@ public class UI_MemberGoalContent : UI_Base
 
     public void GoalClick(PointerEventData data)
     {
-
+        Managers.Sound.PlayNormalButtonClickSound();
         if (todo.activeSelf)
         {
 
