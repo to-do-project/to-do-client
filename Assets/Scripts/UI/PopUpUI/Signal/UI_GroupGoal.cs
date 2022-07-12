@@ -92,7 +92,7 @@ public class UI_GroupGoal : UI_PopupMenu
     {
         if (check) return;
         check = true;
-        Managers.UI.ActiveAllUI();
+        Managers.UI.ActivePanelUI();
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),

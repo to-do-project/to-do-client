@@ -70,7 +70,7 @@ public class UI_Menu : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.UI.ActiveAllUI(); ClosePopupUI();});
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.UI.ActivePanelUI(); ClosePopupUI();});
 
         SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Profile>("ProfileView", $"{pathName}/Profile"); });
 

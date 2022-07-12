@@ -73,7 +73,7 @@ public class UI_Signal : UI_PopupMenu
         Bind<Button>(typeof(Buttons));
 
         SetBtn((int)Buttons.Back_btn, (data) => {
-            Managers.UI.ActiveAllUI();
+            Managers.UI.ActivePanelUI();
             dataContainer.RefreshPushData();
             ClosePopupUI();
         });

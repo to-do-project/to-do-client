@@ -16,6 +16,8 @@ public class RequestContent : MonoBehaviour
     bool clicked = false;
 
     GameObject parent;
+    UIDataCamera dataContainer;
+
     public void SetParent(GameObject parent)
     {
         this.parent = parent;
@@ -72,6 +74,7 @@ public class RequestContent : MonoBehaviour
             {
                 parent.GetComponent<UI_Friend>().AddFriend(nameTxt.text, id, color, userId);
                 DeleteContent();
+                dataContainer.RefreshPushData();
                 clicked = false;
             }
             else if (response.code == 6000)
@@ -107,6 +110,7 @@ public class RequestContent : MonoBehaviour
             if (response.isSuccess)
             {
                 DeleteContent();
+                dataContainer.RefreshPushData();
                 clicked = false;
             }
             else if (response.code == 6000)
@@ -125,5 +129,11 @@ public class RequestContent : MonoBehaviour
     public void DeleteContent()
     {
         parent.GetComponent<UI_Friend>().DeleteRequest(this.gameObject);
+    }
+
+    private void Start()
+    {
+        Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+        dataContainer = cam.gameObject.GetComponent<UIDataCamera>();
     }
 }
