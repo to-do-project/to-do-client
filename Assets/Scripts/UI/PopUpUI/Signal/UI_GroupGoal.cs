@@ -104,10 +104,13 @@ public class UI_GroupGoal : UI_PopupMenu
             {
                 Managers.Todo.UserTodoInstantiate((uwr) =>
                 {
-                    FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
-                    dataContainer.RefreshPushData();
-                    if (accept) Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupAcceptView"));
+                    FindObjectOfType<UI_GoalList>().callback.Invoke(uwr); // 메인화면 목표 리스트 갱신
+                    dataContainer.RefreshPushData(); // 알림화면 알림 리스트 갱신
+
+                    if (accept) Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupAcceptView")); // 토스트 알림
                     else Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupDeceptView"));
+
+                    Managers.Sound.PlayPopupSound(); // 토스트 알림 사운드
                     Managers.UI.CloseAllPopupUI();
                 });
             }
@@ -126,8 +129,11 @@ public class UI_GroupGoal : UI_PopupMenu
                             Managers.Todo.UserTodoInstantiate((uwr) => {
                                 FindObjectOfType<UI_GoalList>().callback.Invoke(uwr);
                                 dataContainer.RefreshPushData();
+
                                 if (accept) Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupAcceptView"));
                                 else Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Signal/GroupDeceptView"));
+
+                                Managers.Sound.PlayPopupSound();
                                 Managers.UI.CloseAllPopupUI();
                             });
                         }

@@ -79,6 +79,7 @@ public class UI_FriendUI : UI_PopupMenu
         {
             btn.SetActive(true);
             Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/NotComplete"));
+            Managers.Sound.PlayPopupSound();
         }
     }
 
