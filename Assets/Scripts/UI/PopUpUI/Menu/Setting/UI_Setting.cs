@@ -32,7 +32,7 @@ public class UI_Setting : UI_PopupMenu
 
         Bind<Text>(typeof(Texts));
 
-        GetText((int)Texts.Version_txt).text = "v0.4.1";
+        GetText((int)Texts.Version_txt).text = "v1.0";
     }
 
     private void SetBtns()

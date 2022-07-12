@@ -99,6 +99,7 @@ public class UI_AddFriend : UI_PopupMenu
             if (response.isSuccess) // 성공 코드 반환시
             {
                 Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/FriendFadeView"));   // 토스트 알림 생성
+                Managers.Sound.PlayPopupSound(); // 알림 생성 사운드
                 Managers.UI.ClosePopupUI(); // 팝업 삭제
                 clicked = false;            // 웹 통신 완료
             }
@@ -106,6 +107,13 @@ public class UI_AddFriend : UI_PopupMenu
             {
                 clicked = false;            // 토큰 재발급 후 재 통신을 위해 초기화
                 Managers.Player.SendTokenRequest(CheckFriend);  // 토큰 재발급
+            }
+            else if (response.code == 5041) // 이미 요청한 친구일 때
+            {
+                Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/WaitingFriendView"));   // 토스트 알림 생성
+                Managers.Sound.PlayPopupSound(); // 알림 생성 사운드
+                Managers.UI.ClosePopupUI(); // 팝업 삭제
+                clicked = false;            // 웹 통신 완료
             }
             else // 이외의 실패 코드 반환시
             {

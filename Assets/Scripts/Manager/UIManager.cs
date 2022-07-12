@@ -292,9 +292,17 @@ public class UIManager
         }
     }
 
+    public void ActivePanelUI()
+    {
+        if (panelUI != null && panelUI.gameObject.activeSelf == false)
+        {
+            panelUI.gameObject.SetActive(true);
+        }
+    }
+
     public void DeactivePanelUI()
     {
-        if (panelUI != null)
+        if (panelUI != null && panelUI.gameObject.activeSelf == true)
         {
             panelUI.gameObject.SetActive(false);
         }

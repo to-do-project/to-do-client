@@ -166,11 +166,13 @@ public class UI_Friend : UI_PopupMenu
             }
             else if (response.code == 6000)
             {
+                onSearch = false;
                 Managers.Player.SendTokenRequest(SearchFriend);
             }
             else if (response.code == 5003 || response.code == 5004 || response.code == 6001)
             {
                 Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/CantFindFadeView"));
+                Managers.Sound.PlayPopupSound();
                 onSearch = false;
             }
             else

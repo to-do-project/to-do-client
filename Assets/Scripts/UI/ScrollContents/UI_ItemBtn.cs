@@ -54,6 +54,8 @@ public class UI_ItemBtn : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         {
             decoScript.ChangeCloth(itemId);
         }
+
+        Managers.Sound.PlayNormalButtonClickSound();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
