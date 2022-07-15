@@ -162,6 +162,7 @@ public class UI_Friend : UI_PopupMenu
                 friend.id = (int)response.result.userId;
                 friend.SetLevel(response.result.planetLevel);
                 friend.SetImage(response.result.profileColor);
+                Managers.Sound.PlayNormalButtonClickSound();
                 onSearch = false;
             }
             else if (response.code == 6000)

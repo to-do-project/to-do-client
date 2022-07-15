@@ -58,7 +58,7 @@ public class UI_NickChange : UI_PopupMenu
 
         nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
 
         SetBtn((int)Buttons.NickCheck_btn, (data) => {
             IsVaildNickname();
@@ -67,6 +67,7 @@ public class UI_NickChange : UI_PopupMenu
 
     public void NextBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         ExNickChange();
     }
 
@@ -104,7 +105,8 @@ public class UI_NickChange : UI_PopupMenu
 
     private void IsVaildNickname()
     {
-        nickname = Ninput.text;
+        nickname = Ninput.text; 
+        Managers.Sound.PlayNormalButtonClickSound();
         Managers.Web.SendGetRequest("join/dupli/nickname?nickname=", nickname, (uwr) => {
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
             if(response.isSuccess)

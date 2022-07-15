@@ -39,17 +39,22 @@ public class UI_Setting : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
 
-        SetBtn((int)Buttons.Notification_btn, (data) => { Managers.UI.ShowPopupUI<UI_Notification>("NotificationView", pathName); });
+        SetBtn((int)Buttons.Notification_btn, (data) => { Managers.UI.ShowPopupUI<UI_Notification>("NotificationView", pathName); 
+                                                          Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Sound_btn, (data) => { Managers.UI.ShowPopupUI<UI_Sound>("SoundView", pathName); });
+        SetBtn((int)Buttons.Sound_btn, (data) => { Managers.UI.ShowPopupUI<UI_Sound>("SoundView", pathName); 
+                                                   Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Application_btn, (data) => { Managers.UI.ShowPopupUI<UI_Application>("ApplicationView", pathName); });
+        SetBtn((int)Buttons.Application_btn, (data) => { Managers.UI.ShowPopupUI<UI_Application>("ApplicationView", pathName); 
+                                                         Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Announce_btn, (data) => { Managers.UI.ShowPopupUI<UI_Announce>("AnnounceView", pathName); });
+        SetBtn((int)Buttons.Announce_btn, (data) => { Managers.UI.ShowPopupUI<UI_Announce>("AnnounceView", pathName); 
+                                                      Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Policy_btn, (data) => { Managers.UI.ShowPopupUI<UI_Policy>("PolicyView", pathName); });
+        SetBtn((int)Buttons.Policy_btn, (data) => { Managers.UI.ShowPopupUI<UI_Policy>("PolicyView", pathName); 
+                                                    Managers.Sound.PlayNormalButtonClickSound(); });
     }
 
     private void Start()

@@ -168,6 +168,8 @@ public class UI_Color : UI_PopupMenu
         curBtn = nexBtn;
         curBtn.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
         checkTransform.position = curBtn.transform.position;
+
+        Managers.Sound.PlayNormalButtonClickSound();
     }
 
     void Start()

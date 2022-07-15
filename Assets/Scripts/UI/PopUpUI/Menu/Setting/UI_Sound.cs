@@ -80,7 +80,7 @@ public class UI_Sound : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
 
         //missionBtn = GetButton((int)Buttons.Mission_btn); 운영자 매일 미션
         //BindEvent(missionBtn.gameObject, MissionBtnClick, Define.TouchEvent.Touch); 운영자 매일 미션
@@ -132,6 +132,7 @@ public class UI_Sound : UI_PopupMenu
     }
     public void BgmBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         bgm = !bgm;
         bgmBtn.image.sprite = imageSet.GetImage(bgm);
         bgmToggle.SetActive(bgm);
@@ -141,6 +142,7 @@ public class UI_Sound : UI_PopupMenu
 
     public void SfxBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         sfx = !sfx;
         sfxBtn.image.sprite = imageSet.GetImage(sfx);
         sfxToggle.SetActive(sfx);
