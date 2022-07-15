@@ -146,6 +146,7 @@ public class UI_PswdChange : UI_PopupMenu
         {
             if (string.IsNullOrWhiteSpace(password) == false)
             {
+                Managers.Sound.PlayNormalButtonClickSound();
                 ComparePassword();
             }
         }

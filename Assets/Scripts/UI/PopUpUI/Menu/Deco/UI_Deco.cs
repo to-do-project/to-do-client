@@ -62,7 +62,7 @@ public class UI_Deco : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
 
         SetBtn((int)Buttons.Done_btn, (data) => { SaveInven(); });
 
@@ -70,6 +70,7 @@ public class UI_Deco : UI_PopupMenu
             index = startIndex;
             ChangeCloth(dataContainer.invenIdList[index]);
             Managers.Resource.Instantiate(fadePath + "CancelFadeView");
+            Managers.Sound.PlayPopupSound();
         });
 
         leftBtn = GetButton((int)Buttons.Left_btn);
@@ -77,6 +78,7 @@ public class UI_Deco : UI_PopupMenu
             if (index == 0) return;
             index--; 
             ChangeCloth(dataContainer.invenIdList[index]); 
+            Managers.Sound.PlayNormalButtonClickSound();
         }, Define.TouchEvent.Touch);
 
         rightBtn = GetButton((int)Buttons.Right_btn);
@@ -84,6 +86,7 @@ public class UI_Deco : UI_PopupMenu
             if (index == dataContainer.invenIdList.Count - 1) return;
             index++; 
             ChangeCloth(dataContainer.invenIdList[index]);
+            Managers.Sound.PlayNormalButtonClickSound();
         }, Define.TouchEvent.Touch);
     }
 
@@ -188,6 +191,7 @@ public class UI_Deco : UI_PopupMenu
                 Managers.Player.SetInt(Define.CHARACTER_ITEM, (int)dataContainer.invenIdList[index]);
                 Managers.Player.UpdateCharacterItem(dataContainer.invenIdList[index]);
                 Managers.Resource.Instantiate(fadePath + "DoneFadeView");
+                Managers.Sound.PlayPopupSound();
             }
             else if(response.code == 6000)
             {

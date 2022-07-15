@@ -97,7 +97,7 @@ public class UI_ItemStore : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
     }
     void InitItemBtns()
     {

@@ -37,7 +37,7 @@ public class UI_Notification : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
 
         pushBtn = GetButton((int)Buttons.Push_btn);
         BindEvent(pushBtn.gameObject, PushBtnClick, Define.TouchEvent.Touch);
@@ -69,6 +69,7 @@ public class UI_Notification : UI_PopupMenu
     #region ButtonEvents
     public void PushBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         SendSettingData("ALL", () =>
         {
             friend = group = skill = announce = !push;
@@ -78,6 +79,7 @@ public class UI_Notification : UI_PopupMenu
     }
     public void FriendBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         SendSettingData("FRIEND", () =>
         {
             friend = !friend;
@@ -88,6 +90,7 @@ public class UI_Notification : UI_PopupMenu
     }
     public void GroupBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         SendSettingData("GROUP", () =>
         {
             group = !group;
@@ -98,6 +101,7 @@ public class UI_Notification : UI_PopupMenu
     }
     public void SkillBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         SendSettingData("SETTING", () =>
         {
             skill = !skill;
@@ -108,6 +112,7 @@ public class UI_Notification : UI_PopupMenu
     }
     public void AnnounceBtnClick(PointerEventData data)
     {
+        Managers.Sound.PlayNormalButtonClickSound();
         SendSettingData("NOTICE", () =>
         {
             announce = !announce;

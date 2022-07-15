@@ -61,17 +61,21 @@ public class UI_Profile : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
 
-        SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Color>("ColorView", pathName); });
+        SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Color>("ColorView", pathName); 
+                                                     Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.NickChange_btn, (data) => { Managers.UI.ShowPopupUI<UI_NickChange>("NickChangeView", pathName); });
+        SetBtn((int)Buttons.NickChange_btn, (data) => { Managers.UI.ShowPopupUI<UI_NickChange>("NickChangeView", pathName); 
+                                                        Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.PswdChange_btn, (data) => { Managers.UI.ShowPopupUI<UI_PswdChange>("PswdChangeView", pathName); });
+        SetBtn((int)Buttons.PswdChange_btn, (data) => { Managers.UI.ShowPopupUI<UI_PswdChange>("PswdChangeView", pathName); 
+                                                        Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Logout_btn, (data) => { Logout(); });
+        SetBtn((int)Buttons.Logout_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); Logout(); });
 
-        SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName); });
+        SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName);
+                                                    Managers.Sound.PlayNormalButtonClickSound(); });
     }
 
     void Logout()

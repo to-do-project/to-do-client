@@ -66,6 +66,7 @@ public class UI_FriendUI : UI_PopupMenu
 
         btn = SetBtn((int)Buttons.Fighting_btn, (data) => {
             Ex_Like();
+            Managers.Sound.PlayNormalButtonClickSound();
             btn.SetActive(false);
         });
 
