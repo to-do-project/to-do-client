@@ -134,7 +134,7 @@ public class UI_PlanetInfo : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
     }
 
     private void Start()

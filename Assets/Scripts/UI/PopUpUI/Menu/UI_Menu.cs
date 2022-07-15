@@ -70,21 +70,28 @@ public class UI_Menu : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.UI.ActivePanelUI(); ClosePopupUI();});
+        SetBtn((int)Buttons.Back_btn, (data) => { Managers.UI.ActivePanelUI(); Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI();});
 
-        SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Profile>("ProfileView", $"{pathName}/Profile"); });
+        SetBtn((int)Buttons.Profile_btn, (data) => { Managers.UI.ShowPopupUI<UI_Profile>("ProfileView", $"{pathName}/Profile"); 
+                                                     Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Collector_btn, (data) => { Managers.UI.ShowPopupUI<UI_Collector>("CollectorView", $"{pathName}/Target").SetParent(gameObject); });
+        SetBtn((int)Buttons.Collector_btn, (data) => { Managers.UI.ShowPopupUI<UI_Collector>("CollectorView", $"{pathName}/Target").SetParent(gameObject); 
+                                                       Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Friend_btn, (data) => { Managers.UI.ShowPopupUI<UI_Friend>("FriendView", $"{pathName}/Friend"); });
+        SetBtn((int)Buttons.Friend_btn, (data) => { Managers.UI.ShowPopupUI<UI_Friend>("FriendView", $"{pathName}/Friend");
+                                                    Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.PlanetInfo_btn, (data) => { Managers.UI.ShowPopupUI<UI_PlanetInfo>("PlanetInfoView", $"{pathName}/Info"); });
+        SetBtn((int)Buttons.PlanetInfo_btn, (data) => { Managers.UI.ShowPopupUI<UI_PlanetInfo>("PlanetInfoView", $"{pathName}/Info"); 
+                                                        Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Store_btn, (data) => { Managers.UI.ShowPopupUI<UI_ItemStore>("ItemStoreView", $"{pathName}/ItemStore"); });
+        SetBtn((int)Buttons.Store_btn, (data) => { Managers.UI.ShowPopupUI<UI_ItemStore>("ItemStoreView", $"{pathName}/ItemStore"); 
+                                                   Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Setting_btn, (data) => { Managers.UI.ShowPopupUI<UI_Setting>("SettingView", $"{pathName}/Setting"); });
+        SetBtn((int)Buttons.Setting_btn, (data) => { Managers.UI.ShowPopupUI<UI_Setting>("SettingView", $"{pathName}/Setting"); 
+                                                     Managers.Sound.PlayNormalButtonClickSound(); });
 
-        SetBtn((int)Buttons.Deco_btn, (data) => { Managers.UI.ShowPopupUI<UI_Deco>("DecoView", $"{pathName}/Deco"); });
+        SetBtn((int)Buttons.Deco_btn, (data) => { Managers.UI.ShowPopupUI<UI_Deco>("DecoView", $"{pathName}/Deco"); 
+                                                  Managers.Sound.PlayNormalButtonClickSound(); });
     }
 
 
