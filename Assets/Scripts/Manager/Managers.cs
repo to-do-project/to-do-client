@@ -22,6 +22,7 @@ public class Managers : MonoBehaviour
     SoundManager sound = new SoundManager();
     DataManager data = new DataManager();
     TodoManager todo = new TodoManager();
+    static FirebaseManager firebase;
     static PlayerManager player;
     static WebManager web;
 
@@ -37,6 +38,7 @@ public class Managers : MonoBehaviour
     public static WebManager Web { get { Instance(); return web; } }
     public static PlayerManager Player { get { Instance(); return player; } }
     
+    public static FirebaseManager FireBase { get { Instance(); return firebase; } }
 
     void Start()
     {
@@ -83,6 +85,7 @@ public class Managers : MonoBehaviour
 
             web = go.AddComponent<WebManager>();
             player = go.AddComponent<PlayerManager>();
+            firebase = go.AddComponent<FirebaseManager>();
 
             //다른 매니저들 Init도 여기서 해주기
             instance.data.Init();

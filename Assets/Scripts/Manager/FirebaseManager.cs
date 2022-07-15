@@ -1,22 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
+using Firebase.Messaging;
 
-public class FirebaseManager
+public class FirebaseManager : MonoBehaviour
 {
+    FirebaseApp _app;
+
     void Start()
     {
-        Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
-        Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
-    }
-    public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
-    {
-        UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
+            if (task.Result == DependencyStatus.Available)
+            {
+                _app = FirebaseApp.DefaultInstance;
+
+                FirebaseMessaging.TokenReceived += OnTokenReceived;
+
+                FirebaseMessaging.MessageReceived += OnMessageReceived;
+            }
+            else
+            {
+                Debug.LogError("[FIREBASE] Could not resolve all dependencies: " + task.Result);
+            }
+        });
     }
 
-    public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+    void OnTokenReceived(object sender, TokenReceivedEventArgs e)
     {
-        UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
+        if (e != null)
+        {
+            Debug.LogFormat("[FIREBASE] Token: {0}", e.Token);
+        }
+    }
+
+    void OnMessageReceived(object sender, MessageReceivedEventArgs e)
+    {
+        if (e != null && e.Message != null && e.Message.Notification != null)
+        {
+            Debug.LogFormat("[FIREBASE] From: {0}, Title: {1}, Text: {2}",
+                e.Message.From,
+                e.Message.Notification.Title,
+                e.Message.Notification.Body);
+        }
     }
 }
