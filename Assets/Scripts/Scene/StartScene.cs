@@ -22,7 +22,7 @@ public class StartScene : BaseScene
                 RequestLogin val = new RequestLogin() {
                     email = Managers.Player.GetString(Define.EMAIL),
                     password = Managers.Player.GetString(Define.PASSWORD),
-                    deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier,
+                    deviceToken = Managers.Player.GetString(Define.DEVICETOKEN),
 
                 };
 

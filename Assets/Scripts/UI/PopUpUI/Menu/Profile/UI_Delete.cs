@@ -83,6 +83,7 @@ public class UI_Delete : UI_PopupMenu
                 Debug.Log("È¸¿ø Å»Åð");
                 PlayerPrefs.DeleteAll();
                 Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
+                Managers.FireBase.DeleteToken();
             }
             else if (response.code == 6000)
             {

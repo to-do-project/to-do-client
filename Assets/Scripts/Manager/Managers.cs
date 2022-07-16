@@ -37,7 +37,6 @@ public class Managers : MonoBehaviour
     public static TodoManager Todo { get { return Instance().todo; } }
     public static WebManager Web { get { Instance(); return web; } }
     public static PlayerManager Player { get { Instance(); return player; } }
-    
     public static FirebaseManager FireBase { get { Instance(); return firebase; } }
 
     void Start()

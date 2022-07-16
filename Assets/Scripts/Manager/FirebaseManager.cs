@@ -8,6 +8,7 @@ public class FirebaseManager : MonoBehaviour
 
     void Start()
     {
+
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             if (task.Result == DependencyStatus.Available)
@@ -17,12 +18,22 @@ public class FirebaseManager : MonoBehaviour
                 FirebaseMessaging.TokenReceived += OnTokenReceived;
 
                 FirebaseMessaging.MessageReceived += OnMessageReceived;
+                Debug.Log("Firebase 연결 체크");
             }
             else
             {
                 Debug.LogError("[FIREBASE] Could not resolve all dependencies: " + task.Result);
             }
         });
+
+
+        FirebaseMessaging.GetTokenAsync().ContinueWith(token =>
+        {
+            Debug.Log("FCM Token : " + token.Result);
+            //Managers.Player.SetString(Define.DEVICETOKEN, token.Result);
+        });
+
+        
     }
 
     void OnTokenReceived(object sender, TokenReceivedEventArgs e)
@@ -30,6 +41,7 @@ public class FirebaseManager : MonoBehaviour
         if (e != null)
         {
             Debug.LogFormat("[FIREBASE] Token: {0}", e.Token);
+            Managers.Player.SetString(Define.DEVICETOKEN, e.Token);
         }
     }
 
@@ -42,5 +54,22 @@ public class FirebaseManager : MonoBehaviour
                 e.Message.Notification.Title,
                 e.Message.Notification.Body);
         }
+    }
+
+    public void DeleteToken()
+    {
+        FirebaseMessaging.DeleteTokenAsync().ContinueWith(task=>
+        {
+            Debug.Log("FCM Token Delete");
+        });
+    }
+
+    public void GetToken()
+    {
+        FirebaseMessaging.GetTokenAsync().ContinueWith(token =>
+        {
+            Debug.Log("FCM Token : " + token.Result);
+            //Managers.Player.SetString(Define.DEVICETOKEN, token.Result);
+        });
     }
 }
