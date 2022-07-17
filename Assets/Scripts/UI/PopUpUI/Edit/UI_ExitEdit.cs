@@ -55,6 +55,7 @@ public class UI_ExitEdit : UI_Popup
     {
         Managers.Sound.PlayNormalButtonClickSound();
         Managers.Scene.Clear();
+        Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
         UI_Load.Instance.InstantLoad("Main");
 
         //Managers.Scene.LoadScene(Define.Scene.Main);
