@@ -53,8 +53,9 @@ public class MainScene : BaseScene
         //Managers.Player.SendTokenRequest(innerCallback);
 
 
-        if (PlayerPrefs.GetInt("FirstStart") == 0)
+        if (PlayerPrefs.GetInt("FirstStart") == 0 && Managers.Player.GetInt(Define.EXP)== 0)
         {
+
             PlayerPrefs.SetInt("FirstStart", 1);
 
         }
@@ -157,6 +158,7 @@ public class MainScene : BaseScene
         }
 
         Managers.UI.CloseAppOrUI();
+        Managers.UI.ActivePanelUI();
 
     }
 
