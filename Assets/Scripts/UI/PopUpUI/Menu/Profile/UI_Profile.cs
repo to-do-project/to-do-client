@@ -92,6 +92,7 @@ public class UI_Profile : UI_PopupMenu
             {
                 Debug.Log(response.result);
                 PlayerPrefs.DeleteAll();
+                Managers.FireBase.DeleteToken();
                 Destroy(Managers.Player.GetPlanet());
                 UI_Load.Instance.ToLoad(Define.Scene.Login.ToString());
             }

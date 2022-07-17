@@ -64,6 +64,7 @@ public class UI_Login : UI_Panel
     {
         base.Init();
         Managers.UI.CloseAllPopupUI();
+        Managers.FireBase.GetToken();
 
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
@@ -139,7 +140,8 @@ public class UI_Login : UI_Panel
             return;
         }
 
-        val.deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier;
+        //val.deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier;
+        val.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
 
         //로그인 API 호출
         res = new Response<ResponseLogin>();
