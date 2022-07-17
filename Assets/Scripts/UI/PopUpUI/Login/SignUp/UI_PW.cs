@@ -74,7 +74,7 @@ public class UI_PW : UI_SignUp
 
         try
         {
-            if (Regex.IsMatch(pw, @"^(?=.*[a-z])(?=.*[0-9]).{6,15}$", RegexOptions.None, TimeSpan.FromMilliseconds(250)))
+            if (Regex.IsMatch(pw, @"^[a-z0-9_]{6,15}$", RegexOptions.None, TimeSpan.FromMilliseconds(250)))
             {
                 PWtxt.text = " 사용가능한 비밀번호입니다.";
                 isValid = true;
