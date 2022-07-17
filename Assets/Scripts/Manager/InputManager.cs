@@ -25,16 +25,18 @@ public class InputManager
             if (Application.platform == RuntimePlatform.Android)
             {
 
-                if (Input.GetKeyUp(KeyCode.Escape))
+                if (Input.GetKeyDown(KeyCode.Escape))
                 {
+                    Debug.Log("Press Escape Key");
                     SystemTouchAction.Invoke(Define.SystemEvent.Back);
                 }
 
             }
             else
             {
-                if (Input.GetKeyUp(KeyCode.Escape))
+                if (Input.GetKeyDown(KeyCode.Escape))
                 {
+
                     SystemTouchAction.Invoke(Define.SystemEvent.Back);
                 }
             }

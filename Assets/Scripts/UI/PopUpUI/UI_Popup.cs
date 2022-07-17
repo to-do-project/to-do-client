@@ -17,7 +17,15 @@ public class UI_Popup : UI_Base
 
     public virtual void ClosePopupUI(PointerEventData data)
     {
-        Managers.Sound.PlayNormalButtonClickSound();
         ClosePopupUI();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Press Escape Key");
+            ClosePopupUI();
+        }
     }
 }

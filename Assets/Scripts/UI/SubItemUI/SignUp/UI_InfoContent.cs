@@ -37,11 +37,18 @@ public class UI_InfoContent : UI_Base
         Init();
     }
 
+    public void SetParent(GameObject parent)    // 부모 설정
+    {
+        this.parent = parent;
+    }
+
+
     public void ExpandBtnClick(PointerEventData data)   // 버튼 이벤트
     {
         toggle = !toggle;   // 토글 변경
         toggleTxt.gameObject.SetActive(toggle); // 토글에 따라 내용 키고 끄기
         SizeRefresh();      // 사이즈 재계산
+        parent.GetComponent<UI_InfoScroll>().SizeRefresh();   // 부모 사이즈도 재계산
     }
 
 
