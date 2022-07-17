@@ -98,6 +98,7 @@ public class UIManager
             return;
         }
 
+        Managers.Sound.PlayNormalButtonClickSound();
         ClosePopupUI();
     }
     
@@ -231,7 +232,7 @@ public class UIManager
         else
         {
             //Debug.Log($"Count : {popupStack.Count}");
-            ClosePopupUI();
+            //ClosePopupUI();
         }
     }
 

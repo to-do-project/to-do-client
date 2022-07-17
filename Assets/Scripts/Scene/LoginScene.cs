@@ -46,6 +46,7 @@ public class LoginScene : BaseScene
     {
         Debug.Log("Login Clear");
         Managers.UI.Clear();
+        Managers.Input.SystemTouchAction -= OnBackTouched;
     }
 
     void Awake()

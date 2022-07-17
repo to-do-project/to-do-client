@@ -25,6 +25,7 @@ public class MainScene : BaseScene
     {
         //Managers.UI.Clear();
         //throw new System.NotImplementedException();
+        Managers.Input.SystemTouchAction -= OnBackTouched;
     }
 
     protected override void Init()
