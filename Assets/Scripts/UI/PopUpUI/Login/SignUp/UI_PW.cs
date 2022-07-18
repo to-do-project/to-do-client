@@ -52,6 +52,7 @@ public class UI_PW : UI_SignUp
         PWfield = GetInputfiled((int)InputFields.PW_inputfield);
         PWfield.onEndEdit.AddListener(delegate { CheckPassWord(); });
 
+
         PWCheckfield = GetInputfiled((int)InputFields.PWCheck_inputfield);
         PWCheckfield.onEndEdit.AddListener(delegate { SamePassWord(); });
 
