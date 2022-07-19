@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
+using System;
 
 public class Util
 {
@@ -79,4 +81,57 @@ public class Util
         return name;
     }
 
+    //게임오브젝트의 자식을 모두 삭제
+    public static void RemoveAllChild(GameObject go)
+    {
+        Transform[] childList = go.GetComponentsInChildren<Transform>();
+
+        if (childList != null)
+        {
+            foreach (Transform child in childList)
+            {
+                if (child != go.transform)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+    }
+
+    //게임오브젝트의 자식을 모두 삭제(특정 형식 T를 가진 자식만)
+    public static void RemoveAllChild<T>(GameObject go) where T : UnityEngine.Component
+    {
+        T[] childList = go.GetComponentsInChildren<T>();
+
+        if (childList != null)
+        {
+            foreach (T child in childList)
+            {
+                if (child.gameObject != go.gameObject)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+    }
+
+
+    //string valid 함수
+    //pattern에 검사할 정규표현식 작성
+    public static bool IsValidString(string word, string pattern)
+    {
+        if (string.IsNullOrWhiteSpace(word))
+        {
+            return false;
+        }
+        try
+        {
+            return Regex.IsMatch(word, pattern,
+                RegexOptions.None, TimeSpan.FromMilliseconds(250));
+        }
+        catch (RegexMatchTimeoutException)
+        {
+            return false;
+        }
+    }
 }

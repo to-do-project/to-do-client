@@ -43,6 +43,7 @@ public class TodoManager
 
         callback -= MainGoalResponseAction;
         callback += MainGoalResponseAction;
+
     }
 
 
@@ -80,8 +81,12 @@ public class TodoManager
             {
                 goalList = res.result;
 
-                goalListGameObject = GameObject.Find("GoalList").GetComponent<UI_GoalList>();
-                goalListGameObject.callback.Invoke(request);
+                if (GameObject.Find("GoalList") != null)
+                {
+                    goalListGameObject = GameObject.Find("GoalList").GetComponent<UI_GoalList>();
+                    goalListGameObject.callback.Invoke(request);
+                }
+
             }
             else
             {
