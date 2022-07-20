@@ -54,6 +54,7 @@ public class UI_GroupGoalCreater : UI_Popup
         GoalTitle_txt,
         GroupDelete_txt,
         del_res_txt,
+        toast_txt,
     }
 
     enum GameObjects
@@ -64,6 +65,7 @@ public class UI_GroupGoalCreater : UI_Popup
         OwnerGoal_content,
         OwnerTodo,
         MemberGoal,
+        ToastMessage,
     }
 
 
@@ -86,6 +88,9 @@ public class UI_GroupGoalCreater : UI_Popup
     Text deletbtnTxt;
     Text delresTxt;
     bool isManager;
+
+    GameObject toastMessage;
+    Text toast;
 
     public override void Init()
     {
@@ -142,6 +147,11 @@ public class UI_GroupGoalCreater : UI_Popup
 
         GameObject exitBtn = GetButton((int)Buttons.exit_btn).gameObject;
         BindEvent(exitBtn, ClosePopupUI);
+
+        toast = GetText((int)Texts.toast_txt);
+        toastMessage = Get<GameObject>((int)GameObjects.ToastMessage);
+        toastMessage.SetActive(false);
+
     }
 
     private void CancleBtnClick(PointerEventData data)
@@ -198,7 +208,7 @@ public class UI_GroupGoalCreater : UI_Popup
         Managers.Web.SendGetRequest("api/goals/", goalId.ToString(), (uwr) =>
          {
              Response<ResponseGroupGoalSearch> res = JsonUtility.FromJson<Response<ResponseGroupGoalSearch>>(uwr.downloadHandler.text);
-
+             Debug.Log(res.message +" "+ res.code+" "+res.isSuccess);
              if (res.isSuccess)
              {
 
@@ -207,6 +217,10 @@ public class UI_GroupGoalCreater : UI_Popup
                  //나머지 멤버 클리어
                  ClearChild(memberGoal);
 
+                 if (res.result.goalMemberDetails==null)
+                 {
+                     showToastMessage(toastMessage, toast, "삭제된 목표입니다.", 1.2f, true);
+                 }
 
                  //res.result;
                  goalTitle.text = res.result.goalTitle;
@@ -260,6 +274,9 @@ public class UI_GroupGoalCreater : UI_Popup
              {
                  switch (res.code)
                  {
+                     case 5018:
+                         showToastMessage(toastMessage, toast, "삭제된 목표입니다.", 1.2f, true);
+                         break;
                      case 6023:
                          Action action = delegate {
                              Setting(goalId);

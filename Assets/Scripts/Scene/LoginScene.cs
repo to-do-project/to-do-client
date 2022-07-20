@@ -65,6 +65,7 @@ public class LoginScene : BaseScene
         Managers.Input.SystemTouchAction -= OnBackTouched;
         Managers.Input.SystemTouchAction += OnBackTouched;
 
+        Managers.FireBase.GetToken();
         Managers.Sound.Clear();
     }
 

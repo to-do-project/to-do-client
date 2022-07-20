@@ -53,7 +53,7 @@ public class UI_GoalList : UI_Base
         callback -= GoalInit;
         callback += GoalInit;
 
-        GoalInit();
+        StartCoroutine(GoalInitiate());
 
         //SendGoalListRequest();
         //Managers.Todo.UserTodoInstantiate(callback);
@@ -169,5 +169,19 @@ public class UI_GoalList : UI_Base
 
 
 
+    }
+
+
+    IEnumerator GoalInitiate()
+    {
+
+
+        while (Managers.Todo.goalList == null)
+        {
+            Debug.Log("아직 로딩안됨");
+            yield return null;
+        }
+
+        GoalInit();
     }
 }

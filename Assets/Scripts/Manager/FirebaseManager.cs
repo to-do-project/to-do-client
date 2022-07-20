@@ -2,6 +2,9 @@ using UnityEngine;
 using Firebase;
 using Firebase.Messaging;
 
+
+//FCM 토큰 생성 및 삭제
+//푸시 알림 recieve
 public class FirebaseManager : MonoBehaviour
 {
     FirebaseApp _app;
