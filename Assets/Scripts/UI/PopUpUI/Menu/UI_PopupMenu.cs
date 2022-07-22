@@ -31,4 +31,16 @@ public class UI_PopupMenu : UI_Popup // Menu에서 많이 사용하는 함수들을 여기에 �
             Debug.Log($"{UIcam.name}");
         }
     }
+
+    protected string GetDeviceToken() // PlayerPrefs에 디바이스 토큰이 없을 시 SystemInfo의 디바이스 토큰 반환
+    {
+        if(PlayerPrefs.HasKey(Define.DEVICETOKEN))
+        {
+            return Managers.Player.GetString(Define.DEVICETOKEN);
+        } 
+        else
+        {
+            return SystemInfo.deviceUniqueIdentifier;
+        }
+    }
 }

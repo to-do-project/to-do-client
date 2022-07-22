@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class UI_Color : UI_PopupMenu
 {
-
+    // 바인딩 할 자식 오브젝트 이름들
     enum Buttons
     {
         Back_btn,
@@ -23,7 +23,13 @@ public class UI_Color : UI_PopupMenu
         Next_btn,
     }
 
-    public enum Colors
+    enum Images
+    {
+        Check_image,
+    }
+    // ================================ //
+
+    public enum Colors // 프로필 컬러 enum값
     {
         LightRed = 0,
         Yellow,
@@ -37,50 +43,55 @@ public class UI_Color : UI_PopupMenu
         Black,
     }
 
-    enum Images
-    {
-        Check_image,
-    }
+    UI_Profile profile;       // ProfileView 스크립트
+    UI_Menu menu;             // MenuView 스크립트
+    Transform checkTransform; // 체크 표시 위치
+    GameObject checkImage;    // 체크 표시 이미지
+    GameObject curBtn;        // 현재 버튼
+    GameObject nexBtn;        // 선택 버튼
 
-    UI_Profile profile;
-    UI_Menu menu;
-    string selectColor;
-    GameObject checkImage;
-    Transform checkTransform;
+    string selectColor;       // 선택된 컬러 이름
 
-    GameObject curBtn;
-    GameObject nexBtn;
-
-    public override void Init()
+    public override void Init() // 초기화
     {
         base.Init();
 
-        CameraSet();
+        CameraSet(); // 카메라 설정
 
         SetBtns();
 
         selectColor = null;
         curBtn = nexBtn = null;
 
-        Bind<GameObject>(typeof(Images));
+        Bind<GameObject>(typeof(Images)); // 이미지 바인딩
 
-        checkImage = Get<GameObject>((int)Images.Check_image);
-        checkImage.SetActive(false);
-        checkTransform = checkImage.transform;
+        checkImage = Get<GameObject>((int)Images.Check_image); // 체크 이미지 오브젝트 설정
+        checkImage.SetActive(false);           // 체크 이미지 비활성화
+        checkTransform = checkImage.transform; // 체크 이미지 Transform 바인드
 
         profile = FindObjectOfType<UI_Profile>();
         menu = FindObjectOfType<UI_Menu>();
     }
 
-    private void SetBtns()
+    public void ColorBtnEnter(GameObject gameObject) // 버튼에 터치 인식 시 버튼 크기 확대
+    {
+        if (checkImage.activeSelf) return;
+        gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
+    }
+
+    public void ColorBtnExit(GameObject gameObject) // 버튼에 터치 나감 인식 시 버튼 크기 축소
+    {
+        if (checkImage.activeSelf) return;
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    void SetBtns() // 버튼 이벤트 설정
     {
         Bind<Button>(typeof(Buttons));
 
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        SetBtn((int)Buttons.Next_btn, (data) => {
-            ColorChange();
-        });
+        SetBtn((int)Buttons.Next_btn, (data) => { ColorChange(); });
 
         GameObject btnLR = GetButton((int)Buttons.LightRed_btn).gameObject;
         BindEvent(btnLR, (data) => { ColorBtnClick(Colors.LightRed, btnLR); });
@@ -140,19 +151,7 @@ public class UI_Color : UI_PopupMenu
         }, hN, hV);
     }
 
-    public void ColorBtnEnter(GameObject gameObject)
-    {
-        if (checkImage.activeSelf) return;
-        gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
-    }
-
-    public void ColorBtnExit(GameObject gameObject)
-    {
-        if (checkImage.activeSelf) return;
-        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-    }
-
-    private void ColorBtnClick(Colors color, GameObject target)
+    void ColorBtnClick(Colors color, GameObject target)
     {
         // 버튼의 color정보 전달 및 버튼 크기 변경
         selectColor = color.ToString();

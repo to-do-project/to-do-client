@@ -44,23 +44,34 @@ public class UI_Announce : UI_PopupMenu
         check = false;  // 변수 초기화
     }
 
+    public void SizeRefresh() // 사이즈 재조절
+    {
+        ContentSizeFitter fitter = content.GetComponent<ContentSizeFitter>();           // 사이즈 필터 연결
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)fitter.transform);   // 사이즈 재계산
+    }
+
+    public void ExpandContent(long key) // key >> 컨텐츠 고유번호 값 || 공지사항 컨텐츠 사이즈 조절
+    {
+        StartCoroutine(ExExpand(key));  // 코루틴으로 실행
+    }
+
     void InitContents() // 공지사항 컨텐츠 생성
     {
-        foreach (var tmp in dataContainer.announceList) // dataContainer.announceList >> 데이터 컨테이너(상속)에 있는 공지사항 리스트
+        foreach (var tmp in dataContainer.announceList)         // dataContainer.announceList >> 데이터 컨테이너(상속)에 있는 공지사항 리스트
         {
             AddAnnounce(tmp.noticeId, tmp.title, tmp.content);  // 공지사항 컨텐츠 생성 및 초기화
-            //          공지사항 번호, 제목,    내용
+                     // 공지사항 번호,   제목,   내용
         }
     }
 
-    private void SetBtns() // 버튼 바인딩 및 이벤트 연결
+    void SetBtns() // 버튼 바인딩 및 이벤트 연결
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });    // 팝업 제거 이벤트 연결
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);    // 팝업 제거 이벤트 연결
     }
 
-    private void AddAnnounce(long key, string head, string sub)     // key >> 슈퍼키(번호), head >> 제목, sub >> 내용 || 공지사항 컨텐츠 생성 및 초기화
+    void AddAnnounce(long key, string head, string sub)     // key >> 슈퍼키(번호), head >> 제목, sub >> 내용 || 공지사항 컨텐츠 생성 및 초기화
     {
         GameObject contents = Managers.Resource.Instantiate("UI/ScrollContents/AnnounceContent");   // 해당 url에 프리팹 생성
         contents.transform.SetParent(content.transform, false); // 공지사항 부모 오브젝트에 컨텐츠 연결
@@ -76,25 +87,14 @@ public class UI_Announce : UI_PopupMenu
         SizeRefresh();  // 공지사항 컨텐츠 사이즈 재조절
     }
 
-    private void Start()
+    void Start()
     {
         Init();
     }
 
-    public void SizeRefresh()   // 사이즈 재조절
-    {
-        ContentSizeFitter fitter = content.GetComponent<ContentSizeFitter>();   // 사이즈 필터 연결
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)fitter.transform);   // 사이즈 재계산
-    }
-
-    public void ExpandContent(long key) // key >> 컨텐츠 고유번호 값 || 공지사항 컨텐츠 사이즈 조절
-    {
-        StartCoroutine(ExExpand(key));  // 코루틴으로 실행
-    }
-
     IEnumerator ExExpand(long key)      // key >> 컨텐츠 고유번호 값 || 공지사항 컨텐츠 사이즈 조절
     {
-        while (check) yield return null;
+        while (check) yield return null;        // 체크 될 때까지 대기
         announces[key].ExpandBtnClick(null);    // 공지사항 컨텐츠 사이즈 조절(toggle으로 축소/팽창)
     }
 }

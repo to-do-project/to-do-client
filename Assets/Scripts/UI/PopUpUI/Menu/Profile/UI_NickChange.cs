@@ -58,7 +58,7 @@ public class UI_NickChange : UI_PopupMenu
 
         nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.NickCheck_btn, (data) => {
             IsVaildNickname();

@@ -48,7 +48,7 @@ public class UI_Delete : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.Next_btn, (data) => {
             //비밀번호가 맞는지 확인한 후
@@ -81,6 +81,7 @@ public class UI_Delete : UI_PopupMenu
             {
                 Debug.Log(response.result);
                 Debug.Log("회원 탈퇴");
+                Managers.FireBase.DeleteToken();
                 PlayerPrefs.DeleteAll();
                 Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
                 Managers.FireBase.DeleteToken();

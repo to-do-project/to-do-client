@@ -117,7 +117,7 @@ public class UI_ItemBuy : UI_PopupMenu
         buyBtn = GetButton((int)Buttons.Buy_btn);
         BindEvent(buyBtn.gameObject, BuyBtnClick);
 
-        SetBtn((int)Buttons.Cancel_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Cancel_btn, ClosePopupUI);
         SetBtn((int)Buttons.Minus_btn, (data) => { buyAmountSlider.value--; Managers.Sound.PlayNormalButtonClickSound(); });
         SetBtn((int)Buttons.Plus_btn, (data) => { buyAmountSlider.value++; Managers.Sound.PlayNormalButtonClickSound(); });
     }
