@@ -147,7 +147,7 @@ public class UI_Notification : UI_PopupMenu
         RequestSetting req = new RequestSetting
         {
             flag = data,
-            deviceToken = Managers.Player.GetString(Define.DEVICETOKEN)
+            deviceToken = GetDeviceToken()
         };
 
         Managers.Web.SendUniRequest("api/alarms", "PATCH", req, (uwr) => {
@@ -167,7 +167,7 @@ public class UI_Notification : UI_PopupMenu
                     RequestSetting req = new RequestSetting
                     {
                         flag = data,
-                        deviceToken = Managers.Player.GetString(Define.DEVICETOKEN)
+                        deviceToken = GetDeviceToken()
                     };
 
                     Managers.Web.SendUniRequest("api/alarms", "PATCH", req, (uwr) => {

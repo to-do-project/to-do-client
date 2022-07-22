@@ -81,6 +81,7 @@ public class UI_Delete : UI_PopupMenu
             {
                 Debug.Log(response.result);
                 Debug.Log("È¸¿ø Å»Åð");
+                Managers.FireBase.DeleteToken();
                 PlayerPrefs.DeleteAll();
                 Managers.UI.ShowPopupUI<UI_DeleteCheck>("DeleteCheckView", pathName);
                 Managers.FireBase.DeleteToken();
