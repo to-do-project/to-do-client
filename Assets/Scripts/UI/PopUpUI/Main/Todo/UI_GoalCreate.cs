@@ -189,19 +189,20 @@ public class UI_GoalCreate : UI_Popup
     private void FriendAddBtnClick(PointerEventData data)
     {
         Managers.Sound.PlayNormalButtonClickSound();
-        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
+        /*        Transform[] childList = friendRoot.GetComponentsInChildren<Transform>();
 
-        if (childList != null)
-        {
-            foreach (Transform child in childList)
-            {
-                if (child != friendRoot.transform)
+                if (childList != null)
                 {
-                    Debug.Log(child.name);
-                    Managers.Resource.Destroy(child.gameObject);
-                }
-            }
-        }
+                    foreach (Transform child in childList)
+                    {
+                        if (child != friendRoot.transform)
+                        {
+                            Debug.Log(child.name);
+                            Managers.Resource.Destroy(child.gameObject);
+                        }
+                    }
+                }*/
+        Util.RemoveAllChild(friendRoot);
 
         foreach (ResponseMemberFind friend in memberList)
         {
@@ -251,18 +252,19 @@ public class UI_GoalCreate : UI_Popup
 
         string name = friendNameInputfield.text;
 
-        UI_FriendAddContent[] childList = friendRoot.GetComponentsInChildren<UI_FriendAddContent>();
-        if (childList != null)
-        {
-            foreach (UI_FriendAddContent child in childList)
-            {
-                if (child.gameObject != friendRoot.gameObject)
+        /*        UI_FriendAddContent[] childList = friendRoot.GetComponentsInChildren<UI_FriendAddContent>();
+                if (childList != null)
                 {
-                    Debug.Log("serach friend name in "+child.name);
-                    Managers.Resource.Destroy(child.gameObject);
-                }
-            }
-        }
+                    foreach (UI_FriendAddContent child in childList)
+                    {
+                        if (child.gameObject != friendRoot.gameObject)
+                        {
+                            Debug.Log("serach friend name in "+child.name);
+                            Managers.Resource.Destroy(child.gameObject);
+                        }
+                    }
+                }*/
+        Util.RemoveAllChild<UI_FriendAddContent>(friendRoot);
 
 
 

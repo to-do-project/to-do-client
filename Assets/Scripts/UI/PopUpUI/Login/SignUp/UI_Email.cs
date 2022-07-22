@@ -85,7 +85,8 @@ public class UI_Email : UI_SignUp
         Managers.Sound.PlayNormalButtonClickSound();
 
         //이메일 입력 확인
-        if (IsValidEmail(Einput.text))
+        //if (IsValidEmail(Einput.text))
+        if(Util.IsValidString(Einput.text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
         {
             Checkres = new Response<string>();
             Managers.Web.SendGetRequest("join/dupli/email?email=",Einput.text,callback);

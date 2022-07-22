@@ -32,7 +32,7 @@ public class UI_GoalList : UI_Base
 
         //목표추가 버튼
         //Managers.UI.MakeSubItem<>();
-        Debug.Log("GoalList 호출");
+        //Debug.Log("GoalList 호출");
         innerCallback -= SendGoalListRequest;
         innerCallback += SendGoalListRequest;
 
@@ -53,8 +53,9 @@ public class UI_GoalList : UI_Base
         callback -= GoalInit;
         callback += GoalInit;
 
+        GoalInit();
 
-        SendGoalListRequest();
+        //SendGoalListRequest();
         //Managers.Todo.UserTodoInstantiate(callback);
         //GoalInit();
         /*Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList",goalParent.transform, "Ggoal_content");
@@ -71,6 +72,46 @@ public class UI_GoalList : UI_Base
     void SendGoalListRequest()
     {
         Managers.Todo.UserTodoInstantiate(callback);
+    }
+
+    private void GoalInit()
+    {
+        Transform[] childList = goalParent.GetComponentsInChildren<Transform>();
+        if (childList != null)
+        {
+            foreach (Transform child in childList)
+            {
+                if (child != goalParent.transform)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+
+        foreach (ResponseMainTodo item in Managers.Todo.goalList)
+        {
+            if (item.groupFlag)
+            {
+                UI_GgoalContent goal = Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList", goalParent.transform, "Ggoal_content");
+                /*                    goal.SetGoalName(item.goalTitle);
+                                    goal.SetGoalRate(item.percentage.ToString());*/
+
+                goal.SetGgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.managerFlag);
+                Canvas.ForceUpdateCanvases();
+            }
+            else
+            {
+                UI_PgoalContent goal = Managers.UI.MakeSubItem<UI_PgoalContent>("GoalList", goalParent.transform, "Pgoal_content");
+                /*                    goal.SetGoalName(item.goalTitle);
+                                    goal.SetGoalRate(item.percentage.ToString());*/
+                goal.SetPgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.openFlag);
+                Canvas.ForceUpdateCanvases();
+            }
+
+
+        }
+        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
+        goalAddbtn.transform.SetAsLastSibling();
     }
 
     private void GoalInit(UnityWebRequest request)

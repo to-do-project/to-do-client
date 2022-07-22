@@ -61,6 +61,7 @@ public class StartScene : BaseScene
                             Managers.Player.SetString(Define.PASSWORD, val.password);
 
                             Managers.Player.FirstInstantiate();
+                            Managers.Todo.SendMainGoalRequest(result.userId.ToString());
                             UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
                         }
 

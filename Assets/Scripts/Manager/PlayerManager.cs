@@ -321,7 +321,8 @@ public class PlayerManager : MonoBehaviour
     //배치된 아이템 정보 서버에 전송 API 호출
     public void SendArrangementRequest()
     {
-        
+        Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+
         ConvertToRequestList();
         RequestArrangement val = new RequestArrangement 
         { itemPositionList = placedItemList};
