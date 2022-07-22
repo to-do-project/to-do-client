@@ -180,7 +180,7 @@ public class UI_Deco : UI_PopupMenu
         onSave = true;
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
-        string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
+        string[] hV = { Managers.Player?.GetString(Define.JWT_ACCESS_TOKEN)??SystemInfo.deviceUniqueIdentifier,
                         Managers.Player.GetString(Define.USER_ID) };
 
         Managers.Web.SendUniRequest("api/closet/character-items/" + dataContainer.invenIdList[index].ToString(), "PATCH", null, (uwr) => {

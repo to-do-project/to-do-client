@@ -19,9 +19,10 @@ public class UI_AnnounceContent : UI_Base
     }
     // ================================ //
 
-    bool toggle = false;        // 컨텐츠 축소/팽창을 위한 토글 변수
     Text headTxt, toggleTxt;    // 제목 텍스트, 내용 텍스트
     GameObject parent;          // 부모 오브젝트
+
+    bool toggle = false;        // 컨텐츠 축소/팽창을 위한 토글 변수
 
     public override void Init() // 초기화
     {
@@ -38,10 +39,12 @@ public class UI_AnnounceContent : UI_Base
     {
         headTxt.text = text;
     }
+
     public void SetSub(string text)     // 내용 텍스트 설정
     {
         toggleTxt.text = text;
     }
+
     public void SetParent(GameObject parent)    // 부모 설정
     {
         this.parent = parent;
@@ -54,6 +57,7 @@ public class UI_AnnounceContent : UI_Base
         SizeRefresh();      // 사이즈 재계산
         parent.GetComponent<UI_Announce>().SizeRefresh();   // 부모 사이즈도 재계산
     }
+
     public void SizeRefresh() // 사이즈 재계산
     {
         ContentSizeFitter fitter = gameObject.GetComponent<ContentSizeFitter>();
