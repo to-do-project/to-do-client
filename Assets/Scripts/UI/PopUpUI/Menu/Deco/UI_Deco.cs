@@ -62,7 +62,7 @@ public class UI_Deco : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.Done_btn, (data) => { SaveInven(); });
 

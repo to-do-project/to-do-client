@@ -66,8 +66,8 @@ public class UI_Collector : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons)); // 버튼 바인드
 
-        // 뒤로가기 버튼 || 클릭음 재생, 현재 UI 삭제
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        // 뒤로가기 버튼 || 현재 UI 삭제
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
     }
 
     void Start()

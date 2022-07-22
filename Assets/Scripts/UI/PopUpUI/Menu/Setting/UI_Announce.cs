@@ -68,7 +68,7 @@ public class UI_Announce : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });    // 팝업 제거 이벤트 연결
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);    // 팝업 제거 이벤트 연결
     }
 
     void AddAnnounce(long key, string head, string sub)     // key >> 슈퍼키(번호), head >> 제목, sub >> 내용 || 공지사항 컨텐츠 생성 및 초기화

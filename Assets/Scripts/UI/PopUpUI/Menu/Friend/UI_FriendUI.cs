@@ -59,6 +59,7 @@ public class UI_FriendUI : UI_PopupMenu
 
         SetBtn((int)Buttons.Back_btn, (data) => {
             FindObjectOfType<UI_FriendMain>().DestroyAll();
+            Managers.Sound.PlayNormalButtonClickSound();
             Managers.UI.ActiveAllUI();
             Managers.Player.GetPlanet().SetActive(true);
             Destroy(gameObject);

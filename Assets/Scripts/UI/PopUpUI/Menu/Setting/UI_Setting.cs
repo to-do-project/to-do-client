@@ -39,7 +39,7 @@ public class UI_Setting : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         SetBtn((int)Buttons.Notification_btn, (data) => { Managers.UI.ShowPopupUI<UI_Notification>("NotificationView", pathName); 
                                                           Managers.Sound.PlayNormalButtonClickSound(); });

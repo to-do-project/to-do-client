@@ -80,7 +80,7 @@ public class UI_Sound : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         missionBtn = GetButton((int)Buttons.Mission_btn);
         BindEvent(missionBtn.gameObject, MissionBtnClick, Define.TouchEvent.Touch);

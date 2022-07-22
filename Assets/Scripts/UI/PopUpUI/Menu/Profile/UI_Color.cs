@@ -89,9 +89,9 @@ public class UI_Color : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
-        SetBtn((int)Buttons.Next_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ColorChange(); });
+        SetBtn((int)Buttons.Next_btn, (data) => { ColorChange(); });
 
         GameObject btnLR = GetButton((int)Buttons.LightRed_btn).gameObject;
         BindEvent(btnLR, (data) => { ColorBtnClick(Colors.LightRed, btnLR); });
