@@ -12,6 +12,11 @@ public class UI_FriendAddContent : UI_Base
         background
     }
 
+    enum Buttons 
+    {
+        friend_btn,
+    }
+
     enum Texts
     {
         friend_name,
@@ -35,10 +40,11 @@ public class UI_FriendAddContent : UI_Base
     {
         Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
+        Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
 
-        //GameObject background = Get<GameObject>((int)GameObjects.background);
-        BindEvent(this.gameObject, OnAddClick, Define.TouchEvent.Touch);
+        Button friendBtn = GetButton((int)Buttons.friend_btn);
+        BindEvent(friendBtn.gameObject, OnAddClick, Define.TouchEvent.Touch);
 
         nicknameTxt = GetText((int)Texts.friend_name);
         nicknameTxt.text = nickname;

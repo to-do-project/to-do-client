@@ -31,13 +31,6 @@ public class UI_EditScroll : UI_Base, IBeginDragHandler, IEndDragHandler
         Bind<GameObject>(typeof(GameObjects));
         contentRoot = Get<GameObject>((int)GameObjects.Content);
 
-        /*Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "plant_03");
-        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "plant_04");
-        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "plant_05");
-        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "stone_02");
-        Managers.UI.MakeSubItem<UI_EditItem>("Edit", contentRoot.transform, "stone_01");
-*/
-
         BindEvent(this.gameObject, DragEvnet, Define.TouchEvent.Drag);
     }
 

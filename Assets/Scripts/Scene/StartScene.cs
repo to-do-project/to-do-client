@@ -19,6 +19,11 @@ public class StartScene : BaseScene
             if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
             {
 
+                if (string.IsNullOrWhiteSpace(Managers.Player.GetString(Define.DEVICETOKEN)))
+                {
+                    Managers.Player.SetString(Define.DEVICETOKEN, SystemInfo.deviceUniqueIdentifier);
+                }
+
                 RequestLogin val = new RequestLogin() {
                     email = Managers.Player.GetString(Define.EMAIL),
                     password = Managers.Player.GetString(Define.PASSWORD),

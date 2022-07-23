@@ -94,13 +94,13 @@ public abstract class UI_Base : MonoBehaviour
         }
     }
 
-    public void showToastMessage(GameObject toastMessage, Text toast, string msg, float time)
+    public void showToastMessage(GameObject toastMessage, Text toast, string msg, float time, bool closePopup = false)
     {
         Debug.Log("show toast message");
-        StartCoroutine(showToastMessageCoroutine(toastMessage,toast, msg, time));
+        StartCoroutine(showToastMessageCoroutine(toastMessage,toast, msg, time, closePopup));
     }
 
-    private IEnumerator showToastMessageCoroutine(GameObject toastMessage, Text toast, string msg, float time)
+    private IEnumerator showToastMessageCoroutine(GameObject toastMessage, Text toast, string msg, float time, bool closePopup = false)
     {
         Debug.Log("in show toast message");
         toastMessage.SetActive(true);
@@ -120,6 +120,10 @@ public abstract class UI_Base : MonoBehaviour
 
         toast.text = "";
         toastMessage.SetActive(false);
+        if (closePopup)
+        {
+            Managers.UI.ClosePopupUI();
+        }
     }
 
 
