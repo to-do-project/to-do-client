@@ -91,8 +91,9 @@ public class UI_Profile : UI_PopupMenu
             if (response.code == 1000)
             {
                 Debug.Log(response.result);
+                string fcmToken = Managers.Player.GetString(Define.DEVICETOKEN);
                 PlayerPrefs.DeleteAll();
-                Managers.FireBase.DeleteToken();
+                Managers.Player.SetString(Define.DEVICETOKEN, fcmToken);
                 Destroy(Managers.Player.GetPlanet());
                 UI_Load.Instance.ToLoad(Define.Scene.Login.ToString());
             }
