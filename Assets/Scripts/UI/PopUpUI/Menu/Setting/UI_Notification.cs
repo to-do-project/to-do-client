@@ -37,7 +37,7 @@ public class UI_Notification : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
         pushBtn = GetButton((int)Buttons.Push_btn);
         BindEvent(pushBtn.gameObject, PushBtnClick, Define.TouchEvent.Touch);
@@ -147,7 +147,7 @@ public class UI_Notification : UI_PopupMenu
         RequestSetting req = new RequestSetting
         {
             flag = data,
-            deviceToken = Managers.Player.GetString(Define.DEVICETOKEN)
+            deviceToken = GetDeviceToken()
         };
 
         Managers.Web.SendUniRequest("api/alarms", "PATCH", req, (uwr) => {
@@ -167,7 +167,7 @@ public class UI_Notification : UI_PopupMenu
                     RequestSetting req = new RequestSetting
                     {
                         flag = data,
-                        deviceToken = Managers.Player.GetString(Define.DEVICETOKEN)
+                        deviceToken = GetDeviceToken()
                     };
 
                     Managers.Web.SendUniRequest("api/alarms", "PATCH", req, (uwr) => {

@@ -26,18 +26,21 @@ public class UI_AddFriend : UI_PopupMenu
 
     Text friendNameTxt, friendLevelTxt;     // 친구 이름, 친구 레벨 오브젝트
     Image profileImage;                     // 프로필 이미지 오브젝트
-    GameObject parent;                      // 부모 오브젝트(FriendView)
-    UI_Friend friend;                       // 부모 스크립트(UI_Friend)
+    GameObject parent;                      // 부모 오브젝트 (FriendView)
+    UI_Friend friend;                       // 부모 스크립트 (UI_Friend)
+
     int level = 1;                          // 친구 행성 레벨
     bool clicked = false;                   // 웹 통신 중 클릭을 잠구기 위한 변수
+
     public int id { private get; set; }     // 친구의 userId값
+
     const string profileName = "Art/UI/Profile/Profile_Color_3x"; // 프로필 이미지 경로
 
     public override void Init()             // 초기화 함수
     {
         base.Init();
 
-        CameraSet();    // 카메라 연결(상속)
+        CameraSet();                        // 카메라 연결(상속)
 
         parent = GameObject.Find("FriendView(Clone)"); // 부모 오브젝트 연결
         if(parent != null)
@@ -67,7 +70,16 @@ public class UI_AddFriend : UI_PopupMenu
             this.level = level;
     }
 
-    private void SetBtns()  // 버튼 바인딩 및 이벤트 할당
+    public void SetImage(string color)  // color >> UI_Color.Color enum값의 string || 프로필 이미지 초기화
+    {
+        Bind<Image>(typeof(Images));    // 이미지 바인딩
+        profileImage = GetImage((int)Images.FriendProfile_image);   // 오브젝트 바인딩
+        int index = 0;
+        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));  // string 값을 다시 enum으로 변경 후 enum을 int값으로 변경
+        profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];    // 해당 index의 이미지로 변경
+    }
+
+    void SetBtns()  // 버튼 바인딩 및 이벤트 할당
     {
         Bind<Button>(typeof(Buttons));
 
@@ -122,15 +134,6 @@ public class UI_AddFriend : UI_PopupMenu
                 clicked = false;             // 웹 통신 완료
             }
         }, hN, hV);
-    }
-
-    public void SetImage(string color)  // color >> UI_Color.Color enum값의 string || 프로필 이미지 초기화
-    {
-        Bind<Image>(typeof(Images));    // 이미지 바인딩
-        profileImage = GetImage((int)Images.FriendProfile_image);   // 오브젝트 바인딩
-        int index = 0;
-        index = (int)((UI_Color.Colors)System.Enum.Parse(typeof(UI_Color.Colors), color));  // string 값을 다시 enum으로 변경 후 enum을 int값으로 변경
-        profileImage.sprite = Resources.LoadAll<Sprite>(profileName)[index];    // 해당 index의 이미지로 변경
     }
 
     private void Start()

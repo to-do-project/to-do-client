@@ -5,28 +5,31 @@ using UnityEngine.UI;
 
 public class UI_Application : UI_PopupMenu
 {
+    // 바인딩 할 자식 오브젝트 이름들
     enum Buttons
     {
         Back_btn,
     }
+    // ================================ //
 
-    public override void Init()
+    public override void Init() // 초기화
     {
         base.Init();
 
-        CameraSet();
+        CameraSet(); // 카메라 설정 (상속)
 
         SetBtns();
     }
 
-    private void SetBtns()
+    void SetBtns() // 버튼 이벤트 설정
     {
-        Bind<Button>(typeof(Buttons));
+        Bind<Button>(typeof(Buttons)); // 버튼 바인드
 
-        SetBtn((int)Buttons.Back_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); ClosePopupUI(); });
+        // 뒤로가기 버튼 || 현재 UI 삭제
+        SetBtn((int)Buttons.Back_btn, ClosePopupUI);
     }
 
-    private void Start()
+    void Start()
     {
         Init();
     }
