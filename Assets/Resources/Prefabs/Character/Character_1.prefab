@@ -55,6 +55,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character_1
       objectReference: {fileID: 0}
+    - target: {fileID: 4804826389066203310, guid: b59610ce19f323942af6dec408e84a8c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 6129229072480402862, guid: b59610ce19f323942af6dec408e84a8c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.02
+      objectReference: {fileID: 0}
     - target: {fileID: 7724531571097845286, guid: b59610ce19f323942af6dec408e84a8c, type: 3}
       propertyPath: m_Sprite
       value: 
