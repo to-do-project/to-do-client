@@ -22,6 +22,8 @@ public class Managers : MonoBehaviour
     SoundManager sound = new SoundManager();
     DataManager data = new DataManager();
     TodoManager todo = new TodoManager();
+
+    //Monobehavior를 가지고 있는 매니저들
     static FirebaseManager firebase;
     static PlayerManager player;
     static WebManager web;
@@ -47,7 +49,10 @@ public class Managers : MonoBehaviour
 
     private void Update()
     {
+        //입력 체크
         Input.OnUpdate();
+
+        //
         if (!Web.InternetCheck())
         {
             //로딩 씬으로 돌아가기
@@ -91,11 +96,6 @@ public class Managers : MonoBehaviour
             instance.sound.Init();
             instance.todo.Init();
 
-/*
-            if (web.InternetCheck())
-            {
-                Debug.Log("no internet");
-            }*/
         }
     }
 

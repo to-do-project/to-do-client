@@ -50,7 +50,11 @@ public class CameraZoom : MonoBehaviour
 
     void Zoom(Define.TouchEvent evt)
     {
-
+        if (!string.Equals("Edit", Managers.Scene.CurrentSceneName()))
+        {
+            //Debug.Log("Edit scene ≥ª∫Œ¿”");
+            return;
+        }
 
         if (evt == Define.TouchEvent.TwoTouch)
         {

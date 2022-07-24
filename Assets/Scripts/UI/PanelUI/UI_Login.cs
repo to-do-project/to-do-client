@@ -141,6 +141,10 @@ public class UI_Login : UI_Panel
         }
 
         //val.deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier;
+        if (string.IsNullOrWhiteSpace(Managers.Player.GetString(Define.DEVICETOKEN)))
+        {
+            Managers.Player.SetString(Define.DEVICETOKEN, SystemInfo.deviceUniqueIdentifier);
+        }
         val.deviceToken = Managers.Player.GetString(Define.DEVICETOKEN);
 
         //로그인 API 호출
@@ -213,8 +217,9 @@ public class UI_Login : UI_Panel
                     Managers.Player.Init();
                     UI_Load.Instance.InstantLoad("Main");
                     //Managers.Scene.LoadScene(Define.Scene.Main);
+                    Managers.Todo.SendMainGoalRequest(result.userId.ToString());
 
-                    Debug.Log("user id ? "+result.userId.ToString()+" "+PlayerPrefs.GetString(Define.USER_ID));
+                    //Debug.Log("user id ? "+result.userId.ToString()+" "+PlayerPrefs.GetString(Define.USER_ID));
                 }
             }
             else
