@@ -32,20 +32,31 @@ public class UI_FriendGoal : UI_Base
 
         //목표추가 버튼
         //Managers.UI.MakeSubItem<>();
-        Debug.Log("GoalList 호출");
+        //Debug.Log("GoalList 호출");
         innerCallback -= SendGoalListRequest;
         innerCallback += SendGoalListRequest;
 
         Bind<GameObject>(typeof(GameObjects));
         goalParent = Get<GameObject>((int)GameObjects.Content);
 
+
+        Canvas.ForceUpdateCanvases();
+
+        /*        //운영자 미션 생성
+                if (Managers.Player.GetString(Define.MISSION_STATUS) != null)
+                {
+                    Managers.UI.MakeSubItem<UI_SystemMission>("GoalList", goalParent.transform, "SystemMission");
+                }*/
+
         Canvas.ForceUpdateCanvases();
 
         callback -= GoalInit;
         callback += GoalInit;
 
-
         SendGoalListRequest();
+
+        //StartCoroutine(GoalInitiate());
+
         //Managers.Todo.UserTodoInstantiate(callback);
         //GoalInit();
         /*Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList",goalParent.transform, "Ggoal_content");
@@ -79,6 +90,44 @@ public class UI_FriendGoal : UI_Base
         Managers.Web.SendGetRequest("api/goals/main/", userId, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
     }
 
+    private void GoalInit()
+    {
+        Transform[] childList = goalParent.GetComponentsInChildren<Transform>();
+        if (childList != null)
+        {
+            foreach (Transform child in childList)
+            {
+                if (child != goalParent.transform)
+                {
+                    Managers.Resource.Destroy(child.gameObject);
+                }
+            }
+        }
+
+        foreach (ResponseMainTodo item in Managers.Todo.goalList)
+        {
+            if (item.groupFlag)
+            {
+                UI_GgoalFriendContent goal = Managers.UI.MakeSubItem<UI_GgoalFriendContent>("GoalList", goalParent.transform, "Ggoal_FriendContent");
+                /*                    goal.SetGoalName(item.goalTitle);
+                                    goal.SetGoalRate(item.percentage.ToString());*/
+
+                goal.SetGgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.managerFlag);
+                Canvas.ForceUpdateCanvases();
+            }
+            else
+            {
+                UI_PgoalFriendContent goal = Managers.UI.MakeSubItem<UI_PgoalFriendContent>("GoalList", goalParent.transform, "Pgoal_FriendContent");
+                /*                    goal.SetGoalName(item.goalTitle);
+                                    goal.SetGoalRate(item.percentage.ToString());*/
+                goal.SetPgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.openFlag);
+                Canvas.ForceUpdateCanvases();
+            }
+
+
+        }
+    }
+
     private void GoalInit(UnityWebRequest request)
     {
         Debug.Log("목표 띄우기");
@@ -105,16 +154,18 @@ public class UI_FriendGoal : UI_Base
                 {
                     UI_GgoalFriendContent goal = Managers.UI.MakeSubItem<UI_GgoalFriendContent>("GoalList", goalParent.transform, "Ggoal_FriendContent");
                     /*                    goal.SetGoalName(item.goalTitle);
-                                        goal.SetGoalRate(item.percentage.ToString());*/
+                                          goal.SetGoalRate(item.percentage.ToString());*/
 
                     goal.SetGgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.managerFlag);
+                    Canvas.ForceUpdateCanvases();
                 }
                 else
                 {
                     UI_PgoalFriendContent goal = Managers.UI.MakeSubItem<UI_PgoalFriendContent>("GoalList", goalParent.transform, "Pgoal_FriendContent");
                     /*                    goal.SetGoalName(item.goalTitle);
-                                        goal.SetGoalRate(item.percentage.ToString());*/
+                                          goal.SetGoalRate(item.percentage.ToString());*/
                     goal.SetPgoalContent(item.goalTitle, item.percentage.ToString(), item.goalId, item.getTodoMainResList, item.openFlag);
+                    Canvas.ForceUpdateCanvases();
                 }
 
 
@@ -130,5 +181,19 @@ public class UI_FriendGoal : UI_Base
 
 
 
+    }
+
+
+    IEnumerator GoalInitiate()
+    {
+
+
+        while (Managers.Todo.goalList == null)
+        {
+            Debug.Log("아직 로딩안됨");
+            yield return null;
+        }
+
+        GoalInit();
     }
 }
