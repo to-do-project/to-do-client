@@ -231,7 +231,7 @@ public class UIManager
         }
         else
         {
-            //Debug.Log($"Count : {popupStack.Count}");
+            Debug.Log($"Count : {popupStack.Count}");
             //ClosePopupUI();
         }
     }
