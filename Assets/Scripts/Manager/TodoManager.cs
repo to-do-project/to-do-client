@@ -76,10 +76,16 @@ public class TodoManager
         if (res != null)
         {
             res = JsonUtility.FromJson<Response<List<ResponseMainTodo>>>(request.downloadHandler.text);
+            //Debug.Log("res result :"+res.result+" "+res.code+" "+res.message);
 
             if (res.isSuccess)
             {
                 goalList = res.result;
+                if (res.result == null)
+                {
+                    Debug.Log("res result is null");
+                    goalList = new List<ResponseMainTodo>();
+                }
 
                 if (GameObject.Find("GoalList") != null)
                 {
