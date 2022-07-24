@@ -45,6 +45,8 @@ public class UI_FriendUI : UI_PopupMenu
             Debug.Log($"{UIcam.name}");
         }
 
+        Managers.Input.SystemTouchAction = OnFriendBackTouched;
+
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
@@ -123,6 +125,33 @@ public class UI_FriendUI : UI_PopupMenu
                 clicked = false;
             }
         }, hN, hV);
+    }
+
+    void OnFriendBackTouched(Define.SystemEvent evt)
+    {
+        if (evt != Define.SystemEvent.Back)
+        {
+            return;
+        }
+
+        Managers.Input.SystemTouchAction = OnBackTouched;
+
+        FindObjectOfType<UI_FriendMain>().DestroyAll();
+        Managers.UI.ActiveAllUI();
+        Managers.Player.GetPlanet().SetActive(true);
+        Destroy(gameObject);
+    }
+
+    void OnBackTouched(Define.SystemEvent evt)
+    {
+        if (evt != Define.SystemEvent.Back)
+        {
+            return;
+        }
+
+        Managers.UI.CloseAppOrUI();
+        Managers.UI.ActivePanelUI();
+
     }
 
     private void Start()
