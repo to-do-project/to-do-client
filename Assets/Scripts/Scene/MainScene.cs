@@ -58,7 +58,9 @@ public class MainScene : BaseScene
         {
 
             PlayerPrefs.SetInt("FirstStart", 1);
-
+            DateTime date = DateTime.Now;
+            int sum = date.Year * 430 + date.Month * 32 + date.Day;
+            Managers.Player.SetInt(Define.DATETIME, sum);
         }
         else
         {
@@ -157,6 +159,8 @@ public class MainScene : BaseScene
         {
             return;
         }
+
+        Debug.Log("BackTouch");
 
         Managers.UI.CloseAppOrUI();
         Managers.UI.ActivePanelUI();

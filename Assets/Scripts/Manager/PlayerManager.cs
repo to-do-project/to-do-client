@@ -343,6 +343,8 @@ public class PlayerManager : MonoBehaviour
     {
         //Debug.Log("霉锅掳 积己");
         SendSettingPlanetRequest(PlayerPrefs.GetString(Define.USER_ID));
+        Managers.Todo.SendMainGoalRequest(PlayerPrefs.GetString(Define.USER_ID));
+
     }
 
     //青己 积己 

@@ -259,6 +259,7 @@ public class UI_PlanetSet : UI_UserInfo
 
                             Managers.Player.Init();
                             UI_Load.Instance.InstantLoad("Main");
+                            Managers.Clear();
                             //Managers.Scene.LoadScene(Define.Scene.Main);
                         }
 
