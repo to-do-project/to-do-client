@@ -7,5 +7,6 @@ public class UI_Panel : UI_Base
     public override void Init()
     {
         Managers.UI.SetCanvas(gameObject, false);
+        SetCanvasCamera();
     }
 }

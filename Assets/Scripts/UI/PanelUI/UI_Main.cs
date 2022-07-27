@@ -32,20 +32,6 @@ public class UI_Main : UI_Panel
     {
         base.Init();
 
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-
-        if (UIcam != cam)
-        {
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));

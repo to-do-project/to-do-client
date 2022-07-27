@@ -32,18 +32,6 @@ public class UI_Cheer : UI_Popup
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
 
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
 
         Text cheerTxt = GetText((int)Texts.cheer_txt);
         cheerTxt.text = nickname + "님이 아직 to-do를 완료하지 않았습니다.";

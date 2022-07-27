@@ -96,18 +96,6 @@ public class UI_GoalCreate : UI_Popup
 
         memberList = new List<ResponseMemberFind>();
 
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
 
         Bind<InputField>(typeof(InputFields));
         Bind<Text>(typeof(Texts));
