@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+// UI_Goal의 스크립트를 FriendUI에 맞게 수정한 스크립트
+// 불필요한 코드 제거 후 오브젝트 및 스크립트 명만 재작성 된 스크립트
 public class UI_FriendGoal : UI_Base
 {
 

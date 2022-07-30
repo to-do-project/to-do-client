@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class UI_PopupMenu : UI_Popup // Menu에서 많이 사용하는 함수들을 여기에 정리
+// Menu에서 많이 사용하는 함수 통합
+public class UI_PopupMenu : UI_Popup 
 {
     protected UIDataCamera dataContainer; // UICamera를 활용한 바인딩 데이터 저장소
 
