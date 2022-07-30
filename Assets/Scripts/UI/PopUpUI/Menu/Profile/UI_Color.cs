@@ -48,7 +48,6 @@ public class UI_Color : UI_PopupMenu
     Transform checkTransform; // 체크 표시 위치
     GameObject checkImage;    // 체크 표시 이미지
     GameObject curBtn;        // 현재 버튼
-    GameObject nexBtn;        // 선택 버튼
 
     string selectColor;       // 선택된 컬러 이름
 
@@ -61,7 +60,7 @@ public class UI_Color : UI_PopupMenu
         SetBtns();
 
         selectColor = null;
-        curBtn = nexBtn = null;
+        curBtn = null;
 
         Bind<GameObject>(typeof(Images)); // 이미지 바인딩
 
@@ -89,10 +88,13 @@ public class UI_Color : UI_PopupMenu
     {
         Bind<Button>(typeof(Buttons));
 
+        // 뒤로가기 버튼
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
+        // 완료 버튼 || 완료 함수 실행
         SetBtn((int)Buttons.Next_btn, (data) => { ColorChange(); });
 
+        // 프로필 색상 버튼 || ColorBtnClick(p1, p2) p1에 색상 전달
         GameObject btnLR = GetButton((int)Buttons.LightRed_btn).gameObject;
         BindEvent(btnLR, (data) => { ColorBtnClick(Colors.LightRed, btnLR); });
 
@@ -124,26 +126,43 @@ public class UI_Color : UI_PopupMenu
         BindEvent(btnBlack, (data) => { ColorBtnClick(Colors.Black, btnBlack); });
     }
 
+    // 완료 버튼 함수
     void ColorChange()
     {
+        // 웹 통신 헤더
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                         Managers.Player.GetString(Define.USER_ID) };
 
+        // 웹 통신 리퀘스트
         RequestProfileColor request = new RequestProfileColor();
         request.profileColor = selectColor;
 
+        // 프로필 컬러값 변경 웹 통신
         Managers.Web.SendUniRequest("api/user/profile", "PATCH", request, (uwr) => {
+            // Json 응답 데이터를 유니티 데이터로 변환
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+
+            // 응답 성공 시
             if (response.code == 1000)
             {
-                Debug.Log(response.result);
+                // Debug.Log(response.result);
+                
+                // PlayerPrefs의 프로필 색상 값 전환
                 Managers.Player.SetString(Define.PROFILE_COLOR, selectColor);
+                // 활성화 되어있는 MenuView, ProfileView의 프로필 색상 변경 및 창 닫기
                 menu.ChangeColor(selectColor);
                 profile.ChangeColor(selectColor);
                 Managers.UI.ClosePopupUI();
             }
+            // 토큰 재발급 오류 시
+            else if (response.code == 6000)
+            {
+                // 토큰 재발급
+                Managers.Player.SendTokenRequest(ColorChange);
+            }
+            // 응답 실패 시
             else
             {
                 Debug.Log(response.message);
@@ -151,23 +170,32 @@ public class UI_Color : UI_PopupMenu
         }, hN, hV);
     }
 
+    // 프로필 색상 선택 버튼 이벤트 함수
+    // color = 색상 값
+    // target = 클릭된 오브젝트
     void ColorBtnClick(Colors color, GameObject target)
     {
-        // 버튼의 color정보 전달 및 버튼 크기 변경
+        // 선택된 컬러값 string으로 저장
         selectColor = color.ToString();
+
+        // 체크 이미지 활성화
         if(checkImage.activeSelf == false)
         {
             checkImage.SetActive(true);
         }
-        nexBtn = target;
+
+        // 이전에 선택되었던 버튼의 크기 조정
         if(curBtn != null)
         {
             curBtn.transform.localScale = new Vector3(1f, 1f, 1f);
         }
-        curBtn = nexBtn;
+
+        // 현재 버튼 크기 조정 및 체크 이미지 위치 조정
+        curBtn = target;
         curBtn.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
         checkTransform.position = curBtn.transform.position;
 
+        // 사운드 재생
         Managers.Sound.PlayNormalButtonClickSound();
     }
 

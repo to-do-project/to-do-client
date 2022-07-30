@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+// 닉네임 변경 UI의 스크립트
 public class UI_NickChange : UI_PopupMenu
 {
-
+    // 바인딩 할 자식 오브젝트 이름들
     enum Buttons
     {
         Back_btn,
@@ -23,15 +24,19 @@ public class UI_NickChange : UI_PopupMenu
     {
         Enable_txt,
     }
+    // ================================ //
 
+    // 부모 스크립트(프로필, 메뉴)
     UI_Profile profile;
     UI_Menu menu;
+    // 완료 버튼
     GameObject nextBtn;
-    Text Ntxt;
-    InputField Ninput;
+    Text Ntxt; // 입력 오류 알림 텍스트
+    InputField Ninput; // 닉네임 입력 필드
 
-    string nickname;
+    string nickname; // 닉네임
 
+    // 초기화
     public override void Init()
     {
         base.Init();
@@ -52,50 +57,66 @@ public class UI_NickChange : UI_PopupMenu
         menu = FindObjectOfType<UI_Menu>();
     }
 
-    private void SetBtns()
+    // 버튼 이벤트 설정
+    void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
+        // 완료 버튼
         nextBtn = GetButton((int)Buttons.Next_btn).gameObject;
 
+        // 뒤로가기 버튼
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
 
+        // 닉네임 중복 확인 버튼
         SetBtn((int)Buttons.NickCheck_btn, (data) => {
             IsVaildNickname();
         });
     }
 
+    // 완료 버튼 클릭 이벤트
     public void NextBtnClick(PointerEventData data)
     {
+        // 버튼음 재생 및 웹 통신
         Managers.Sound.PlayNormalButtonClickSound();
         ExNickChange();
     }
 
+    // 닉네임 변경 웹 통신
     void ExNickChange()
     {
+        // 웹 통신 헤더 값
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                         Managers.Player.GetString(Define.USER_ID) };
 
+        // 웹 통신 request 값
         RequestNickChange request = new RequestNickChange();
         request.nickname = nickname;
 
+        // 닉네임 변경 웹 통신
         Managers.Web.SendUniRequest("api/user/nickname", "PATCH", request, (uwr) => {
+            // 웹 응답 json 데이터를 유니티 데이터로 전환
             Response<string> response = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+
+            // 웹 통신 성공 시
             if (response.code == 1000)
             {
-                Debug.Log(response.result);
+                // Debug.Log(response.result);
+                // 닉네임 변경
                 Managers.Player.SetString(Define.NICKNAME, nickname);
                 menu.ChangeNickname(nickname);
                 profile.ChangeNickname(nickname);
                 ClosePopupUI();
             }
+            // 코드 오류 시
             else if(response.code == 6000)
             {
                 Debug.Log(response.message);
                 Managers.Player.SendTokenRequest(ExNickChange);
             }
+            // 기타 오류 시
             else
             {
                 Debug.Log(response.message);
@@ -103,7 +124,8 @@ public class UI_NickChange : UI_PopupMenu
         }, hN, hV);
     }
 
-    private void IsVaildNickname()
+    // 닉네임 검증
+    void IsVaildNickname()
     {
         nickname = Ninput.text; 
         Managers.Sound.PlayNormalButtonClickSound();

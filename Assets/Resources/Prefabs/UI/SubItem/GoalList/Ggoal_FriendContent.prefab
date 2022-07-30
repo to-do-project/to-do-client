@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 5166697685728922150}
   - component: {fileID: 5166697685728922151}
   - component: {fileID: 3302136924391452531}
+  - component: {fileID: 5630780817358896701}
   m_Layer: 5
   m_Name: Goal
   m_TagString: Untagged
@@ -293,6 +294,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5630780817358896701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5166697685728922149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f727b5a1ed006147b9a5ead70486d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5166697686507173652
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +520,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 656, y: 0}
   m_SizeDelta: {x: 1312, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1620585709853288797

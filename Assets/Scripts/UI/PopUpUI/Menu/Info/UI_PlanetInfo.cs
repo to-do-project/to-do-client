@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 행성 정보 UI에 사용되는 스크립트
 public class UI_PlanetInfo : UI_PopupMenu
 {
+    // 바인딩 할 자식 오브젝트 이름들
     enum Buttons
     {
         Back_btn,
@@ -26,11 +28,15 @@ public class UI_PlanetInfo : UI_PopupMenu
         GetGood_txt,
         GiveGood_txt,
     }
+    // ================================ //
 
+    // 텍스트 오브젝트
     Text planetNameTxt, levelTitleTxt, ageTxt, levelTxt, pointTxt,
          avgPlanCompleteTxt, getGoodTxt, giveGoodTxt;
+    // 행성 이미지
     Image planet;
 
+    // 초기화
     public override void Init()
     {
         base.Init();
@@ -58,18 +64,25 @@ public class UI_PlanetInfo : UI_PopupMenu
         InitData();
     }
 
+    // 웹 통신 이후 데이터 초기화
     void InitData()
     {
+        // 웹 통신 헤더 값 
         string[] hN = { Define.JWT_ACCESS_TOKEN,
                         "User-Id" };
         string[] hV = { Managers.Player.GetString(Define.JWT_ACCESS_TOKEN),
                         Managers.Player.GetString(Define.USER_ID) };
 
+        // 행성 정보 웹 통신
         Managers.Web.SendUniRequest("api/planet/my-info", "GET", null, (uwr) => {
+            // 웹 응답 json 데이터를 유니티 데이터로 전환
             Response<ResponsePlanetInfo> response = JsonUtility.FromJson<Response<ResponsePlanetInfo>>(uwr.downloadHandler.text);
+
+            // 웹 통신 성공 시
             if (response.code == 1000)
             {
-                Debug.Log(response.result);
+                // Debug.Log(response.result);
+                // 응답 데이터 저장
                 Managers.Player.SetInt(Define.LEVEL, response.result.level);
                 Managers.Player.SetInt(Define.AGE, (int)response.result.age);
                 Managers.Player.SetInt(Define.POINT, response.result.point);
@@ -79,11 +92,13 @@ public class UI_PlanetInfo : UI_PopupMenu
 
                 SetTexts();
             }
+            // 토큰 오류 시
             else if(response.code == 6000)
             {
                 Debug.Log(response.message);
                 Managers.Player.SendTokenRequest(InitData);
             }
+            // 기타 오류 시
             else
             {
                 Debug.Log(response.message);
@@ -91,7 +106,8 @@ public class UI_PlanetInfo : UI_PopupMenu
         }, hN, hV);
     }
 
-    private void SetTexts()
+    // 텍스트 초기화
+    void SetTexts()
     {
         if(PlayerPrefs.HasKey(Define.NICKNAME))
         {
@@ -130,14 +146,16 @@ public class UI_PlanetInfo : UI_PopupMenu
         }
     }
 
-    private void SetBtns()
+    // 버튼 이벤트 설정
+    void SetBtns()
     {
         Bind<Button>(typeof(Buttons));
 
+        // 뒤로가기 버튼
         SetBtn((int)Buttons.Back_btn, ClosePopupUI);
     }
 
-    private void Start()
+    void Start()
     {
         Init();
     }
