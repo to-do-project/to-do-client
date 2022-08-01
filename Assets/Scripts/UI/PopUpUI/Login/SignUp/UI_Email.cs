@@ -211,21 +211,4 @@ public class UI_Email : UI_SignUp
         }
     }
 
-    private bool IsValidEmail(string email)
-    {
-        //공란인지
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            return false;
-        }
-        try
-        {
-            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                    RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch(RegexMatchTimeoutException)
-        {
-            return false;
-        }
-    }
 }

@@ -204,7 +204,8 @@ public class UI_GoalCreate : UI_Popup
         val = new RequestGoalCreate();
 
         InputField goalNameInputfield = GetInputfiled((int)InputFields.todoName_inputfield);
-        if (IsValidTitle(goalNameInputfield.text))
+        //if (IsValidTitle(goalNameInputfield.text))
+        if(Util.IsValidString(goalNameInputfield.text, @"^.{0,20}$"))
         {
             val.title = goalNameInputfield.text;
             
@@ -256,7 +257,8 @@ public class UI_GoalCreate : UI_Popup
 
 
 
-        if (isValidNickname(name))
+        //if (isValidNickname(name))
+        if(Util.IsValidString(name, @"^[A-Za-z0-9§°-§æ∞°-∆R]{1,8}$"))
         {
             Managers.Web.SendGetRequest("api/goals/users?nickname=",name,(uwr)=> { 
                 Response<List<ResponseMemberFind>> res = JsonUtility.FromJson<Response<List<ResponseMemberFind>>>(uwr.downloadHandler.text);
@@ -290,6 +292,10 @@ public class UI_GoalCreate : UI_Popup
                 }
 
             }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue()) ;
+        }
+        else
+        {
+            showToastMessage(toastMessage, toast, "ø√πŸ∏• ¥–≥◊¿”¿Ã æ∆¥’¥œ¥Ÿ.",1.2f);
         }
         
         
@@ -333,41 +339,6 @@ public class UI_GoalCreate : UI_Popup
 
 
     }
-
-    private bool IsValidTitle(string title)
-    {
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            return false;
-        }
-        try
-        {
-            return Regex.IsMatch(title, @"^.{0,20}$",
-                RegexOptions.None,TimeSpan.FromMilliseconds(250));
-        }
-        catch(RegexMatchTimeoutException)
-        {
-            return false;
-        }
-    }
-
-    private bool isValidNickname(string nickname)
-    {
-        if (string.IsNullOrWhiteSpace(nickname))
-        {
-            return false;
-        }
-        try
-        {
-            return Regex.IsMatch(nickname, @"^.{0,8}$",
-                RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch (RegexMatchTimeoutException)
-        {
-            return false;
-        }
-    }
-
 
 
     public void AddfriendList(ResponseMemberFind val)

@@ -204,7 +204,8 @@ public class UI_GoalModify : UI_Popup
         val.goalId = goalId;
 
         //InputField goalNameInputfield = GetInputfiled((int)InputFields.todoName_inputfield);
-        if (IsValidTitle(goalNameInputfield.text))
+        //if (IsValidTitle(goalNameInputfield.text))
+        if(Util.IsValidString(goalNameInputfield.text, @"^.{0,20}$"))
         {
             val.title = goalNameInputfield.text;
         }
@@ -264,23 +265,6 @@ public class UI_GoalModify : UI_Popup
         }
     }
 
-
-    private bool IsValidTitle(string title)
-    {
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            return false;
-        }
-        try
-        {
-            return Regex.IsMatch(title, @"^.{0,20}$",
-                RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch (RegexMatchTimeoutException)
-        {
-            return false;
-        }
-    }
 
     private void showToastMessage(string msg, float time)
     {

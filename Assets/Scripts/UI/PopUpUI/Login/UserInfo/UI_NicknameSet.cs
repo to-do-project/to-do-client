@@ -70,7 +70,8 @@ public class UI_NicknameSet : UI_UserInfo
     {
         Managers.Sound.PlayNormalButtonClickSound();
 
-        if (IsVaildNickname(Ninput.text))
+        //if (IsVaildNickname(Ninput.text))
+        if(Util.IsValidString(Ninput.text, @"^[A-Za-z0-9¤¡-¤¾°¡-ÆR]{1,8}$"))
         {
             Debug.Log("valid");
             res = new Response<string>();
@@ -136,23 +137,6 @@ public class UI_NicknameSet : UI_UserInfo
         }
     }
 
-    private bool IsVaildNickname(string nickname)
-    {
-        if (string.IsNullOrWhiteSpace(nickname))
-        {
-            return false;
-        }
-
-        try
-        {
-            return Regex.IsMatch(nickname, @"^[A-Za-z0-9¤¡-¤¾°¡-ÆR]{1,8}$",
-                RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch (RegexMatchTimeoutException)
-        {
-            return false;
-        }
-    }
 
     private void NextBtnClick(PointerEventData data)
     {

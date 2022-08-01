@@ -85,7 +85,8 @@ public class UI_AddTodo : UI_Base
     private void InfoGather()
     {
 
-        if (isValidTodo(todoName.text))
+        //if (isValidTodo(todoName.text))
+        if(Util.IsValidString(todoName.text, @"^.{0,50}$"))
         {
             val = new RequestTodoCreate();
             val.goalId = goalId;
@@ -95,23 +96,6 @@ public class UI_AddTodo : UI_Base
             //상세할일 추가
             Managers.Web.SendPostRequest<RequestTodoCreate>("api/todo", val, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
 
-        }
-    }
-
-    private bool isValidTodo(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-        {
-            return false;
-        } 
-        try
-        {
-            return Regex.IsMatch(text, @"^.{0,50}$",
-                RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch (RegexMatchTimeoutException)
-        {
-            return false;
         }
     }
 

@@ -17,6 +17,7 @@ public class CharacterController : MonoBehaviour
     }
 
     GameObject[] faces = new GameObject[5];
+    AnimationController animController;
 
     void Start()
     {
@@ -27,6 +28,7 @@ public class CharacterController : MonoBehaviour
     {
 
         Bind();
+        animController = Util.GetOrAddComponent<AnimationController>(gameObject);
 
     }
 
@@ -42,6 +44,12 @@ public class CharacterController : MonoBehaviour
     }
 
 
+    private void OnMouseDown()
+    {
+        Debug.Log("Mouse donw on character");
+        animController.PlayJump();
+    }
+
     public void ChangeFace() 
     {
     
@@ -52,4 +60,6 @@ public class CharacterController : MonoBehaviour
     {
 
     }
+
+    
 }
