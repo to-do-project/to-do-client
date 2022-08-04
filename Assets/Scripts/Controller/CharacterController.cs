@@ -50,9 +50,25 @@ public class CharacterController : MonoBehaviour
         animController.PlayJump();
     }
 
-    public void ChangeFace() 
+    public void ChangeFace(int prePercent) 
     {
-    
+        if (prePercent >= 90)
+        {
+
+        }
+        else if (prePercent >=41 && prePercent <=89)
+        {
+
+        }
+        else if(prePercent <= 40 && prePercent!=0)
+        {
+
+        }
+        else if (prePercent == 0)
+        {
+
+        }
+
     }
 
     //가출하기

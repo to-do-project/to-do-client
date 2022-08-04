@@ -20,6 +20,8 @@ public class ResponseMainPlanet
     public long userId;
     public string planetColor;
     public int level;
+    public int prePercent;
+    public bool isRunAway;
     public long characterItem;
     public List<MainItemList> planetItemList;
 }
@@ -74,7 +76,7 @@ public class PlayerManager : MonoBehaviour
     string[] header = new string[2];
     string[] headerValue = new string[2];
 
-    bool isFirst;
+    int prePercent;
 
     public Action<bool> UIaction; //편집화면에서 UI 움직임에 사용
 
@@ -124,7 +126,12 @@ public class PlayerManager : MonoBehaviour
                     //행성, 아이템, 캐릭터 생성
                     PlanetInstantiate(Mainres.result.planetColor, Mainres.result.level);
                     placedItemList = Mainres.result.planetItemList;
-                    CharacterInstantiate(Mainres.result.characterItem);
+
+                    if (!Mainres.result.isRunAway)
+                    {
+                        prePercent = Mainres.result.prePercent;
+                        CharacterInstantiate(Mainres.result.characterItem);
+                    }
                     ItemInstantiate();
                 }
             }
