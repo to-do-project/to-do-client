@@ -63,21 +63,10 @@ public class UI_Login : UI_Panel
     public override void Init()
     {
         base.Init();
+
         Managers.UI.CloseAllPopupUI();
         Managers.FireBase.GetToken();
 
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
 
         Bind<Button>(typeof(Buttons));
         Bind<InputField>(typeof(InputFields));

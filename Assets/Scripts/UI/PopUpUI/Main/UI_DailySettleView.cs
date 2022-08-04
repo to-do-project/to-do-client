@@ -28,20 +28,6 @@ public class UI_DailySettleView : UI_Popup
     {
         base.Init();
 
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-
-        if (UIcam != cam)
-        {
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
-
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
 

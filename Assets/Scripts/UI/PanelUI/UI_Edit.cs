@@ -73,19 +73,6 @@ public class UI_Edit : UI_Panel
         innerCallback -= SendInvenListRequest;
         innerCallback += SendInvenListRequest;
 
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-
-        if (UIcam != cam)
-        {
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
 
         edit = FindObjectOfType<EditScene>();
 

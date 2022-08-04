@@ -58,6 +58,47 @@ public abstract class UI_Base : MonoBehaviour
     protected Image GetImage(int idx) { return Get<Image>(idx); }
     protected GameObject getObject(int idx) { return Get<GameObject>(idx); }
 
+
+    protected void SetCanvasCamera()
+    {
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Camera UIcam = canvas.worldCamera;
+        Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+
+        if ((UIcam == null) || (UIcam != cam))
+        {
+            canvas.worldCamera = cam;
+        }
+
+        /*        Canvas canvas = GetComponent<Canvas>();
+                canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                Camera UIcam = canvas.worldCamera;
+                if (UIcam == null)
+                {
+                    Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+                    canvas.worldCamera = cam;
+                }
+                else if(UIcam != cam)
+                {
+                    Debug.Log($"{UIcam.name}");
+                }*/
+
+        /*        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Camera UIcam = canvas.worldCamera;
+        Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+
+        if (UIcam != cam)
+        {
+            canvas.worldCamera = cam;
+        }
+        else
+        {
+            Debug.Log($"{UIcam.name}");
+        }*/
+    }
+
     //이벤트 핸들러에 이벤트 구독
     //UI이벤트 타입에 따라
     //이벤트 핸들러를 UI에 붙이고, 실행할 함수를 구독시켜줌

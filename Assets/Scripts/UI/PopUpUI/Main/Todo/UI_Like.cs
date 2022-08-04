@@ -42,18 +42,6 @@ public class UI_Like : UI_Popup
     {
         base.Init();
 
-        Canvas canvas = GetComponent<Canvas>();
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Text>(typeof(Texts));

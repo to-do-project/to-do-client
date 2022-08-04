@@ -57,7 +57,8 @@ public class UI_Find : UI_PWfind
     private void SendEmailBtnClick(PointerEventData data)
     {
         Managers.Sound.PlayNormalButtonClickSound();
-        if (IsValidEmail(idInputfield.text))
+        //if (IsValidEmail(idInputfield.text))
+        if(Util.IsValidString(idInputfield.text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
         {
             //send email API 호출
             res = new Response<string>();
@@ -67,24 +68,6 @@ public class UI_Find : UI_PWfind
             Managers.UI.ShowPopupUI<UI_PWAuth>("AuthView", "PWfind");
         }
         
-    }
-
-    private bool IsValidEmail(string email)
-    {
-        //공란인지
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            return false;
-        }
-        try
-        {
-            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                    RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch (RegexMatchTimeoutException)
-        {
-            return false;
-        }
     }
 
     private void ResponseAction(UnityWebRequest request)

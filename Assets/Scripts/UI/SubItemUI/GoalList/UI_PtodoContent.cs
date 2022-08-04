@@ -163,7 +163,8 @@ public class UI_PtodoContent : UI_Base
 
     private void SendTodoModifyRequest()
     {
-        if (IsValidTitle(todoInputfield.text))
+       //if (IsValidTitle(todoInputfield.text))
+        if(Util.IsValidString(todoInputfield.text, @"^.{0,50}$"))
         {
 
             RequestTodoModify val = new RequestTodoModify();
@@ -227,23 +228,6 @@ public class UI_PtodoContent : UI_Base
 
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
-    }
-
-    private bool IsValidTitle(string title)
-    {
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            return false;
-        }
-        try
-        {
-            return Regex.IsMatch(title, @"^.{0,50}$",
-                RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch (RegexMatchTimeoutException)
-        {
-            return false;
-        }
     }
 
     public void ClearUI()

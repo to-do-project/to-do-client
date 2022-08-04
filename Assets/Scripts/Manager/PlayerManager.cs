@@ -20,6 +20,8 @@ public class ResponseMainPlanet
     public long userId;
     public string planetColor;
     public int level;
+    public int prePercent;
+    public bool isRunAway;
     public long characterItem;
     public List<MainItemList> planetItemList;
 }
@@ -74,7 +76,7 @@ public class PlayerManager : MonoBehaviour
     string[] header = new string[2];
     string[] headerValue = new string[2];
 
-    bool isFirst;
+    int prePercent;
 
     public Action<bool> UIaction; //편집화면에서 UI 움직임에 사용
 
@@ -104,52 +106,6 @@ public class PlayerManager : MonoBehaviour
         innerArrageCallback -= SendArrangementRequest;
         innerArrageCallback += SendArrangementRequest;
 
-        //토큰 확인 & 재발급 (자동로그인 상태)
-        /*if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
-        {
-            RequestToken val = new RequestToken { deviceToken = UnityEngine.SystemInfo.deviceUniqueIdentifier }; //디바이스 토큰 수정 필요
-            header[0] = Define.JWT_REFRESH_TOKEN;
-            header[1] = "User-Id";
-
-            //Debug.Log("user id is : " + PlayerPrefs.GetString(Define.USER_ID));
-            headerValue[0] = PlayerPrefs.GetString(Define.JWT_REFRESH_TOKEN);
-            headerValue[1] = PlayerPrefs.GetString(Define.USER_ID);
-
-            Managers.Web.SendPostRequest<RequestToken>("access-token", val,(uwr)=> {
-
-                Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
-
-                if (res.isSuccess)
-                {
-                    UI_Load.Instance.InstantLoad("Main");
-                    //UI_Load.Instance.ToLoad(Define.Scene.Main.ToString());
-                    
-                }
-                else
-                {
-                    if (res.code == 6023)
-                    {
-                        Managers.UI.Clear();
-                        PlayerPrefs.DeleteKey(Define.JWT_ACCESS_TOKEN);
-                        PlayerPrefs.DeleteKey(Define.JWT_REFRESH_TOKEN);
-                        Managers.Scene.LoadScene(Define.Scene.Login);
-                    }
-                }
-
-                ///FirstInstantiate();
-
-            }, header, headerValue);
-            //Managers.Scene.LoadScene(Define.Scene.Main);
-            //SendTokenRequest(null);
-
-
-        }
-        else
-        {
-            Debug.Log("No token");
-            //토큰 없으면
-        }*/
-
 
     }
 
@@ -170,7 +126,12 @@ public class PlayerManager : MonoBehaviour
                     //행성, 아이템, 캐릭터 생성
                     PlanetInstantiate(Mainres.result.planetColor, Mainres.result.level);
                     placedItemList = Mainres.result.planetItemList;
-                    CharacterInstantiate(Mainres.result.characterItem);
+
+                    if (!Mainres.result.isRunAway)
+                    {
+                        prePercent = Mainres.result.prePercent;
+                        CharacterInstantiate(Mainres.result.characterItem);
+                    }
                     ItemInstantiate();
                 }
             }

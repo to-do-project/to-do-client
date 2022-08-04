@@ -72,18 +72,6 @@ public class UI_GoalModify : UI_Popup
     {
         base.Init();
 
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera UIcam = canvas.worldCamera;
-        if (UIcam == null)
-        {
-            Camera cam = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-            canvas.worldCamera = cam;
-        }
-        else
-        {
-            Debug.Log($"{UIcam.name}");
-        }
 
         innerAction -= InfoGather;
         innerAction += InfoGather;
@@ -216,7 +204,8 @@ public class UI_GoalModify : UI_Popup
         val.goalId = goalId;
 
         //InputField goalNameInputfield = GetInputfiled((int)InputFields.todoName_inputfield);
-        if (IsValidTitle(goalNameInputfield.text))
+        //if (IsValidTitle(goalNameInputfield.text))
+        if(Util.IsValidString(goalNameInputfield.text, @"^.{0,20}$"))
         {
             val.title = goalNameInputfield.text;
         }
@@ -276,23 +265,6 @@ public class UI_GoalModify : UI_Popup
         }
     }
 
-
-    private bool IsValidTitle(string title)
-    {
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            return false;
-        }
-        try
-        {
-            return Regex.IsMatch(title, @"^.{0,20}$",
-                RegexOptions.None, TimeSpan.FromMilliseconds(250));
-        }
-        catch (RegexMatchTimeoutException)
-        {
-            return false;
-        }
-    }
 
     private void showToastMessage(string msg, float time)
     {
