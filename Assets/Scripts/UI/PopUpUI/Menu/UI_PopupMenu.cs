@@ -29,7 +29,7 @@ public class UI_PopupMenu : UI_Popup
         }
         else
         {
-            Debug.Log($"{UIcam.name}");
+            dataContainer = UIcam.gameObject.GetComponent<UIDataCamera>();            // UICamera에 있는 데이터 컨테이너 연결
         }
     }
 
