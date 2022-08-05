@@ -55,13 +55,6 @@ public class UI_GoalList : UI_Base
 
         StartCoroutine(GoalInitiate());
 
-        //SendGoalListRequest();
-        //Managers.Todo.UserTodoInstantiate(callback);
-        //GoalInit();
-        /*Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList",goalParent.transform, "Ggoal_content");
-        Managers.UI.MakeSubItem<UI_PgoalContent>("GoalList",goalParent.transform, "Pgoal_content");
-        Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn");
-*/
     }
 
     void Start()

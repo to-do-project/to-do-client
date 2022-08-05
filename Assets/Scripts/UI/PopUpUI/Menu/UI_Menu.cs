@@ -67,7 +67,7 @@ public class UI_Menu : UI_PopupMenu
         ChangeCcount();
 
         // 메인 UI가 겹치는 것을 방지
-        Managers.UI.DeactivePanelUI();
+        //Managers.UI.DeactivePanelUI();
     }
 
     // 버튼 이벤트 설정
