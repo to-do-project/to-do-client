@@ -22,6 +22,8 @@ public class UI_GoalList : UI_Base
     public Action<UnityWebRequest> callback;
     Action innerCallback;
 
+    bool firstInitiate = false;
+
     public override void Init()
     {
         //API 호출해서 목표 정보 받아옴
@@ -55,18 +57,21 @@ public class UI_GoalList : UI_Base
 
         StartCoroutine(GoalInitiate());
 
-        //SendGoalListRequest();
-        //Managers.Todo.UserTodoInstantiate(callback);
-        //GoalInit();
-        /*Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList",goalParent.transform, "Ggoal_content");
-        Managers.UI.MakeSubItem<UI_PgoalContent>("GoalList",goalParent.transform, "Pgoal_content");
-        Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn");
-*/
+        firstInitiate = true;
     }
 
     void Start()
     {
         Init();
+    }
+
+    private void OnEnable()
+    {
+        //제일 처음 켰을 때 제외하고 모든 경우에 enable되면 갱신
+        if (firstInitiate)
+        {
+            StartCoroutine(GoalInitiate());
+        }
     }
 
     void SendGoalListRequest()
@@ -76,6 +81,7 @@ public class UI_GoalList : UI_Base
 
     private void GoalInit()
     {
+
         Transform[] childList = goalParent.GetComponentsInChildren<Transform>();
         if (childList != null)
         {

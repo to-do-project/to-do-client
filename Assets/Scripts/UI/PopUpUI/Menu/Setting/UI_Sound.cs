@@ -128,6 +128,9 @@ public class UI_Sound : UI_PopupMenu
                 Debug.Log(response.message);
             }
             clicked = false;
+
+            Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+
         }, hN, hV);
     }
     public void BgmBtnClick(PointerEventData data)

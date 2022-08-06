@@ -62,6 +62,8 @@ public class UI_Edit : UI_Panel
     List<InventroyList> invenList;
     Text invenCountTxt;
 
+    GameObject editDoneBtn, editCancleBtn;
+
     public override void Init()
     {
         base.Init();
@@ -86,8 +88,8 @@ public class UI_Edit : UI_Panel
 
         invenCountTxt = GetText((int)Texts.invenCount_txt);
 
-        GameObject editDoneBtn = GetButton((int)Buttons.editDone_btn).gameObject;
-        GameObject editCancleBtn = GetButton((int)Buttons.editCancle_btn).gameObject;
+        editDoneBtn = GetButton((int)Buttons.editDone_btn).gameObject;
+        editCancleBtn = GetButton((int)Buttons.editCancle_btn).gameObject;
 
         Toggle plant = Get<Toggle>((int)Toggles.plant_toggle);
         Toggle rock = Get<Toggle>((int)Toggles.rock_toggle);
@@ -139,6 +141,8 @@ public class UI_Edit : UI_Panel
             }
         });
 
+        editDoneBtn.SetActive(false);
+        editCancleBtn.SetActive(false);
 
         BindEvent(editCancleBtn, EditCancleBtnClick, Define.TouchEvent.Touch);
         BindEvent(editDoneBtn, EditDoneBtnClick, Define.TouchEvent.Touch);
@@ -184,6 +188,8 @@ public class UI_Edit : UI_Panel
             {
                 if (res.code == 1000)
                 {
+                    editDoneBtn.SetActive(true);
+                    editCancleBtn.SetActive(true);
 
                     invenCountTxt.text = res.result.totalInventoryItemCount.ToString() + "/" + "100";
                     invenList = res.result.inventoryList;
