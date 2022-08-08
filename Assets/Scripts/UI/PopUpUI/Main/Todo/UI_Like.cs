@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -42,6 +43,7 @@ public class UI_Like : UI_Popup
     {
         base.Init();
 
+        Managers.UI.DeactivePanelUI();
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Text>(typeof(Texts));
@@ -58,6 +60,13 @@ public class UI_Like : UI_Popup
     {
         Init();
     }
+
+    public override void ClosePopupUI(PointerEventData data)
+    {
+        base.ClosePopupUI();
+        Managers.UI.ActivePanelUI();
+    }
+
 
     public void Setting(string todoMemberId)
     {

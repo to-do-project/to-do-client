@@ -138,7 +138,7 @@ public class UI_PW : UI_SignUp
                 
 
                 Managers.UI.ShowPopupUI<UI_NicknameSet>("NicknameView", "UserInfo");
-                Managers.UI.CLoseExceptLastPopupUI();
+                //Managers.UI.CLoseExceptLastPopupUI();
 
             }
         }

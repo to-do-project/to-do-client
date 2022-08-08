@@ -96,6 +96,7 @@ public class UI_GroupGoalCreater : UI_Popup
     {
         base.Init();
 
+        Managers.UI.DeactivePanelUI();
 
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
@@ -140,6 +141,12 @@ public class UI_GroupGoalCreater : UI_Popup
         toastMessage = Get<GameObject>((int)GameObjects.ToastMessage);
         toastMessage.SetActive(false);
 
+    }
+
+    public override void ClosePopupUI(PointerEventData data)
+    {
+        base.ClosePopupUI();
+        Managers.UI.ActivePanelUI();
     }
 
     private void CancleBtnClick(PointerEventData data)

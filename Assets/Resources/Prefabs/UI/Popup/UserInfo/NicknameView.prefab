@@ -642,7 +642,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 20
+  m_CharacterLimit: 8
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -856,7 +856,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: " 8\uAE00\uC790 \uC774\uB0B4\uB85C \uC785\uB825\uD574\uC8FC\uC138\uC694.
+    (\uD2B9\uC218\uBB38\uC790, \uB744\uC5B4\uC4F0\uAE30 \uBD88\uAC00)"
 --- !u!1 &2615404621070558762
 GameObject:
   m_ObjectHideFlags: 0
