@@ -55,6 +55,8 @@ public class UI_GoalList : UI_Base
         callback -= GoalInit;
         callback += GoalInit;
 
+        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
+
         StartCoroutine(GoalInitiate());
 
         firstInitiate = true;
@@ -116,7 +118,6 @@ public class UI_GoalList : UI_Base
 
 
         }
-        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
         goalAddbtn.transform.SetAsLastSibling();
     }
 
@@ -162,7 +163,6 @@ public class UI_GoalList : UI_Base
 
                 
             }
-            goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
             goalAddbtn.transform.SetAsLastSibling();
         }
         else
@@ -171,6 +171,7 @@ public class UI_GoalList : UI_Base
             {
                 Managers.Player.SendTokenRequest(innerCallback);
             }
+            goalAddbtn.transform.SetAsLastSibling();
         }
 
 
@@ -180,14 +181,26 @@ public class UI_GoalList : UI_Base
 
     IEnumerator GoalInitiate()
     {
-
+        float timer = 0.0f;
+        float delaytTime = 5.0f;
+        bool isFailed = false;
 
         while (Managers.Todo.goalList == null)
         {
             Debug.Log("아직 로딩안됨");
+            timer += Time.deltaTime;
+            if (timer > delaytTime)
+            {
+                isFailed = true;
+                break;
+            }
             yield return null;
         }
 
-        GoalInit();
+        if (!isFailed)
+        {
+            GoalInit();
+        }
+
     }
 }

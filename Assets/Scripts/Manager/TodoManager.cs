@@ -76,7 +76,7 @@ public class TodoManager
         if (res != null)
         {
             res = JsonUtility.FromJson<Response<List<ResponseMainTodo>>>(request.downloadHandler.text);
-            //Debug.Log("res result :"+res.result+" "+res.code+" "+res.message);
+            Debug.Log("res result :"+res.result+" "+res.code+" "+res.message);
 
             if (res.isSuccess)
             {
