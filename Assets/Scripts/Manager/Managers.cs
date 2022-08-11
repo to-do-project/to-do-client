@@ -90,6 +90,7 @@ public class Managers : MonoBehaviour
             web = go.AddComponent<WebManager>();
             player = go.AddComponent<PlayerManager>();
             firebase = go.AddComponent<FirebaseManager>();
+            //DebugToScreen debug = go.AddComponent<DebugToScreen>();
 
             //다른 매니저들 Init도 여기서 해주기
             instance.data.Init();

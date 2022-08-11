@@ -55,8 +55,6 @@ public class UI_GoalList : UI_Base
         callback -= GoalInit;
         callback += GoalInit;
 
-        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
-
         StartCoroutine(GoalInitiate());
 
         firstInitiate = true;
@@ -118,7 +116,7 @@ public class UI_GoalList : UI_Base
 
 
         }
-        goalAddbtn.transform.SetAsLastSibling();
+        CreateGoalAddBtn();
     }
 
     private void GoalInit(UnityWebRequest request)
@@ -163,7 +161,9 @@ public class UI_GoalList : UI_Base
 
                 
             }
-            goalAddbtn.transform.SetAsLastSibling();
+
+            CreateGoalAddBtn();
+
         }
         else
         {
@@ -171,18 +171,24 @@ public class UI_GoalList : UI_Base
             {
                 Managers.Player.SendTokenRequest(innerCallback);
             }
-            goalAddbtn.transform.SetAsLastSibling();
+
         }
 
 
 
     }
 
+    private void CreateGoalAddBtn()
+    {
+        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
+        goalAddbtn.transform.SetAsLastSibling();
+    }
+
 
     IEnumerator GoalInitiate()
     {
         float timer = 0.0f;
-        float delaytTime = 5.0f;
+        float delaytTime = 4.0f;
         bool isFailed = false;
 
         while (Managers.Todo.goalList == null)
@@ -200,6 +206,10 @@ public class UI_GoalList : UI_Base
         if (!isFailed)
         {
             GoalInit();
+        }
+        else
+        {
+            CreateGoalAddBtn();
         }
 
     }
