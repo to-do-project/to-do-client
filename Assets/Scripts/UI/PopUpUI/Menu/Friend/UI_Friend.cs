@@ -241,15 +241,26 @@ public class UI_Friend : UI_PopupMenu
             // 웹 통신 성공 시
             if (response.isSuccess)
             {
-                // Debug.Log(uwr.downloadHandler.text);
-                // 친구 요청 팝업 생성 및 팝업 초기화
-                var friend = Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
-                friend.id = (int)response.result.userId;
-                friend.SetLevel(response.result.planetLevel);
-                friend.SetImage(response.result.profileColor);
+                // 자기 자신을 추가했을 시
+                if(response.result.nickname == Managers.Player.GetString(Define.NICKNAME))
+                {
+                    Instantiate(Resources.Load<GameObject>("Prefabs/UI/Popup/Menu/Friend/CantSelfFadeView"));   // 토스트 알림 생성
+                    Managers.Sound.PlayPopupSound(); // 알림 생성 사운드
 
-                // 버튼음 재생
-                Managers.Sound.PlayNormalButtonClickSound();
+                } 
+                // 정상 친구 요청 시
+                else
+                {
+                    // Debug.Log(uwr.downloadHandler.text);
+                    // 친구 요청 팝업 생성 및 팝업 초기화
+                    var friend = Managers.UI.ShowPopupUI<UI_AddFriend>("AddFriendView", pathName);
+                    friend.id = (int)response.result.userId;
+                    friend.SetLevel(response.result.planetLevel);
+                    friend.SetImage(response.result.profileColor);
+
+                    // 버튼음 재생
+                    Managers.Sound.PlayNormalButtonClickSound();
+                }
                 onSearch = false;
             }
             // 토큰 오류 시
