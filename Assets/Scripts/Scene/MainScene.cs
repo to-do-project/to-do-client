@@ -98,6 +98,11 @@ public class MainScene : BaseScene
 
             }
 
+            if (Managers.Player.isRunaway)
+            {
+                UI_AwayWarning ui = Managers.UI.ShowPopupUI<UI_AwayWarning>("AwayWarningView","Main");
+            }
+
         }
 
         //test ÄÚµå

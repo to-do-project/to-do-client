@@ -65,7 +65,7 @@ public class UI_Find : UI_PWfind
             RequestEmail val = new RequestEmail { email = idInputfield.text };
             Managers.Web.SendPostRequest<string>("user/temporary/pwd", val, callback);
 
-            Managers.UI.ShowPopupUI<UI_PWAuth>("AuthView", "PWfind");
+           //
         }
         
     }
@@ -79,11 +79,12 @@ public class UI_Find : UI_PWfind
             if (res.isSuccess)
             {
                 Debug.Log(res.message);
-                //Managers.UI.ShowPopupUI<UI_PWAuth>("AuthView", "PWfind");
+                Managers.UI.ShowPopupUI<UI_PWAuth>("AuthView", "PWfind");
             }
             else
             {
                 Debug.Log(res.message);
+                Managers.UI.ShowPopupUI<UI_PWFailed>("FailedView", "PWfind");
             }
 
             res = null;

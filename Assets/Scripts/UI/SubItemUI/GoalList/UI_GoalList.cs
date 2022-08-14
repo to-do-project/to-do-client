@@ -116,8 +116,7 @@ public class UI_GoalList : UI_Base
 
 
         }
-        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
-        goalAddbtn.transform.SetAsLastSibling();
+        CreateGoalAddBtn();
     }
 
     private void GoalInit(UnityWebRequest request)
@@ -162,8 +161,9 @@ public class UI_GoalList : UI_Base
 
                 
             }
-            goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
-            goalAddbtn.transform.SetAsLastSibling();
+
+            CreateGoalAddBtn();
+
         }
         else
         {
@@ -171,23 +171,46 @@ public class UI_GoalList : UI_Base
             {
                 Managers.Player.SendTokenRequest(innerCallback);
             }
+
         }
 
 
 
     }
 
+    private void CreateGoalAddBtn()
+    {
+        goalAddbtn = Managers.UI.MakeSubItem<UI_GoalAdd>("GoalList", goalParent.transform, "goalAdd_btn").gameObject;
+        goalAddbtn.transform.SetAsLastSibling();
+    }
+
 
     IEnumerator GoalInitiate()
     {
-
+        float timer = 0.0f;
+        float delaytTime = 4.0f;
+        bool isFailed = false;
 
         while (Managers.Todo.goalList == null)
         {
             Debug.Log("아직 로딩안됨");
+            timer += Time.deltaTime;
+            if (timer > delaytTime)
+            {
+                isFailed = true;
+                break;
+            }
             yield return null;
         }
 
-        GoalInit();
+        if (!isFailed)
+        {
+            GoalInit();
+        }
+        else
+        {
+            CreateGoalAddBtn();
+        }
+
     }
 }

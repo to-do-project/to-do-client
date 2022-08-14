@@ -77,6 +77,7 @@ public class PlayerManager : MonoBehaviour
     string[] headerValue = new string[2];
 
     int prePercent;
+    public bool isRunaway; //가출 여부 확인
 
     public Action<bool> UIaction; //편집화면에서 UI 움직임에 사용
 
@@ -129,8 +130,14 @@ public class PlayerManager : MonoBehaviour
 
                     if (!Mainres.result.isRunAway)
                     {
+                        isRunaway = false;
                         prePercent = Mainres.result.prePercent;
                         CharacterInstantiate(Mainres.result.characterItem);
+                    }
+                    else
+                    {
+                        Debug.Log("가출했어요");
+                        isRunaway = true;
                     }
                     ItemInstantiate();
                 }

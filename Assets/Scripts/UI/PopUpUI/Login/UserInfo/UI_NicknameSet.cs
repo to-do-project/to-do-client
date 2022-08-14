@@ -82,7 +82,7 @@ public class UI_NicknameSet : UI_UserInfo
         else
         {
             Debug.Log("invalid");
-            Ntxt.text = " 사용할 수 없는 닉네임입니다. 특수문자, 띄어쓰기는 사용하실 수 없습니다.";
+            Ntxt.text = " 사용할 수 없는 닉네임입니다. \r\n 특수문자, 띄어쓰기는 사용하실 수 없습니다.";
             isCheck = false;
             nextBtn.GetComponent<Button>().interactable = false;
             ClearEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);

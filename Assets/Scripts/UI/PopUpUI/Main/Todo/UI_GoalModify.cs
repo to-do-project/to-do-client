@@ -72,6 +72,7 @@ public class UI_GoalModify : UI_Popup
     {
         base.Init();
 
+        Managers.UI.DeactivePanelUI();
 
         innerAction -= InfoGather;
         innerAction += InfoGather;
@@ -122,6 +123,12 @@ public class UI_GoalModify : UI_Popup
                 openFlag = "PUBLIC";
             }
         });
+    }
+
+    public override void ClosePopupUI(PointerEventData data)
+    {
+        base.ClosePopupUI();
+        Managers.UI.ActivePanelUI();
     }
 
     private void CheckBtnClick(PointerEventData data)

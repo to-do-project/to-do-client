@@ -45,7 +45,7 @@ public class UI_PtodoContent : UI_Base
 
     long goalId;
     long todoMemberId;
-    string title;
+    string title, tmpTitle;
     bool likeFlag, completeFlag;
     int likeCount;
 
@@ -91,8 +91,34 @@ public class UI_PtodoContent : UI_Base
         
         todoInputfield.onEndEdit.AddListener(delegate
         {
-            SendTodoModifyRequest();
+            if (!string.IsNullOrWhiteSpace(todoInputfield.text) && Util.IsValidString(todoInputfield.text, @"^.{0,50}$"))
+            {
+                todoTitle.text = todoInputfield.text;
+                title = todoInputfield.text;
+                todoInputfield.placeholder.GetComponent<Text>().text = "";
+                todoInputfield.text = "";
 
+                SendTodoModifyRequest();
+
+            }
+            else
+            {
+                todoTitle.text = tmpTitle;
+                title = tmpTitle;
+                todoInputfield.placeholder.GetComponent<Text>().text = "";
+                todoInputfield.text = "";
+
+
+                todoInputfield.DeactivateInputField();
+                todoInputfield.interactable = false;
+
+            }
+            Canvas.ForceUpdateCanvases();
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.GetComponent<ContentSizeFitter>().transform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent.GetComponent<ContentSizeFitter>().transform);
+
+            Canvas.ForceUpdateCanvases();
         });
 
         checkToggle.onValueChanged.AddListener((bool bOn)=> {
@@ -126,6 +152,11 @@ public class UI_PtodoContent : UI_Base
 
         });
 
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.GetComponent<ContentSizeFitter>().transform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent.GetComponent<ContentSizeFitter>().transform);
+
+        Canvas.ForceUpdateCanvases();
     }
 
     void Start()
@@ -151,11 +182,13 @@ public class UI_PtodoContent : UI_Base
         if (todoInputfield.interactable == false)
         {
             todoInputfield.interactable = true;
-            //todoInputfield.placeholder.GetComponent<Text>().text = todoTitle.text;
-            todoInputfield.text = todoTitle.text;
             todoInputfield.ActivateInputField();
+            
+            todoInputfield.placeholder.GetComponent<Text>().text = todoTitle.text;
+            todoInputfield.text = "";
 
             todoTitle.text = "";
+            tmpTitle = todoTitle.text;
         }
 
 
@@ -163,42 +196,41 @@ public class UI_PtodoContent : UI_Base
 
     private void SendTodoModifyRequest()
     {
-       //if (IsValidTitle(todoInputfield.text))
-        if(Util.IsValidString(todoInputfield.text, @"^.{0,50}$"))
-        {
 
-            RequestTodoModify val = new RequestTodoModify();
-            val.title = todoInputfield.text;
-            Managers.Web.SendPostRequest<RequestTodoModify>("api/todo/change/" + todoMemberId.ToString(), val, (uwr) => { 
-                Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
+        RequestTodoModify val = new RequestTodoModify();
+        val.title = title;
+        Managers.Web.SendPostRequest<RequestTodoModify>("api/todo/change/" + todoMemberId.ToString(), val, (uwr) => {
+            Response<string> res = JsonUtility.FromJson<Response<string>>(uwr.downloadHandler.text);
 
-                Debug.Log(res.message);
-                if (res.isSuccess)
+            Debug.Log(res.message);
+            if (res.isSuccess)
+            {
+/*                todoTitle.text = todoInputfield.text;
+                title = todoInputfield.text;
+                todoInputfield.placeholder.GetComponent<Text>().text = "";
+                todoInputfield.text = "";*/
+            }
+            else
+            {
+                switch (res.code)
                 {
-                    todoTitle.text = todoInputfield.text;
-                    title = todoInputfield.text;
-                    todoInputfield.placeholder.GetComponent<Text>().text = "";
-                    todoInputfield.text = "";
 
-
-                }
-                else
-                {
-                    switch (res.code)
-                    {
-
-                        case 6023:
-                            Managers.Player.SendTokenRequest(innerAction);
-                            break;
-                    }
+                    case 6023:
+                        Managers.Player.SendTokenRequest(innerAction);
+                        break;
                 }
 
-                todoInputfield.DeactivateInputField();
-                todoInputfield.interactable = false;
+                todoTitle.text = tmpTitle;
+                title = tmpTitle;
+                todoInputfield.placeholder.GetComponent<Text>().text = "";
+                todoInputfield.text = "";
+            }
 
-            }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+            todoInputfield.DeactivateInputField();
+            todoInputfield.interactable = false;
 
-        }
+        }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+
     }
 
 

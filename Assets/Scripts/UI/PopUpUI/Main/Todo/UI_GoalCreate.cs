@@ -84,6 +84,7 @@ public class UI_GoalCreate : UI_Popup
     {
         base.Init();
 
+        Managers.UI.DeactivePanelUI();
 
         callback -= ResponseAction;
         callback += ResponseAction;
@@ -153,6 +154,12 @@ public class UI_GoalCreate : UI_Popup
         });
 
         BindEvent(openToggle.gameObject, ToggleClick);
+    }
+
+    public override void ClosePopupUI(PointerEventData data)
+    {
+        base.ClosePopupUI();
+        Managers.UI.ActivePanelUI();
     }
 
     private void CheckBtnClick(PointerEventData data)
@@ -229,7 +236,9 @@ public class UI_GoalCreate : UI_Popup
         }
         goalNameInputfield.text = "";
 
+        Managers.UI.ActivePanelUI();
         ClosePopupUI();
+
 
         res = new Response<string>();
         Managers.Web.SendPostRequest<RequestGoalCreate>("api/goals", val, callback, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
