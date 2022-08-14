@@ -74,7 +74,7 @@ public class UI_Profile : UI_PopupMenu
 
         SetBtn((int)Buttons.Logout_btn, (data) => { Managers.Sound.PlayNormalButtonClickSound(); Logout(); });
 
-        SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_Delete>("DeleteView", pathName);
+        SetBtn((int)Buttons.Delete_btn, (data) => { Managers.UI.ShowPopupUI<UI_PreDelete>("PreDeleteView", pathName);
                                                     Managers.Sound.PlayNormalButtonClickSound(); });
     }
 

@@ -23,6 +23,7 @@ public class UI_NickChange : UI_PopupMenu
     enum Texts
     {
         Enable_txt,
+        Check_txt,
     }
     // ================================ //
 
@@ -31,7 +32,7 @@ public class UI_NickChange : UI_PopupMenu
     UI_Menu menu;
     // 완료 버튼
     GameObject nextBtn;
-    Text Ntxt; // 입력 오류 알림 텍스트
+    Text Ntxt, Ctxt; // 입력 오류 알림 텍스트
     InputField Ninput; // 닉네임 입력 필드
 
     string nickname; // 닉네임
@@ -51,6 +52,7 @@ public class UI_NickChange : UI_PopupMenu
         nextBtn.GetComponent<Button>().interactable = false;
 
         Ntxt = GetText((int)Texts.Enable_txt);
+        Ctxt = GetText((int)Texts.Check_txt);
         Ninput = GetInputfiled((int)InputFields.Nickname_inputfield);
 
         profile = FindObjectOfType<UI_Profile>();
@@ -134,6 +136,7 @@ public class UI_NickChange : UI_PopupMenu
             if(response.isSuccess)
             {
                 Ntxt.text = " 사용 가능한 닉네임입니다.";
+                Ctxt.color = new Color(1, 1, 1, 124f / 255f);
                 nextBtn.GetComponent<Button>().interactable = true;
                 BindEvent(nextBtn, NextBtnClick, Define.TouchEvent.Touch);
             } else

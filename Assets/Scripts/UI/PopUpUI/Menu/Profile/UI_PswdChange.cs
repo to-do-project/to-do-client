@@ -19,6 +19,7 @@ public class UI_PswdChange : UI_PopupMenu
         Change_txt,
         Again_txt,
         PswdCheck_txt,
+        Check_txt,
     }
 
     enum InputFields
@@ -30,7 +31,7 @@ public class UI_PswdChange : UI_PopupMenu
 
     GameObject nextBtn;
     InputField Pswdfield, Changefield, Againfield;
-    Text Changetxt, Againtxt, PswdChecktxt;
+    Text Changetxt, Againtxt, PswdChecktxt, Checktxt;
     bool isCheck = false;
     bool isValid = false;
     string password;
@@ -58,6 +59,7 @@ public class UI_PswdChange : UI_PopupMenu
         Changetxt = GetText((int)Texts.Change_txt);
         Againtxt = GetText((int)Texts.Again_txt);
         PswdChecktxt = GetText((int)Texts.PswdCheck_txt);
+        Checktxt = GetText((int)Texts.Check_txt);
     }
 
     private void SetBtns()
@@ -180,7 +182,7 @@ public class UI_PswdChange : UI_PopupMenu
             else
             {
                 Debug.Log(response.message);
-                PswdChecktxt.text = response.message;
+                Checktxt.text = response.message;
             }
         }, hN, hV);
     }
