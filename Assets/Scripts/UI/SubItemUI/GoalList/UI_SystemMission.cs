@@ -20,22 +20,26 @@ public class UI_SystemMission : UI_Base
     GameObject todo, goal;
 
     List<TodoItem> todoList = new List<TodoItem>();
-    Text goalTitle;
-    Text goalRate;
+
+    Text goalRate; 
+    long goalId;
+    string rate = "";
 
     public override void Init()
     {
         Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
-        
+
         todo = Get<GameObject>((int)GameObjects.systemTodo);
         goal = Get<GameObject>((int)GameObjects.systemGoal);
 
-        goalTitle = GetText((int)Texts.systemGoal_txt);
         goalRate = GetText((int)Texts.systemGoalRate_txt);
 
         Canvas.ForceUpdateCanvases();
 
+        BindEvent(goal, GoalClick, Define.TouchEvent.Touch);
+
+        SetGoalContent();
     }
 
     void Start()
@@ -52,7 +56,6 @@ public class UI_SystemMission : UI_Base
         if (todo.activeSelf)
         {
 
-
             todo.SetActive(false);
 
         }
@@ -64,8 +67,27 @@ public class UI_SystemMission : UI_Base
 
     }
 
-    private void SetGgoalContent()
+    public void SetGoalContent(string rate, long goalId, List<TodoItem> todolist)
     {
+        this.rate = rate;
+        this.goalId = goalId;
+        todoList = todolist;
+    }
 
+    private void SetGoalContent()
+    {
+        goalRate.text = rate + "%";
+
+
+        foreach (TodoItem item in todoList)
+        {
+            UI_GtodoContent todoItem = Managers.UI.MakeSubItem<UI_GtodoContent>("GoalList", todo.transform, "Gtodo_content");
+            //todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
+            todoItem.Setting(goalId, item.todoMemberId, item.todoTitle, item.likeFlag, item.likeCount, item.completeFlag);
+        }
+
+        Canvas.ForceUpdateCanvases();
+
+        todo.SetActive(false);
     }
 }

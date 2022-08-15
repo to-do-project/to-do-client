@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 public class WebManager : MonoBehaviour
 {
-    string baseUrl = "https://prod.teamplanz.shop";
+    string baseUrl = "https://dev.teamplanz.shop";
 
 
     public void SendPostRequest<T>(string url, object obj, Action<UnityWebRequest> callback, string[] header = null, string[] headerValue = null)
@@ -157,6 +157,7 @@ public class WebManager : MonoBehaviour
 
             if(uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError)
             {
+                Debug.Log(sendUrl);
                 Debug.Log(uwr.error);
             }
             else
