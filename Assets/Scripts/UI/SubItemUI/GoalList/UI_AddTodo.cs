@@ -18,14 +18,16 @@ public class RequestTodoCreate
 public class ResponseTodoCreate
 {
     public long todoMemberId;
+    public int percentage;
 }
 
 public class UI_AddTodo : UI_Base
 {
 
+
     enum Buttons
     {
-        todoAdd_btn,
+        touchScale,
     }
 
     enum InputFields
@@ -40,6 +42,10 @@ public class UI_AddTodo : UI_Base
     Action innerAction;
     Response<ResponseTodoCreate> res;
     RequestTodoCreate val;
+
+    long goalId;
+    UI_PgoalContent parent;
+
     public override void Init()
     {
 
@@ -64,10 +70,9 @@ public class UI_AddTodo : UI_Base
 
         });
 
-        addBtn = GetButton((int)Buttons.todoAdd_btn).gameObject;
+        addBtn = GetButton((int)Buttons.touchScale).gameObject;
         BindEvent(addBtn, AddBtnClick);
-
-        BindEvent(todoName.gameObject, AddBtnClick);
+        // BindEvent(todoName.gameObject, AddBtnClick);
     }
 
     void Start()
@@ -75,17 +80,12 @@ public class UI_AddTodo : UI_Base
         Init();
     }
 
-    long goalId;
-
     private void AddBtnClick(PointerEventData data)
     {
         Managers.Sound.PlayNormalButtonClickSound();
         //InfoGather();
-        if (todoName.interactable == false)
-        {
-            todoName.interactable = true;
-            todoName.ActivateInputField();
-        }
+        todoName.interactable = true;
+        todoName.ActivateInputField();
     }
 
 
@@ -111,6 +111,11 @@ public class UI_AddTodo : UI_Base
         goalId = id;
     }
 
+    public void SettingParent(UI_PgoalContent go)
+    {
+        parent = go;
+    }
+
     private void ResponseAction(UnityWebRequest request)
     {
         if (res != null)
@@ -129,6 +134,7 @@ public class UI_AddTodo : UI_Base
 
                 todoName.text = "";
 
+                parent.SetPercentage(res.result.percentage);
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)this.transform.parent);
                 Canvas.ForceUpdateCanvases();
 

@@ -135,7 +135,9 @@ public class UI_GoalModify : UI_Popup
     {
         Managers.Sound.PlayNormalButtonClickSound();
         InfoGather();
-        //ClosePopupUI();
+
+        Managers.UI.ActivePanelUI();
+        ClosePopupUI();
     }
 
     private void DeleteBtnClick(PointerEventData data)
@@ -150,6 +152,7 @@ public class UI_GoalModify : UI_Popup
             if (res.isSuccess)
             {
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+                Managers.UI.ActivePanelUI();
                 ClosePopupUI();
             }
             else
@@ -168,6 +171,7 @@ public class UI_GoalModify : UI_Popup
             }
 
         }, Managers.Player.GetHeader(), Managers.Player.GetHeaderValue());
+        
     }
 
     private void StoreBtnClick(PointerEventData data)
@@ -182,7 +186,8 @@ public class UI_GoalModify : UI_Popup
             {
                 FindObjectOfType<UIDataCamera>().RefreshGoalData();
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
-                
+
+                Managers.UI.ActivePanelUI();
                 ClosePopupUI();
             }
             else
@@ -231,6 +236,7 @@ public class UI_GoalModify : UI_Popup
             if (modifyRes.isSuccess)
             {
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+                Managers.UI.ActivePanelUI();
                 ClosePopupUI();
             }
             else

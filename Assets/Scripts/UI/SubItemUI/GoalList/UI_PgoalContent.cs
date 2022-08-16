@@ -117,6 +117,7 @@ public class UI_PgoalContent : UI_Base
         goalRate.text = rate+"%";
 
         todoAdd.GetComponent<UI_AddTodo>().Setting(goalId);
+        todoAdd.GetComponent<UI_AddTodo>().SettingParent(this);
 
         Canvas.ForceUpdateCanvases();
 
