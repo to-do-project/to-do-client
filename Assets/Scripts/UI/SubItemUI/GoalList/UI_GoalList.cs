@@ -96,7 +96,12 @@ public class UI_GoalList : UI_Base
 
         foreach (ResponseMainTodo item in Managers.Todo.goalList)
         {
-            if (item.groupFlag)
+            if (item.missionFlag)
+            {
+                UI_SystemMission goal = Managers.UI.MakeSubItem<UI_SystemMission>("GoalList", goalParent.transform, "SystemMission");
+                goal.SetGoalContent(item.percentage.ToString(), item.goalId, item.getTodoMainResList);
+            }
+            else if (item.groupFlag)
             {
                 UI_GgoalContent goal = Managers.UI.MakeSubItem<UI_GgoalContent>("GoalList", goalParent.transform, "Ggoal_content");
                 /*                    goal.SetGoalName(item.goalTitle);
