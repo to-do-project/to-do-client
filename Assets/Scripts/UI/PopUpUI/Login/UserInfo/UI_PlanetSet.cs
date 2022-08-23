@@ -257,9 +257,13 @@ public class UI_PlanetSet : UI_UserInfo
 
                             Managers.Player.SetInt("FirstStart", 0);
 
-                            Managers.Player.Init();
-                            UI_Load.Instance.InstantLoad("Main");
-                            Managers.Clear();
+                            //Managers.Player.Init();
+
+                            Debug.Log("»Æ¿Œ");
+                            Managers.UI.ShowPopupUI<UI_Tutorial>("TutorialView", "Tutorial");
+
+                            //UI_Load.Instance.InstantLoad("Main");
+                            //Managers.Clear();
                             //Managers.Scene.LoadScene(Define.Scene.Main);
                         }
 

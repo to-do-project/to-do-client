@@ -47,7 +47,9 @@ public class UI_Main : UI_Panel
         BindEvent(menuBtn, MenuBtnClick, Define.TouchEvent.Touch);
 
         GameObject noticeBtn = GetButton((int)Buttons.notice_btn).gameObject;
-        BindEvent(noticeBtn, (data) => { Managers.UI.ShowPopupUI<UI_Signal>("SignalView", "Signal"); }, Define.TouchEvent.Touch);
+        BindEvent(noticeBtn, (data) => { Managers.Sound.PlayNormalButtonClickSound();
+                                         Managers.UI.ShowPopupUI<UI_Signal>("SignalView", "Signal"); },
+                  Define.TouchEvent.Touch);
     }
 
     private void Start()
