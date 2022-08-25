@@ -126,7 +126,7 @@ public class UI_OwnerGoalContent : UI_Base
 
     public void SetPercentage(int percentage)
     {
-        //Debug.Log(percentage);
+        //Debug.Log("percent"+percentage);
         goalRateTxt.text = percentage.ToString() + "%";
     }
 

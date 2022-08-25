@@ -72,6 +72,7 @@ public class UI_GtodoContent : UI_Base
                 {
 
                     this.transform.parent.parent.gameObject.GetComponent<UI_GgoalContent>().SetPercentage(res.result.percentage);
+                    completeFlag = bOn;
                 }
                 else
                 {
@@ -143,14 +144,14 @@ public class UI_GtodoContent : UI_Base
         int index;
         if (likeCount!=0)
         {
-            Debug.Log("full heart");
+            //Debug.Log("full heart");
             index = fullHeart;
             likeNumBtn.GetComponent<Button>().interactable = true;
             BindEvent(likeNumBtn, LikeNumBtnClick);
         }
         else
         {
-            Debug.Log("empty heart");
+            //Debug.Log("empty heart");
             index = emptyHeart;
             likeNumBtn.GetComponent<Button>().interactable = false;
             ClearEvent(likeNumBtn, LikeNumBtnClick);

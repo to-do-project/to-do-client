@@ -15,6 +15,7 @@ public class ResponseMainTodo
     public int percentage;
     public bool managerFlag;
     public bool openFlag;
+    public bool missionFlag;
     public List<TodoItem> getTodoMainResList;
 }
 [System.Serializable]

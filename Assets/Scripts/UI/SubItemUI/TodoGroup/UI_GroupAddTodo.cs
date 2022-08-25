@@ -9,9 +9,10 @@ using UnityEngine.UI;
 
 public class UI_GroupAddTodo : UI_Base
 {
+
     enum Buttons
     {
-        todoAdd_btn,
+        touchScale,
     }
 
     enum InputFields
@@ -50,8 +51,9 @@ public class UI_GroupAddTodo : UI_Base
             InfoGather();
         });
 
-        addBtn = GetButton((int)Buttons.todoAdd_btn).gameObject;
+        addBtn = GetButton((int)Buttons.touchScale).gameObject;
         BindEvent(addBtn, AddBtnClick);
+        //BindEvent(this.gameObject, AddBtnClick);
     }
 
     void Start()
@@ -65,11 +67,8 @@ public class UI_GroupAddTodo : UI_Base
     {
         Managers.Sound.PlayNormalButtonClickSound();
         //InfoGather();
-        if (todoName.interactable == false)
-        {
-            todoName.interactable = true;
-            todoName.ActivateInputField();
-        }
+        todoName.interactable = true;
+        todoName.ActivateInputField();
     }
 
     private void InfoGather()

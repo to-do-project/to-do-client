@@ -75,7 +75,7 @@ public class UI_OwnerTodoContent : UI_Base
                 }
                 else
                 {
-                    Debug.Log(res.message);
+                    Debug.Log(res.message+" "+res.code);
                     switch (res.code)
                     {
                         case 6023:
