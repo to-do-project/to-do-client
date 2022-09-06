@@ -100,6 +100,7 @@ public class UI_GoalList : UI_Base
             {
                 UI_SystemMission goal = Managers.UI.MakeSubItem<UI_SystemMission>("GoalList", goalParent.transform, "SystemMission");
                 goal.SetGoalContent(item.percentage.ToString(), item.goalId, item.getTodoMainResList);
+                goal.gameObject.transform.SetAsFirstSibling();
             }
             else if (item.groupFlag)
             {
@@ -150,6 +151,7 @@ public class UI_GoalList : UI_Base
                 {
                     UI_SystemMission goal = Managers.UI.MakeSubItem<UI_SystemMission>("GoalList", goalParent.transform, "SystemMission");
                     goal.SetGoalContent(item.percentage.ToString(), item.goalId, item.getTodoMainResList);
+                    goal.gameObject.transform.SetAsFirstSibling();
                 }
                 else if (item.groupFlag)
                 {
