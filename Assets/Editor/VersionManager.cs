@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Version_Manager : MonoBehaviour
 {
-    private static bool AutoIncrease = true;
+    private static bool AutoIncrease = false;
     private const string AutoIncreaseMenuName = "Build/Auto Increase Build Version";
 
     [PostProcessBuild(1)] // PostProcessBuild - 빌드 후 실행되는 콜백 함수
