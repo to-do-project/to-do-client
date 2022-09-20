@@ -86,6 +86,7 @@ public class UI_FriendUI : UI_PopupMenu
             Managers.Sound.PlayNormalButtonClickSound();
             Managers.UI.ActiveAllUI();
             Managers.Player.GetPlanet().SetActive(true);
+            Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
             Destroy(gameObject);
         });
 
@@ -168,6 +169,8 @@ public class UI_FriendUI : UI_PopupMenu
         FindObjectOfType<UI_FriendMain>().DestroyAll();
         Managers.UI.ActiveAllUI();
         Managers.Player.GetPlanet().SetActive(true);
+        Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
+
         Destroy(gameObject);
     }
 

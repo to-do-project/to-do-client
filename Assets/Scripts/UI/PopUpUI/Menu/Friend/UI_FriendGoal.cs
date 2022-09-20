@@ -108,7 +108,14 @@ public class UI_FriendGoal : UI_Base
 
         foreach (ResponseMainTodo item in Managers.Todo.goalList)
         {
-            if (item.groupFlag)
+            if (item.missionFlag)
+            {
+/*                UI_SystemFriendMission goal = Managers.UI.MakeSubItem<UI_SystemFriendMission>("GoalList", goalParent.transform, "System_FriendMission");
+                goal.SetGgoalContent(item.percentage.ToString(), item.goalId, item.getTodoMainResList);
+                goal.gameObject.transform.SetAsFirstSibling();
+                Canvas.ForceUpdateCanvases();*/
+            }
+            else if (item.groupFlag)
             {
                 UI_GgoalFriendContent goal = Managers.UI.MakeSubItem<UI_GgoalFriendContent>("GoalList", goalParent.transform, "Ggoal_FriendContent");
                 /*                    goal.SetGoalName(item.goalTitle);
@@ -152,7 +159,14 @@ public class UI_FriendGoal : UI_Base
 
             foreach (ResponseMainTodo item in Managers.Todo.goalList)
             {
-                if (item.groupFlag)
+                if (item.missionFlag)
+                {
+/*                    UI_SystemFriendMission goal = Managers.UI.MakeSubItem<UI_SystemFriendMission>("GoalList", goalParent.transform, "System_FriendMission");
+                    goal.SetGgoalContent(item.percentage.ToString(), item.goalId, item.getTodoMainResList);
+                    goal.gameObject.transform.SetAsFirstSibling();
+                    Canvas.ForceUpdateCanvases();*/
+                }
+                else if (item.groupFlag)
                 {
                     UI_GgoalFriendContent goal = Managers.UI.MakeSubItem<UI_GgoalFriendContent>("GoalList", goalParent.transform, "Ggoal_FriendContent");
                     /*                    goal.SetGoalName(item.goalTitle);

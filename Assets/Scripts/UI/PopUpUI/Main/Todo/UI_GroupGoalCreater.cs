@@ -168,8 +168,8 @@ public class UI_GroupGoalCreater : UI_Popup
             if (res.isSuccess)
             {
                 Managers.Todo.SendMainGoalRequest(Managers.Player.GetString(Define.USER_ID));
-
-                ClosePopupUI();
+                Managers.UI.ActivePanelUI();
+                base.ClosePopupUI();
             }
             else
             {

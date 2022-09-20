@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class StartScene : BaseScene
 {
@@ -15,6 +16,7 @@ public class StartScene : BaseScene
         base.Init();
         if (Managers.Web.InternetCheck())
         {
+
             //토큰 확인(자동로그인 상태)
             if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
             {
