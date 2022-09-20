@@ -13,7 +13,7 @@ public class UI_Internet : UI_Popup
     {
         base.Init();
 
-        Canvas canvas = GetComponent<Canvas>();
+/*        Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Camera UIcam = canvas.worldCamera;
         if (UIcam == null)
@@ -24,7 +24,7 @@ public class UI_Internet : UI_Popup
         else
         {
             Debug.Log($"{UIcam.name}");
-        }
+        }*/
     }
 }
  
