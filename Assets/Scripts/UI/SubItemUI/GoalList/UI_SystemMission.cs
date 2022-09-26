@@ -78,7 +78,7 @@ public class UI_SystemMission : UI_Base
     {
         goalRate.text = rate + "%";
 
-
+        Debug.Log(todoList.Count);
         foreach (TodoItem item in todoList)
         {
             UI_GtodoContent todoItem = Managers.UI.MakeSubItem<UI_GtodoContent>("GoalList", todo.transform, "Gtodo_content");

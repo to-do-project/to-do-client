@@ -16,7 +16,11 @@ public class StartScene : BaseScene
         base.Init();
         if (Managers.Web.InternetCheck())
         {
-
+            //업데이트 확인
+/*            if ()
+            {
+                
+            }*/
             //토큰 확인(자동로그인 상태)
             if (PlayerPrefs.HasKey(Define.JWT_ACCESS_TOKEN) && PlayerPrefs.HasKey(Define.JWT_REFRESH_TOKEN))
             {
